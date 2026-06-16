@@ -1,0 +1,12 @@
+{
+  "dashboardUid": "5b6b0e85-0e65-4753-9d99-9602cfcd85d1",
+  "dashboardTitle": "N2 - Servidores Virtuais",
+  "status": "referencia-aprovada",
+  "panels": [
+    { "file": "l2-header-global.js", "id": 1, "role": "utils", "title": "Header + Shared" },
+    { "file": "l2-kpi-card-v5.js", "id": 3, "role": "content", "title": "KPI Strip" },
+    { "file": "l2-correlacionador-de-eventos.js", "id": 7, "role": "content", "title": "Event Correlation" }
+  ],
+  "snapshot": "dashboard-snapshot.json",
+  "notas": "Dashboard funcional, aprovado e testado no Grafana (UID 5b6b0e85-...). Unica referencia ja conforme ao padrao. O N3 deste dominio vive em ../n3 e ainda e rascunho por validar."
+}

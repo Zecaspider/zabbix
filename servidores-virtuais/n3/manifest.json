@@ -1,0 +1,16 @@
+{
+  "dashboardUid": "ad040c90-01ae-45f9-b537-44580fd75d03",
+  "dashboardTitle": "N3 - Servidores Virtuais - Detalhe VM",
+  "status": "rascunho-por-validar",
+  "panels": [
+    { "file": "l3-vm-header.js", "id": null, "role": "content", "title": "Header da VM" },
+    { "file": "l3-vm-kpi.js", "id": null, "role": "content", "title": "KPIs da VM" },
+    { "file": "l3-cpu-kpi.js", "id": null, "role": "content", "title": "CPU" },
+    { "file": "l3-discos-kpi.js", "id": null, "role": "content", "title": "Discos" },
+    { "file": "l3-rede.js", "id": null, "role": "content", "title": "Rede" },
+    { "file": "l3-servicos.js", "id": null, "role": "content", "title": "Servicos" },
+    { "file": "l3-triggers.js", "id": null, "role": "content", "title": "Triggers" },
+    { "file": "l3-ficha-servidor.js", "id": null, "role": "content", "title": "Ficha do Servidor" }
+  ],
+  "notas": "Material N3 herdado do trabalho anterior, AINDA NAO conformado nem testado contra o fluxo actual. Falta: painel utils proprio (ou partilhar via nav), CFG aninhado, initWithRetry, ids atribuidos pelo Grafana. Tratar como rascunho de partida, nao como aprovado."
+}
