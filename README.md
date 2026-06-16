@@ -9,6 +9,7 @@
 ```
 sistema-de-observabilidade/
 ├── CLAUDE.md                  # fluxo de trabalho (local-first, incremental, manifest)
+├── cronograma.md              # painel de progresso vivo (estado de cada ponto)
 ├── documentacao/
 │   ├── engenharia-do-sistema.md       # documento mestre: arquitectura, fluxo, checklist/roadmap
 │   ├── blueprint-observabilidade.md   # mapa de drill-down N1->N2->N3, naming, personas
@@ -47,10 +48,10 @@ manifest.json por dashboard). `arquivo-referencia/` e so para ir buscar ideias
 ou trechos reaproveitaveis do trabalho anterior - nunca se edita ou se copia
 um ficheiro de la directamente para um dashboard novo sem o conformar ao
 padrao actual (CFG aninhado, `initWithRetry`, `CFG.labels`, etc. - ver
-`CLAUDE.md` raiz do projecto em `C:\Repositorios\zabbix\CLAUDE.md`).
+`documentacao/framework-de-criacao-de-cards.md` e
+`documentacao/engenharia-do-sistema.md`).
 
-Ordem de construcao e estado de cada fase: ver
-`documentacao/engenharia-do-sistema.md` secção 12 (roadmap/checklist).
+Ordem de construcao e estado de cada ponto: ver `cronograma.md` (painel vivo).
 
 A pasta antiga `dashs/novos_dashboards/v5/` deixa de ser tocada a partir de
 agora - fica congelada como historico até confirmarmos que nada se perdeu,

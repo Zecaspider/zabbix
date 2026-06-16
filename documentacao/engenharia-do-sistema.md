@@ -200,7 +200,7 @@ obrigatório:
 
 1. **CFG** — config aninhada, única fonte de verdade (`CFG.id`, `CFG.behaviour`,
    `CFG.thresholds`, `CFG.labels`, `CFG.stateColors`…). Sem valores mágicos no
-   corpo. (detalhe no `CLAUDE.md` raiz)
+   corpo. (detalhe em `framework-de-criacao-de-cards.md`)
 2. **getDemoData()** — dados estáticos para preview offline (mesma forma que o
    adapter devolve).
 3. **getData(rpc)** — queries Zabbix via `rpc.call()`; devolve dados **crus**.
@@ -440,49 +440,15 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 - **Alterações partilhadas:** qualquer escrita no Grafana partilhado pede
   confirmação explícita.
 
-## 12. Roadmap e checklist (preencher conforme avança)
+## 12. Roadmap e checklist
 
-Estado: ☐ Pendente · ◐ Em curso · ☑ Concluído
+O roadmap detalhado e o estado de cada ponto vivem no **`../cronograma.md`**
+(painel de controlo vivo, ponto por ponto, com datas). Este documento define a
+arquitectura e os contratos; o cronograma rastreia a execução. Não duplicar o
+estado aqui — actualizar sempre o `cronograma.md`.
 
-| Fase | Tarefa | Estado | Notas |
-|---|---|---|---|
-| **0 · Fundação** | Decisões de arquitectura travadas | ☑ | A–E + 4 forks |
-| | Blueprint + mapa host groups escritos | ☑ | docs commitados |
-| | Limpeza Grafana (arquivo + pasta limpa) | ☑ | `efpbu5tvrhce8a` |
-| | Inventário host groups (API) | ☑ | 74 grupos |
-| | Este documento de engenharia | ☑ | contratos §5.1/5.2/6/10.1 escritos |
-| | Contrato do painel utils especificado | ☑ | §5.1 |
-| | Contrato de dados card especificado | ☑ | §5.2 + framework-de-criacao-de-cards.md |
-| | Modelo de estado + catálogo thresholds | ☑ | §6.1 / §6.2 |
-| | Contrato de navegação especificado | ☑ | §7 |
-| | Definição de pronto (DoD) | ☑ | §10.1 |
-| | Regra de ancoragem + nav N1→N2 especificadas | ☑ | §3 / §7 |
-| | Procedimento de sondagem documentado | ☑ | §10.2 (2 Zabbix) |
-| | Inventário network (Rede/Agências) | ☑ | grupos 24-35, server 10.10.233.140 |
-| | Painel utils canónico (`utils.js`) implementado | ☐ | adoptar header v8 e conformar |
-| | Confirmar UID datasource Grafana de network | ☑ | `ffo8sp8zllog0e` (BPC-NETWORK) |
-| **1 · Servidores Físicos** | Sondar items grupo 603 | ☐ | |
-| | N2 (utils + KPI + tabela + triggers) | ☐ | |
-| | N3 (header + séries + timeline + eventos) | ☐ | |
-| | Navegação ligada + testado + commit | ☐ | |
-| **2 · Armazenamento** | N2 + N3 + nav + teste | ☐ | grupos 602/605 |
-| **3 · Servidores Virtuais** | Conformar referência ao padrão | ☐ | já existe, conformar |
-| **4 · Rede** | N2 + N3 (DC/Edifícios/WAN) | ☐ | grupos 26/27/28/29/35 (network) |
-| **5 · Segurança** | N2 + N3 | ☐ | grupo 656 |
-| **6 · Bases de Dados** | N2 + N3 | ☐ | grupo 355 |
-| **7 · APIs & Serviços** | N2 + N3 | ☐ | grupos 663/345 |
-| **8 · Serviços de Negócio** | N2 + N3 (eBankit) | ☐ | grupo 391 |
-| **9 · Agências** | N2 (geomap) + N3 | ☐ | grupos 24/25 (network) |
-| **10 · N1 Visão Geral** | Finalizar cards (todos os N2 UID) | ☐ | depende de 1–9 |
-| **11 · Fase 2** | N0 Executivo/SLA | ☐ | adiado |
-
-### Acções Zabbix (lado do utilizador)
-
-| Prioridade | Acção | Estado |
-|---|---|---|
-| P1 | Esquema de tags canónico (`dominio`/`ambiente`/`criticidade`) | ☐ |
-| P2 | Corrigir espaço duplo no grupo 602 | ☐ |
-| P2 | Uniformizar separador de naming dos grupos | ☐ |
-| P2 | Fundir `412 Git lab` + `416 Gitlab` | ☐ |
-| P3 | Classificar 25 hosts em `A-CLASSIFICAR` (480) | ☐ |
-| P3 | Rever `Novos_Inventario` (632, 21 hosts) | ☐ |
+Ordem das fases: 0 Fundação → 1 Servidores Físicos → 2 Armazenamento →
+3 Servidores Virtuais (conformar) → 4 Rede → 5 Segurança → 6 Bases de Dados →
+7 APIs & Serviços → 8 Serviços de Negócio → 9 Agências → 10 N1 Visão Geral →
+11 (fase 2) N0 Executivo/SLA. As acções Zabbix do lado do utilizador também
+estão no cronograma (secção própria).

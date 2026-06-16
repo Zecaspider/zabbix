@@ -1,20 +1,27 @@
-# CLAUDE.md — v5 (dashboards v5)
+# CLAUDE.md — Sistema de Observabilidade BPC NOC
 
-> Regras de fluxo de trabalho para **todos** os dashboards desta pasta `v5/`.
-> Para regras de arquitectura específicas de um domínio (ex.: VMs), ver o
-> `CLAUDE.md` dentro da respectiva subpasta (ex.: `servidores-virtuais/CLAUDE.md`).
-> Este ficheiro complementa — nunca substitui — o `CLAUDE.md` raiz do projecto.
+> **Autoridade única e auto-suficiente deste directório.** Todo o trabalho vive
+> dentro de `sistema-de-observabilidade/` — não depender de nada fora dele.
+> Documentos de referência (todos internos a esta pasta):
+> - `README.md` — índice da estrutura
+> - `cronograma.md` — painel de progresso vivo (estado de cada ponto)
+> - `documentacao/engenharia-do-sistema.md` — arquitectura, contratos, DoD
+> - `documentacao/blueprint-observabilidade.md` — mapa de drill-down N1→N2→N3
+> - `documentacao/mapa-host-groups.md` — domínio → groupId/datasource
+> - `documentacao/framework-de-criacao-de-cards.md` — contrato de dados do card
+> - `<dominio>/CLAUDE.md` — regras específicas de um domínio (quando existir)
 
 ---
 
 ## 0. Âmbito
 
-Esta pasta (`v5/`) mapeia 1:1 para a pasta **"dashboards v5"** no Grafana
-(`http://10.10.126.22:3000`). Cada subpasta de `v5/` corresponde a um ou mais
-dashboards reais nesse Grafana. As regras abaixo aplicam-se a todas as
-subpastas: `visao-geral/`, `servidores-virtuais/`, `servidores-fisicos/`,
-`armazenamento/`, `seguranca/`, `bases-dados/`, `apis/`, `datastores/`,
-`servicos/`, `rede/`, `agencias/`.
+Esta pasta mapeia para a pasta **"dashboards v5"** no Grafana
+(`http://10.10.126.22:3000`, UID `efpbu5tvrhce8a`). Estrutura: 1 pasta por
+domínio (`servidores-fisicos/`, `servidores-virtuais/`, `armazenamento/`,
+`seguranca/`, `bases-dados/`, `apis/`, `servicos-negocio/`, `rede/`,
+`agencias/`), mais `visao-geral/` (N1). Cada domínio tem subpastas `n2/` e `n3/`
+— **1 subpasta = 1 dashboard Grafana = 1 `manifest.json`** (regra completa em
+`documentacao/engenharia-do-sistema.md` §4.1).
 
 ## 1. Princípio: ficheiros locais primeiro, Grafana depois
 
@@ -110,10 +117,9 @@ correspondência por tamanho/conteúdo do script):
 - `id` fica `null` até ao primeiro push desse painel (é o Grafana que o
   atribui).
 - `role: "utils"` identifica o(s) painel(ões) utilitário(s) — ver secção 6.
-- **Convenção de nomes:** por agora mantêm-se os nomes descritivos existentes
-  (`l2-*.js`, `l3-*.js`, prefixo de nível conforme o `CLAUDE.md` raiz do
-  projecto). Não se renomeia para `p0-/p1-/p2-...` — decisão pendente de
-  confirmação explícita; se vier a ser adoptada, actualizar esta secção.
+- **Convenção de nomes:** prefixo de nível `l2-*.js` / `l3-*.js`, painel utils
+  `utils.js` (`documentacao/engenharia-do-sistema.md` §4). Mantêm-se nomes
+  descritivos; não se renomeia para `p0-/p1-...`.
 
 ## 6. Painel(ões) utilitário(s) — padrão obrigatório, não excepção
 
@@ -128,9 +134,9 @@ vão consumir (`window.BPC`, `window.waitForBPC`, `window.BPC_SHARED`,
 - Só se separa em dois utilitários se houver justificação concreta (ex.: uma
   biblioteca de gráficos pesada e reutilizada só por alguns painéis daquele
   dashboard específico).
-- Continua a aplicar-se a regra do `CLAUDE.md` raiz: nunca redefinir
-  `window.BPC_SHARED`/`window.BPC_CHARTS`/`BPC.utils`/`BPC.rpc` localmente
-  num painel de conteúdo — usar sempre o que o painel utilitário expôs.
+- Regra (contrato utils, `documentacao/engenharia-do-sistema.md` §5.1): nunca
+  redefinir `window.BPC_SHARED`/`window.BPC_CHARTS`/`BPC.utils`/`BPC.rpc`/`THEME`
+  localmente num painel de conteúdo — usar sempre o que o `utils.js` expôs.
 
 ### Bootstrap obrigatório em todo o painel de conteúdo
 
@@ -181,5 +187,6 @@ permanentemente disponível.
 - [ ] Testado no browser com espera suficiente (15-20s) antes de concluir
       que falhou
 - [ ] `manifest.json` actualizado com o `id` do painel
-- [ ] Checklist do `CLAUDE.md` raiz do projecto também cumprida (CFG, labels,
-      cores de estado, etc.)
+- [ ] DoD do painel cumprido (`documentacao/engenharia-do-sistema.md` §10.1):
+      CFG aninhado, labels/cores/thresholds do catálogo §6.2, sem hardcode
+- [ ] Contrato de dados respeitado (`documentacao/framework-de-criacao-de-cards.md`)

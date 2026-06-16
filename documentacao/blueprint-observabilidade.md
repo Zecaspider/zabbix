@@ -1,8 +1,9 @@
 # Blueprint — Sistema de Observabilidade BPC NOC (v5)
 
 > Documento de referência da arquitectura-alvo. Aprovado em 2026-06-16.
-> Complementa o `CLAUDE.md` raiz (framework de cards) e o `v5/CLAUDE.md`
-> (fluxo de trabalho). Este define **o quê** se constrói e **porquê**.
+> Complementa o `../CLAUDE.md` (fluxo de trabalho) e o
+> `framework-de-criacao-de-cards.md` (framework de cards). Este define **o quê**
+> se constrói e **porquê**.
 
 ---
 
@@ -117,7 +118,7 @@ sempre via API do Grafana que dados chegam de cada host/grupo antes de construir
 ## 9. Ordem de construção
 
 Fundação primeiro, depois domínio a domínio (cada um pelo fluxo incremental
-do `v5/CLAUDE.md`: painel a painel → push → testar → aprovar → commit).
+do `../CLAUDE.md`: painel a painel → push → testar → aprovar → commit).
 
 ```
 F.  Fundação  — utils/state/nav canónicos + adoptar Virtuais como referência
