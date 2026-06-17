@@ -25,7 +25,7 @@ Zabbix, não usar nos cards (usar sempre o datasource Zabbix).
 
 | Domínio (N2) | groupId | Grupo Zabbix | Hosts |
 |---|---|---|---|
-| Servidores Físicos | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 |
+| Servidores Físicos | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) |
 | Servidores Virtuais | `609` | BPC / INFRAESTRUTURA / SERVIDORES VIRTUAIS | 453 |
 | └ Hypervisores (ESXi) | `608` | BPC / INFRAESTRUTURA / HYPERVISORES | 24 |
 | Armazenamento — Storage | `602` | BPC / INFRAESTRUTURA / STORAGE | 10 |
@@ -65,6 +65,49 @@ Notas:
   estão modelados os links (item por interface vs host dedicado).
 - Grupos genéricos Zabbix (Linux servers, Discovered hosts 111h, etc.) não são
   domínio — `Discovered hosts` pode conter equipamento por classificar.
+
+## Sondagem 1.1 — Grupo 603 (Servidores Físicos) — 2026-06-16
+
+**Composição real do grupo 603** (27 hosts):
+
+| Subtipo | Prefixo de nome | Hosts | Items disponíveis |
+|---|---|---|---|
+| Cisco UCS (Fabric Interconnect) | `FIS - Compute - Cisco UCS` | 2 | Interfaces de rede SNMP (`cisco.ucs.*`), ICMP BPC customizado (`bpc.icmp.*`) |
+| IBM Power | `FIS - Compute - IBM Power` | 2 | Apenas ICMP (`bpc.icmp.*`, `icmpping*`) — sem agente OS |
+| Service Processor (IPMI) | `FIS - Compute - Service Processor` | 2 | ICMP apenas |
+| **ESXi hypervisors** | `VIRT - ESXi - sv*` | 20 | `vmware.hv.*` completo: CPU%, RAM, datastores, rede, uptime, VMs, power, status |
+| Dell EMC PowerEdge | `Dell EMC PE - R650XS` | 1 | 0 items activos (sem template atribuído) |
+
+**Descoberta arquitectural — grupo 603 ≠ só físicos:**
+O grupo 603 contém principalmente ESXi (20 de 27 hosts). Os verdadeiros servidores físicos
+com agente SO não existem neste grupo — Cisco UCS e IBM Power têm apenas ICMP.
+Os ESXi são monitorizados via VMware poller (`vmware.hv.*`).
+
+**Items-chave para o N2 (fixados no CFG):**
+
+| Métrica | Chave Zabbix | Fonte | Subtipo |
+|---|---|---|---|
+| Estado geral | `vmware.hv.status` (0=green,1=yellow,2=red) | VMware poller | ESXi |
+| CPU % | `vmware.hv.cpu.usage.perf` | VMware poller | ESXi |
+| CPU utilização | `vmware.hv.cpu.utilization` | VMware poller | ESXi |
+| RAM total | `vmware.hv.hw.memory` | VMware poller | ESXi |
+| RAM usada | `vmware.hv.memory.used` | VMware poller | ESXi |
+| RAM balloon | `vmware.hv.memory.size.ballooned` | VMware poller | ESXi |
+| Nº VMs | `vmware.hv.vm.num` | VMware poller | ESXi |
+| Power (W) | `vmware.hv.power` | VMware poller | ESXi |
+| Rede in/out | `vmware.hv.network.in/out` (bytes/s) | VMware poller | ESXi |
+| Uptime | `vmware.hv.uptime` | VMware poller | ESXi |
+| Cluster | `vmware.hv.cluster.name` | VMware poller | ESXi |
+| Ping | `bpc.icmp.avail.1h`, `bpc.icmp.rtt.ms` | ICMP BPC | Cisco/IBM/Dell |
+
+**Trigger-chave activos (sondado):** 15 activos, todos High:
+- 2× `Unavailable by ICMP ping` (hosts físicos down)
+- 12× `Free space is critically low` em datastores ESXi
+- 1× `The health is Red` (ESXi com status vermelho)
+
+**Query âncora recomendada para o painel utils N2:**
+Grupo `BPC / INFRAESTRUTURA / HYPERVISORES` (608, 24 ESXi) — mais estável que 603 misturado.
+Ou usar host `VIRT - ESXi - sv9000640` + item `vmware.hv.status`.
 
 ## Lacunas de classificação (cobertura)
 

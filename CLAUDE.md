@@ -13,7 +13,20 @@
 
 ---
 
-## 0. Âmbito
+## 0. Âmbito e infra
+
+**Stack:** Grafana **12.4.2** · Zabbix **7.4** (Infra) e **7.0** (Network) · plugin Business Text (`marcusolsson-dynamictext-panel`) v6.2.0
+
+**Datasources Grafana:**
+| UID | Nome | Zabbix |
+|---|---|---|
+| `3_KgG43nz` | BPC - INFRA | Zabbix 7.4 Infra |
+| `ffo8sp8zllog0e` | BPC-NETWORK | Zabbix 7.0 Network |
+
+**Plugin para painéis BPC:** Business Text (`marcusolsson-dynamictext-panel`).
+- Nome no código: `"type": "marcusolsson-dynamictext-panel"`
+- **Atenção:** o nome antigo `marcusolsson-businesstext-panel` é incorrecto nesta versão do Grafana e provoca falha silenciosa do painel.
+- Opções obrigatórias num painel DT funcional: `renderMode: "allRows"`, `editors: ["afterRender"]`, `transformations: [{id:"reduce"}]`.
 
 Esta pasta mapeia para a pasta **"dashboards v5"** no Grafana
 (`http://10.10.126.22:3000`, UID `efpbu5tvrhce8a`). Estrutura: 1 pasta por
@@ -43,7 +56,7 @@ ficheiro local primeiro.** O Grafana é o ambiente de teste, não o repositório
 
 ## 2. Porque é que cada painel não é só um ficheiro
 
-O Grafana (plugin Business Text) guarda cada painel como um objecto JSON com
+O Grafana (plugin Business Text — ID: `marcusolsson-dynamictext-panel`) guarda cada painel como um objecto JSON com
 dois tipos de campo bem distintos:
 
 | Campo | Onde vive localmente | Conteúdo |
@@ -120,6 +133,10 @@ correspondência por tamanho/conteúdo do script):
 - **Convenção de nomes:** prefixo de nível `l2-*.js` / `l3-*.js`, painel utils
   `utils.js` (`documentacao/engenharia-do-sistema.md` §4). Mantêm-se nomes
   descritivos; não se renomeia para `p0-/p1-...`.
+- **Fonte de verdade do utils:** o painel `utils.js` canónico vive em
+  `_comum/utils.js` (raiz) e é **copiado** para cada dashboard. Melhorias ao
+  runtime partilhado fazem-se primeiro em `_comum/utils.js` e só depois se
+  propagam às cópias — nunca divergir uma cópia à mão.
 
 ## 6. Painel(ões) utilitário(s) — padrão obrigatório, não excepção
 
@@ -170,13 +187,21 @@ initWithRetry()
 
 ## 7. Query Zabbix "âncora" de cada painel
 
-O painel Business Text só renderiza `options.content` quando a query Zabbix
+O painel Dynamic Text só renderiza `options.content` quando a query Zabbix
 configurada no `target` do painel devolve **pelo menos uma linha**
 (`renderMode: allRows`). Os filtros (`group`/`host`/`item`) não precisam de
 ser os dados reais mostrados (isso é feito via RPC dentro do `afterRender`)
 — servem só de "âncora" para destravar o render. **Nunca deixar estes
 filtros vazios** — apontar sempre para um host/item Zabbix real e
 permanentemente disponível.
+
+**Escolha da âncora:** preferir itens de **polling frequente e fiável** —
+ICMP ping (`icmpping`) ou `ICMP Availability` são ideais. Evitar items
+VMware (`vmware.hv.*`, `vmware.vm.*`) como âncora: o poller VMware tem
+intervalos mais longos e pode não ter pontos no intervalo de tempo
+seleccionado, causando render vazio mesmo com o host activo. Âncora
+canónica recomendada: `Storage - IBM FS9500` / `ICMP ping` (grupo Storage) —
+funciona para qualquer dashboard independentemente do domínio.
 
 ## 8. Checklist antes de aprovar um painel
 

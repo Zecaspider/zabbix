@@ -10,6 +10,16 @@ Uso:
 
 Paineis com id=null sao criados (gridPos provisorio, full-width empilhado).
 Apos criacao, o manifest.json e actualizado com o id atribuido pelo Grafana.
+
+ANCORA (anchor):
+  A ancora padrao aponta para Storage IBM FS9500 / ICMP ping (sempre disponivel).
+  Para dashboards N3 com variavel $hostid, definir no manifest.json:
+    "anchor": {
+      "group": {"filter": "$groupid"},
+      "host":  {"filter": "$hostid"},
+      "item":  {"filter": "ICMP ping"}
+    }
+  O script usa a ancora do manifest quando presente, caso contrario usa a padrao.
 """
 
 import json, sys, pathlib, urllib.request, urllib.error
@@ -18,6 +28,7 @@ ROOT = pathlib.Path(__file__).parent
 TOK_PATH = pathlib.Path('C:/Repositorios/zabbix/tok3n')
 GRAFANA = 'http://10.10.126.22:3000'
 
+# Ancora padrao — host sempre disponivel, nao referencia variaveis
 ANCHOR_TARGET = {
     "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
     "group": {"filter": "BPC / INFRAESTRUTURA  / STORAGE"},
@@ -76,6 +87,16 @@ def push_panels(domain_level, only_file=None):
     dash = resp['dashboard']
     folder_uid = resp['meta'].get('folderUid', '')
 
+    # Ancora: usa override do manifest se existir, caso contrario usa padrao
+    anchor_override = manifest.get('anchor')
+    anchor = dict(ANCHOR_TARGET)
+    if anchor_override:
+        anchor.update(anchor_override)
+        anchor.setdefault('datasource', ANCHOR_TARGET['datasource'])
+        anchor.setdefault('queryType', '0')
+        anchor.setdefault('refId', 'A')
+        anchor.setdefault('resultFormat', 'time_series')
+
     panels = [p for p in dash.get('panels', []) if p.get('id') is not None]
     panels_by_id = {p['id']: p for p in panels}
     manifest_changed = False
@@ -84,6 +105,9 @@ def push_panels(domain_level, only_file=None):
         fname = entry['file']
         if only_file and fname != only_file:
             continue
+
+        if not fname.endswith('.js'):
+            continue  # ficheiros .json sao paineis nativos — geridos por push_native.py
 
         js_path = folder / fname
         if not js_path.exists():
@@ -95,9 +119,10 @@ def push_panels(domain_level, only_file=None):
         role = entry.get('role', 'content')
 
         if panel_id and panel_id in panels_by_id:
-            # Actualizar painel existente
+            # Actualizar painel existente — afterRender + anchor (targets)
             p = panels_by_id[panel_id]
             p.setdefault('options', {})['afterRender'] = code
+            p['targets'] = [dict(anchor)]
             print(f'  UPDATE {fname} -> painel id={panel_id} ({entry.get("title","")})')
         else:
             # Criar painel novo (gridPos provisorio)
@@ -114,7 +139,7 @@ def push_panels(domain_level, only_file=None):
                     'renderMode': 'allRows',
                     'editors': ['afterRender'],
                 },
-                'targets': [dict(ANCHOR_TARGET)],
+                'targets': [dict(anchor)],
                 'datasource': {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
                 'transformations': [{'id': 'reduce', 'options': {}}],
                 'fieldConfig': {'defaults': {}, 'overrides': []},

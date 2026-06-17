@@ -1,0 +1,52 @@
+{
+  "type": "timeseries",
+  "title": "RAM Usage",
+  "description": "Memória utilizada vs total — ESXi $hostid",
+  "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
+  "targets": [
+    {
+      "refId": "A",
+      "queryType": "0",
+      "group":  {"filter": "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"},
+      "host":   {"filter": "$hostid"},
+      "item":   {"filter": "Used memory"},
+      "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
+      "resultFormat": "time_series"
+    },
+    {
+      "refId": "B",
+      "queryType": "0",
+      "group":  {"filter": "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"},
+      "host":   {"filter": "$hostid"},
+      "item":   {"filter": "Total memory"},
+      "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
+      "resultFormat": "time_series"
+    }
+  ],
+  "options": {
+    "tooltip": {"mode": "multi", "sort": "none"},
+    "legend": {"displayMode": "list", "placement": "bottom", "calcs": ["mean", "max", "last"]}
+  },
+  "fieldConfig": {
+    "defaults": {
+      "unit": "bytes",
+      "min": 0,
+      "color": {"mode": "palette-classic"},
+      "custom": {
+        "lineWidth": 2,
+        "fillOpacity": 10,
+        "spanNulls": false
+      }
+    },
+    "overrides": [
+      {
+        "matcher": {"id": "byName", "options": "Total memory"},
+        "properties": [
+          {"id": "custom.lineStyle", "value": {"fill": "dash", "dash": [8, 4]}},
+          {"id": "custom.fillOpacity", "value": 0},
+          {"id": "color", "value": {"mode": "fixed", "fixedColor": "rgba(255,255,255,0.25)"}}
+        ]
+      }
+    ]
+  }
+}

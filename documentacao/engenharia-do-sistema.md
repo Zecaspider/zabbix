@@ -6,6 +6,11 @@
 > Sub-documentos de detalhe: [`blueprint-observabilidade.md`](blueprint-observabilidade.md)
 > (mapa drill-down) e [`mapa-host-groups.md`](mapa-host-groups.md) (domínio→grupo).
 > Criado 2026-06-16 · revisão contínua via a checklist da §12.
+>
+> **Stack:** Grafana **12.4.2** · Zabbix **7.4** (Infra, datasource `3_KgG43nz`)
+> e **7.0** (Network, datasource `ffo8sp8zllog0e`) · plugin Dynamic Text
+> `marcusolsson-dynamictext-panel` v6.2.0. O nome antigo
+> `marcusolsson-businesstext-panel` não existe nesta versão do Grafana.
 
 ---
 
@@ -31,7 +36,7 @@ estado coerente entre níveis e navegação determinística.
 
 2. **Híbrido por princípio.** Painel nativo Grafana onde já é forte (geomap,
    séries temporais, tabelas, listas de triggers/alertas, stat/gauge);
-   Business Text só onde a estética/lógica composta NOC *é* o valor.
+   Dynamic Text (`marcusolsson-dynamictext-panel`) só onde a estética/lógica composta NOC *é* o valor.
 
 3. **Estado coerente, calculado uma vez.** Um modelo de estado único
    (§6) — o N1 nunca contradiz o N2/N3.
@@ -101,6 +106,8 @@ Raiz de trabalho: `C:\Repositorios\zabbix\sistema-de-observabilidade\`.
 sistema-de-observabilidade/
 ├── CLAUDE.md                       # fluxo de trabalho (esta pasta)
 ├── README.md                       # indice da estrutura
+├── _comum/                         # FONTE DE VERDADE do painel utilitario canonico
+│   └── utils.js                    # template §5.1 (BPC/THEME/SHARED/CHARTS/state) — copiado p/ cada dashboard
 ├── documentacao/                   # os 3 docs canonicos (este, blueprint, mapa-host-groups)
 ├── visao-geral/                    # o N1 (nivel de topo, sem dominio)
 │   └── n1/                         # 1 subpasta = 1 dashboard Grafana
@@ -138,7 +145,7 @@ sistema-de-observabilidade/
 
 ### Painéis por nível (regra híbrida aplicada)
 
-| Nível | Business Text | Nativo Grafana |
+| Nível | Dynamic Text (`marcusolsson-dynamictext-panel`) | Nativo Grafana |
 |---|---|---|
 | N1 | cards compostos (1 por domínio) | — |
 | N2 | KPI strip (topo) | tabela de hosts, top-triggers |
@@ -191,6 +198,19 @@ separa em dois com justificação concreta (ex.: biblioteca de gráficos pesada
 usada por poucos painéis). Nome canónico do ficheiro: `utils.js` (ou, em
 dashboards herdados já aprovados, mantém-se `*-header-global.js` até refactor —
 ver nota de conformidade em §11).
+
+**Fonte de verdade do utils canónico:** `_comum/utils.js` (raiz). Como não há
+bundler/imports, este ficheiro é **copiado** para cada `<dominio>/n2|n3/utils.js`;
+qualquer melhoria ao runtime partilhado faz-se primeiro em `_comum/utils.js` e
+depois propaga-se às cópias. Foi promovido (v9) a partir do header de referência
+`servidores-virtuais/n2/l2-header-global.js`, acrescentando `BPC.THEME`,
+`BPC_SHARED`, `BPC_CHARTS` e `BPC.state` (BLOCO 5).
+
+**Reconciliação de cores (v9):** as cores de estado `ok/warn/crit` do `CFG_THEME`
+passaram a seguir o catálogo canónico do modelo de estado (§6: `#22C55E` / `#d29922`
+/ `#f85149`), para que `BPC.state.color()` e o CSS `.bpc-*` sejam uma única fonte
+de verdade. O accent de marca `gold` (`#F0A500`) ficou distinto do `warn` (antes
+eram iguais no header de referência).
 
 ### 5.2 Framework BPC do card (5 blocos) + contrato de dados
 
@@ -293,19 +313,70 @@ Drill-down determinístico (sem links ad-hoc). Toda a construção de URL passa 
 | Salto | Origem (clique) | Destino | URL |
 |---|---|---|---|
 | N1 → N2 | card de domínio inteiro | dashboard N2 | `/d/<dashUidN2>` (+ opcional `var-grupo=<groupId âncora>`) |
-| N2 → N3 | linha de host na tabela | dashboard N3 | `/d/<dashUidN3>?var-hostid=<id>` |
+| N2 → N3 | linha de host na tabela | dashboard N3 | `/d/<dashUidN3>?var-hostid=<nomeHost>` |
 | N3 → N2 | breadcrumb / botão voltar | dashboard N2 | `/d/<dashUidN2>` |
 
 Regras:
 - Cada card N1 conhece o `dashUid` do seu N2 em `CFG.id.dashUid`. O card inteiro
   é clicável (não um botão escondido).
 - Cada N3 conhece o `dashUid` do seu N2 (volta) em `CFG.nav.parentUid`.
-- **Variável de host canónica: `var-hostid`** (o `hostid` Zabbix). Não usar
-  nome de host nem outras variáveis para o salto N2→N3.
-- N2 lê `var-hostid` do URL; se ausente, mostra a vista agregada do domínio
-  (nunca erro/branco).
+- **Variável de host canónica: `var-hostid`** — contém o **nome do host** Zabbix
+  (campo `host.name`), não o hostid numérico. O JS resolve o hostid via
+  `host.get {search: {name: $hostid}}` no arranque.
 - `dashUid` tem de ser um UID real (não `PLACEHOLDER_*`); validar no DoD (§10.1)
   antes de marcar o domínio como pronto.
+
+### 7.1 Padrão de variáveis Grafana nos dashboards N3 ("query dumb")
+
+Os dashboards N3 usam variáveis Grafana para reactivididade ao selector de host.
+O Business Text **re-executa o `afterRender`** quando a query ancora do painel
+produz novos dados — logo, a âncora tem de referenciar a variável:
+
+```
+utilizador muda $hostid no dropdown
+  → Grafana re-executa a query ancora do painel  (porque host: '$hostid')
+  → query devolve novos dados
+  → BT re-executa afterRender
+  → JS lê window.location.search de fresco → var-hostid actualizado
+```
+
+**Variáveis obrigatórias num dashboard N3:**
+
+| Variável | Tipo | Conteúdo | Visibilidade |
+|---|---|---|---|
+| `hostid` | query | nomes dos hosts do grupo âncora (`host: '/.*/'` + regex) | visível (dropdown) |
+
+A variável `groupid` pode ser omitida — usar o nome do grupo **estático** tanto
+na query da variável como na âncora. O `$groupid` intermédio introduz uma
+dependência frágil entre variáveis que pode causar dropdown vazio.
+
+**Âncora de cada painel N3** (campo `targets[0]`):
+```json
+{
+  "group": {"filter": "BPC / INFRAESTRUTURA / <DOMINIO>"},
+  "host":  {"filter": "$hostid"},
+  "item":  {"filter": "ICMP ping"}
+}
+```
+
+Esta âncora é definida no `manifest.json` do dashboard (`"anchor": {...}`) e
+o `push_panel.py` aplica-a ao criar/actualizar painéis.
+
+**Leitura no `afterRender`:**
+```js
+var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || ''
+// hostRaw é o nome do host → resolver hostid via host.get
+```
+
+**O que NÃO usar:**
+- ❌ Variável `textbox` sem âncora que a referencie — o `afterRender` não re-executa
+- ❌ `window.BPC.L3` coordinator pattern para este problema — é desnecessário;
+  o mecanismo nativo do BT (re-exec via query) é suficiente e mais simples
+- ❌ `replaceVariables('$hostid')` — não está disponível no contexto `afterRender`
+  desta versão do plugin; usar `window.location.search` directamente
+- ❌ Usar grupo de enriquecimento (ex.: 608 HYPERVISORES) como fonte da variável —
+  usar sempre o **grupo âncora do domínio** (§3) com regex a filtrar o subtipo
+  (ex.: `/VIRT.*ESXi.*/`); a filtragem por tag faz-se no JS após resolução do host
 
 ## 8. Fluxo de trabalho de desenvolvimento
 
@@ -324,11 +395,25 @@ Layout final (gridPos lado a lado) só depois de todos os painéis aprovados.
 **Manifesto** (`manifest.json` por dashboard) liga ficheiro↔painel:
 ```json
 { "dashboardUid": "...", "panels": [
-  { "file": "utils.js", "id": 1, "role": "utils",   "title": "..." },
-  { "file": "l2-...js", "id": 3, "role": "content", "title": "..." }
+  { "file": "utils.js", "id": 1,    "role": "utils",   "title": "..." },
+  { "file": "l2-...js", "id": null, "role": "content", "title": "..." }
 ] }
 ```
 `id` = `null` até ao 1º push (atribuído pelo Grafana).
+
+Para dashboards N3 com variáveis (§7.1), adicionar também:
+```json
+{
+  "anchor": {
+    "group": {"filter": "$groupid"},
+    "host":  {"filter": "$hostid"},
+    "item":  {"filter": "ICMP ping"}
+  }
+}
+```
+O `push_panel.py` usa a âncora do manifest quando presente, caso contrário usa
+a âncora padrão (Storage IBM FS9500, sempre disponível — para dashboards sem
+variáveis de host).
 
 ## 9. Padrões de código obrigatórios
 

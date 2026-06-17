@@ -37,7 +37,7 @@ Substitui a numeração caótica (D01/D3.1/D4.2/D6.1). 1 UID estável por dashbo
 ## 4. Mapa de drill-down (estado-alvo)
 
 ```
-N1 · Visão Geral NOC  ── wallboard, 1 card por domínio (tudo Business Text)
+N1 · Visão Geral NOC  ── wallboard, 1 card por domínio (tudo Dynamic Text)
  │
  ├─ Armazenamento ───────► N2 · Armazenamento ──────► N3 · Storage (por array/tape)
  ├─ Servidores Físicos ──► N2 · Servidores Físicos ─► N3 · Servidor Físico (por host)
@@ -60,7 +60,7 @@ Decisões de estrutura:
 
 ## 5. Estratégia de painel por nível (regra híbrida)
 
-| Nível | Business Text | Nativo Grafana |
+| Nível | Dynamic Text (`marcusolsson-dynamictext-panel`) | Nativo Grafana |
 |---|---|---|
 | **N1** | todos os cards compostos | — |
 | **N2** | KPI strip (topo) | tabela de hosts, lista de top-triggers |
@@ -68,7 +68,7 @@ Decisões de estrutura:
 | **Agências** | card de KPIs do link | geomap nativo |
 
 Princípio: nativo onde o Grafana já é forte e grátis (geomap, séries, tabelas,
-alertlist); Business Text só onde a estética/lógica composta NOC *é* o valor.
+alertlist); Dynamic Text só onde a estética/lógica composta NOC *é* o valor.
 
 ## 6. Peças transversais (existem 1× por dashboard, reutilizadas)
 

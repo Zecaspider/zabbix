@@ -22,7 +22,7 @@ var CFG_TAB = {
   sparkSeconds: 1800,
   maxAgeSec:    600,
   zabbixUrl:    'http://10.10.126.22/zabbix',
-  grafanaL3:    'http://10.10.126.22:3000/d/server-fisicos-l3/d3-2-servidores-fisicos-nivel-3-individual',
+  grafanaL3:    'http://10.10.126.22:3000/d/b55d5481-9f82-4371-a7ca-e83ceb3064cc/n3-servidores-fisicos-esxi-detalhe',
 
   thresholds: {
     cpu: { warn: 75, crit: 90 },
@@ -301,8 +301,9 @@ function tabRender(el, rows, err) {
       + '</svg>'
   }
 
-  function drillUrl(hostid) {
-    return CFG_TAB.grafanaL3 + '?var-host=' + encodeURIComponent(hostid)
+  function drillUrl(hostid, techName) {
+    if (!CFG_TAB.grafanaL3) return '#'
+    return CFG_TAB.grafanaL3 + '?var-hostid=' + encodeURIComponent(hostid) + '&var-hostname=' + encodeURIComponent(techName)
   }
 
   var TH_STYLE = 'text-align:left;padding:8px 10px;font-size:' + FS.header + ';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bpc-mute);border-bottom:2px solid rgba(255,255,255,0.1);white-space:nowrap'
@@ -413,7 +414,7 @@ function tabRender(el, rows, err) {
 
     // Drill-down
     var colDrill = '<td style="' + TD_STYLE + ';text-align:center">'
-      + '<a href="' + SH.esc(drillUrl(r.hostid)) + '" target="_blank" class="bpc-link" style="font-size:' + FS.cell + ';white-space:nowrap">→ N3</a>'
+      + '<a href="' + SH.esc(drillUrl(r.hostid, r.techName)) + '" target="_blank" class="bpc-link" style="font-size:' + FS.cell + ';white-space:nowrap">→ N3</a>'
       + '</td>'
 
     return '<tr style="background:' + rowBg + '">'

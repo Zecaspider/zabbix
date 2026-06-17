@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-17
+Última actualização: 2026-06-17 (1.9 ☑)
 
 ---
 
@@ -40,8 +40,8 @@
 | 1.5 | N2 — tabela de hosts (nativo) | ☑ | 2026-06-17 | `l2-tabela.js` v3.0 (id=101); 11 colunas NOC@3m; sparklines CPU; DS worst%; triggers/host; ordenado pior estado |
 | 1.6 | N2 — top triggers (nativo) | ☑ | 2026-06-17 | `l2-triggers.js` (id=102); grupo 603, top alertas activos |
 | 1.7 | N2 — layout final + snapshot + commit | ☑ | 2026-06-17 | gridPos: h=3/8/36/14; snapshot `dashboard-completo.json`; commit pendente |
-| 1.8 | N3 — header do host (BT) | ☐ | | |
-| 1.9 | N3 — séries CPU/RAM/disco/rede (nativo) | ☐ | | |
+| 1.8 | N3 — header do host (BT) | ☑ | 2026-06-17 | `l3-header.js` (id=101); lê var-hostid/hostname da URL; KPI row + triggers resumo + link ← N2; dashboard UID `b55d5481` criado |
+| 1.9 | N3 — séries CPU/RAM/disco/rede (nativo) | ☑ | 2026-06-17 | 3 painéis timeseries: CPU (% + thresholds), RAM (used+total bytes), Network (bytes received/transmitted); `push_native.py` criado; âncora BT corrigida para "CPU usage in percent" |
 | 1.10 | N3 — state-timeline triggers + tabela eventos | ☐ | | |
 | 1.11 | N3 — layout final + snapshot + commit | ☐ | | |
 | 1.12 | Navegação N1→N2→N3→volta testada | ☐ | | DoD domínio |

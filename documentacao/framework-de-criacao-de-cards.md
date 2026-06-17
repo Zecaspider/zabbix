@@ -892,7 +892,7 @@ function getDemoData() {
 ---
 
 ```text
-Gera um card BPC NOC para Grafana Business Text seguindo
+Gera um card BPC NOC para Grafana Dynamic Text seguindo
 EXACTAMENTE o modelo de FRAMEWORK KPI abaixo.
 
 ⚠️ ESTE NÃO É UM CARD LIVRE.
