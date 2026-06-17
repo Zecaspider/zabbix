@@ -13,6 +13,21 @@
 
 ---
 
+## CONSTRAINTS IMUTÁVEIS — ler antes de qualquer acção
+
+Estas regras são sempre verdade. Não requerem verificação por sessão — violá-las é sempre um erro.
+
+| Constraint | Valor / Regra |
+|---|---|
+| **Pasta Grafana de trabalho** | "dashboards v5" · UID `efpbu5tvrhce8a` · qualquer dashboard criado ou editado vive aqui |
+| **Utils canónico** | `_comum/utils.js` é a fonte de verdade · para cada dashboard: **copiar** o ficheiro inteiro e ajustar só o `nocLabel` · nunca editar a cópia directamente |
+| **Push ao Grafana** | Parar e pedir confirmação explícita ao utilizador antes de qualquer escrita |
+| **Git commit** | Parar e pedir confirmação explícita ao utilizador antes de qualquer commit |
+| **`content` no manifest** | Cada entrada de painel em `manifest.json` **deve** ter `"content": "<div id=\"...\"></div>"` com o `elementId` exacto declarado no CFG do `.js` · sem este campo o `push_panel.py` gera um ID errado e o painel fica em branco |
+| **Sem scroll nos painéis** | Cada painel deve ter `gridPos.h` dimensionado para que o seu conteúdo caiba inteiramente no viewport sem barra de scroll interna · ajustar no passo de layout final (§4) |
+
+---
+
 ## 0. Âmbito e infra
 
 **Stack:** Grafana **12.4.2** · Zabbix **7.4** (Infra) e **7.0** (Network) · plugin Business Text (`marcusolsson-dynamictext-panel`) v6.2.0

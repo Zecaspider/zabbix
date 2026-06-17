@@ -134,9 +134,11 @@ def push_panels(domain_level, only_file=None):
         role = entry.get('role', 'content')
 
         if panel_id and panel_id in panels_by_id:
-            # Actualizar painel existente — afterRender + anchor (targets)
+            # Actualizar painel existente — afterRender + content (elementId) + anchor
             p = panels_by_id[panel_id]
             p.setdefault('options', {})['afterRender'] = code
+            if entry.get('content'):
+                p['options']['content'] = entry['content']
             p['targets'] = [dict(anchor)]
             print(f'  UPDATE {fname} -> painel id={panel_id} ({entry.get("title","")})')
         else:

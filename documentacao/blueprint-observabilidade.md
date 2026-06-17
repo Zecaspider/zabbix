@@ -39,19 +39,24 @@ Substitui a numeração caótica (D01/D3.1/D4.2/D6.1). 1 UID estável por dashbo
 ```
 N1 · Visão Geral NOC  ── wallboard, 1 card por domínio (tudo Dynamic Text)
  │
- ├─ Armazenamento ───────► N2 · Armazenamento ──────► N3 · Storage (por array/tape)
- ├─ Servidores Físicos ──► N2 · Servidores Físicos ─► N3 · Servidor Físico (por host)
- ├─ Servidores Virtuais ─► N2 · Servidores Virtuais ► N3 · Detalhe VM (por VM)   [REFERÊNCIA ✅]
- │                          └─ inclui vista de Datastores (dobrado aqui)
- ├─ Bases de Dados ──────► N2 · Bases de Dados ──────► N3 · Instância (por DB)
- ├─ Rede ────────────────► N2 · Rede (DC/Edif/WAN) ──► N3 · Link/Segmento   [Zabbix network]
- ├─ Segurança ───────────► N2 · Segurança ───────────► N3 · Firewall/WAF/Darktrace
- ├─ APIs & Serviços ─────► N2 · APIs ─────────────────► N3 · Endpoint/Aplicação
- ├─ Serviços de Negócio ─► N2 · eBankit ──────────────► N3 · Jornada/Transacção
- └─ Agências ────────────► N2 · Agências (geomap) ────► N3 · Detalhe Agência/Link  [Zabbix network]
+ ├─ Infraestrutura VMware ► N2 · VMware (vCenters + clusters + ESXi)
+ │                               └─► N3 · ESXi Detalhe (por hypervisor)
+ ├─ Servidores Virtuais ──► N2 · VMs (saúde, filtro por ambiente)
+ │                               └─► N3 · Detalhe VM (por VM)
+ ├─ Armazenamento ────────► N2 · Armazenamento ──────► N3 · Storage (por array/tape)
+ ├─ Bases de Dados ───────► N2 · Bases de Dados ──────► N3 · Instância (por DB)
+ ├─ Rede ─────────────────► N2 · Rede (DC/Edif/WAN) ──► N3 · Link/Segmento   [Zabbix network]
+ ├─ Segurança ────────────► N2 · Segurança ───────────► N3 · Firewall/WAF/Darktrace
+ ├─ APIs & Serviços ──────► N2 · APIs ─────────────────► N3 · Endpoint/Aplicação
+ ├─ Serviços de Negócio ──► N2 · eBankit ──────────────► N3 · Jornada/Transacção
+ └─ Agências ─────────────► N2 · Agências (geomap) ────► N3 · Detalhe Agência/Link  [Zabbix network]
 ```
 
 Decisões de estrutura:
+- **Infraestrutura VMware** e **Servidores Virtuais** são dois cards separados no N1.
+  VMware = camada de infra (vCenters, clusters, ESXi). VMs = camada de workload (saúde operacional).
+  O antigo domínio "Servidores Físicos" foi absorvido e elevado: o seu conteúdo
+  (tabela ESXi) passa a N3-ESXi dentro do domínio VMware.
 - **Datastores** dobrado em Servidores Virtuais (vista N3), não é domínio próprio.
 - **APIs (técnico)** e **Serviços de Negócio (eBankit)** mantêm-se separados
   (consumidores diferentes: engenharia vs gestão/operação).
@@ -121,17 +126,19 @@ Fundação primeiro, depois domínio a domínio (cada um pelo fluxo incremental
 do `../CLAUDE.md`: painel a painel → push → testar → aprovar → commit).
 
 ```
-F.  Fundação  — utils/state/nav canónicos + adoptar Virtuais como referência
-1.  Servidores Físicos    (conteúdo existe → conformar)
-2.  Armazenamento         (conteúdo existe)
-3.  Rede                  (geomap bom)
-4.  Segurança             (firewall/WAF/Darktrace existem)
-5.  Bases de Dados        (parcial)
-6.  APIs & Serviços       (consolidar experiências web)
-7.  Serviços de Negócio   (eBankit — consolidar cluster web monitoring)
-8.  Agências              (geomap + detalhe)
-9.  N1 · Visão Geral      (finalizar cards quando todos os N2 UID existirem)
-10. (fase 2) N0 · Executivo/SLA
+F.  Fundação              — utils/state/nav canónicos
+1.  Infraestrutura VMware — N2 (vCenters+ESXi) + N3-ESXi + N3-ESXi-Detalhe
+                            [N3-ESXi e N3-ESXi-Detalhe: conteúdo migrado de Servidores Físicos]
+2.  Servidores Virtuais   — N2 (saúde VMs, agente-first) + N3 VM Detalhe
+3.  Armazenamento         — conteúdo existe; N3 bloqueado até Z.9/Z.10
+4.  Rede                  — geomap bom
+5.  Segurança             — firewall/WAF/Darktrace existem
+6.  Bases de Dados        — parcial
+7.  APIs & Serviços       — consolidar experiências web
+8.  Serviços de Negócio   — eBankit
+9.  Agências              — geomap + detalhe
+10. N1 · Visão Geral      — finalizar quando todos os N2 UID existirem
+11. (fase 2) N0 · Executivo/SLA
 ```
 
 Ordem dentro de cada domínio: N2 → N3 → ligar navegação → testar → commit.

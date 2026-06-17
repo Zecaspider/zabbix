@@ -1,5 +1,5 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  BPC NOC — HEADER GLOBAL                                  v8 · BPC-UI   ║
+// ║  BPC NOC — HEADER GLOBAL                                  v9 · BPC-UI   ║
 // ║                                                                          ║
 // ║  Carregado UMA única vez, no painel de cabeçalho do Grafana.            ║
 // ║  Tudo o que é partilhado entre painéis vive aqui.                       ║
@@ -46,7 +46,7 @@
 //              Alterar se o IP/porta do Grafana mudar
 
 const CFG_META = {
-  version: 'v8',
+  version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
   apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',
 };
 
@@ -63,7 +63,7 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC',
-  nocLabel: 'SERVIDORES VIRTUAIS - DASHBOARD NIVEL 2',
+  nocLabel: 'SERVIDORES VIRTUAIS - NIVEL 2',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
 };
 
@@ -86,8 +86,8 @@ const CFG_THEME = {
   cyan: '#00B4D8',
   gold: '#F0A500',
   ok: '#22C55E',
-  warn: '#F0A500',
-  crit: '#EF4444',
+  warn: '#d29922',
+  crit: '#f85149',
   info: '#00B4D8',
   mute: '#64748B',
 };
@@ -1038,7 +1038,192 @@ const CFG_THRESHOLDS = {
 
 
 // ══════════════════════════════════════════════════════════════════════════════
-//  REFERÊNCIA RÁPIDA — v8
+//
+//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ███████╗
+//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ██╔════╝
+//  ██████╔╝██║     ██║   ██║██║      ██║   ██║    ███████╗
+//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║    ╚════██║
+//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝    ███████║
+//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝     ╚══════╝
+//
+//  CONTRATO §5.1 — THEME · BPC_SHARED · BPC_CHARTS · BPC.state
+//
+//  Símbolos que TODO o painel de conteúdo assume existirem (via initWithRetry).
+//  Definidos UMA vez aqui; nunca redefinidos num card (engenharia §5.1/§9).
+//  Dependem de CFG_THEME (BLOCO 1), acessível neste mesmo ficheiro/escopo.
+//
+//    window.BPC.THEME   → tokens visuais (colorOk/Warn/Crit/Info/Mute/Dis, sz*, …)
+//    window.BPC.theme   → alias legado (CFG_THEME cru: .ok/.warn/.crit) p/ BPC.utils
+//    window.BPC_SHARED  → helpers puros (esc, ts, cls, divider, pbar, fmtNum,
+//                         fmtTb, worstState, severityToState, stateAbove/Below, toFloat)
+//    window.BPC_CHARTS  → SVG (gaugeSemi, sparkline, pbar, dot)
+//    window.BPC.state   → modelo de estado §6.1 (metric, worst, host, color)
+//
+// ══════════════════════════════════════════════════════════════════════════════
+
+(function contractGlobals() {
+
+  window.BPC = window.BPC || {};
+
+  // ── BPC.THEME — tokens visuais consumidos pelos cards (§5.1) ───────────────
+  window.BPC.THEME = {
+    colorOk:   CFG_THEME.ok,
+    colorWarn: CFG_THEME.warn,
+    colorCrit: CFG_THEME.crit,
+    colorInfo: CFG_THEME.info,
+    colorMute: CFG_THEME.mute,
+    colorDis:  CFG_THEME.mute,
+    navy: CFG_THEME.navy, navy2: CFG_THEME.navy2,
+    cyan: CFG_THEME.cyan, gold: CFG_THEME.gold,
+    fontBody:    "'Inter','Segoe UI',sans-serif",
+    szLg:        '1.80rem',
+    szMd:        '1.10rem',
+    szSm:        '0.85rem',
+    szLabel:     '0.67rem',
+    cardPadding: '13px 15px 11px',
+  };
+
+  // Alias legado: BPC.utils.stateAccent lê window.BPC.theme.{ok,warn,crit}
+  window.BPC.theme = CFG_THEME;
+
+  // ── BPC.state — modelo de estado, única fonte de cálculo (§6.1) ────────────
+  window.BPC.state = {
+    // classifica UMA métrica contra { warn, crit }; dir 'above' (default) | 'below'
+    metric: function (value, thr, dir) {
+      dir = dir || 'above';
+      if (value == null || isNaN(value) || !thr) return 'ok';
+      if (dir === 'below') {
+        if (value <= thr.crit) return 'crit';
+        if (value <= thr.warn) return 'warn';
+        return 'ok';
+      }
+      if (value >= thr.crit) return 'crit';
+      if (value >= thr.warn) return 'warn';
+      return 'ok';
+    },
+
+    // pior de uma lista; precedência down > crit > warn > ok > mute
+    worst: function (states) {
+      var order = { down: 4, crit: 3, warn: 2, ok: 1, mute: 0 };
+      var w = 'ok', wv = 1;
+      (states || []).forEach(function (s) {
+        var v = order[s] != null ? order[s] : 0;
+        if (v > wv) { wv = v; w = s; }
+      });
+      return w;
+    },
+
+    // estado de um host a partir das métricas já classificadas;
+    // metrics.reachable === false → 'down'
+    host: function (metrics) {
+      if (!metrics) return 'ok';
+      if (metrics.reachable === false) return 'down';
+      var vals = [];
+      Object.keys(metrics).forEach(function (k) {
+        if (k !== 'reachable') vals.push(metrics[k]);
+      });
+      return window.BPC.state.worst(vals);
+    },
+
+    // cor hexadecimal de um estado (via BPC.THEME, nunca hex no card)
+    color: function (state) {
+      var T = window.BPC.THEME;
+      var map = {
+        ok: T.colorOk, warn: T.colorWarn, crit: T.colorCrit,
+        down: T.colorCrit, info: T.colorInfo, mute: T.colorMute,
+      };
+      return map[state] || T.colorMute;
+    },
+  };
+
+  // ── BPC_CHARTS — componentes SVG partilhados (§5.1) ────────────────────────
+  window.BPC_CHARTS = {
+    // gauge semicircular; opts = { max, color, size, label, unit }
+    gaugeSemi: function (value, opts) {
+      opts = opts || {};
+      var max = opts.max || 100;
+      var color = opts.color || 'var(--bpc-cyan)';
+      var size = opts.size || 90;
+      var v = Math.max(0, Math.min(max, value || 0));
+      var r = size / 2 - 8;
+      var cx = size / 2, cy = size / 2;
+      var len = Math.PI * r;
+      var dash = len * (v / max);
+      var arc = 'M8 ' + cy + ' A ' + r + ' ' + r + ' 0 0 1 ' + (size - 8) + ' ' + cy;
+      var label = opts.label != null ? opts.label : Math.round(v) + (opts.unit || '%');
+      return '<svg width="' + size + '" height="' + (size / 2 + 12) + '" viewBox="0 0 ' + size + ' ' + (size / 2 + 12) + '">'
+        + '<path d="' + arc + '" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="8" stroke-linecap="round"/>'
+        + '<path d="' + arc + '" fill="none" stroke="' + color + '" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + dash.toFixed(1) + ' ' + len.toFixed(1) + '"/>'
+        + '<text x="' + cx + '" y="' + (cy - 3) + '" text-anchor="middle" fill="#E6EDF3" font-size="' + (size * 0.20).toFixed(0) + '" font-weight="700">' + label + '</text>'
+        + '</svg>';
+    },
+
+    // linha sparkline (delega no util já testado)
+    sparkline: function (data, color) {
+      return window.BPC.utils.buildSparkline(data, color);
+    },
+
+    // barra de progresso horizontal; pct 0..100
+    pbar: function (pct, color) {
+      pct = Math.max(0, Math.min(100, pct || 0));
+      color = color || 'var(--bpc-cyan)';
+      return '<div style="background:rgba(255,255,255,0.08);border-radius:4px;height:6px;width:100%;overflow:hidden">'
+        + '<div style="height:100%;width:' + pct + '%;background:' + color + ';border-radius:4px"></div></div>';
+    },
+
+    // ponto colorido de estado (ok|warn|crit|down|info|mute)
+    dot: function (state) {
+      var c = window.BPC.state.color(state);
+      return '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + c + '"></span>';
+    },
+  };
+
+  // ── BPC_SHARED — helpers puros, sem efeitos laterais (§5.1) ────────────────
+  window.BPC_SHARED = {
+    esc: function (s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    },
+    ts: function (ms) { return ms ? new Date(ms).toLocaleTimeString('pt-PT') : '—'; },
+    cls: function (state) {
+      return { ok: 'bpc-ok', warn: 'bpc-warn', crit: 'bpc-crit', down: 'bpc-crit', info: 'bpc-info' }[state] || 'bpc-mute';
+    },
+    divider: function () { return '<div class="bpc-divider"></div>'; },
+    pbar: function (pct, color) { return window.BPC_CHARTS.pbar(pct, color); },
+    fmtNum: function (n, d) {
+      if (n == null || isNaN(n)) return '—';
+      return Number(n).toLocaleString('pt-PT', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
+    },
+    fmtTb: function (bytes) {
+      if (bytes == null || isNaN(bytes)) return '—';
+      if (bytes >= 1e12) return (bytes / 1e12).toFixed(2) + ' TB';
+      if (bytes >= 1e9) return (bytes / 1e9).toFixed(1) + ' GB';
+      return (bytes / 1e6).toFixed(0) + ' MB';
+    },
+    worstState: function (states) { return window.BPC.state.worst(states); },
+    // severidade Zabbix → estado: 0-1→ok, 2-3→warn, ≥critPriority(4)→crit (§6.2)
+    severityToState: function (sev, critPriority) {
+      sev = parseInt(sev, 10) || 0;
+      var cp = critPriority || 4;
+      if (sev >= cp) return 'crit';
+      if (sev >= 2) return 'warn';
+      return 'ok';
+    },
+    stateAbove: function (v, t) { return window.BPC.state.metric(v, t, 'above'); },
+    stateBelow: function (v, t) { return window.BPC.state.metric(v, t, 'below'); },
+    toFloat: function (v) { var n = parseFloat(v); return isNaN(n) ? null : n; },
+  };
+
+  if (window.BPC && window.BPC.log) {
+    window.BPC.log('Contrato §5.1 exposto: THEME · state · BPC_CHARTS · BPC_SHARED (' + CFG_META.version + ')');
+  }
+
+})(); // fim BLOCO 5
+
+
+// ══════════════════════════════════════════════════════════════════════════════
+//  REFERÊNCIA RÁPIDA — v9
 //  ─────────────────────────────────────────────────────────────────────────
 //
 //  ONDE EDITAR (apenas BLOCO 1):

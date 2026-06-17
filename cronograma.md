@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-17 (2.3 ⏸ — próximo: Fase 3 Servidores Virtuais)
+Última actualização: 2026-06-17 (reestruturação arquitectural — Servidores Físicos → Infraestrutura VMware; próximo: Fase 1 N2 VMware)
 
 ---
 
@@ -29,22 +29,32 @@
 | 0.11 | `BPC.state` (modelo de estado §6.1) no utils | ☑ | 2026-06-16 | `metric/worst/host/color` no BLOCO 5; cores §6 reconciliadas |
 | 0.12 | Validar `utils.js` num dashboard de teste | ☑ | 2026-06-16 | header renderiza, consola limpa; tipo `marcusolsson-dynamictext-panel` confirmado |
 
-## Fase 1 · Servidores Físicos (anchor 603, Infra)
+## Fase 1 · Infraestrutura VMware (grupos 608+603, Infra)
+
+> **Reestruturação 2026-06-17:** o antigo domínio "Servidores Físicos" foi elevado e
+> renomeado para "Infraestrutura VMware". O conteúdo N2 ESXi passa a N3-ESXi;
+> cria-se um novo N2 com visão de vCenters + clusters + ESXi.
+> Directório: `infraestrutura-vmware/` (era `servidores-fisicos/`).
 
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 1.1 | Sondar items do grupo 603 (CPU/RAM/disco/rede/HW) | ☑ | 2026-06-16 | 27 hosts: 20 ESXi (`vmware.hv.*`) + 4 físicos ICMP-only + 2 Cisco UCS + 1 Dell sem items. Items fixados em mapa-host-groups.md §Sondagem 1.1. ⚠ grupo 603 é maioritariamente ESXi, não físicos clássicos. |
-| 1.2 | Ratificar thresholds no catálogo §6.2 | ☑ | 2026-06-16 | ESXi: CPU warn/crit via `vmware.hv.status` (green/yellow/red — Zabbix já avalia). Sem agente OS nos físicos → triggers são a fonte de estado. Catálogo §6.2 confirma-se para ESXi. |
-| 1.3 | N2 — `utils.js` | ☑ | 2026-06-16 | copiado de `_comum/utils.js` v9; header "SERVIDORES FÍSICOS (ESXi) - NÍVEL 2"; push OK (UID `8f6a94be`) |
-| 1.4 | N2 — KPI strip (BT) | ☑ | 2026-06-17 | `l2-kpi.js` v3.0 (id=100); 6 cards: Hosts/Clusters/CPU-pior/RAM-pior/Datastores/Alertas; BPC-UI framework; worst não médio |
-| 1.5 | N2 — tabela de hosts (nativo) | ☑ | 2026-06-17 | `l2-tabela.js` v3.0 (id=101); 11 colunas NOC@3m; sparklines CPU; DS worst%; triggers/host; ordenado pior estado |
-| 1.6 | N2 — top triggers (nativo) | ☑ | 2026-06-17 | `l2-triggers.js` (id=102); grupo 603, top alertas activos |
-| 1.7 | N2 — layout final + snapshot + commit | ☑ | 2026-06-17 | gridPos: h=3/8/36/14; snapshot `dashboard-completo.json`; commit pendente |
-| 1.8 | N3 — header do host (BT) | ☑ | 2026-06-17 | `l3-header.js` (id=101); lê var-hostid/hostname da URL; KPI row + triggers resumo + link ← N2; dashboard UID `b55d5481` criado |
-| 1.9 | N3 — séries CPU/RAM/disco/rede (nativo) | ☑ | 2026-06-17 | 3 painéis timeseries: CPU (% + thresholds), RAM (used+total bytes), Network (bytes received/transmitted); `push_native.py` criado; âncora BT corrigida para "CPU usage in percent" |
-| 1.10 | N3 — state-timeline triggers + tabela eventos | ☑ | 2026-06-17 | `l3-eventos.js` id=102; tabela BT com severidade PT, duração relativa, tokens BPC |
-| 1.11 | N3 — layout final + snapshot + commit | ☑ | 2026-06-17 | transparent + sem título em todos os 6 painéis; snapshot `dashboard-completo.json` |
-| 1.12 | Navegação N1→N2→N3→volta testada | ◐ | | N2→N3 validado; N1→N2 pendente até Fase 10 (N1 criado por último, após todos os domínios) |
+| 1.1 | Sondar items do grupo 603/608 (CPU/RAM/disco/rede/HW) | ☑ | 2026-06-16 | 27 hosts em 603: 20 ESXi (`vmware.hv.*`) + 4 físicos ICMP-only + 2 Cisco UCS + 1 Dell sem items. Items fixados em mapa-host-groups.md §Sondagem 1.1. |
+| 1.2 | Ratificar thresholds no catálogo §6.2 | ☑ | 2026-06-16 | ESXi: CPU warn/crit via `vmware.hv.status`. Sem agente OS nos físicos → triggers são a fonte de estado. |
+| 1.3 | N3-ESXi — `utils.js` | ☑ | 2026-06-16 | copiado de `_comum/utils.js` v9; nocLabel "SERVIDORES FÍSICOS (ESXi) - NÍVEL 2"; push OK (UID `8f6a94be`) — título a actualizar quando N2 VMware estiver pronto |
+| 1.4 | N3-ESXi — KPI strip (BT) | ☑ | 2026-06-17 | `l2-kpi.js` v3.0 (id=100) |
+| 1.5 | N3-ESXi — tabela de hosts (BT) | ☑ | 2026-06-17 | `l2-tabela.js` v3.0 (id=101); 11 colunas NOC@3m |
+| 1.6 | N3-ESXi — top triggers | ☑ | 2026-06-17 | `l2-triggers.js` (id=102) |
+| 1.7 | N3-ESXi — layout final + snapshot | ☑ | 2026-06-17 | gridPos: h=3/8/36/14; snapshot `dashboard-completo.json` |
+| 1.8 | N3-ESXi-Detalhe — header do host (BT) | ☑ | 2026-06-17 | `l3-header.js` (id=101); UID `b55d5481` |
+| 1.9 | N3-ESXi-Detalhe — séries CPU/RAM/rede (nativo) | ☑ | 2026-06-17 | 3 timeseries; `push_native.py` criado |
+| 1.10 | N3-ESXi-Detalhe — tabela eventos | ☑ | 2026-06-17 | `l3-eventos.js` id=102 |
+| 1.11 | N3-ESXi-Detalhe — layout final + snapshot | ☑ | 2026-06-17 | transparent + sem título; snapshot ok |
+| 1.12 | **N2 VMware** — criar dashboard + utils | ☐ | | novo dashboard `n2-infraestrutura-vmware`; utils copiado com nocLabel "INFRAESTRUTURA VMWARE - NÍVEL 2" |
+| 1.13 | **N2 VMware** — painel vCenter overview (BT) | ☐ | | 2 cards: VCenter_BPC01 + VCenter_MAIN; clusters, ESXi count, VMs ON/OFF/?, recursos |
+| 1.14 | **N2 VMware** — tabela ESXi (BT, migrada do N3-ESXi) | ☐ | | `l2-tabela.js` adaptado para novo contexto; grupo 608 âncora |
+| 1.15 | **N2 VMware** — top triggers + layout final | ☐ | | |
+| 1.16 | Navegação N3-ESXi ↔ N2-VMware ↔ N3-ESXi-Detalhe testada | ☐ | | |
+| 1.17 | Navegação N1→N2-VMware pendente até Fase 10 | ⏸ | | N1 criado por último |
 
 ## Fase 2 · Armazenamento (anchor 602 + tape 605, Infra)
 | # | Tarefa | Estado | Data | Nota |
@@ -54,13 +64,19 @@
 | 2.3 | N3 (por array/tape) | ⏸ | | Bloqueado até Z.9 (SNMP IBM) e Z.10 (script Dell Unity) estarem resolvidos — sem dados reais no Zabbix, N3 seria só ping. Retomar após Fase 3+ |
 | 2.4 | Navegação + teste + commit | ⏸ | | Depende de 2.3 |
 
-## Fase 3 · Servidores Virtuais (anchor 609 + ESXi 608, Infra)
+## Fase 3 · Servidores Virtuais (anchor 609, Infra)
+
+> N2 SV em construção activa. Arquitectura agente-first (VMware fallback).
+> Filtro padrão: tag `ambiente` = "Produção" | "producao".
+
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 3.1 | Conformar N2 de referência ao padrão (CFG/utils) | ☐ | | já funciona; alinhar |
-| 3.2 | Conformar N3 (rascunho → aprovado) | ☐ | | l3-*.js em `n3/` |
-| 3.3 | Painel Datastores dentro do N3 (grupo 608) | ☐ | | §5 nota #9 |
-| 3.4 | Navegação + teste + commit | ☐ | | |
+| 3.1 | N2 — utils + KPI strip + tabela (agente-first) + triggers | ◐ | 2026-06-17 | Dashboard `0758c24e` criado; tabela v2.0 com agente-first/VMware-fallback; powerstate validado por lastclock; CPU key a corrigir (vmware.vm.cpu.usage.perf); RAM a validar |
+| 3.2 | N2 — corrigir CPU VMware (MHz→%) e RAM (keys/unidades) | ☐ | | usar `vmware.vm.cpu.usage.perf` para %; validar unidades `vmware.vm.memory.size.*` |
+| 3.3 | N2 — layout final + snapshot | ☐ | | após CPU/RAM correctos |
+| 3.4 | N3 — conformar rascunho (l3-*.js em `n3/`) | ☐ | | |
+| 3.5 | N3 — painel Datastores (grupo 608) | ☐ | | |
+| 3.6 | Navegação N2-VMware ↔ N2-SV ↔ N3-VM testada | ☐ | | |
 
 ## Fase 4 · Rede (multi-grupo 26/27/28/29/35, **Network** `ffo8sp8zllog0e`)
 | # | Tarefa | Estado | Data | Nota |
@@ -128,7 +144,8 @@
 | Z.5 | P3 | Classificar 25 hosts em `A-CLASSIFICAR` (480) | ☐ | |
 | Z.6 | P3 | Rever `Novos_Inventario` (632, 21 hosts) | ☐ | staging? |
 | Z.7 | P2 | Esclarecer `network` vs `network2` (2 tokens) | ☐ | mesmo servidor? |
-| Z.8 | P1 | VMware poller não recolhe dados de `sv9000650–655` (Powerflex) e `cls9000650–652` (Cluster Gestão) | ☐ | `lastclock=0` em todos — poller nunca atingiu estes hosts; verificar credenciais VMware e acessibilidade vCenter |
+| Z.8 | P1 | VMware poller não recolhe dados de `sv9000650–655` (Powerflex) e `cls9000650–652` (Cluster Gestão) — **âmbito real: 270 VMs do grupo 609 com `lastclock=0`** (nunca recolhidas) | ☐ | Inicialmente identificado nos ESXi Powerflex; auditoria 2026-06-17 revelou que 270/451 VMs do grupo 609 têm `vmware.vm.powerstate` com `lastclock=0` (valor padrão=0 ≠ desligadas). O poller VMware nunca atingiu estes hosts. Verificar credenciais VMware nos dois vCenters e acessibilidade. Até resolução: dashboards mostram `?` no powerstate em vez de `OFF` para dados sem `lastclock` |
+| Z.11 | P2 | Tag `ambiente` inconsistente: 13 hosts com `"producao"` em vez de `"Producao"` no grupo 609 | ☐ | Normalizar para `"Producao"` — afecta filtros de dashboards N2 SV que usam tag para separar producao de QA |
 | Z.9 | P1 | SNMP não recolhe dos IBM FS9500 (11750) e FS9200 (11747) | ☐ | triggers `No SNMP data collection` activos em ambos — verificar community string SNMP e acessibilidade de rede |
 | Z.10 | P1 | Script `unity_get_state.py` da Dell EMC Unity (11834) sem dados há >1h | ☐ | trigger `No data from storage for 1 hours` activo + `Exist unsupported items` — verificar credenciais API Unity e acessibilidade do host |
 

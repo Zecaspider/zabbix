@@ -225,6 +225,7 @@ function tabCompute(data, sparks) {
 
     return {
       hostid: hid,
+      hostName: host.name,
       techName: techName,
       visName:  visName,
       cluster:  h['Cluster name'] || '—',
@@ -301,9 +302,9 @@ function tabRender(el, rows, err) {
       + '</svg>'
   }
 
-  function drillUrl(hostid, techName) {
+  function drillUrl(hostName) {
     if (!CFG_TAB.grafanaL3) return '#'
-    return CFG_TAB.grafanaL3 + '?var-hostid=' + encodeURIComponent(hostid) + '&var-hostname=' + encodeURIComponent(techName)
+    return CFG_TAB.grafanaL3 + '?var-hostid=' + encodeURIComponent(hostName)
   }
 
   var TH_STYLE = 'text-align:left;padding:8px 10px;font-size:' + FS.header + ';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bpc-mute);border-bottom:2px solid rgba(255,255,255,0.1);white-space:nowrap'
@@ -414,7 +415,7 @@ function tabRender(el, rows, err) {
 
     // Drill-down
     var colDrill = '<td style="' + TD_STYLE + ';text-align:center">'
-      + '<a href="' + SH.esc(drillUrl(r.hostid, r.techName)) + '" target="_blank" class="bpc-link" style="font-size:' + FS.cell + ';white-space:nowrap">→ N3</a>'
+      + '<a href="' + SH.esc(drillUrl(r.hostName)) + '" target="_blank" class="bpc-link" style="font-size:' + FS.cell + ';white-space:nowrap">Ver detalhes</a>'
       + '</td>'
 
     return '<tr style="background:' + rowBg + '">'

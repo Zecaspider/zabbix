@@ -25,9 +25,10 @@ Zabbix, não usar nos cards (usar sempre o datasource Zabbix).
 
 | Domínio (N2) | groupId | Grupo Zabbix | Hosts |
 |---|---|---|---|
-| Servidores Físicos | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) |
-| Servidores Virtuais | `609` | BPC / INFRAESTRUTURA / SERVIDORES VIRTUAIS | 453 |
-| └ Hypervisores (ESXi) | `608` | BPC / INFRAESTRUTURA / HYPERVISORES | 24 |
+| **Infraestrutura VMware** — N2 vCenters+ESXi | `608` | BPC / INFRAESTRUTURA / HYPERVISORES | 24 ESXi |
+| └ N3-ESXi (tabela hosts) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) |
+| **Servidores Virtuais** — N2 saúde VMs | `609` | BPC / INFRAESTRUTURA / SERVIDORES VIRTUAIS | 453 |
+| └ filtro padrão N2 | tag `ambiente` | `"Produção"` \| `"producao"` | ~306 prod |
 | Armazenamento — Storage | `602` | BPC / INFRAESTRUTURA / STORAGE | 10 |
 | └ Tape Library | `605` | BPC / INFRAESTRUTURA / TAPE LIBRARY | 1 |
 | Segurança | `656` | BPC / INFRAESTRUTURA / DISPOSITIVOS DE SEGURANCA | 8 |
