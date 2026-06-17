@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-17 (2.2 ☑)
+Última actualização: 2026-06-17 (2.3 ⏸ — próximo: Fase 3 Servidores Virtuais)
 
 ---
 
@@ -51,8 +51,8 @@
 |---|---|---|---|---|
 | 2.1 | Sondar items 602/605 | ☑ | 2026-06-17 | 10 hosts Storage + 1 Tape. Sem métricas capacidade/IOPS — só ICMP + `system.status` SNMP (IBM). SNMP e script Dell não recolhem (triggers activos). Registado em mapa-host-groups §Sondagem 2.1 |
 | 2.2 | N2 (utils + KPI + tabela + triggers) | ☑ | 2026-06-17 | 4 painéis (utils/kpi/tabela/triggers); UID `993834a3`; transparent+layout aplicados. Card IBM SNMP mostra aviso Z.9 enquanto SNMP não recolhe — adapter pronto para activar automaticamente assim que Zabbix resolver |
-| 2.3 | N3 (por array/tape) | ☐ | | |
-| 2.4 | Navegação + teste + commit | ☐ | | |
+| 2.3 | N3 (por array/tape) | ⏸ | | Bloqueado até Z.9 (SNMP IBM) e Z.10 (script Dell Unity) estarem resolvidos — sem dados reais no Zabbix, N3 seria só ping. Retomar após Fase 3+ |
+| 2.4 | Navegação + teste + commit | ⏸ | | Depende de 2.3 |
 
 ## Fase 3 · Servidores Virtuais (anchor 609 + ESXi 608, Infra)
 | # | Tarefa | Estado | Data | Nota |
