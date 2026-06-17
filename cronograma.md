@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-17 (1.9 ☑)
+Última actualização: 2026-06-17 (2.2 ☑)
 
 ---
 
@@ -49,8 +49,8 @@
 ## Fase 2 · Armazenamento (anchor 602 + tape 605, Infra)
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 2.1 | Sondar items 602/605 | ☐ | | capacidade/latência/IOPS/tape |
-| 2.2 | N2 (utils + KPI + tabela + triggers) | ☐ | | |
+| 2.1 | Sondar items 602/605 | ☑ | 2026-06-17 | 10 hosts Storage + 1 Tape. Sem métricas capacidade/IOPS — só ICMP + `system.status` SNMP (IBM). SNMP e script Dell não recolhem (triggers activos). Registado em mapa-host-groups §Sondagem 2.1 |
+| 2.2 | N2 (utils + KPI + tabela + triggers) | ☑ | 2026-06-17 | 4 painéis (utils/kpi/tabela/triggers); UID `993834a3`; transparent+layout aplicados. Card IBM SNMP mostra aviso Z.9 enquanto SNMP não recolhe — adapter pronto para activar automaticamente assim que Zabbix resolver |
 | 2.3 | N3 (por array/tape) | ☐ | | |
 | 2.4 | Navegação + teste + commit | ☐ | | |
 
@@ -129,6 +129,8 @@
 | Z.6 | P3 | Rever `Novos_Inventario` (632, 21 hosts) | ☐ | staging? |
 | Z.7 | P2 | Esclarecer `network` vs `network2` (2 tokens) | ☐ | mesmo servidor? |
 | Z.8 | P1 | VMware poller não recolhe dados de `sv9000650–655` (Powerflex) e `cls9000650–652` (Cluster Gestão) | ☐ | `lastclock=0` em todos — poller nunca atingiu estes hosts; verificar credenciais VMware e acessibilidade vCenter |
+| Z.9 | P1 | SNMP não recolhe dos IBM FS9500 (11750) e FS9200 (11747) | ☐ | triggers `No SNMP data collection` activos em ambos — verificar community string SNMP e acessibilidade de rede |
+| Z.10 | P1 | Script `unity_get_state.py` da Dell EMC Unity (11834) sem dados há >1h | ☐ | trigger `No data from storage for 1 hours` activo + `Exist unsupported items` — verificar credenciais API Unity e acessibilidade do host |
 
 ---
 

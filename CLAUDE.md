@@ -103,8 +103,11 @@ Quando todos os painéis de um dashboard estão aprovados:
    (ou `<nome-dashboard>.json`) nessa subpasta.
 2. Ajustar `gridPos` de todos os painéis nesse ficheiro (passo manual, é só
    estrutura — nunca o texto do `afterRender`).
-3. `push` do JSON completo de volta (operação única de layout).
-4. `git commit`: os `.js` de cada painel + `manifest.json` + este JSON final.
+3. Definir **`"transparent": true`** em **todos** os painéis e **`"title": ""`**
+   nos painéis de conteúdo (`role != utils`). Regra obrigatória NOC — aplica-se
+   a todos os dashboards N2 e N3, sempre, sem excepção.
+4. `push` do JSON completo de volta (operação única de layout).
+5. `git commit`: os `.js` de cada painel + `manifest.json` + este JSON final.
 
 Este ficheiro JSON deixa de ser tocado depois disso, a não ser que se repita
 este processo de fecho (ex.: dashboard ganhou um painel novo mais tarde).

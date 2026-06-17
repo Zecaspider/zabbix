@@ -118,6 +118,57 @@ Ou usar host `VIRT - ESXi - sv9000640` + item `vmware.hv.status`.
 | `12` | Applications | 20 | grupo default Zabbix |
 | `481` | BPC/TECNOLOGIA/Desconhecido | 1 | OS por classificar |
 
+## Sondagem 2.1 — Grupos 602/605 (Armazenamento) — 2026-06-17
+
+**Composição real do grupo 602 (Storage) — 10 hosts:**
+
+| Host (name) | hostid | Subtipo | Items disponíveis |
+|---|---|---|---|
+| Storage - IBM FS9200 | 11747 | Array Flash IBM | ICMP + SNMP: `system.status[systemHealthStat.0]` (0=OK,1=warn,2=crit), `system.uptime` |
+| Storage - FS9200 Controladora1 | 11748 | Controladora IBM | ICMP only |
+| Storage - FS9200 Controladora2 | 11749 | Controladora IBM | ICMP only |
+| Storage - IBM FS9500 | 11750 | Array Flash IBM | ICMP + SNMP: `system.status[systemHealthStat.0]`, `system.uptime` |
+| Storage - FS9500 Controladora 1 | 11751 | Controladora IBM | ICMP only |
+| Storage - FS9500 Controladora 2 | 11752 | Controladora IBM | ICMP only |
+| Storage - SV9000503 - DELL EMC Unity Storage | 11834 | Array Dell Unity | ICMP + script: `unity_get_state.py` (estado geral + discovery) |
+| Cisco MDS DS-C9148S-K9 [Switch FC DS-C9148S] | 14707 | FC Switch | ICMP only |
+| IBM Storage V7000 Gen2 [SAN Storage] | 14709 | Array SAN IBM | ICMP only |
+| IBM Storage FS9200 (R3042) [All-Flash Storage] | 14710 | Array Flash IBM | ICMP only |
+
+**Composição real do grupo 605 (Tape Library) — 1 host:**
+
+| Host (name) | hostid | Subtipo | Items disponíveis |
+|---|---|---|---|
+| Tape - TS4300 | 11746 | Tape Library IBM | ICMP only |
+
+**Triggers activos (value=1) no momento da sondagem:**
+
+| triggerid | Descrição | Prioridade | Host |
+|---|---|---|---|
+| 124530 | `{HOST.NAME} -> No data from storage for 1 hours` | High | Dell Unity (11834) |
+| 124531 | `{HOST.NAME} -> Exist unsupported items` | Average | Dell Unity (11834) |
+| 164570 | `No SNMP data collection` | Warning | IBM FS9500 (11750) |
+| 164592 | `No SNMP data collection` | Warning | IBM FS9200 (11747) — mesma causa |
+
+**Conclusões arquitecturais:**
+- Não existem métricas de capacidade (%), IOPS, latência, throughput no Zabbix — monitorização de Storage é ICMP + estado de saúde SNMP (só IBM).
+- Os FS9500/FS9200 têm `system.status[systemHealthStat.0]` mas o SNMP não está a recolher de momento (triggers activos).
+- Dell Unity usa script custom — também sem dados de momento.
+- O N2 de Armazenamento focará em: disponibilidade (ICMP por host), estado de saúde onde disponível, contagem de alertas activos.
+
+**Items-chave para o N2 (fixados):**
+
+| Métrica | Chave Zabbix | Hosts |
+|---|---|---|
+| Estado de saúde | `system.status[systemHealthStat.0]` (0=OK, 1=warn, 2=crit) | IBM FS9200/FS9500 |
+| Disponibilidade 1h | `bpc.icmp.avail.1h` | Todos |
+| Conectividade | `icmpping` (1=up, 0=down) | Todos |
+| Uptime | `system.uptime[sysUpTime.0]` | IBM FS9200/FS9500 |
+
+**Query âncora recomendada para N2:** host `Storage - IBM FS9500` (11750) + item `ICMP ping` (`icmpping`) — ICMP é fiável e presente em todos os hosts.
+
+---
+
 ## Problemas de higiene (ver propostas de acção Zabbix)
 
 1. **Separador inconsistente:** eixo INFRAESTRUTURA usa `" / "` (com espaços),
