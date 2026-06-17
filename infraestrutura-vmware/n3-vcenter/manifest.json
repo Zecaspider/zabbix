@@ -1,0 +1,20 @@
+{
+  "dashboardUid": "59e7e4b2-2ccd-4c97-b523-e7b50b705666",
+  "dashboardTitle": "n3-vcenter-detalhe",
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-vcenter-detalhe.js",
+      "id": 101,
+      "role": "content",
+      "title": "Detalhe vCenter",
+      "content": "<div id=\"bpc-vmw-vc-detalhe\"></div>"
+    }
+  ]
+}

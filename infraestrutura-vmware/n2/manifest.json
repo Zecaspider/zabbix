@@ -1,11 +1,42 @@
 {
-  "dashboardUid": null,
+  "dashboardUid": "a967e936-99a3-47c8-af98-052d7a80beb8",
   "dashboardTitle": "n2-infraestrutura-vmware",
   "panels": [
-    { "file": "utils.js",       "id": null, "role": "utils",   "title": "Header + Shared",   "content": "<div id=\"bpc-header-root\"></div>" },
-    { "file": "l2-vcenter.js",  "id": null, "role": "content", "title": "vCenter Overview",  "content": "<div id=\"bpc-vmw-vcenter\"></div>" },
-    { "file": "l2-tabela.js",   "id": null, "role": "content", "title": "Tabela ESXi",       "content": "<div id=\"bpc-vmw-esxi-tabela\"></div>" },
-    { "file": "l2-triggers.js", "id": null, "role": "content", "title": "Top Triggers",      "content": "<div id=\"bpc-vmw-triggers\"></div>" }
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l2-vcenter.js",
+      "id": 101,
+      "role": "content",
+      "title": "vCenter Overview",
+      "content": "<div id=\"bpc-vmw-vcenter\"></div>"
+    },
+    {
+      "file": "l2-vms.js",
+      "id": 102,
+      "role": "content",
+      "title": "VMs Desligadas",
+      "content": "<div id=\"bpc-vmw-vms\"></div>"
+    },
+    {
+      "file": "l2-tabela.js",
+      "id": 103,
+      "role": "content",
+      "title": "Tabela ESXi",
+      "content": "<div id=\"bpc-vmw-esxi-tabela\"></div>"
+    },
+    {
+      "file": "l2-triggers.js",
+      "id": 104,
+      "role": "content",
+      "title": "Top Triggers",
+      "content": "<div id=\"bpc-vmw-triggers\"></div>"
+    }
   ],
   "notas": "Novo dashboard N2 — visão de infraestrutura VMware. Grupos: 608 (ESXi/hypervisores), 603 (inclui físicos). Mostra: 2 vCenters + clusters + tabela ESXi + top triggers. Dashboard a criar no Grafana antes do primeiro push."
 }
