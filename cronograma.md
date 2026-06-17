@@ -42,9 +42,9 @@
 | 1.7 | N2 — layout final + snapshot + commit | ☑ | 2026-06-17 | gridPos: h=3/8/36/14; snapshot `dashboard-completo.json`; commit pendente |
 | 1.8 | N3 — header do host (BT) | ☑ | 2026-06-17 | `l3-header.js` (id=101); lê var-hostid/hostname da URL; KPI row + triggers resumo + link ← N2; dashboard UID `b55d5481` criado |
 | 1.9 | N3 — séries CPU/RAM/disco/rede (nativo) | ☑ | 2026-06-17 | 3 painéis timeseries: CPU (% + thresholds), RAM (used+total bytes), Network (bytes received/transmitted); `push_native.py` criado; âncora BT corrigida para "CPU usage in percent" |
-| 1.10 | N3 — state-timeline triggers + tabela eventos | ☐ | | |
+| 1.10 | N3 — state-timeline triggers + tabela eventos | ☑ | 2026-06-17 | `l3-eventos.js` id=102; tabela BT com severidade PT, duração relativa, tokens BPC |
 | 1.11 | N3 — layout final + snapshot + commit | ☑ | 2026-06-17 | transparent + sem título em todos os 6 painéis; snapshot `dashboard-completo.json` |
-| 1.12 | Navegação N1→N2→N3→volta testada | ☐ | | DoD domínio |
+| 1.12 | Navegação N1→N2→N3→volta testada | ◐ | | N2→N3 validado; N1→N2 pendente até Fase 10 (N1 criado por último, após todos os domínios) |
 
 ## Fase 2 · Armazenamento (anchor 602 + tape 605, Infra)
 | # | Tarefa | Estado | Data | Nota |
