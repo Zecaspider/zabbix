@@ -43,7 +43,7 @@
 | 1.8 | N3 — header do host (BT) | ☑ | 2026-06-17 | `l3-header.js` (id=101); lê var-hostid/hostname da URL; KPI row + triggers resumo + link ← N2; dashboard UID `b55d5481` criado |
 | 1.9 | N3 — séries CPU/RAM/disco/rede (nativo) | ☑ | 2026-06-17 | 3 painéis timeseries: CPU (% + thresholds), RAM (used+total bytes), Network (bytes received/transmitted); `push_native.py` criado; âncora BT corrigida para "CPU usage in percent" |
 | 1.10 | N3 — state-timeline triggers + tabela eventos | ☐ | | |
-| 1.11 | N3 — layout final + snapshot + commit | ☐ | | |
+| 1.11 | N3 — layout final + snapshot + commit | ☑ | 2026-06-17 | transparent + sem título em todos os 6 painéis; snapshot `dashboard-completo.json` |
 | 1.12 | Navegação N1→N2→N3→volta testada | ☐ | | DoD domínio |
 
 ## Fase 2 · Armazenamento (anchor 602 + tape 605, Infra)
