@@ -1,0 +1,10 @@
+{
+  "dashboardUid": "75f53aac-3dda-429d-bd7a-36e0c7090a49",
+  "dashboardTitle": "TESTE - utils v9 (Fundação)",
+  "folderUid": "efpbu5tvrhce8a",
+  "status": "teste-0.12",
+  "panels": [
+    { "file": "utils.js", "id": 1, "role": "utils", "title": "TESTE-utils v9" }
+  ],
+  "notas": "Dashboard temporário de validação do contrato §5.1. Remover após 0.12 aprovado."
+}

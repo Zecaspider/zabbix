@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-16
+Última actualização: 2026-06-17
 
 ---
 
@@ -24,22 +24,22 @@
 | 0.6 | Inventário host groups Infra (API) | ☑ | 2026-06-16 | 74 grupos |
 | 0.7 | Inventário host groups Network (API) | ☑ | 2026-06-16 | grupos 24-35 |
 | 0.8 | UID datasources Grafana confirmados | ☑ | 2026-06-16 | infra `3_KgG43nz`, network `ffo8sp8zllog0e` |
-| 0.9 | **Auditar `l2-header-global.js` vs contrato §5.1** | ☐ | | confirmar que expõe `BPC.state`, `THEME`, etc. |
-| 0.10 | **Implementar `utils.js` canónico** | ☐ | | promover header de referência; base dos outros domínios |
-| 0.11 | `BPC.state` (modelo de estado §6.1) no utils | ☐ | | `metric/worst/host/color` |
-| 0.12 | Validar `utils.js` num dashboard de teste | ☐ | | push + browser, zero erros consola |
+| 0.9 | **Auditar `l2-header-global.js` vs contrato §5.1** | ☑ | 2026-06-16 | expõe `BPC`/`waitForBPC`/`BPC.utils`; faltam `BPC.THEME`, `BPC_SHARED`, `BPC_CHARTS`, `BPC.state` → corrigir no 0.10/0.11 |
+| 0.10 | **Implementar `utils.js` canónico** | ☑ | 2026-06-16 | `_comum/utils.js` v9; +`BPC.THEME`/`BPC_SHARED`/`BPC_CHARTS` (BLOCO 5); `node --check` OK |
+| 0.11 | `BPC.state` (modelo de estado §6.1) no utils | ☑ | 2026-06-16 | `metric/worst/host/color` no BLOCO 5; cores §6 reconciliadas |
+| 0.12 | Validar `utils.js` num dashboard de teste | ☑ | 2026-06-16 | header renderiza, consola limpa; tipo `marcusolsson-dynamictext-panel` confirmado |
 
 ## Fase 1 · Servidores Físicos (anchor 603, Infra)
 
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 1.1 | Sondar items do grupo 603 (CPU/RAM/disco/rede/HW) | ☐ | | §10.2; fixar nomes em CFG |
-| 1.2 | Ratificar thresholds no catálogo §6.2 | ☐ | | confirmar warn/crit reais |
-| 1.3 | N2 — `utils.js` | ☐ | | reutiliza Fundação |
-| 1.4 | N2 — KPI strip (BT) | ☐ | | |
-| 1.5 | N2 — tabela de hosts (nativo) | ☐ | | link N3 via `var-hostid` |
-| 1.6 | N2 — top triggers (nativo) | ☐ | | |
-| 1.7 | N2 — layout final + snapshot + commit | ☐ | | DoD dashboard |
+| 1.1 | Sondar items do grupo 603 (CPU/RAM/disco/rede/HW) | ☑ | 2026-06-16 | 27 hosts: 20 ESXi (`vmware.hv.*`) + 4 físicos ICMP-only + 2 Cisco UCS + 1 Dell sem items. Items fixados em mapa-host-groups.md §Sondagem 1.1. ⚠ grupo 603 é maioritariamente ESXi, não físicos clássicos. |
+| 1.2 | Ratificar thresholds no catálogo §6.2 | ☑ | 2026-06-16 | ESXi: CPU warn/crit via `vmware.hv.status` (green/yellow/red — Zabbix já avalia). Sem agente OS nos físicos → triggers são a fonte de estado. Catálogo §6.2 confirma-se para ESXi. |
+| 1.3 | N2 — `utils.js` | ☑ | 2026-06-16 | copiado de `_comum/utils.js` v9; header "SERVIDORES FÍSICOS (ESXi) - NÍVEL 2"; push OK (UID `8f6a94be`) |
+| 1.4 | N2 — KPI strip (BT) | ☑ | 2026-06-17 | `l2-kpi.js` v3.0 (id=100); 6 cards: Hosts/Clusters/CPU-pior/RAM-pior/Datastores/Alertas; BPC-UI framework; worst não médio |
+| 1.5 | N2 — tabela de hosts (nativo) | ☑ | 2026-06-17 | `l2-tabela.js` v3.0 (id=101); 11 colunas NOC@3m; sparklines CPU; DS worst%; triggers/host; ordenado pior estado |
+| 1.6 | N2 — top triggers (nativo) | ☑ | 2026-06-17 | `l2-triggers.js` (id=102); grupo 603, top alertas activos |
+| 1.7 | N2 — layout final + snapshot + commit | ☑ | 2026-06-17 | gridPos: h=3/8/36/14; snapshot `dashboard-completo.json`; commit pendente |
 | 1.8 | N3 — header do host (BT) | ☐ | | |
 | 1.9 | N3 — séries CPU/RAM/disco/rede (nativo) | ☐ | | |
 | 1.10 | N3 — state-timeline triggers + tabela eventos | ☐ | | |

@@ -1,0 +1,162 @@
+r"""
+push_panel.py - Actualiza ou cria paineis BPC no Grafana.
+
+Le token de C:\Repositorios\zabbix\tok3n (linha "glsa_...").
+Le UID do dashboard e mapeamento file->panelId do manifest.json.
+
+Uso:
+  python push_panel.py <dominio/nivel>            # todos os paineis do manifest
+  python push_panel.py <dominio/nivel> <file.js>  # um unico painel
+
+Paineis com id=null sao criados (gridPos provisorio, full-width empilhado).
+Apos criacao, o manifest.json e actualizado com o id atribuido pelo Grafana.
+"""
+
+import json, sys, pathlib, urllib.request, urllib.error
+
+ROOT = pathlib.Path(__file__).parent
+TOK_PATH = pathlib.Path('C:/Repositorios/zabbix/tok3n')
+GRAFANA = 'http://10.10.126.22:3000'
+
+ANCHOR_TARGET = {
+    "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
+    "group": {"filter": "BPC / INFRAESTRUTURA  / STORAGE"},
+    "host": {"filter": "Storage - IBM FS9500"},
+    "item": {"filter": "ICMP ping"},
+    "queryType": "0",
+    "refId": "A",
+    "resultFormat": "time_series",
+}
+
+
+def read_token():
+    for line in TOK_PATH.read_text(encoding='utf-8').splitlines():
+        line = line.strip()
+        if line.startswith('glsa_'):
+            return line
+    raise RuntimeError('Token Grafana nao encontrado em tok3n')
+
+
+def gapi(method, path, data=None, token=None):
+    url = GRAFANA + '/api/' + path
+    body = json.dumps(data).encode('utf-8') if data else None
+    req = urllib.request.Request(url, data=body, method=method,
+          headers={'Authorization': 'Bearer ' + token,
+                   'Content-Type': 'application/json; charset=utf-8'})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        body = e.read()
+        raise RuntimeError(f'HTTP {e.code}: {body[:300]}') from None
+
+
+def next_y(panels):
+    if not panels:
+        return 0
+    return max(p['gridPos']['y'] + p['gridPos']['h'] for p in panels)
+
+
+def next_id(panels):
+    used = {p.get('id') for p in panels if p.get('id')}
+    i = 100
+    while i in used:
+        i += 1
+    return i
+
+
+def push_panels(domain_level, only_file=None):
+    token = read_token()
+    folder = ROOT / domain_level.replace('\\', '/')
+    manifest_path = folder / 'manifest.json'
+    manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+
+    dash_uid = manifest['dashboardUid']
+    resp = gapi('GET', f'dashboards/uid/{dash_uid}', token=token)
+    dash = resp['dashboard']
+    folder_uid = resp['meta'].get('folderUid', '')
+
+    panels = [p for p in dash.get('panels', []) if p.get('id') is not None]
+    panels_by_id = {p['id']: p for p in panels}
+    manifest_changed = False
+
+    for entry in manifest.get('panels', []):
+        fname = entry['file']
+        if only_file and fname != only_file:
+            continue
+
+        js_path = folder / fname
+        if not js_path.exists():
+            print(f'  SKIP {fname} - ficheiro nao encontrado')
+            continue
+
+        code = js_path.read_text(encoding='utf-8')
+        panel_id = entry.get('id')
+        role = entry.get('role', 'content')
+
+        if panel_id and panel_id in panels_by_id:
+            # Actualizar painel existente
+            p = panels_by_id[panel_id]
+            p.setdefault('options', {})['afterRender'] = code
+            print(f'  UPDATE {fname} -> painel id={panel_id} ({entry.get("title","")})')
+        else:
+            # Criar painel novo (gridPos provisorio)
+            y = next_y(panels)
+            new_id = next_id(panels)
+            new_panel = {
+                'id': new_id,
+                'type': 'marcusolsson-dynamictext-panel',
+                'title': entry.get('title', fname),
+                'gridPos': {'x': 0, 'y': y, 'w': 24, 'h': 8},
+                'options': {
+                    'afterRender': code,
+                    'content': entry.get('content', '<div id="bpc-sf-' + fname.replace('l2-', '').replace('.js', '') + '"></div>'),
+                    'renderMode': 'allRows',
+                    'editors': ['afterRender'],
+                },
+                'targets': [dict(ANCHOR_TARGET)],
+                'datasource': {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
+                'transformations': [{'id': 'reduce', 'options': {}}],
+                'fieldConfig': {'defaults': {}, 'overrides': []},
+            }
+            panels.append(new_panel)
+            print(f'  CREATE {fname} -> novo painel ({entry.get("title","")}), y={y}')
+
+    dash['panels'] = panels
+    payload = {
+        'dashboard': dash,
+        'folderUid': folder_uid,
+        'overwrite': True,
+        'message': 'push_panel.py'
+    }
+    result = gapi('POST', 'dashboards/db', payload, token=token)
+    print(f'  => {result.get("status")} | {GRAFANA}{result.get("url","")}')
+
+    # Reler dashboard para obter ids atribuidos e actualizar manifest
+    resp2 = gapi('GET', f'dashboards/uid/{dash_uid}', token=token)
+    panels_final = resp2['dashboard'].get('panels', [])
+    manifest_entries = {e['file']: e for e in manifest.get('panels', [])}
+
+    for p in panels_final:
+        pid = p.get('id')
+        if pid is None:
+            continue
+        title = p.get('title', '')
+        for entry in manifest.get('panels', []):
+            if entry.get('title') == title and entry.get('id') != pid:
+                print(f'  manifest: {entry["file"]} -> id={pid}')
+                entry['id'] = pid
+                manifest_changed = True
+
+    if manifest_changed:
+        manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding='utf-8')
+        print('  manifest.json actualizado')
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print(__doc__)
+        sys.exit(1)
+    domain_level = sys.argv[1]
+    only_file = sys.argv[2] if len(sys.argv) > 2 else None
+    push_panels(domain_level, only_file)
