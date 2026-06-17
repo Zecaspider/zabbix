@@ -10,11 +10,25 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
-      "file": "l3-vcenter-detalhe.js",
-      "id": 101,
+      "file": "l3-vcenter-topo.js",
+      "id": 102,
       "role": "content",
-      "title": "Detalhe vCenter",
-      "content": "<div id=\"bpc-vmw-vc-detalhe\"></div>"
+      "title": "vCenter Topo",
+      "content": "<div id=\"bpc-vmw-vc-topo\"></div>"
+    },
+    {
+      "file": "l3-vcenter-esxi.js",
+      "id": 103,
+      "role": "content",
+      "title": "ESXi Hosts",
+      "content": "<div id=\"bpc-vmw-vc-esxi\"></div>"
+    },
+    {
+      "file": "l3-vcenter-triggers.js",
+      "id": 104,
+      "role": "content",
+      "title": "Triggers",
+      "content": "<div id=\"bpc-vmw-vc-triggers\"></div>"
     }
   ]
 }

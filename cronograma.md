@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-17 (reestruturação arquitectural — Servidores Físicos → Infraestrutura VMware; próximo: Fase 1 N2 VMware)
+Última actualização: 2026-06-17 (1.13–1.17 ☑ N2 VMware + N3 vCenter 4 painéis; 1.19/1.20 pendentes: dropdown + revisão conformidade; 3.2 ◐ aguarda validação)
 
 ---
 
@@ -49,12 +49,20 @@
 | 1.9 | N3-ESXi-Detalhe — séries CPU/RAM/rede (nativo) | ☑ | 2026-06-17 | 3 timeseries; `push_native.py` criado |
 | 1.10 | N3-ESXi-Detalhe — tabela eventos | ☑ | 2026-06-17 | `l3-eventos.js` id=102 |
 | 1.11 | N3-ESXi-Detalhe — layout final + snapshot | ☑ | 2026-06-17 | transparent + sem título; snapshot ok |
-| 1.12 | **N2 VMware** — criar dashboard + utils | ☐ | | novo dashboard `n2-infraestrutura-vmware`; utils copiado com nocLabel "INFRAESTRUTURA VMWARE - NÍVEL 2" |
-| 1.13 | **N2 VMware** — painel vCenter overview (BT) | ☐ | | 2 cards: VCenter_BPC01 + VCenter_MAIN; clusters, ESXi count, VMs ON/OFF/?, recursos |
-| 1.14 | **N2 VMware** — tabela ESXi (BT, migrada do N3-ESXi) | ☐ | | `l2-tabela.js` adaptado para novo contexto; grupo 608 âncora |
-| 1.15 | **N2 VMware** — top triggers + layout final | ☐ | | |
-| 1.16 | Navegação N3-ESXi ↔ N2-VMware ↔ N3-ESXi-Detalhe testada | ☐ | | |
-| 1.17 | Navegação N1→N2-VMware pendente até Fase 10 | ⏸ | | N1 criado por último |
+| 1.12 | **N2 VMware** — criar dashboard + utils | ☑ | 2026-06-17 | dashboard `a967e936` criado; utils.js id=100 pushed OK |
+| 1.13 | **N2 VMware** — painel vCenter overview (BT) | ☑ | 2026-06-17 | `l2-vcenter.js` v3.0 pushed id=101; cards com cluster table, drill-down links, fix race condition utils (`_initPending`) |
+| 1.14 | **N2 VMware** — tabela ESXi (BT) | ☑ | 2026-06-17 | `l2-tabela.js` pushed id=103; grupo 608 âncora |
+| 1.15 | **N2 VMware** — top triggers + VMs desligadas + layout final | ☑ | 2026-06-17 | `l2-triggers.js` id=104, `l2-vms.js` id=102; layout transparent aplicado |
+| 1.16 | **N3 vCenter** — criar dashboard + utils | ☑ | 2026-06-17 | dashboard `59e7e4b2` criado; utils.js id=100 + `l3-vcenter-detalhe.js` id=101 pushed; lê `?var-vcenter_hostid` do URL |
+| 1.17 | **N3 vCenter** — 4 painéis separados (topo/esxi/triggers) + layout | ☑ | 2026-06-17 | split via VCD_CACHE; transparent+layout pushed; painel antigo removido |
+| 1.18 | **N3 vCenter** — snapshot JSON final | ☐ | | pull + gridPos definitivo + snapshot |
+| 1.19 | **N3 vCenter** — dropdown selector de vCenter (var-vcenter_hostid) | ☐ | | variável Grafana ou painel de selecção no topo do dashboard |
+| 1.20 | Revisão de conformidade — todos os dashboards vs contratos da documentação | ☐ | | ver `documentacao/revisao-conformidade.md`; cheklist por dashboard |
+| 1.21 | Navegação N2-VMware → N3-vCenter → Abrir vCenter testada | ☐ | | |
+| 1.22 | Navegação N3-ESXi ↔ N2-VMware testada | ☐ | | |
+| 1.23 | Navegação N1→N2-VMware pendente até Fase 10 | ⏸ | | N1 criado por último |
+| 1.20 | Navegação N3-ESXi ↔ N2-VMware testada | ☐ | | |
+| 1.21 | Navegação N1→N2-VMware pendente até Fase 10 | ⏸ | | N1 criado por último |
 
 ## Fase 2 · Armazenamento (anchor 602 + tape 605, Infra)
 | # | Tarefa | Estado | Data | Nota |
@@ -71,8 +79,8 @@
 
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 3.1 | N2 — utils + KPI strip + tabela (agente-first) + triggers | ◐ | 2026-06-17 | Dashboard `0758c24e` criado; tabela v2.0 com agente-first/VMware-fallback; powerstate validado por lastclock; CPU key a corrigir (vmware.vm.cpu.usage.perf); RAM a validar |
-| 3.2 | N2 — corrigir CPU VMware (MHz→%) e RAM (keys/unidades) | ☐ | | usar `vmware.vm.cpu.usage.perf` para %; validar unidades `vmware.vm.memory.size.*` |
+| 3.1 | N2 — utils + KPI strip + tabela (agente-first) + triggers | ◐ | 2026-06-17 | Dashboard `0758c24e` criado; 4 painéis pushed (id=100-103); layout transparent aplicado |
+| 3.2 | N2 — corrigir CPU VMware (MHz→%) e RAM (keys/unidades) | ◐ | 2026-06-17 | `l2-tabela.js` v2.0 pushed id=102; CPU→`vmware.vm.cpu.usage.perf`; RAM split em 2 queries; aguarda confirmação visual |
 | 3.3 | N2 — layout final + snapshot | ☐ | | após CPU/RAM correctos |
 | 3.4 | N3 — conformar rascunho (l3-*.js em `n3/`) | ☐ | | |
 | 3.5 | N3 — painel Datastores (grupo 608) | ☐ | | |
