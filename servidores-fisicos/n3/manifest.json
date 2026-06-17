@@ -48,6 +48,13 @@
       "id": 202,
       "role": "native",
       "title": "Network Traffic"
+    },
+    {
+      "file": "l3-eventos.js",
+      "id": 102,
+      "role": "content",
+      "title": "Tabela de Eventos",
+      "content": "<div id=\"bpc-sf-l3-eventos\"></div>"
     }
   ]
 }

@@ -128,6 +128,7 @@
 | Z.5 | P3 | Classificar 25 hosts em `A-CLASSIFICAR` (480) | ☐ | |
 | Z.6 | P3 | Rever `Novos_Inventario` (632, 21 hosts) | ☐ | staging? |
 | Z.7 | P2 | Esclarecer `network` vs `network2` (2 tokens) | ☐ | mesmo servidor? |
+| Z.8 | P1 | VMware poller não recolhe dados de `sv9000650–655` (Powerflex) e `cls9000650–652` (Cluster Gestão) | ☐ | `lastclock=0` em todos — poller nunca atingiu estes hosts; verificar credenciais VMware e acessibilidade vCenter |
 
 ---
 
