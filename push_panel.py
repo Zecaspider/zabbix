@@ -87,15 +87,30 @@ def push_panels(domain_level, only_file=None):
     dash = resp['dashboard']
     folder_uid = resp['meta'].get('folderUid', '')
 
-    # Ancora: usa override do manifest se existir, caso contrario usa padrao
+    # Ancora: usa override do manifest se existir, caso contrario usa padrao.
+    # Se o override tiver datasource proprio (ex: mysql) usa-o directamente
+    # sem misturar com chaves Zabbix.
     anchor_override = manifest.get('anchor')
-    anchor = dict(ANCHOR_TARGET)
-    if anchor_override:
+    if anchor_override and 'datasource' in anchor_override:
+        ds_type = (anchor_override.get('datasource') or {}).get('type', '')
+        if ds_type != 'alexanderzobnin-zabbix-datasource':
+            # Ancora nao-Zabbix: usar tal-e-qual, sem defaults Zabbix
+            anchor = dict(anchor_override)
+            anchor.setdefault('refId', 'A')
+        else:
+            anchor = dict(ANCHOR_TARGET)
+            anchor.update(anchor_override)
+            anchor.setdefault('queryType', '0')
+            anchor.setdefault('resultFormat', 'time_series')
+    elif anchor_override:
+        anchor = dict(ANCHOR_TARGET)
         anchor.update(anchor_override)
         anchor.setdefault('datasource', ANCHOR_TARGET['datasource'])
         anchor.setdefault('queryType', '0')
         anchor.setdefault('refId', 'A')
         anchor.setdefault('resultFormat', 'time_series')
+    else:
+        anchor = dict(ANCHOR_TARGET)
 
     panels = [p for p in dash.get('panels', []) if p.get('id') is not None]
     panels_by_id = {p['id']: p for p in panels}
