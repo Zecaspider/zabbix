@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-17 (1.13–1.17 ☑ N2 VMware + N3 vCenter 4 painéis; 1.19/1.20 pendentes: dropdown + revisão conformidade; 3.2 ◐ aguarda validação)
+Última actualização: 2026-06-17 (3.1/3.2/3.3 ☑ N2 SV completo — tabela v3.1 com RAM/disco/sort/dropdown ambiente; snapshot; fix key vm.memory.size[used])
 
 ---
 
@@ -79,9 +79,9 @@
 
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 3.1 | N2 — utils + KPI strip + tabela (agente-first) + triggers | ◐ | 2026-06-17 | Dashboard `0758c24e` criado; 4 painéis pushed (id=100-103); layout transparent aplicado |
-| 3.2 | N2 — corrigir CPU VMware (MHz→%) e RAM (keys/unidades) | ◐ | 2026-06-17 | `l2-tabela.js` v2.0 pushed id=102; CPU→`vmware.vm.cpu.usage.perf`; RAM split em 2 queries; aguarda confirmação visual |
-| 3.3 | N2 — layout final + snapshot | ☐ | | após CPU/RAM correctos |
+| 3.1 | N2 — utils + KPI strip + tabela (agente-first) + triggers | ☑ | 2026-06-17 | Dashboard `0758c24e`; 4 painéis pushed (id=100-103) |
+| 3.2 | N2 — corrigir CPU VMware (MHz→%) e RAM (keys/unidades) | ☑ | 2026-06-17 | `l2-tabela.js` v3.1: CPU→`usage.perf`; RAM→`vm.memory.size[used]` (não [available]); disco; sort por coluna; dropdown ambiente; "ver detalhes" |
+| 3.3 | N2 — layout final + snapshot | ☑ | 2026-06-17 | gridPos h=3/10/36/12; transparent; `dashboard-completo.json` guardado |
 | 3.4 | N3 — conformar rascunho (l3-*.js em `n3/`) | ☐ | | |
 | 3.5 | N3 — painel Datastores (grupo 608) | ☐ | | |
 | 3.6 | Navegação N2-VMware ↔ N2-SV ↔ N3-VM testada | ☐ | | |

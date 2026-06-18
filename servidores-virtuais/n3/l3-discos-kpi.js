@@ -445,10 +445,7 @@
       '#bt-kpi-disk2 *{box-sizing:border-box;margin:0;padding:0;}',
       '#bt-kpi-disk2{font-family:\'IBM Plex Mono\',\'Segoe UI\',monospace;}',
 
-      // ── Layout raiz: duas colunas ─────────────────────────────────────────
-      // Coluna esquerda: donuts das partições
-      // Coluna direita: badges I/O
-      '#bt-kpi-disk2 .kd2-root{display:grid;grid-template-columns:1fr 1fr;gap:10px;height:100%;}',
+      '#bt-kpi-disk2 .kd2-root{display:flex;flex-direction:column;height:100%;}',
 
       // ── Card base ─────────────────────────────────────────────────────────
       '#bt-kpi-disk2 .kd2-card{background:rgba(255,255,255,0.015);border:1px solid '+C.brd+';border-radius:6px;padding:10px 13px 9px;position:relative;overflow:hidden;display:flex;flex-direction:column;}',
@@ -481,8 +478,8 @@
       '#bt-kpi-disk2 .kd2-sep{height:1px;background:rgba(255,255,255,0.06);flex-shrink:0;margin:6px 0;}',
 
       // ── Grid de badges I/O ────────────────────────────────────────────────
-      // 3 colunas × 2 linhas = 6 métricas
-      '#bt-kpi-disk2 .kd2-io-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;flex:1;}',
+      // 6 colunas × 1 linha = 6 métricas em linha (full-width)
+      '#bt-kpi-disk2 .kd2-io-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;flex:1;}',
 
       // ── Badge I/O individual ──────────────────────────────────────────────
       // Design: valor grande no topo, badge colorido no meio, label pequeno em baixo
@@ -599,7 +596,6 @@
      */
     disk2: function (d) {
       return '<div class="kd2-root">'
-        + Card._colDonuts(d)
         + Card._colIO(d)
         + '</div>';
     },
