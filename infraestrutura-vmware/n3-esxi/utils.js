@@ -63,8 +63,10 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC',
-  nocLabel: 'SERVIDORES FÍSICOS (ESXi) - NÍVEL 2',
+  nocLabel: 'INFRAESTRUTURA VMware (ESXi) - NÍVEL 3',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
+  backUrl: 'http://10.10.126.22:3000/d/a967e936-99a3-47c8-af98-052d7a80beb8/n2-infraestrutura-vmware',
+  backLabel: '← N2 · INFRAESTRUTURA VMware',
 };
 
 
@@ -588,8 +590,9 @@ const CFG_THRESHOLDS = {
           ${C.subtitle ? `<div class="bpc-noc-sub">${C.subtitle}</div>` : ''}
         </div>
 
-        <!-- Relógio -->
+        <!-- Relógio + back nav -->
         <div class="bpc-noc-right">
+          ${C.backUrl ? `<a href="${C.backUrl}" style="font-size:12px;color:#8B949E;text-decoration:none;padding:3px 10px;border:1px solid rgba(139,148,158,.25);border-radius:5px;background:rgba(139,148,158,.07);margin-right:10px;white-space:nowrap">${C.backLabel || '← N2'}</a>` : ''}
           <span class="bpc-noc-time" id="bpc-clock-time">--:--:--</span>
           <div  class="bpc-noc-date" id="bpc-clock-date">…</div>
         </div>

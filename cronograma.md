@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-18 (1.19 ☑ fix dropdown nome→hostid (vcdt_resolveId); snapshot N3 vCenter v17)
+Última actualização: 2026-06-18 (1.20 ☑ conformidade; 1.21 ☑ navegação N2-VMware↔N3-vCenter; 1.22 ☑ N3-ESXi back link + nocLabel corrigido)
 
 ---
 
@@ -56,13 +56,18 @@
 | 1.16 | **N3 vCenter** — criar dashboard + utils | ☑ | 2026-06-17 | dashboard `59e7e4b2` criado; utils.js id=100 + `l3-vcenter-detalhe.js` id=101 pushed; lê `?var-vcenter_hostid` do URL |
 | 1.17 | **N3 vCenter** — 4 painéis separados (topo/esxi/triggers) + layout | ☑ | 2026-06-17 | split via VCD_CACHE; transparent+layout pushed; painel antigo removido |
 | 1.18 | **N3 vCenter** — snapshot JSON final | ☑ | 2026-06-18 | transparent+título vazio; snapshot v12→v14 em `infraestrutura-vmware/n3/dashboard-completo.json` |
-| 1.19 | **N3 vCenter** — dropdown selector de vCenter (var-vcenter_hostid) | ☑ | 2026-06-18 | variável `vcenter_hostid` grupo 664 — 4 pollers; `vcdt_resolveId` em `l3-vcenter-topo.js` resolve nome→hostid; snapshot v17 |
-| 1.20 | Revisão de conformidade — todos os dashboards vs contratos da documentação | ☐ | | ver `documentacao/revisao-conformidade.md`; cheklist por dashboard |
-| 1.21 | Navegação N2-VMware → N3-vCenter → Abrir vCenter testada | ☐ | | |
-| 1.22 | Navegação N3-ESXi ↔ N2-VMware testada | ☐ | | |
+| 1.19 | **N3 vCenter** — dropdown selector de vCenter (var-vcenter_hostid) | ☑ | 2026-06-18 | variável grupo 664; `vcdt_resolveId` resolve nome→hostid; anchor targets referenciam `$vcenter_hostid` (v18) — testado e funcional |
+| 1.20 | Revisão de conformidade — todos os dashboards vs contratos da documentação | ☑ | 2026-06-18 | node--check ✓, initWithRetry ✓, content=elementId ✓, transparent+title ✓, UIDs navegação ✓ |
+| 1.21 | Navegação N2-VMware → N3-vCenter → Abrir vCenter testada | ☑ | 2026-06-18 | auditoria código: l2-vcenter→59e7e4b2 ✓, l3-vcenter-topo→a967e936 ✓, vcWebUrl+/ui/ ✓ |
+| 1.22 | Navegação N3-ESXi ↔ N2-VMware testada | ☑ | 2026-06-18 | back link `← N2 · INFRAESTRUTURA VMware` adicionado ao utils.js N3-ESXi; nocLabel corrigido para NÍVEL 3 |
 | 1.23 | Navegação N1→N2-VMware pendente até Fase 10 | ⏸ | | N1 criado por último |
-| 1.20 | Navegação N3-ESXi ↔ N2-VMware testada | ☐ | | |
-| 1.21 | Navegação N1→N2-VMware pendente até Fase 10 | ⏸ | | N1 criado por último |
+
+> **Z.8 VMware (alargado):** dos 4 hosts do grupo 664, apenas `sv9000204 (Vcenter PRD)` tem
+> todos os items VMware a recolher. `sv9000206 (PowerFlex)` — items `state=1` (unsupported,
+> poller não consegue autenticar). `vCenter 02` — idem + sem ICMP. `vCenter Backup` — cluster
+> status recolhe mas sem `vmware.fullname[` → não aparece nos cards N2. Causa provável em
+> todos: `{$VMWARE.URL}` ausente ou errado ao nível do host (macro herdada de template
+> incorrecto ou não definida). Audit e correcção → bloqueado em Z.8 (ver `z8-uuid-mismatch.md`).
 
 ## Fase 2 · Armazenamento (anchor 602 + tape 605, Infra)
 | # | Tarefa | Estado | Data | Nota |
