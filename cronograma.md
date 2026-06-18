@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-18 (3.6 ☑ navegação corrigida; código auditado — 5 fluxos correctos)
+Última actualização: 2026-06-18 (1.19 ☑ fix dropdown nome→hostid (vcdt_resolveId); snapshot N3 vCenter v17)
 
 ---
 
@@ -55,8 +55,8 @@
 | 1.15 | **N2 VMware** — top triggers + VMs desligadas + layout final | ☑ | 2026-06-17 | `l2-triggers.js` id=104, `l2-vms.js` id=102; layout transparent aplicado |
 | 1.16 | **N3 vCenter** — criar dashboard + utils | ☑ | 2026-06-17 | dashboard `59e7e4b2` criado; utils.js id=100 + `l3-vcenter-detalhe.js` id=101 pushed; lê `?var-vcenter_hostid` do URL |
 | 1.17 | **N3 vCenter** — 4 painéis separados (topo/esxi/triggers) + layout | ☑ | 2026-06-17 | split via VCD_CACHE; transparent+layout pushed; painel antigo removido |
-| 1.18 | **N3 vCenter** — snapshot JSON final | ☐ | | pull + gridPos definitivo + snapshot |
-| 1.19 | **N3 vCenter** — dropdown selector de vCenter (var-vcenter_hostid) | ☐ | | variável Grafana ou painel de selecção no topo do dashboard |
+| 1.18 | **N3 vCenter** — snapshot JSON final | ☑ | 2026-06-18 | transparent+título vazio; snapshot v12→v14 em `infraestrutura-vmware/n3/dashboard-completo.json` |
+| 1.19 | **N3 vCenter** — dropdown selector de vCenter (var-vcenter_hostid) | ☑ | 2026-06-18 | variável `vcenter_hostid` grupo 664 — 4 pollers; `vcdt_resolveId` em `l3-vcenter-topo.js` resolve nome→hostid; snapshot v17 |
 | 1.20 | Revisão de conformidade — todos os dashboards vs contratos da documentação | ☐ | | ver `documentacao/revisao-conformidade.md`; cheklist por dashboard |
 | 1.21 | Navegação N2-VMware → N3-vCenter → Abrir vCenter testada | ☐ | | |
 | 1.22 | Navegação N3-ESXi ↔ N2-VMware testada | ☐ | | |

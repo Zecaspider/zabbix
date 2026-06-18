@@ -21,14 +21,14 @@ resp = gapi('GET', 'dashboards/uid/0ae673a3-44c8-41e0-98f5-f5c53473ad54')
 dash = resp['dashboard']
 folder_uid = resp['meta'].get('folderUid', '')
 
-# Ordem visual dos painéis (primeiro ecrã: header + triggers + KPI + serviços)
-ORDER = [100, 107, 101, 106, 102, 103, 105, 104, 108]
+# Ordem visual dos painéis (primeiro ecrã: header + KPI + triggers + serviços)
+ORDER = [100, 101, 107, 106, 102, 103, 105, 104, 108]
 
 # Heights definitivas por panel id
 HEIGHTS = {
     100: 3,   # header      — compacto
-    107: 8,   # triggers    — posição 2: primeiro ecrã, activos + resolvidos
-    101: 8,   # KPI strip   — posição 3: 5 cards + trigger badge + cpu ready
+    101: 8,   # KPI strip   — posição 2: 5 cards + trigger badge + cpu ready
+    107: 8,   # triggers    — posição 3: primeiro ecrã, activos + resolvidos
     106: 6,   # serviços    — posição 4: lista compacta, primeiro ecrã
     102: 10,  # CPU detalhe — tempos + contenção VMware
     103: 6,   # RAM detalhe — só breakdown (sem gauge)

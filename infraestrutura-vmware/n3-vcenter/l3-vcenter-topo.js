@@ -43,11 +43,23 @@ function start_vcdt(rpc) {
     })
   }
 
+  // Resolução nome→hostid: o dropdown Grafana devolve o nome visível do host,
+  // mas a API Zabbix exige o hostid numérico em hostids:[].
+  // Se já for numérico, usa directamente; caso contrário resolve via host.get.
+  function vcdt_resolveId(nameOrId) {
+    if (/^\d+$/.test(nameOrId)) return Promise.resolve(nameOrId)
+    return zpost('host.get', {
+      groupids: ['664'], search: { name: nameOrId }, output: ['hostid'], limit: 1
+    }).then(function(r) { return r.length ? r[0].hostid : nameOrId })
+  }
+
+  vcdt_resolveId(vcHostId).then(function(resolvedId) {
+
   Promise.all([
-    zpost('host.get',{hostids:[vcHostId],output:['hostid','name'],selectMacros:['macro','value']}),
-    zpost('item.get',{hostids:[vcHostId],search:{key_:'vmware.fullname['},output:['lastvalue','lastclock'],limit:5}),
-    zpost('item.get',{hostids:[vcHostId],search:{key_:'vmware.status['},output:['lastvalue','lastclock'],limit:5}),
-    zpost('item.get',{hostids:[vcHostId],search:{key_:'vmware.cluster.status['},output:['key_','lastvalue'],limit:200}),
+    zpost('host.get',{hostids:[resolvedId],output:['hostid','name'],selectMacros:['macro','value']}),
+    zpost('item.get',{hostids:[resolvedId],search:{key_:'vmware.fullname['},output:['lastvalue','lastclock'],limit:5}),
+    zpost('item.get',{hostids:[resolvedId],search:{key_:'vmware.status['},output:['lastvalue','lastclock'],limit:5}),
+    zpost('item.get',{hostids:[resolvedId],search:{key_:'vmware.cluster.status['},output:['key_','lastvalue'],limit:200}),
     zpost('host.get',{groupids:[CFG_VCDT.groupIdESXi],output:['hostid','name'],selectMacros:['macro','value'],limit:500}),
   ]).then(function(pa){
     var vcHosts=pa[0],fullItems=pa[1],statItems=pa[2],clsItems=pa[3],allESXi=pa[4]
@@ -178,6 +190,7 @@ function start_vcdt(rpc) {
   }).catch(function(err){
     el.innerHTML='<div style="padding:14px;color:#F85149;font-family:monospace">Erro: '+err.message+'</div>'
   })
+  }) // vcdt_resolveId.then
 }
 
 function vcdt_publish(vcHostId,data){
