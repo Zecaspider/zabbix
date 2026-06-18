@@ -76,6 +76,10 @@
       text: '#E6EDF3',
       sub:  '#8B949E',
     },
+
+    // Navegação: UIDs dos dashboards pai
+    dashN2sv:  '0758c24e-d2b1-4a81-bb14-1788ac8bec68',
+    dashN2vmw: 'a967e936-99a3-47c8-af98-052d7a80beb8',
   };
 
 
@@ -484,7 +488,23 @@
       T.kv(d.localTime, 'hora local'),
     ].join('');
 
+    var backNav = '<div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">'
+      + '<a href="/d/' + CFG.dashN2sv + '/n2-servidores-virtuais" style="'
+      + 'font-family:\'IBM Plex Mono\',monospace;font-size:10px;font-weight:600;'
+      + 'color:' + C.info + ';text-decoration:none;letter-spacing:.05em;'
+      + 'padding:2px 8px;border:1px solid rgba(88,166,255,.25);border-radius:3px;'
+      + 'background:rgba(88,166,255,.06);white-space:nowrap;">'
+      + '← N2 · SERVIDORES VIRTUAIS</a>'
+      + '<a href="/d/' + CFG.dashN2vmw + '/n2-infraestrutura-vmware" style="'
+      + 'font-family:\'IBM Plex Mono\',monospace;font-size:10px;font-weight:600;'
+      + 'color:' + C.mute + ';text-decoration:none;letter-spacing:.05em;'
+      + 'padding:2px 8px;border:1px solid rgba(110,118,129,.2);border-radius:3px;'
+      + 'background:rgba(110,118,129,.05);white-space:nowrap;">'
+      + 'N2 · INFRAESTRUTURA VMware</a>'
+      + '</div>';
+
     return CSS + [
+      backNav,
       '<div class="h-wrap">',
       '  <div class="h-left">',
       '    ' + T.osBadge(d.osLabel, d.osColor),

@@ -7,7 +7,7 @@
   // ╚═══════════════════════════════════════════════════════════════════════════╝
 
   // ╔══════════════════════════════════════════════════════════════════════════╗
-  // ║  D5-Detalhe-VM · ROW 1 · KPI GOLDEN SIGNALS  v18.0                     ║
+  // ║  D5-Detalhe-VM · ROW 1 · KPI GOLDEN SIGNALS  v18.1                     ║
   // ║  Autor: BPC                                                              ║
   // ║                                                                          ║
   // ║  ALTERAÇÕES v15 → v16:                                                  ║
@@ -585,13 +585,13 @@
       '#bt-kpi-gs .ks-card.io::before  {background:'+C.io+'}',
       '#bt-kpi-gs .ks-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:4px;flex-shrink:0;}',
       '#bt-kpi-gs .ks-head-left{display:flex;align-items:center;gap:5px;min-width:0;}',
-      '#bt-kpi-gs .ks-label{font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
-      '#bt-kpi-gs .ks-signal{font-size:8px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:2px;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-label{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
+      '#bt-kpi-gs .ks-signal{font-size:11px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:2px;white-space:nowrap;}',
       '#bt-kpi-gs .ks-signal.cpu{background:rgba(232,160,32,.15);color:'+C.cpu+';}',
       '#bt-kpi-gs .ks-signal.mem{background:rgba(124,77,255,.15);color:'+C.mem+';}',
       '#bt-kpi-gs .ks-signal.net{background:rgba(0,188,212,.15);color:'+C.net+';}',
       '#bt-kpi-gs .ks-signal.io {background:rgba(244,67,54,.15); color:'+C.io+';}',
-      '#bt-kpi-gs .ks-badge{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
+      '#bt-kpi-gs .ks-badge{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
       '#bt-kpi-gs .ks-badge.agente  {border:1px solid rgba(63,185,80,.3);background:rgba(63,185,80,.13);color:'+C.ok+';}',
       '#bt-kpi-gs .ks-badge.vmware  {border:1px solid rgba(88,166,255,.3);background:rgba(88,166,255,.13);color:'+C.info+';}',
       '#bt-kpi-gs .ks-badge.icmp    {border:1px solid rgba(210,153,34,.3);background:rgba(210,153,34,.13);color:'+C.warn+';}',
@@ -603,49 +603,49 @@
       '#bt-kpi-gs .ks-spark svg{display:block;}',
       '#bt-kpi-gs .ks-info-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:5px 8px;flex-shrink:0;}',
       '#bt-kpi-gs .ks-ib-row{display:flex;justify-content:space-between;align-items:baseline;gap:6px;}',
-      '#bt-kpi-gs .ks-ib-key{font-size:8px;color:'+C.sub+';letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}',
-      '#bt-kpi-gs .ks-ib-val{font-family:\'IBM Plex Mono\',monospace;font-size:10px;font-weight:700;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
-      '#bt-kpi-gs .ks-uptime{font-size:28px;font-weight:700;color:'+C.hlth+';line-height:1;margin-bottom:2px;font-family:\'IBM Plex Mono\',monospace;}',
-      '#bt-kpi-gs .ks-uptime-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:'+C.sub+';margin-bottom:8px;}',
+      '#bt-kpi-gs .ks-ib-key{font-size:11px;color:'+C.sub+';letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}',
+      '#bt-kpi-gs .ks-ib-val{font-family:\'IBM Plex Mono\',monospace;font-size:13px;font-weight:700;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-uptime{font-size:31px;font-weight:700;color:'+C.hlth+';line-height:1;margin-bottom:2px;font-family:\'IBM Plex Mono\',monospace;}',
+      '#bt-kpi-gs .ks-uptime-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:'+C.sub+';margin-bottom:8px;}',
       '#bt-kpi-gs .ks-kv-row{display:flex;justify-content:space-around;gap:6px;margin-top:6px;}',
       '#bt-kpi-gs .ks-kv{display:flex;flex-direction:column;align-items:center;gap:3px;}',
-      '#bt-kpi-gs .ks-kv-badge{font-size:14px;font-weight:700;padding:4px 10px;border-radius:4px;background:#0f1c2e;color:'+C.info+';border:1px solid rgba(88,166,255,.3);font-family:monospace;}',
-      '#bt-kpi-gs .ks-kv-key{font-size:8px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;}',
-      '#bt-kpi-gs .ks-net-val{font-size:28px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;margin-bottom:3px;}',
-      '#bt-kpi-gs .ks-net-sub{font-size:9px;color:'+C.sub+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px;}',
+      '#bt-kpi-gs .ks-kv-badge{font-size:17px;font-weight:700;padding:4px 10px;border-radius:4px;background:#0f1c2e;color:'+C.info+';border:1px solid rgba(88,166,255,.3);font-family:monospace;}',
+      '#bt-kpi-gs .ks-kv-key{font-size:11px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;}',
+      '#bt-kpi-gs .ks-net-val{font-size:31px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;margin-bottom:3px;}',
+      '#bt-kpi-gs .ks-net-sub{font-size:12px;color:'+C.sub+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px;}',
       '#bt-kpi-gs .ks-sep{height:1px;background:rgba(255,255,255,0.06);flex-shrink:0;margin:5px 0;}',
-      '#bt-kpi-gs .ks-delta{font-size:10px;margin-top:2px;}',
+      '#bt-kpi-gs .ks-delta{font-size:13px;margin-top:2px;}',
       '#bt-kpi-gs .ks-delta.flat{color:'+C.sub+'}',
       '#bt-kpi-gs .ks-delta.up  {color:'+C.crit+'}',
       '#bt-kpi-gs .ks-delta.down{color:'+C.ok+'}',
       '#bt-kpi-gs .ks-ping-row{display:flex;align-items:center;gap:8px;padding:6px 0 2px;}',
       '#bt-kpi-gs .ks-ping-icon{font-size:22px;line-height:1;flex-shrink:0;}',
       '#bt-kpi-gs .ks-ping-info{display:flex;flex-direction:column;gap:2px;min-width:0;}',
-      '#bt-kpi-gs .ks-ping-status{font-size:13px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;}',
-      '#bt-kpi-gs .ks-ping-sub{font-size:9px;color:'+C.sub+';}',
+      '#bt-kpi-gs .ks-ping-status{font-size:16px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;}',
+      '#bt-kpi-gs .ks-ping-sub{font-size:12px;color:'+C.sub+';}',
       '#bt-kpi-gs .ks-vmw-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;}',
       '#bt-kpi-gs .ks-vmw-cell{display:flex;flex-direction:column;gap:1px;padding:3px 6px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:3px;min-width:0;}',
-      '#bt-kpi-gs .ks-vmw-k{font-size:7.5px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;}',
-      '#bt-kpi-gs .ks-vmw-v{font-size:10px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:'+C.text+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
-      '#bt-kpi-gs .ks-no-agent-warn{font-size:8px;font-weight:600;color:'+C.crit+';border:1px solid rgba(248,81,73,.2);background:rgba(248,81,73,.07);border-radius:3px;padding:3px 6px;margin-top:5px;flex-shrink:0;}',
+      '#bt-kpi-gs .ks-vmw-k{font-size:10px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-vmw-v{font-size:13px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:'+C.text+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-no-agent-warn{font-size:11px;font-weight:600;color:'+C.crit+';border:1px solid rgba(248,81,73,.2);background:rgba(248,81,73,.07);border-radius:3px;padding:3px 6px;margin-top:5px;flex-shrink:0;}',
       '@keyframes ks-pulse{0%,100%{opacity:1;}50%{opacity:.4;}}',
       '#bt-kpi-gs .ks-pulse{animation:ks-pulse 1.5s ease-in-out infinite;}',
       '#bt-kpi-gs .ks-dk-rows{display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-bottom:5px;}',
       '#bt-kpi-gs .ks-dk-row{display:grid;grid-template-columns:20px 1fr 32px;align-items:center;gap:5px;}',
-      '#bt-kpi-gs .ks-dk-lbl{font-size:11px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
+      '#bt-kpi-gs .ks-dk-lbl{font-size:14px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
       '#bt-kpi-gs .ks-dk-bar-bg{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}',
       '#bt-kpi-gs .ks-dk-bar-fg{height:5px;border-radius:3px;}',
-      '#bt-kpi-gs .ks-dk-pct{font-size:10px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;text-align:right;line-height:1;}',
+      '#bt-kpi-gs .ks-dk-pct{font-size:13px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;text-align:right;line-height:1;}',
       '#bt-kpi-gs .ks-dk-sep{height:1px;background:rgba(255,255,255,0.06);flex-shrink:0;margin:5px 0;}',
       '#bt-kpi-gs .ks-dk-io{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;flex:1;align-content:center;}',
       '#bt-kpi-gs .ks-dk-kv{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 2px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.055);border-radius:4px;}',
-      '#bt-kpi-gs .ks-dk-val{font-size:13px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;text-align:center;}',
-      '#bt-kpi-gs .ks-dk-badge{font-size:8px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 4px;border-radius:2px;text-align:center;line-height:1.3;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-dk-val{font-size:16px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;text-align:center;}',
+      '#bt-kpi-gs .ks-dk-badge{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 4px;border-radius:2px;text-align:center;line-height:1.3;white-space:nowrap;}',
       '#bt-kpi-gs .ks-dk-badge.ok   {border:1px solid rgba(63,185,80,.35);background:rgba(63,185,80,.13);color:'+C.ok+';}',
       '#bt-kpi-gs .ks-dk-badge.warn {border:1px solid rgba(210,153,34,.35);background:rgba(210,153,34,.13);color:'+C.warn+';}',
       '#bt-kpi-gs .ks-dk-badge.crit {border:1px solid rgba(248,81,73,.35);background:rgba(248,81,73,.13);color:'+C.crit+';}',
       '#bt-kpi-gs .ks-dk-badge.muted{border:1px solid rgba(46,51,59,.8);background:rgba(46,51,59,.3);color:'+C.sub+';}',
-      '#bt-kpi-gs .ks-dk-unit{font-size:7.5px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.06em;text-align:center;}',
+      '#bt-kpi-gs .ks-dk-unit{font-size:10px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.06em;text-align:center;}',
       '#bt-kpi-gs .ks-card.al::before{background:'+C.sub+'}',
       '#bt-kpi-gs .ks-card.al.trig::before{background:'+C.crit+'}',
       '#bt-kpi-gs .ks-al-ok{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:2px;}',
@@ -658,12 +658,12 @@
       '#bt-kpi-gs .ks-al-pill.warn{background:rgba(210,153,34,.12);border:1px solid rgba(210,153,34,.35);}',
       '#bt-kpi-gs .ks-al-pill.info{background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.35);}',
       '#bt-kpi-gs .ks-al-pill.muted{background:rgba(110,118,129,.08);border:1px solid rgba(110,118,129,.25);}',
-      '#bt-kpi-gs .ks-al-sev{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}',
+      '#bt-kpi-gs .ks-al-sev{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}',
       '#bt-kpi-gs .ks-al-pill.crit .ks-al-sev{color:'+C.crit+';}',
       '#bt-kpi-gs .ks-al-pill.warn .ks-al-sev{color:'+C.warn+';}',
       '#bt-kpi-gs .ks-al-pill.info .ks-al-sev{color:'+C.info+';}',
       '#bt-kpi-gs .ks-al-pill.muted .ks-al-sev{color:'+C.sub+';}',
-      '#bt-kpi-gs .ks-al-cnt{font-size:16px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
+      '#bt-kpi-gs .ks-al-cnt{font-size:19px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
       '#bt-kpi-gs .ks-al-pill.crit .ks-al-cnt{color:'+C.crit+';}',
       '#bt-kpi-gs .ks-al-pill.warn .ks-al-cnt{color:'+C.warn+';}',
       '#bt-kpi-gs .ks-al-pill.info .ks-al-cnt{color:'+C.info+';}',
@@ -747,7 +747,7 @@
             +'<span style="color:'+C.sub+';font-size:9px;">Sem triggers activos</span>'
             +'</div>';
         }
-        var sev=parseInt(problems[0].severity,10);
+        var sev=parseInt(problems[0].priority,10);
         var col=SEV_COLOR[sev]||C.warn;
         var lbl=SEV_LABEL[sev]||'WARN';
         return '<div class="ks-sep"></div>'
@@ -887,7 +887,7 @@
       var C=CFG.colors;
       var counts={5:0,4:0,3:0,2:0,1:0,0:0};
       for(var i=0;i<problems.length;i++){
-        var sev=parseInt(problems[i].severity,10);
+        var sev=parseInt(problems[i].priority,10);
         if(counts[sev]!==undefined) counts[sev]++;
       }
       var total=problems.length;
@@ -962,10 +962,11 @@
         .then(function(h){return h.map(function(x){return parseFloat(x.value);});});
     },
     getProblems: function (hostid, signal) {
-      return ZbxApi.call('problem.get', {
-        hostids: [hostid], output: ['eventid','severity','name','clock'],
-        recent: false, suppressed: false,
-        sortfield: 'severity', sortorder: 'DESC', limit: 20
+      return ZbxApi.call('trigger.get', {
+        hostids: [hostid],
+        output: ['triggerid','description','priority','lastchange','value'],
+        only_true: true, monitored: true, active: true, skipDependent: true,
+        sortfield: 'priority', sortorder: 'DESC', limit: 20
       }, signal);
     },
   };
@@ -1041,7 +1042,7 @@
   var hostRaw  = new URLSearchParams(window.location.search).get('var-hostid') || '';
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
 
-  console.log('[KPI-GS v18] host:', hostName, '| token anterior:', _ns.token || 'nenhum');
+  console.log('[KPI-GS v18.1] host:', hostName, '| token anterior:', _ns.token || 'nenhum');
 
   // ── Camada 1: AbortController com delay ──────────────────────────────────
   // Cancela o timer de abort anterior (se existir) para não abortar
@@ -1058,7 +1059,7 @@
   if (_prevController) {
     _ns.abortTimer = setTimeout(function () {
       _prevController.abort();
-      console.log('[KPI-GS v18] fetch anterior abortado (delayed)');
+      console.log('[KPI-GS v18.1] fetch anterior abortado (delayed)');
       _ns.abortTimer = null;
     }, CFG.abortDelayMs);
   }
@@ -1077,7 +1078,7 @@
   }
 
   if (!hostName) {
-    console.log('[KPI-GS v18] limpando DOM para', hostName, '| sou current:', _isCurrent());
+    console.log('[KPI-GS v18.1] limpando DOM para', hostName, '| sou current:', _isCurrent());
     root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:11px;">Selecciona uma VM no selector acima.</span>';
     return;
   }
@@ -1087,7 +1088,7 @@
   ZbxApi.getHostId(hostName, signal)
     .then(function (hostInfo) {
       if (!_isCurrent()) {
-        console.log('[KPI-GS v18] descartado após getHostId →', hostName);
+        console.log('[KPI-GS v18.1] descartado após getHostId →', hostName);
         return;
       }
 
@@ -1096,7 +1097,7 @@
       return ZbxApi.getItems(hostInfo.hostid, signal)
         .then(function (items) {
           if (!_isCurrent()) {
-            console.log('[KPI-GS v18] descartado após getItems →', hostName);
+            console.log('[KPI-GS v18.1] descartado após getItems →', hostName);
             return;
           }
 
@@ -1143,7 +1144,7 @@
               return network.hasAgent?(d/1000).toFixed(1)+' Kbps':d.toFixed(2)+' ms';
             });
 
-            console.log('[KPI-GS v18] render OK →', hostName,
+            console.log('[KPI-GS v18.1] render OK →', hostName,
               '| agente:', health.hasAgent,
               '| cpu source:', cpu.source,
               '| mem source:', memory.source,
@@ -1153,11 +1154,11 @@
     })
     .catch(function (e) {
       if (e.name === 'AbortError') {
-        console.log('[KPI-GS v18] AbortError (esperado em mudanças rápidas) →', hostName);
+        console.log('[KPI-GS v18.1] AbortError (esperado em mudanças rápidas) →', hostName);
         return;
       }
       if (!_isCurrent()) return;
-      console.error('[KPI-GS v18] Erro:', e.message);
+      console.error('[KPI-GS v18.1] Erro:', e.message);
       var errRoot = document.getElementById(CFG.rootId);
       if (errRoot) errRoot.innerHTML = renderErro(e.message, 'Confirmar que a VM existe no Zabbix e que o proxy Grafana responde.');
     });

@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-17 (3.1/3.2/3.3 ☑ N2 SV completo — tabela v3.1 com RAM/disco/sort/dropdown ambiente; snapshot; fix key vm.memory.size[used])
+Última actualização: 2026-06-18 (3.6 ☑ navegação corrigida; código auditado — 5 fluxos correctos)
 
 ---
 
@@ -71,6 +71,7 @@
 | 2.2 | N2 (utils + KPI + tabela + triggers) | ☑ | 2026-06-17 | 4 painéis (utils/kpi/tabela/triggers); UID `993834a3`; transparent+layout aplicados. Card IBM SNMP mostra aviso Z.9 enquanto SNMP não recolhe — adapter pronto para activar automaticamente assim que Zabbix resolver |
 | 2.3 | N3 (por array/tape) | ⏸ | | Bloqueado até Z.9 (SNMP IBM) e Z.10 (script Dell Unity) estarem resolvidos — sem dados reais no Zabbix, N3 seria só ping. Retomar após Fase 3+ |
 | 2.4 | Navegação + teste + commit | ⏸ | | Depende de 2.3 |
+| 2.5 | **N2 Datastores** — painel de saúde dos datastores SAN (grupos 603 ESXi) | ☐ | | Origem: volumes Dell EMC Unity (`DATA_UNT_400_8T-0..11`) exportados via FC SAN para cluster CS9000002. Items LLD `vmware.hv.datastore.size[url,uuid,pfree/total]` nos ESXi (grupo 603) — a colectar. Pode ser painel adicional no N2 Armazenamento (`993834a3`) ou dashboard separado em `armazenamento/n3/`. Não bloqueia Z.9/Z.10 — dados já disponíveis. Bloqueado por Z.8 nos ESXi PowerFlex (sv9000650-655 sem dados). |
 
 ## Fase 3 · Servidores Virtuais (anchor 609, Infra)
 
@@ -82,9 +83,10 @@
 | 3.1 | N2 — utils + KPI strip + tabela (agente-first) + triggers | ☑ | 2026-06-17 | Dashboard `0758c24e`; 4 painéis pushed (id=100-103) |
 | 3.2 | N2 — corrigir CPU VMware (MHz→%) e RAM (keys/unidades) | ☑ | 2026-06-17 | `l2-tabela.js` v3.1: CPU→`usage.perf`; RAM→`vm.memory.size[used]` (não [available]); disco; sort por coluna; dropdown ambiente; "ver detalhes" |
 | 3.3 | N2 — layout final + snapshot | ☑ | 2026-06-17 | gridPos h=3/10/36/12; transparent; `dashboard-completo.json` guardado |
-| 3.4 | N3 — conformar rascunho (l3-*.js em `n3/`) | ☐ | | |
-| 3.5 | N3 — painel Datastores (grupo 608) | ☐ | | |
-| 3.6 | Navegação N2-VMware ↔ N2-SV ↔ N3-VM testada | ☐ | | |
+| 3.4 | N3 — conformar rascunho (l3-*.js em `n3/`) | ☑ | 2026-06-18 | Dashboard `0ae673a3` (versão A BT). Painéis: header (100), KPI strip v18.1 (101), triggers (107), serviços (106), CPU detalhe (102), RAM detalhe (103), Rede (105), Disco I/O (104), Ficha (108). KPI: 6 cards — Saúde/CPU/RAM/Rede/Disco/Alertas; CPU Ready; trigger.get. Snapshot v14. |
+| 3.4.1 | N3 — re-aplicar layout definitivo versão A (ordem triggers→KPI + alturas) | ☑ | 2026-06-18 | fix_versao_a_layout.py; ORDER=[100,107,101,106,102,103,105,104,108]; push v14 OK; manifest.json IDs corrigidos; dashboard-completo.json guardado |
+| 3.5 | ~~N3 — painel Datastores~~ → **movido para 2.5** | ✖ | 2026-06-18 | Datastores são volumes SAN (Dell Unity) apresentados aos ESXi via FC — pertencem ao domínio Armazenamento, não às VMs. Items vivem nos hosts ESXi (grupo 603) como LLD `vmware.hv.datastore.size`. Adicionado como 2.5 na Fase 2. |
+| 3.6 | Navegação N2-VMware ↔ N2-SV ↔ N3-VM testada | ☑ | 2026-06-18 | 5 fluxos corrigidos e auditados por código: `l2-tabela` UID→`0ae673a3`; correlacionador UID→`b55d5481`; `l3-vm-header` backNav 2 chips; `l2-vms` chip "Ver todas as VMs (N2) →" |
 
 ## Fase 4 · Rede (multi-grupo 26/27/28/29/35, **Network** `ffo8sp8zllog0e`)
 | # | Tarefa | Estado | Data | Nota |

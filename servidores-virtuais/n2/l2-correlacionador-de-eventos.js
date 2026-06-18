@@ -90,8 +90,8 @@
     ],
 
     grafanaDash: {
-      vmDetail: '/d/adfwtjz/d5-detalhe-vm-v2',
-      esxiDetail: '/d/server-fisicos-l3/nivel-3-servidores-fisicos-individual',
+      vmDetail:   '/d/0ae673a3-44c8-41e0-98f5-f5c53473ad54/n3-sv-versao-a-bt',
+      esxiDetail: '/d/b55d5481-9f82-4371-a7ca-e83ceb3064cc/n3-servidores-fisicos-esxi-detalhe',
     },
   };
 

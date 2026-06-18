@@ -7,6 +7,7 @@ var CFG_VMW_VMS = {
   elementId:   'bpc-vmw-vms',
   defaultRows: 15,       // linhas visíveis antes do toggle
   refreshMs:   65000,    // ligeiramente desalinhado do vcenter para não colidir
+  dashN2sv:    '0758c24e-d2b1-4a81-bb14-1788ac8bec68',
 }
 
 // ─── render ───────────────────────────────────────────────────────────────────
@@ -93,6 +94,15 @@ function vmw_vms_render(el) {
       '">↓ ver todas ' + totalOff + ' desligadas</button>'
     : ''
 
+  var crossNav = '<div style="padding:8px 14px;border-top:1px solid #1C2128;display:flex;align-items:center;justify-content:flex-end;">' +
+    '<a href="/d/' + CFG_VMW_VMS.dashN2sv + '/n2-servidores-virtuais" style="' +
+    'font-family:\'JetBrains Mono\',monospace;font-size:11px;font-weight:600;' +
+    'color:#58A6FF;text-decoration:none;padding:3px 10px;' +
+    'border:1px solid rgba(88,166,255,.25);border-radius:4px;' +
+    'background:rgba(88,166,255,.06);">' +
+    'Ver todas as VMs (N2) →</a>' +
+    '</div>'
+
   el.innerHTML = css +
     '<div class="vmsvms-hdr">' +
       'VMs desligadas <span class="vmsvms-badge">' + totalOff + '</span>' +
@@ -102,7 +112,8 @@ function vmw_vms_render(el) {
       '<th></th><th>VM</th><th>Estado</th><th>Cluster</th><th>ESXi</th><th>vCenter</th>' +
     '</tr></thead>' +
     '<tbody>' + rows + '</tbody>' +
-    '</table>'
+    '</table>' +
+    crossNav
 }
 
 // ─── bootstrap ────────────────────────────────────────────────────────────────
