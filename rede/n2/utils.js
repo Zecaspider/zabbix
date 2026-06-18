@@ -34,7 +34,7 @@
 //    CFG_SIZES   → tipografia e espaçamentos do header
 //    CFG_PULSE   → animações de estado dos cards
 //    CFG_CLOCK   → idioma do relógio (dias, meses)
-//    CFG_THRESHOLDS → limites de alerta ICMP por defeito
+//    CFG_THRESHOLDS → limites ICMP por defeito + catálogo de rede (.net)
 //
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -169,15 +169,33 @@ const CFG_CLOCK = {
 };
 
 
-// ── CFG_THRESHOLDS — Limites de alerta ICMP por defeito ──────────────────────
+// ── CFG_THRESHOLDS — Limites de alerta ICMP + catálogo de rede ───────────────
 //
-//  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.
-//  rttWarnMs    → RTT acima deste valor (ms) marca o host como "degradado"
-//  lossWarnPct  → packet loss acima deste valor (%) marca como "degradado"
+//  rttWarnMs / lossWarnPct → defaults legados do utilitário fetchICMP (compat;
+//                            usados só quando o caller não passa thresholds).
+//
+//  net → CATÁLOGO DE THRESHOLDS DE REDE (§4 documentacao/rede-arquitectura.md).
+//        Fonte de verdade ÚNICA partilhada pelos 4 níveis do domínio Rede
+//        (N2/N3-DC/N3-Edifícios/N3-WAN/N4). Exposto em window.BPC.NET_THR
+//        (BLOCO 5). Os cards classificam com BPC.state.metric(v, BPC.NET_THR.x).
+//        Estado de interface (net.if.status) e BGP-proxy (BGP_PEER_*) são
+//        booleanos (down/up) — não entram neste catálogo numérico.
 
 const CFG_THRESHOLDS = {
+  // ICMP defaults (compat fetchICMP)
   rttWarnMs: 5,
   lossWarnPct: 5,
+
+  // Catálogo de rede — partilhado pelos 4 níveis (warn/crit)
+  net: {
+    rtt:      { warn:  5, crit: 50 },   // ms     · icmppingsec
+    loss:     { warn:  1, crit: 10 },   // %      · icmppingloss
+    cpu:      { warn: 60, crit: 85 },   // %      · system.cpu.util
+    mem:      { warn: 80, crit: 92 },   // %      · *memory*
+    ifUtil:   { warn: 70, crit: 90 },   // %      · net.if.in/out ÷ speed
+    ifErrors: { warn:  1, crit: 10 },   // count  · net.if.*.errors / intervalo
+    temp:     { warn: 60, crit: 75 },   // °C     · sensor temp (Nexus)
+  },
 };
 
 
@@ -1095,6 +1113,11 @@ const CFG_THRESHOLDS = {
 
   // Alias legado: BPC.utils.stateAccent lê window.BPC.theme.{ok,warn,crit}
   window.BPC.theme = CFG_THEME;
+
+  // ── BPC.NET_THR — catálogo de thresholds de rede (§4 rede-arquitectura) ─────
+  //  Fonte única consumida pelos cards dos 4 níveis de Rede.
+  //  Uso: window.BPC.state.metric(valor, window.BPC.NET_THR.cpu)
+  window.BPC.NET_THR = CFG_THRESHOLDS.net;
 
   // ── BPC.state — modelo de estado, única fonte de cálculo (§6.1) ────────────
   window.BPC.state = {

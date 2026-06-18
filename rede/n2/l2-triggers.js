@@ -15,12 +15,6 @@ const CFG_TRG = {
   refreshMs:  30000,
   groupIds:   ['26', '27', '28', '29'],
 
-  // N3 UIDs para links drill-down nos cards KPI
-  n3Uid: {
-    dc:       'a75e2ba6-0ecc-49ee-bceb-4bcbafb419da',
-    edificios:'471f2208-d032-46d4-8d35-6fdfe770c967',
-  },
-
   severity: {
     5: { label: 'Desastre',  cls: 'bpc-crit',  icon: '✖' },
     4: { label: 'Crítico',   cls: 'bpc-crit',  icon: '✖' },
@@ -90,39 +84,9 @@ async function trgFetch(rpc) {
 // [4] RENDER
 // ────────────────────────────────────────────────────────────────────────────
 
-function trgRenderNavCards(el) {
-  const dc = CFG_TRG.n3Uid.dc
-  const ed = CFG_TRG.n3Uid.edificios
-  const cardStyle = 'display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:8px;' +
-    'background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);cursor:pointer;' +
-    'text-decoration:none;color:inherit;transition:background .15s'
-
-  return `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      <a href="/d/${dc}/n3-rede-dc-core" style="${cardStyle}">
-        <span style="font-size:1.2rem">🖥</span>
-        <div>
-          <div style="font-size:1.0rem;font-weight:700;color:#E6EDF3">DC Core</div>
-          <div style="font-size:.85rem;color:var(--bpc-mute)">12 dispositivos · grupos 26+27</div>
-        </div>
-        <span style="margin-left:auto;color:var(--bpc-mute);font-size:1.0rem">›</span>
-      </a>
-      <a href="/d/${ed}/n3-rede-edificios" style="${cardStyle}">
-        <span style="font-size:1.2rem">🏢</span>
-        <div>
-          <div style="font-size:1.0rem;font-weight:700;color:#E6EDF3">Edifícios</div>
-          <div style="font-size:.85rem;color:var(--bpc-mute)">55 dispositivos · routers + switches</div>
-        </div>
-        <span style="margin-left:auto;color:var(--bpc-mute);font-size:1.0rem">›</span>
-      </a>
-    </div>`
-}
-
 function trgRender(el, rows) {
-  const navHtml = trgRenderNavCards(el)
-
   if (!rows.length) {
-    el.innerHTML = navHtml + `
+    el.innerHTML = `
       <div class="bpc bpc-card" style="--card-accent:var(--bpc-ok);text-align:center;padding:24px">
         <div style="font-size:1.3rem;margin-bottom:6px">✔</div>
         <div style="color:var(--bpc-ok);font-size:1.0rem;font-weight:600">Sem alertas activos</div>
@@ -151,7 +115,7 @@ function trgRender(el, rows) {
     </tr>`
   }).join('')
 
-  el.innerHTML = navHtml + `
+  el.innerHTML = `
     <div class="bpc bpc-card" style="padding:12px 16px">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
         <span style="font-size:.93rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--bpc-mute)">Alertas Activos</span>

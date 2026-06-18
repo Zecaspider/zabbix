@@ -94,14 +94,24 @@
 | 3.6 | Navegação N2-VMware ↔ N2-SV ↔ N3-VM testada | ☑ | 2026-06-18 | 5 fluxos corrigidos e auditados por código: `l2-tabela` UID→`0ae673a3`; correlacionador UID→`b55d5481`; `l3-vm-header` backNav 2 chips; `l2-vms` chip "Ver todas as VMs (N2) →" |
 
 ## Fase 4 · Rede (multi-grupo 26/27/28/29/35, **Network** `ffo8sp8zllog0e`)
+
+> **Arquitectura aprovada 2026-06-18** (lente NOC + redes) em
+> `documentacao/rede-arquitectura.md`. Modelo de 4 níveis: N2 (wallboard, 3 cards
+> de segmento) → N3 ×3 (DC / Edifícios / WAN) → N4 (detalhe device/link
+> parametrizado por `var-hostid`). Decisões: N4 como nível novo · WAN via
+> interfaces do grupo 27 (grupo 35 vazio, não esperar hosts) · N3 WAN separado.
+
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 4.1 | Confirmar onde vivem os links WAN (grupo 35 vazio) | ☐ | | item por interface vs host |
-| 4.2 | N2 — DC (26/27) | ☐ | | |
-| 4.3 | N2 — Edifícios (28/29) | ☐ | | |
-| 4.4 | N2 — WAN/Links | ☐ | | |
-| 4.5 | N3 por segmento/link | ☐ | | |
-| 4.6 | Navegação + teste + commit | ☐ | | |
+| 4.0 | Plano de arquitectura N2+N3+N4 | ☑ | 2026-06-18 | `documentacao/rede-arquitectura.md`; 3 decisões aprovadas |
+| 4.1 | Links WAN (grupo 35 vazio) — RESOLVIDO + topologia auditada | ☑ | 2026-06-18 | Auditoria directa (proxy Grafana) → `documentacao/rede-topologia.md`. WAN = dezenas de links (BGP_PEER, DMVPN×7, Azure ER×2, EMIS, SP parceiros) nas interfaces do g27, não hosts. IP SLA = verdade de serviço. Chaves reais: cpu.util[N], vm.memory.util[N.1], sensor.temp.value, rttMonCtrlAdminSense |
+| 4.2 | Fundação — consolidar `utils.js` rede (thresholds §4, nocLabel) | ◐ | 2026-06-18 | Local OK: 3 cópias idênticas (só `nocLabel` difere), `apiUrl`→Network em todas (corrigido bug n3-dc/n3-edificios que apontavam Infra), catálogo `window.BPC.NET_THR` (rtt/loss/cpu/mem/ifUtil/ifErrors/temp) exposto no BLOCO 5. node--check ✓. Falta push + teste browser |
+| 4.3 | N2 refactor — l2-kpi (5 KPIs) + l2-segmentos (3 cards) + l2-triggers | ◐ | 2026-06-18 | Pushed: l2-kpi v2.0 (5 KPIs; BGP-proxy corrigido = net.if.status BGP_PEER + IP SLA sense) · l2-segmentos (card WAN agora conta LINKS reais via marcadores + IP SLA, não 5 routers) · l2-triggers slim · manifest IDs fixados (seg=103, trg=104; removido duplicado 102). node--check ✓. Falta: layout final (4.8) + teste browser confirmado |
+| 4.4 | N3 DC — promover `l3-dc-table` + drill N4 | ☐ | | UID `a75e2ba6` |
+| 4.5 | N3 Edifícios — drill N4 | ☐ | | UID `471f2208` |
+| 4.6 | N3 WAN (novo `rede/n3-wan/`) — links/IP SLA/BGP-proxy (grupo 27) | ☐ | | |
+| 4.7 | N4 device (novo `rede/n4-device/`) — header→séries→interfaces→BGP/sensores cond.→eventos | ☐ | | parametrizado var-hostid |
+| 4.8 | Navegação ponta-a-ponta + teste + layout final + commit | ☐ | | back-links + UIDs + snapshot |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |
@@ -163,6 +173,8 @@
 | Z.11 | P2 | Tag `ambiente` inconsistente: 13 hosts com `"producao"` em vez de `"Producao"` no grupo 609 | ☐ | Normalizar para `"Producao"` — afecta filtros de dashboards N2 SV que usam tag para separar producao de QA |
 | Z.9 | P1 | SNMP não recolhe dos IBM FS9500 (11750) e FS9200 (11747) | ☐ | triggers `No SNMP data collection` activos em ambos — verificar community string SNMP e acessibilidade de rede |
 | Z.10 | P1 | Script `unity_get_state.py` da Dell EMC Unity (11834) sem dados há >1h | ☐ | trigger `No data from storage for 1 hours` activo + `Exist unsupported items` — verificar credenciais API Unity e acessibilidade do host |
+| Z.12 | P2 | Ruído de alertas Rede: 220× "Link down" (P3) em portas de acesso desligadas (g29) + ~204 "Ethernet changed to lower speed" (P1) | ☐ | Auditado 2026-06-18 (`rede-topologia.md` §9). Inflaciona KPI "Alertas activos" do N2. Baixar severidade/suprimir em portas de acesso down; rever lower-speed/half-duplex |
+| Z.13 | P1 | IP SLA 65 (ITA) no DC1-RTE-WAN-INT está NOT OK (sense=4) — link Internet ITA degradado a nível de serviço apesar de if-UP | ☐ | Detectado na auditoria; é incidente real de rede, não config dashboard — encaminhar para equipa de redes |
 
 ---
 

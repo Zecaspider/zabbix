@@ -1,13 +1,17 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  BPC NOC — N2 · REDE · KPI STRIP  v1.0                                 ║
+// ║  BPC NOC — N2 · REDE · KPI STRIP DE DOMÍNIO  v2.0                      ║
 // ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║
 // ║  Datasource: BPC-NETWORK (ffo8sp8zllog0e) · Zabbix 7.0                ║
 // ║                                                                          ║
-// ║  4 cards:                                                                ║
-// ║    DC Core (grupos 26+27 — 12 dispositivos)                             ║
-// ║    Edifícios Routers (grupo 28 — 9 routers)                             ║
-// ║    Edifícios Switches (grupo 29 — 46 switches)                          ║
-// ║    Alertas (todos os grupos 26+27+28+29)                                ║
+// ║  5 KPIs de domínio (wallboard NOC — resumo, não tabela):               ║
+// ║    1. Dispositivos UP / total   (ICMP, grupos 26+27+28+29)             ║
+// ║    2. Disponibilidade global %                                          ║
+// ║    3. Alertas activos           (crit / aviso)                         ║
+// ║    4. Pior segmento             (DC / Edifícios / WAN)                 ║
+// ║    5. WAN Edge                  (routers g27 UP + BGP-proxy)           ║
+// ║                                                                          ║
+// ║  Thresholds: window.BPC.NET_THR (catálogo §4 rede-arquitectura)        ║
+// ║  Detalhe por segmento → painel l2-segmentos.js (cards com drill N3)    ║
 // ║                                                                          ║
 // ║  [1] CFG   [2] HELPERS   [3] FETCH   [4] RENDER   [5] BOOTSTRAP        ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -22,71 +26,36 @@ const CFG_KPI_NET = {
   refreshMs:  60000,
 
   grupos: {
-    dc:   ['26', '27'],   // HG_DC_SWITCHES + HG_DC_ROUTERS
-    edRt: ['28'],         // HG_EDIFICIOS_ROUTERS
-    edSw: ['29'],         // HG_EDIFICIOS_SWITCHES
-    all:  ['26', '27', '28', '29'],
+    dc:    ['26', '27'],   // DC Core: fabric + routers WAN
+    edif:  ['28', '29'],   // Edifícios: routers + switches
+    wan:   ['27'],         // WAN edge: routers (links/providers via interfaces)
+    all:   ['26', '27', '28', '29'],
   },
 
-  // ICMP — thresholds para classificar como "degradado"
-  rttWarnMs:   5,    // RTT acima disto → warn (redes locais ≤5ms é normal)
-  lossWarnPct: 1,    // qualquer perda de pacotes → warn
-
-  // Triggers — o que conta como crítico vs aviso
-  trigPriority: { crit: [4, 5], warn: [2, 3], info: [0, 1] },
-
-  // Labels dos cards
-  labels: {
-    dc:   'DC Core',
-    edRt: 'Edifícios · Routers',
-    edSw: 'Edifícios · Switches',
-    alrt: 'Alertas',
-  },
+  // Triggers — severidades que contam como crítico vs aviso
+  trigPriority: { crit: [4, 5], warn: [2, 3] },
 }
 
 
 // ────────────────────────────────────────────────────────────────────────────
-// [2] HELPERS
+// [2] HELPERS  (usam contrato §5.1: BPC_SHARED, BPC.state, BPC.NET_THR)
 // ────────────────────────────────────────────────────────────────────────────
 
-function kpiNetEsc(s) {
-  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
-    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-  })
+// Estado ICMP de um host: down | warn | ok (usa catálogo NET_THR)
+function kpiNetIcmpState(up, rttMs, lossPct) {
+  if (up === false || up === null) return 'down'
+  const T = window.BPC.NET_THR
+  return window.BPC.state.worst([
+    window.BPC.state.metric(rttMs,  T.rtt),
+    window.BPC.state.metric(lossPct, T.loss),
+  ])
 }
 
 function kpiNetPrioState(p) {
   p = parseInt(p, 10)
   if (CFG_KPI_NET.trigPriority.crit.indexOf(p) !== -1) return 'crit'
   if (CFG_KPI_NET.trigPriority.warn.indexOf(p) !== -1) return 'warn'
-  return 'info'
-}
-
-// Classifica um host a partir de ICMP: down | warn | ok
-function kpiNetIcmpState(up, rttMs, lossPct) {
-  if (up === false || up === null) return 'down'
-  if (lossPct > CFG_KPI_NET.lossWarnPct) return 'warn'
-  if (rttMs   > CFG_KPI_NET.rttWarnMs)   return 'warn'
   return 'ok'
-}
-
-// Pior estado de uma lista
-function kpiNetWorst(states) {
-  if (states.indexOf('down') !== -1) return 'down'
-  if (states.indexOf('crit') !== -1) return 'crit'
-  if (states.indexOf('warn') !== -1) return 'warn'
-  return 'ok'
-}
-
-function kpiNetStateAccent(s) {
-  const T = window.BPC.THEME
-  return { ok: T.colorOk, warn: T.colorWarn, crit: T.colorCrit, down: T.colorCrit }[s] || T.colorMute
-}
-
-function kpiNetStatePill(s) {
-  const labels = { ok: 'OK', warn: 'Degradado', crit: 'Crítico', down: 'Down' }
-  const cls    = { ok: 'ok', warn: 'warn', crit: 'down', down: 'down' }
-  return `<span class="bpc-pill ${cls[s] || 'ok'}">${labels[s] || '—'}</span>`
 }
 
 
@@ -94,13 +63,13 @@ function kpiNetStatePill(s) {
 // [3] FETCH
 // ────────────────────────────────────────────────────────────────────────────
 
-// Busca items ICMP de um array de groupIds e devolve { total, down, warn, ok, avgRtt, avgLoss }
+// ICMP de um conjunto de grupos → { total, down, warn, ok, worst }
 async function kpiNetFetchIcmp(rpc, groupIds) {
   const items = await rpc('item.get', {
     groupids: groupIds,
     search:   { key_: 'icmpping' },
     filter:   { status: 0 },
-    output:   ['hostid', 'key_', 'lastvalue', 'lastclock'],
+    output:   ['hostid', 'key_', 'lastvalue'],
   })
 
   const byHost = {}
@@ -112,34 +81,23 @@ async function kpiNetFetchIcmp(rpc, groupIds) {
     if (i.key_ === 'icmppingloss') h.loss = parseFloat(i.lastvalue)
   })
 
-  const hosts  = Object.values(byHost)
+  const hosts  = Object.keys(byHost).map(function (k) { return byHost[k] })
   const total  = hosts.length
   const states = hosts.map(function (h) { return kpiNetIcmpState(h.up, h.rtt, h.loss) })
   const down   = states.filter(function (s) { return s === 'down' }).length
   const warn   = states.filter(function (s) { return s === 'warn' }).length
-  const ok     = total - down - warn
-
-  const upHosts = hosts.filter(function (h) { return h.up !== false })
-  const avgRtt  = upHosts.length
-    ? upHosts.reduce(function (a, h) { return a + h.rtt }, 0) / upHosts.length
-    : 0
-  const avgLoss = upHosts.length
-    ? upHosts.reduce(function (a, h) { return a + h.loss }, 0) / upHosts.length
-    : 0
-
-  return { total, down, warn, ok, avgRtt, avgLoss, worstState: kpiNetWorst(states) }
+  return { total, down, warn, ok: total - down - warn, worst: window.BPC.state.worst(states) }
 }
 
-// Busca triggers activos para todos os grupos
-async function kpiNetFetchTriggers(rpc, groupIds) {
+// Triggers activos → { crit, warn }
+async function kpiNetFetchTriggers(rpc) {
   const trigs = await rpc('trigger.get', {
-    groupids:    groupIds,
-    filter:      { value: 1 },
-    output:      ['priority'],
-    monitored:   true,
-    only_true:   true,
+    groupids:  CFG_KPI_NET.grupos.all,
+    filter:    { value: 1 },
+    output:    ['priority'],
+    monitored: true,
+    only_true: true,
   })
-
   let crit = 0, warn = 0
   trigs.forEach(function (t) {
     const s = kpiNetPrioState(t.priority)
@@ -149,113 +107,135 @@ async function kpiNetFetchTriggers(rpc, groupIds) {
   return { crit, warn }
 }
 
+// WAN edge — sinais de link (auditado em rede-topologia.md):
+//   BGP-proxy : net.if.status de interfaces nomeadas BGP_PEER_* (1=UP, 2=DOWN)
+//               (não há MIB BGP — só estas 3 no WAN-INT)
+//   IP SLA    : rttMonCtrlAdminSense (1=OK) — VERDADE DE SERVIÇO do link
+//               (oper-status UP ≠ link saudável; ex. ITA UP mas SLA NOT OK)
+async function kpiNetFetchWan(rpc) {
+  const res = await Promise.all([
+    rpc('item.get', {
+      groupids: CFG_KPI_NET.grupos.wan,
+      search:   { key_: 'net.if.status' }, filter: { status: 0 },
+      output:   ['name', 'lastvalue'],
+    }),
+    rpc('item.get', {
+      groupids: CFG_KPI_NET.grupos.wan,
+      search:   { key_: 'rttMonCtrlAdminSense' }, filter: { status: 0 },
+      output:   ['lastvalue'],
+    }),
+  ])
+  const ifStatus = res[0], slaSense = res[1]
+
+  const bgp     = ifStatus.filter(function (i) { return /BGP_PEER/i.test(i.name) })
+  const bgpUp   = bgp.filter(function (i) { return i.lastvalue === '1' }).length
+  const slaTotal = slaSense.length
+  const slaOk    = slaSense.filter(function (i) { return i.lastvalue === '1' }).length
+
+  return { bgpTotal: bgp.length, bgpUp, slaTotal, slaOk }
+}
+
 
 // ────────────────────────────────────────────────────────────────────────────
 // [4] RENDER
 // ────────────────────────────────────────────────────────────────────────────
 
-function kpiNetRenderIcmpCard(label, d) {
-  const S      = window.BPC_SHARED
-  const accent = kpiNetStateAccent(d.worstState)
-  const avail  = d.total > 0 ? Math.round((d.ok / d.total) * 100) : 100
-  const availCls = avail === 100 ? 'bpc-ok' : avail >= 80 ? 'bpc-warn' : 'bpc-crit'
-  const rttFmt   = d.down === d.total ? '—' : (d.avgRtt).toFixed(1) + ' ms'
-  const lossFmt  = d.down === d.total ? '—' : (d.avgLoss).toFixed(1) + '%'
-  const lossCls  = d.avgLoss > CFG_KPI_NET.lossWarnPct ? 'bpc-warn' : d.avgLoss > 0 ? 'bpc-warn' : 'bpc-ok'
-
-  return `
-    <div class="bpc bpc-card state-${d.worstState === 'crit' || d.worstState === 'down' ? 'down' : d.worstState}"
-         style="--card-accent:${accent};height:100%;display:flex;flex-direction:column;gap:10px">
-
-      <!-- Cabeçalho -->
-      <div class="bpc-flex" style="justify-content:space-between;align-items:flex-start">
-        <div style="font-size:1.08rem;font-weight:700;color:#E6EDF3;line-height:1.2">${kpiNetEsc(label)}</div>
-        ${kpiNetStatePill(d.worstState)}
-      </div>
-
-      <!-- Contadores -->
-      <div class="bpc-flex bpc-gap-12">
-        <div class="bpc-flex-col bpc-gap-4">
-          <span class="bpc-value-lg">${d.total}</span>
-          <span class="bpc-label">Total</span>
-        </div>
-        <div class="bpc-flex-col bpc-gap-4">
-          <span class="bpc-value-md bpc-crit">${d.down}</span>
-          <span class="bpc-label">Down</span>
-        </div>
-        <div class="bpc-flex-col bpc-gap-4">
-          <span class="bpc-value-md bpc-warn">${d.warn}</span>
-          <span class="bpc-label">Degradado</span>
-        </div>
-        <div class="bpc-flex-col bpc-gap-4" style="margin-left:auto;text-align:right">
-          <span class="bpc-value-md ${availCls}">${avail}%</span>
-          <span class="bpc-label">Disponib.</span>
-        </div>
-      </div>
-
-      <!-- RTT + Loss -->
-      <div class="bpc-flex bpc-gap-12" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:8px">
-        <div class="bpc-flex-col bpc-gap-4">
-          <span class="bpc-value-sm bpc-info">${kpiNetEsc(rttFmt)}</span>
-          <span class="bpc-label">RTT médio</span>
-        </div>
-        <div class="bpc-flex-col bpc-gap-4">
-          <span class="bpc-value-sm ${lossCls}">${kpiNetEsc(lossFmt)}</span>
-          <span class="bpc-label">Perda média</span>
-        </div>
-      </div>
-
-    </div>`
+// Tile KPI compacto (NOC strip): valor grande + label + sub-linha opcional
+function kpiNetTile(opts) {
+  const state  = opts.state || 'ok'
+  const accent = window.BPC.state.color(state)
+  const cardSt = state === 'crit' || state === 'down' ? 'down' : state
+  const sub    = opts.sub
+    ? '<div style="font-size:.90rem;color:var(--bpc-mute);margin-top:auto">' + opts.sub + '</div>'
+    : ''
+  const pill = opts.pill
+    ? '<span class="bpc-pill ' + (opts.pillCls || 'ok') + '">' + opts.pill + '</span>'
+    : ''
+  return '<div class="bpc bpc-card state-' + cardSt + '"'
+    + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;gap:6px">'
+    + '<div class="bpc-flex" style="justify-content:space-between;align-items:flex-start">'
+    +   '<span class="bpc-label">' + window.BPC_SHARED.esc(opts.label) + '</span>' + pill
+    + '</div>'
+    + '<div class="bpc-flex" style="align-items:baseline;gap:6px">'
+    +   '<span class="bpc-value-lg" style="color:' + (opts.valueColor || '#E6EDF3') + '">' + opts.value + '</span>'
+    +   (opts.unit ? '<span class="bpc-value-sm bpc-mute">' + opts.unit + '</span>' : '')
+    + '</div>'
+    + sub
+    + '</div>'
 }
 
-function kpiNetRenderAlertsCard(d) {
-  const state  = d.crit > 0 ? 'crit' : d.warn > 0 ? 'warn' : 'ok'
-  const accent = kpiNetStateAccent(state)
+function kpiNetRender(el, data) {
+  const all  = data.all, dc = data.dc, edif = data.edif, wan = data.wan
+  const trg  = data.trg, bgp = data.bgp
 
-  return `
-    <div class="bpc bpc-card state-${state === 'crit' ? 'down' : state}"
-         style="--card-accent:${accent};height:100%;display:flex;flex-direction:column;gap:10px">
+  // 1 · Dispositivos UP / total
+  const upTotal   = all.total - all.down
+  const devState  = all.down > 0 ? 'down' : all.warn > 0 ? 'warn' : 'ok'
 
-      <div class="bpc-flex" style="justify-content:space-between;align-items:flex-start">
-        <div style="font-size:1.08rem;font-weight:700;color:#E6EDF3">Alertas</div>
-        ${kpiNetStatePill(state)}
-      </div>
+  // 2 · Disponibilidade global
+  const avail    = all.total > 0 ? Math.round((all.ok / all.total) * 100) : 100
+  const availSt  = avail === 100 ? 'ok' : avail >= 95 ? 'warn' : 'crit'
 
-      <div class="bpc-flex bpc-gap-12">
-        <div class="bpc-flex-col bpc-gap-4">
-          <span class="bpc-value-lg bpc-crit">${d.crit}</span>
-          <span class="bpc-label">Crítico</span>
-        </div>
-        <div class="bpc-flex-col bpc-gap-4">
-          <span class="bpc-value-lg bpc-warn">${d.warn}</span>
-          <span class="bpc-label">Aviso</span>
-        </div>
-      </div>
+  // 3 · Alertas
+  const alrtSt   = trg.crit > 0 ? 'crit' : trg.warn > 0 ? 'warn' : 'ok'
 
-      <div style="font-size:.96rem;color:var(--bpc-mute);margin-top:auto">
-        Grupos DC + Edifícios
-      </div>
+  // 4 · Pior segmento
+  const segs = [
+    { name: 'DC Core',   st: dc.worst },
+    { name: 'Edifícios', st: edif.worst },
+    { name: 'WAN',       st: wan.worst },
+  ]
+  const rank = { down: 3, crit: 3, warn: 2, ok: 1, mute: 0 }
+  const worstSeg = segs.slice().sort(function (a, b) { return (rank[b.st] || 0) - (rank[a.st] || 0) })[0]
+  const segLabel = { ok: 'Operacional', warn: 'Degradado', crit: 'Crítico', down: 'Down' }
 
-    </div>`
-}
+  // 5 · WAN edge: routers (g27) + BGP-proxy + IP SLA (verdade de serviço)
+  const wanUp     = wan.total - wan.down
+  const bgpDown   = bgp.bgpTotal - bgp.bgpUp
+  const slaNotOk  = bgp.slaTotal - bgp.slaOk
+  const wanState  = (wan.down > 0 || bgpDown > 0 || slaNotOk > 0) ? (wan.down > 0 || bgpDown > 0 ? 'down' : 'warn')
+                  : wan.warn > 0 ? 'warn' : 'ok'
+  const bgpTxt    = bgp.bgpTotal ? 'BGP ' + bgp.bgpUp + '/' + bgp.bgpTotal : 'BGP n/d'
+  const slaTxt    = bgp.slaTotal ? 'SLA ' + bgp.slaOk + '/' + bgp.slaTotal : 'SLA n/d'
+  const bgpSub    = bgpTxt + ' · ' + slaTxt + (slaNotOk > 0 ? ' ⚠' : '')
 
-function kpiNetRender(el, results) {
-  const [dc, edRt, edSw, trigs] = results
-  const L = CFG_KPI_NET.labels
-
-  el.innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">
-      <div>${kpiNetRenderIcmpCard(L.dc,   dc)}</div>
-      <div>${kpiNetRenderIcmpCard(L.edRt, edRt)}</div>
-      <div>${kpiNetRenderIcmpCard(L.edSw, edSw)}</div>
-      <div>${kpiNetRenderAlertsCard(trigs)}</div>
-    </div>`
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:100%">'
+    + kpiNetTile({
+        label: 'Dispositivos', value: upTotal, unit: '/ ' + all.total + ' UP',
+        state: devState,
+        valueColor: all.down > 0 ? window.BPC.state.color('crit') : '#E6EDF3',
+        sub: all.down > 0 ? all.down + ' down · ' + all.warn + ' degradado'
+                          : all.warn + ' degradado',
+      })
+    + kpiNetTile({
+        label: 'Disponibilidade', value: avail, unit: '%', state: availSt,
+        valueColor: window.BPC.state.color(availSt === 'ok' ? 'ok' : availSt),
+        sub: all.ok + ' de ' + all.total + ' operacionais',
+      })
+    + kpiNetTile({
+        label: 'Alertas activos', value: trg.crit + trg.warn, state: alrtSt,
+        valueColor: window.BPC.state.color(alrtSt),
+        sub: trg.crit + ' crítico · ' + trg.warn + ' aviso',
+      })
+    + kpiNetTile({
+        label: 'Pior segmento', value: worstSeg.name, state: worstSeg.st,
+        valueColor: window.BPC.state.color(worstSeg.st),
+        pill: segLabel[worstSeg.st] || '—',
+        pillCls: worstSeg.st === 'crit' || worstSeg.st === 'down' ? 'down' : worstSeg.st,
+        sub: 'de 3 segmentos de rede',
+      })
+    + kpiNetTile({
+        label: 'WAN edge', value: wanUp, unit: '/ ' + wan.total + ' routers',
+        state: wanState,
+        valueColor: wan.down > 0 ? window.BPC.state.color('crit') : '#E6EDF3',
+        sub: bgpSub,
+      })
+    + '</div>'
 }
 
 function kpiNetRenderError(el, msg) {
-  el.innerHTML = `<div class="bpc bpc-card state-down" style="--card-accent:var(--bpc-crit)">
-    <div class="bpc-error-msg">⚠ KPI Rede: ${kpiNetEsc(msg)}</div>
-  </div>`
+  el.innerHTML = '<div class="bpc bpc-card state-down" style="--card-accent:var(--bpc-crit)">'
+    + '<div class="bpc-error-msg">⚠ KPI Rede: ' + window.BPC_SHARED.esc(msg) + '</div></div>'
 }
 
 
@@ -267,22 +247,24 @@ function kpiNetLoad(rpc) {
   const el = document.getElementById(CFG_KPI_NET.elementId)
   if (!el) return
 
-  // Skeleton enquanto carrega
-  el.innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">
-      ${[0,1,2,3].map(function () { return '<div>' + window.BPC.utils.buildSkeleton() + '</div>' }).join('')}
-    </div>`
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:100%">'
+    + [0,1,2,3,4].map(function () { return '<div>' + window.BPC.utils.buildSkeleton() + '</div>' }).join('')
+    + '</div>'
 
   Promise.all([
+    kpiNetFetchIcmp(rpc, CFG_KPI_NET.grupos.all),
     kpiNetFetchIcmp(rpc, CFG_KPI_NET.grupos.dc),
-    kpiNetFetchIcmp(rpc, CFG_KPI_NET.grupos.edRt),
-    kpiNetFetchIcmp(rpc, CFG_KPI_NET.grupos.edSw),
-    kpiNetFetchTriggers(rpc, CFG_KPI_NET.grupos.all),
+    kpiNetFetchIcmp(rpc, CFG_KPI_NET.grupos.edif),
+    kpiNetFetchIcmp(rpc, CFG_KPI_NET.grupos.wan),
+    kpiNetFetchTriggers(rpc),
+    kpiNetFetchWan(rpc),
   ])
-  .then(function (results) { kpiNetRender(el, results) })
+  .then(function (r) {
+    kpiNetRender(el, { all: r[0], dc: r[1], edif: r[2], wan: r[3], trg: r[4], bgp: r[5] })
+  })
   .catch(function (err) { kpiNetRenderError(el, err.message || String(err)) })
 
-  BPC.utils.startRefresh(el, function () { kpiNetLoad(rpc) }, CFG_KPI_NET.refreshMs)
+  window.BPC.utils.startRefresh(el, function () { kpiNetLoad(rpc) }, CFG_KPI_NET.refreshMs)
 }
 
 function kpiNetInitWithRetry(attempt) {
@@ -292,7 +274,7 @@ function kpiNetInitWithRetry(attempt) {
     return
   }
   if (attempt > 50) {
-    console.error('[BPC] l2-kpi-net: window.waitForBPC nunca ficou disponivel')
+    console.error('[BPC] l2-kpi: window.waitForBPC nunca ficou disponivel')
     return
   }
   setTimeout(function () { kpiNetInitWithRetry(attempt + 1) }, 100)

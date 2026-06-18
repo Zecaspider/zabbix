@@ -20,8 +20,15 @@
       "content": "<div id=\"bpc-net-kpi\"></div>"
     },
     {
+      "file": "l2-segmentos.js",
+      "id": 103,
+      "role": "content",
+      "title": "Segmentos",
+      "content": "<div id=\"bpc-net-seg\"></div>"
+    },
+    {
       "file": "l2-triggers.js",
-      "id": null,
+      "id": 104,
       "role": "content",
       "title": "Top Triggers",
       "content": "<div id=\"bpc-net-trg\"></div>"
