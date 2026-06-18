@@ -133,13 +133,21 @@ def push_panels(domain_level, only_file=None):
         panel_id = entry.get('id')
         role = entry.get('role', 'content')
 
+        ds_uid = manifest.get('datasource', '3_KgG43nz')
+        ds_obj = {"type": "alexanderzobnin-zabbix-datasource", "uid": ds_uid}
+        is_content = role != 'utils'
+
         if panel_id and panel_id in panels_by_id:
-            # Actualizar painel existente — afterRender + content (elementId) + anchor
+            # Actualizar painel existente
             p = panels_by_id[panel_id]
             p.setdefault('options', {})['afterRender'] = code
             if entry.get('content'):
                 p['options']['content'] = entry['content']
             p['targets'] = [dict(anchor)]
+            p['datasource'] = ds_obj          # corrigir datasource do painel
+            p['transparent'] = True           # NOC: fundo transparente
+            if is_content:
+                p['title'] = ''               # NOC: sem título nos painéis de conteúdo
             print(f'  UPDATE {fname} -> painel id={panel_id} ({entry.get("title","")})')
         else:
             # Criar painel novo (gridPos provisorio)
@@ -148,7 +156,7 @@ def push_panels(domain_level, only_file=None):
             new_panel = {
                 'id': new_id,
                 'type': 'marcusolsson-dynamictext-panel',
-                'title': entry.get('title', fname),
+                'title': '' if is_content else entry.get('title', fname),
                 'gridPos': {'x': 0, 'y': y, 'w': 24, 'h': 8},
                 'options': {
                     'afterRender': code,
@@ -157,7 +165,8 @@ def push_panels(domain_level, only_file=None):
                     'editors': ['afterRender'],
                 },
                 'targets': [dict(anchor)],
-                'datasource': {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
+                'datasource': ds_obj,
+                'transparent': True,
                 'transformations': [{'id': 'reduce', 'options': {}}],
                 'fieldConfig': {'defaults': {}, 'overrides': []},
             }

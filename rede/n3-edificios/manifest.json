@@ -1,0 +1,22 @@
+{
+  "dashboardUid": "471f2208-d032-46d4-8d35-6fdfe770c967",
+  "dashboardTitle": "n3-rede-edificios",
+  "folderUid": "efpbu5tvrhce8a",
+  "datasource": "3_KgG43nz",
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-edificios-table.js",
+      "id": null,
+      "role": "content",
+      "title": "Edifícios — Tabela",
+      "content": "<div id=\"bpc-n3ed-table\"></div>"
+    }
+  ]
+}

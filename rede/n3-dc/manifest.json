@@ -1,0 +1,22 @@
+{
+  "dashboardUid": "a75e2ba6-0ecc-49ee-bceb-4bcbafb419da",
+  "dashboardTitle": "n3-rede-dc-core",
+  "folderUid": "efpbu5tvrhce8a",
+  "datasource": "3_KgG43nz",
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-dc-table.js",
+      "id": null,
+      "role": "content",
+      "title": "DC Core — Tabela",
+      "content": "<div id=\"bpc-n3dc-table\"></div>"
+    }
+  ]
+}
