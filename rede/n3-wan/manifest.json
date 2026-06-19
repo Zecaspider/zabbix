@@ -8,46 +8,45 @@
       "type": "alexanderzobnin-zabbix-datasource",
       "uid": "ffo8sp8zllog0e"
     },
-    "group": {
-      "filter": "HG_DC_SWITCHES"
-    },
-    "host": {
-      "filter": "DC1-SPINE-11"
-    },
-    "item": {
-      "filter": "ICMP ping"
-    },
+    "group": { "filter": "HG_DC_SWITCHES" },
+    "host":  { "filter": "DC1-SPINE-11" },
+    "item":  { "filter": "ICMP ping" },
     "queryType": "0",
     "resultFormat": "time_series"
   },
   "panels": [
     {
       "file": "utils.js",
-      "id": 105,
+      "id": 100,
       "role": "utils",
       "title": "Header + Shared",
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
-      "file": "l3-wan-negocio.js",
-      "id": null,
-      "role": "content",
-      "title": "Links WAN — Vista de Negócio",
-      "content": "<div id=\"bpc-wan-negocio\"></div>"
-    },
-    {
       "file": "l3-wan-cards.js",
-      "id": null,
+      "id": 101,
       "role": "content",
       "title": "Links WAN — Cards por Router",
       "content": "<div id=\"bpc-n3wan-cards\"></div>"
     },
     {
+      "file": "l3-wan-negocio.js",
+      "id": 106,
+      "role": "content",
+      "title": "Links WAN — Vista de Negócio",
+      "content": "<div id=\"bpc-wan-negocio\"></div>"
+    },
+    {
       "file": "l3-wan-triggers.js",
-      "id": null,
+      "id": 109,
       "role": "content",
       "title": "Alertas WAN",
       "content": "<div id=\"bpc-wan-triggers\"></div>"
     }
+  ],
+  "nativePanels": [
+    { "id": 102, "title": "Latência ICMP — Todos os routers WAN (ms)", "type": "timeseries" },
+    { "id": 103, "title": "Packet Loss ICMP — Todos os routers WAN (%)", "type": "timeseries" },
+    { "id": 104, "title": "IP SLA RTT — WAN-INT por probe (ms)", "type": "timeseries" }
   ]
 }

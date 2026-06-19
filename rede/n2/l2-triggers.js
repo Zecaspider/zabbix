@@ -36,6 +36,14 @@ function trgEsc(s) {
   })
 }
 
+function trgN4Link(hostname, groupIds) {
+  if (groupIds.indexOf('26') >= 0)
+    return '/d/7baea796-e40b-4346-90ea-66516f369f8a/n4-rede-dc-switch?var-switchName=' + encodeURIComponent(hostname)
+  if (groupIds.indexOf('27') >= 0)
+    return '/d/8ddc4833-be01-47ea-8ada-a89531d4babb/n4-rede-wan-router?var-routerName=' + encodeURIComponent(hostname)
+  return null // g28/g29 edifícios: N4 não existe ainda
+}
+
 function trgFmtAge(lastchange) {
   const secs = Math.floor(Date.now() / 1000) - parseInt(lastchange, 10)
   if (secs < 60)  return secs + 's'
@@ -57,6 +65,7 @@ async function trgFetch(rpc) {
     only_true:      true,
     output:         ['triggerid', 'description', 'priority', 'lastchange'],
     selectHosts:    ['hostid', 'name'],
+    selectGroups:   ['groupid'],
     selectTags:     ['tag', 'value'],
     sortfield:      ['priority', 'lastchange'],
     sortorder:      'DESC',
@@ -67,6 +76,7 @@ async function trgFetch(rpc) {
     const host = (t.hosts || [])[0] || {}
     const tagMap = {}
     ;(t.tags || []).forEach(function (tg) { tagMap[tg.tag] = tg.value })
+    const groupIds = (t.groups || []).map(function (g) { return g.groupid })
     return {
       triggerid:  t.triggerid,
       desc:       t.description,
@@ -75,6 +85,7 @@ async function trgFetch(rpc) {
       hostid:     host.hostid,
       hostname:   host.name || '—',
       funcao:     tagMap['funcao'] || '',
+      groupIds:   groupIds,
     }
   })
 }
@@ -105,11 +116,15 @@ function trgRender(el, rows) {
     const bgRow = r.priority >= 4 ? 'rgba(239,68,68,0.04)' : r.priority >= 2 ? 'rgba(240,165,0,0.03)' : ''
     const border= r.priority >= 4 ? 'border-left:2px solid var(--bpc-crit)' : r.priority >= 2 ? 'border-left:2px solid var(--bpc-warn)' : 'border-left:2px solid transparent'
 
+    const n4Href = trgN4Link(r.hostname, r.groupIds || [])
+    const hostCell = n4Href
+      ? `<a href="${n4Href}" style="color:var(--bpc-cyan);text-decoration:none;font-weight:600">${trgEsc(r.hostname)} →</a>`
+      : `<span style="color:#CDD9E5;font-weight:600">${trgEsc(r.hostname)}</span>`
     return `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);background:${bgRow};${border}">
       <td style="padding:7px 10px;width:90px">
         <span class="${sev.cls}" style="font-size:.93rem;font-weight:600">${sev.icon} ${trgEsc(sev.label)}</span>
       </td>
-      <td style="padding:7px 10px;font-size:1.0rem;font-weight:600;color:#CDD9E5">${trgEsc(r.hostname)}</td>
+      <td style="padding:7px 10px;font-size:1.0rem">${hostCell}</td>
       <td style="padding:7px 10px;font-size:.96rem;color:rgba(255,255,255,0.75)">${trgEsc(r.desc)}</td>
       <td style="padding:7px 10px;font-size:.90rem;color:var(--bpc-mute);text-align:right;white-space:nowrap">${trgEsc(age)}</td>
     </tr>`

@@ -21,7 +21,7 @@ const CFG_N3ED = {
   thresholds: {
     lossPct: { warn: 1,  crit: 5 },
     rttMs:   { warn: 5,  crit: 50 },
-    cpuPct:  { warn: 70, crit: 90 },
+    cpuPct:  { warn: 60, crit: 85 },
   },
 }
 

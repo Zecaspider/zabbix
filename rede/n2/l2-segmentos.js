@@ -216,7 +216,7 @@ function segCard(seg, d) {
 
   const footer = seg.dashUid
     ? '<span style="font-size:.90rem;color:var(--bpc-cyan)">Ver detalhe (N3) →</span>'
-    : '<span style="font-size:.85rem;color:var(--bpc-mute)">N3 em construção</span>'
+    : ''
 
   const inner = ''
     + '<div class="bpc bpc-card state-' + cardSt + '"'

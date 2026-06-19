@@ -19,7 +19,7 @@ var CFG_TRG = {
   elementId: 'bpc-wan-triggers',
   refreshMs:  60000,
   maxRows:    20,
-  n4DashUid:  null,  // preencher quando N4 estiver criado
+  n4DashUid:  '8ddc4833-be01-47ea-8ada-a89531d4babb',
 
   // 5 routers WAN (grupo 27) + hostids para link drill N4
   wanHosts: [
@@ -98,8 +98,9 @@ function tRender(el, triggers) {
     var hostName = hostMap[hostId] || tEsc(host.host || '—')
     var age     = tFmtAge(t.lastchange)
 
+    var routerHostName = tEsc(host.host || hostName)
     var drillHref = CFG_TRG.n4DashUid
-      ? '/d/' + CFG_TRG.n4DashUid + '?var-hostid=' + hostId
+      ? '/d/' + CFG_TRG.n4DashUid + '/n4-rede-wan-router?var-routerName=' + encodeURIComponent(host.host || hostName)
       : null
 
     var hostCell = drillHref

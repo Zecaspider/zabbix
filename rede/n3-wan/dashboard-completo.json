@@ -1,0 +1,1208 @@
+{
+  "id": 590007455195136,
+  "panels": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 100,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — HEADER GLOBAL                                  v8 · BPC-UI   ║\n// ║                                                                          ║\n// ║  Carregado UMA única vez, no painel de cabeçalho do Grafana.            ║\n// ║  Tudo o que é partilhado entre painéis vive aqui.                       ║\n// ║                                                                          ║\n// ║  ESTRUTURA DO FICHEIRO                                                   ║\n// ║  ─────────────────────────────────────────────────────────────────────  ║\n// ║  BLOCO 1 — CFG         Toda a configuração editável (cores, labels…)    ║\n// ║  BLOCO 2 — CSS         Estilos globais BPC (cards, pills, skeleton…)    ║\n// ║  BLOCO 3 — HTML        Render do cabeçalho NOC + relógio                ║\n// ║  BLOCO 4 — BOOTSTRAP   Namespace · utils · RPC · guards de versão       ║\n// ║                                                                          ║\n// ║  REGRA DE OURO: para mudar qualquer coisa visual ou textual,            ║\n// ║  editar APENAS o BLOCO 1. Não tocar nos outros blocos.                  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗      ██╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ███║\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║     ██║\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║     ██║\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝     ██║\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝      ╚═╝\n//\n//  CONFIGURAÇÃO GLOBAL — EDITAR AQUI E APENAS AQUI\n//\n//  Contém:\n//    CFG_META    → versão, ambiente, URL da API Zabbix\n//    CFG_HEADER  → logótipo, título, subtítulo, labels\n//    CFG_THEME   → toda a paleta de cores BPC\n//    CFG_SIZES   → tipografia e espaçamentos do header\n//    CFG_PULSE   → animações de estado dos cards\n//    CFG_CLOCK   → idioma do relógio (dias, meses)\n//    CFG_THRESHOLDS → limites de alerta ICMP por defeito\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n// ── CFG_META — Identificação e infra ─────────────────────────────────────────\n//\n//  version   → identificador interno do runtime; incrementar em alterações\n//              incompatíveis (força re-inicialização do namespace BPC)\n//  apiUrl    → endpoint do proxy Grafana para a API Zabbix\n//              Alterar se o IP/porta do Grafana mudar\n\nconst CFG_META = {\n  version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)\n  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',\n};\n\n\n// ── CFG_HEADER — Identidade visual do cabeçalho ───────────────────────────────\n//\n//  logoUrl   → caminho para a imagem do logótipo (relativo ao Grafana public/)\n//              '' → mostra o fallback textual com CFG_HEADER.title\n//  title     → texto principal (aparece a branco)\n//  nocLabel  → palavra destacada a dourado após o separador  |\n//  subtitle  → linha pequena por baixo do título\n//              '' → omite a linha de subtítulo\n\nconst CFG_HEADER = {\n  logoUrl: '/public/img/bpc-logo.png',\n  title: 'BPC',\n  nocLabel: 'REDE WAN - NÍVEL 3',\n  subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',\n};\n\n\n// ── CFG_THEME — Paleta de cores BPC ──────────────────────────────────────────\n//\n//  navy   → fundo principal do header e cards (azul-marinho escuro)\n//  navy2  → fundo secundário / gradiente do header\n//  cyan   → accent primário: relógio, links, métricas informativas\n//  gold   → accent dourado: palavra \"NOC\", destaques especiais\n//  ok     → estado saudável (verde) — §6 modelo de estado\n//  warn   → estado de aviso (âmbar) — §6: #d29922 (decoplado do gold; ver nota)\n//  crit   → estado crítico / down (vermelho) — §6: #f85149\n//  info   → métrica informativa (igual ao cyan)\n//  mute   → texto e labels secundários (cinzento azulado)\n//\n//  NOTA v9: as cores de estado (ok/warn/crit) seguem o catálogo canónico do\n//  modelo de estado (engenharia §6/§6.1), para que BPC.state.color() e o CSS\n//  .bpc-* sejam UMA única fonte de verdade. O `gold` (#F0A500) mantém-se como\n//  accent de marca (palavra destacada no header), agora distinto do `warn`.\n\nconst CFG_THEME = {\n  navy: '#0B1341',\n  navy2: '#0E1A52',\n  cyan: '#00B4D8',\n  gold: '#F0A500',\n  ok: '#22C55E',\n  warn: '#d29922',\n  crit: '#f85149',\n  info: '#00B4D8',\n  mute: '#64748B',\n};\n\n\n// ── CFG_SIZES — Dimensões e tipografia ───────────────────────────────────────\n//\n//  Controla os tamanhos de texto e espaçamentos do header.\n//  Os cards usam as classes bpc-value-lg/md/sm definidas no BLOCO 2 (CSS).\n//\n//  header.padding       → padding vertical do wrapper (px) — manter ≤12 para\n//                         não expandir o painel Grafana\n//  header.borderTopW    → espessura da barra superior decorativa\n//  title.size           → tamanho do título principal \"BPC | NOC\"\n//  title.letterSpacing  → espaçamento entre letras do título (em)\n//  subtitle.size        → tamanho da linha de subtítulo\n//  clock.timeSize       → tamanho dos dígitos do relógio\n//  clock.dateSize       → tamanho da linha de data\n//  logo.height          → altura do logótipo em píxeis\n\nconst CFG_SIZES = {\n  header: {\n    padding: '8px 22px',\n    borderTopW: '2px',\n  },\n  title: {\n    size: '17px',\n    letterSpacing: '0.10em',\n  },\n  subtitle: {\n    size: '8px',\n  },\n  clock: {\n    timeSize: '22px',\n    dateSize: '8.5px',\n  },\n  logo: {\n    height: 36,   // px\n  },\n};\n\n\n// ── CFG_PULSE — Animações de estado dos cards ─────────────────────────────────\n//\n//  enabled:false → bordas estáticas coloridas (recomendado para ecrã NOC 24h,\n//                  reduz distracção e carga GPU)\n//  enabled:true  → borda + glow pulsante por estado\n//\n//  borderWidth   → espessura da borda dos cards em modo animado\n//  borderRadius  → raio dos cantos em modo animado\n//  intensity     → opacidade máxima do glow { warn, crit }  (0.0 – 1.0)\n//                  0 = sem glow, apenas borda\n//  speed         → período da animação em segundos { warn, crit }\n//  minSpeedSec   → velocidade mínima (evita animações demasiado rápidas)\n\nconst CFG_PULSE = {\n  enabled: false,\n  borderWidth: '2px',\n  borderRadius: '10px',\n  intensity: { warn: 0.10, crit: 0.38 },\n  speed: { warn: 6.0, crit: 2.2 },\n  minSpeedSec: 3.0,\n};\n\n\n// ── CFG_CLOCK — Localização do relógio ───────────────────────────────────────\n//\n//  Substituir arrays por traduções para outro idioma se necessário.\n//  Índice 0 = Domingo (padrão JS).\n\nconst CFG_CLOCK = {\n  days: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],\n  months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],\n};\n\n\n// ── CFG_THRESHOLDS — Limites de alerta ICMP por defeito ──────────────────────\n//\n//  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.\n//  rttWarnMs    → RTT acima deste valor (ms) marca o host como \"degradado\"\n//  lossWarnPct  → packet loss acima deste valor (%) marca como \"degradado\"\n\nconst CFG_THRESHOLDS = {\n  rttWarnMs: 5,\n  lossWarnPct: 5,\n};\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██████╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ╚════██╗\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║      ███╔╝\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║     ██╔══╝\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝     ███████╗\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝      ╚══════╝\n//\n//  CSS GLOBAL BPC\n//\n//  Injectado UMA vez em <head>. Não editar directamente —\n//  os valores vêm do BLOCO 1 (CFG_THEME, CFG_PULSE).\n//\n//  Contém:\n//    • Variáveis CSS --bpc-* (sincronizadas com CFG_THEME)\n//    • Base .bpc\n//    • Cards (.bpc-card, ::before, estados, hover)\n//    • Layout helpers (.bpc-flex, .bpc-flex-col, .bpc-gap-*)\n//    • Tipografia (.bpc-label, .bpc-value-lg/md/sm)\n//    • Cores de estado (.bpc-ok, .bpc-warn, .bpc-crit, .bpc-info, .bpc-mute)\n//    • Pills (.bpc-pill ok/warn/down)\n//    • Skeleton loader (.bpc-skeleton)\n//    • Auxiliares (divider, timestamp, mini-bar, erro inline, status-bar)\n//    • CSS de pulse/bordas de estado (gerado a partir de CFG_PULSE)\n//    • CSS específico do header NOC (.bpc-noc-hdr, logo, título, relógio)\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function injectAllCSS() {\n\n  // ── CSS Global (cards, pills, layout, etc.) ───────────────────────────────\n\n  if (!document.getElementById('bpc-global-css')) {\n    const T = CFG_THEME;\n    const s = document.createElement('style');\n    s.id = 'bpc-global-css';\n    s.textContent = `\n\n      /* ── Variáveis BPC ───────────────────────────────────────────────\n         Definidas em :root E .theme-dark para cobrir os dois contextos\n         que o Grafana pode aplicar consoante o tema seleccionado.      */\n      :root,\n      .theme-dark,\n      [data-theme=\"dark\"] {\n        --bpc-navy:  ${T.navy};\n        --bpc-navy2: ${T.navy2};\n        --bpc-cyan:  ${T.cyan};\n        --bpc-gold:  ${T.gold};\n        --bpc-ok:    ${T.ok};\n        --bpc-warn:  ${T.warn};\n        --bpc-crit:  ${T.crit};\n        --bpc-info:  ${T.info};\n        --bpc-mute:  ${T.mute};\n      }\n\n      /* ── Base ────────────────────────────────────────────────────────\n         Fonte e box-model aplicados a todos os elementos BPC.          */\n      .bpc { font-family:'Inter','Segoe UI',sans-serif; box-sizing:border-box; }\n\n      /* ── Card ────────────────────────────────────────────────────────\n         Contentor principal de cada métrica.\n         --card-accent → cor da barra de topo; definir inline em cada card:\n           <div class=\"bpc-card\" style=\"--card-accent:#22C55E\">\n         O ::before gera a barra de 3px colorida no topo do card.       */\n      .bpc-card {\n        background:    rgba(14, 20, 60, 0.55);\n        border:        1px solid rgba(255,255,255,0.08);\n        border-radius: 10px;\n        padding:       13px 15px 11px;\n        position:      relative;\n        overflow:      hidden;\n        transition:    border-color .15s, background .15s;\n      }\n      .bpc-card::before {\n        content:       '';\n        position:      absolute;\n        top:0; left:0; right:0;\n        height:        3px;\n        background:    var(--card-accent, var(--bpc-cyan));\n        border-radius: 10px 10px 0 0;\n        z-index:       1;\n      }\n      .bpc-card:hover {\n        border-color: rgba(0,180,216,0.22);\n        background:   rgba(14,20,60,0.70);\n      }\n\n      /* ── Estados dos cards ───────────────────────────────────────────\n         .state-ok  → sem override (herda o estilo base do card)\n         .state-warn→ borda esquerda âmbar\n         .state-down→ borda esquerda vermelha + fundo levemente vermelho */\n      .bpc-card.state-ok   {}\n      .bpc-card.state-warn {\n        border-color: rgba(240,165,0,0.28);\n        border-left:  2px solid rgba(240,165,0,0.70);\n      }\n      .bpc-card.state-down {\n        border-color: rgba(239,68,68,0.28);\n        border-left:  2px solid rgba(239,68,68,0.75);\n        background:   rgba(239,68,68,0.04);\n      }\n\n      /* ── Layout helpers ──────────────────────────────────────────────\n         Utilitários de flexbox para compor o interior dos cards.       */\n      .bpc-flex     { display:flex; align-items:center; }\n      .bpc-flex-col { display:flex; flex-direction:column; }\n      .bpc-gap-4    { gap:4px;  }\n      .bpc-gap-8    { gap:8px;  }\n      .bpc-gap-12   { gap:12px; }\n\n      /* ── Tipografia ──────────────────────────────────────────────────\n         .bpc-label    → rótulo pequeno uppercase (ex: \"Total\", \"Down\")\n         .bpc-value-lg → número grande principal (ex: total de hosts)\n         .bpc-value-md → número médio (ex: down, warn)\n         .bpc-value-sm → valor pequeno (ex: RTT, Loss)                  */\n      .bpc-label    { font-size:.67rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--bpc-mute); }\n      .bpc-value-lg { font-size:1.80rem; font-weight:700; color:#E6EDF3; line-height:1; }\n      .bpc-value-md { font-size:1.10rem; font-weight:600; color:#E6EDF3; line-height:1; }\n      .bpc-value-sm { font-size:.85rem;  font-weight:600; color:#E6EDF3; line-height:1; }\n\n      /* ── Classes de cor de estado ────────────────────────────────────\n         Aplicar directamente a qualquer elemento de texto.             */\n      .bpc-ok   { color:var(--bpc-ok);   }\n      .bpc-warn { color:var(--bpc-warn); }\n      .bpc-crit { color:var(--bpc-crit); }\n      .bpc-info { color:var(--bpc-info); }\n      .bpc-mute { color:var(--bpc-mute); }\n\n      /* ── Pills ───────────────────────────────────────────────────────\n         Pastilha colorida de estado (ex: \"OK\", \"Degradado\", \"Down\").\n         .bpc-pill.down inclui animação de pulse para chamar a atenção.  */\n      .bpc-pill {\n        font-size:.65rem; font-weight:700; letter-spacing:.05em;\n        text-transform:uppercase; padding:2px 9px;\n        border-radius:10px; border:1px solid transparent;\n        white-space:nowrap; line-height:1.6;\n      }\n      .bpc-pill.ok   { background:rgba(34,197,94,0.10);  color:var(--bpc-ok);   border-color:rgba(34,197,94,0.25); }\n      .bpc-pill.warn { background:rgba(240,165,0,0.10);  color:var(--bpc-warn); border-color:rgba(240,165,0,0.28); }\n      .bpc-pill.down { background:rgba(239,68,68,0.10);  color:var(--bpc-crit); border-color:rgba(239,68,68,0.28);\n                       animation:bpc-pulse-pill 1.2s ease-in-out infinite; }\n      @keyframes bpc-pulse-pill {\n        0%,100% { box-shadow:0 0 0 0   rgba(239,68,68,0.45); }\n        50%     { box-shadow:0 0 0 4px rgba(239,68,68,0);    }\n      }\n\n      /* ── Skeleton loader ─────────────────────────────────────────────\n         Animação de shimmer enquanto os dados carregam.                */\n      .bpc-skeleton {\n        background:      linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);\n        background-size: 200% 100%;\n        animation:       bpc-shimmer 1.4s infinite;\n        border-radius:   4px;\n      }\n      @keyframes bpc-shimmer {\n        0%   { background-position: 200%  0; }\n        100% { background-position:-200%  0; }\n      }\n\n      /* ── Auxiliares ──────────────────────────────────────────────────\n         .bpc-divider   → separador vertical subtil entre colunas\n         .bpc-timestamp → data/hora de actualização no rodapé do card   */\n      .bpc-divider   { width:1px; align-self:stretch; flex-shrink:0; background:rgba(255,255,255,0.07); }\n      .bpc-timestamp { font-size:.58rem; color:rgba(255,255,255,0.18); text-align:right; margin-top:4px; }\n\n      /* ── Mini bar (histograma de actividade) ─────────────────────────\n         Representação visual de histórico de valores (ex: RTT).\n         Cada segmento tem altura proporcional ao valor relativo.        */\n      .bpc-mini-bar { display:flex; align-items:flex-end; gap:2px; height:22px; margin-top:8px; }\n      .bpc-bar-seg  { flex:1; border-radius:2px 2px 0 0; background:var(--card-accent,var(--bpc-cyan));\n                      opacity:.45; min-height:2px; transition:opacity .2s; }\n      .bpc-card:hover .bpc-bar-seg { opacity:.68; }\n\n      /* ── Erro inline ─────────────────────────────────────────────────\n         Bloco de erro visível dentro de um card quando a API falha.    */\n      .bpc-error-msg {\n        display:flex; align-items:center; gap:6px;\n        font-size:.70rem; color:rgba(239,68,68,0.85);\n        background:rgba(239,68,68,0.07);\n        border-left:2px solid rgba(239,68,68,0.35);\n        border-radius:0 5px 5px 0;\n        padding:4px 8px; margin-top:6px;\n      }\n\n      /* ── Status bar global ───────────────────────────────────────────\n         Barra de resumo \"OK: N · Degradado: N · Crítico: N\"            */\n      .bpc-status-bar  { display:flex; align-items:center; gap:8px; padding:4px 0 8px; flex-wrap:wrap; }\n      .bpc-status-pill {\n        display:flex; align-items:center; gap:5px;\n        font-size:.67rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase;\n        padding:3px 10px; border-radius:20px; border:1px solid transparent; white-space:nowrap;\n      }\n      .bpc-status-pill.ok   { background:rgba(34,197,94,0.08);  color:var(--bpc-ok);   border-color:rgba(34,197,94,0.20); }\n      .bpc-status-pill.warn { background:rgba(240,165,0,0.08);  color:var(--bpc-warn); border-color:rgba(240,165,0,0.22); }\n      .bpc-status-pill.crit { background:rgba(239,68,68,0.08);  color:var(--bpc-crit); border-color:rgba(239,68,68,0.22); }\n      .bpc-status-dot  { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }\n      .bpc-status-sep  { width:1px; height:14px; background:rgba(255,255,255,0.12); margin:0 2px; flex-shrink:0; }\n\n    `;\n    document.head.appendChild(s);\n    if (window.BPC?.log) BPC.log('CSS global injectado (' + CFG_META.version + ')');\n  }\n\n\n  // ── CSS de Pulse / bordas de estado ──────────────────────────────────────\n  //\n  //  Gerado a partir de CFG_PULSE (BLOCO 1).\n  //  enabled:false → bordas estáticas (sem animação, recomendado para NOC 24h)\n  //  enabled:true  → animação de glow pulsante\n\n  if (!document.getElementById('bpc-pulse-css')) {\n    const p = CFG_PULSE;\n    const T = CFG_THEME;\n    const s = document.createElement('style');\n    s.id = 'bpc-pulse-css';\n\n    if (!p.enabled) {\n      // Bordas estáticas — mais limpo para uso contínuo\n      s.textContent = [\n        '.bpc-card.state-ok   {}',\n        '.bpc-card.state-warn { border-color:rgba(240,165,0,0.30); border-left:2px solid rgba(240,165,0,0.70); }',\n        '.bpc-card.state-down { border-color:rgba(239,68,68,0.30); border-left:2px solid rgba(239,68,68,0.75); background:rgba(239,68,68,0.04); }',\n      ].join('\\n');\n      document.head.appendChild(s);\n      if (window.BPC?.log) BPC.log('Pulse: bordas estáticas (enabled=false)');\n    } else {\n      // Glow animado — gerado dinamicamente a partir de CFG_PULSE e CFG_THEME\n      const hex = v => Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16).padStart(2, '0');\n      const wS = Math.max(p.minSpeedSec, p.speed.warn) + 's';\n      const cS = Math.max(p.minSpeedSec, p.speed.crit) + 's';\n      s.textContent = `\n        @keyframes bpc-warn {\n          0%,100%{ border-color:${T.warn}44; box-shadow:0 0 0 0 ${T.warn}${hex(p.intensity.warn)}; }\n          50%    { border-color:${T.warn};   box-shadow:0 0 10px 2px ${T.warn}${hex(p.intensity.warn)}; }\n        }\n        @keyframes bpc-down {\n          0%,100%{ border-color:${T.crit}55; box-shadow:0 0 0 0 ${T.crit}${hex(p.intensity.crit)}; background:rgba(239,68,68,0.03); }\n          50%    { border-color:${T.crit};   box-shadow:0 0 14px 3px ${T.crit}${hex(p.intensity.crit)}; background:rgba(239,68,68,0.07); }\n        }\n        .bpc-card.state-warn{ border:${p.borderWidth} solid ${T.warn}60; border-radius:${p.borderRadius}; animation:bpc-warn ${wS} ease-in-out infinite; }\n        .bpc-card.state-down{ border:${p.borderWidth} solid ${T.crit}70; border-radius:${p.borderRadius}; animation:bpc-down ${cS} ease-in-out infinite; }\n      `;\n      document.head.appendChild(s);\n      if (window.BPC?.log) BPC.log('Pulse: animado — warn:' + wS + ' crit:' + cS);\n    }\n  }\n\n\n  // ── CSS do Header NOC ─────────────────────────────────────────────────────\n  //\n  //  Gerado a partir de CFG_SIZES e CFG_THEME (BLOCO 1).\n  //\n  //  NOTA v8: padding controlado por CFG_SIZES.header.padding.\n  //  Manter ≤12px vertical para não expandir o painel Grafana.\n  //  Sem position:relative ou overflow:hidden no wrapper — evita expansão.\n  //  Sem elementos com position:absolute — evita que o browser expanda\n  //  o container para acomodar conteúdo \"fora do fluxo\".\n\n  if (!document.getElementById('bpc-header-css')) {\n    const Z = CFG_SIZES;\n    const s = document.createElement('style');\n    s.id = 'bpc-header-css';\n    s.textContent = `\n\n      /* ── Wrapper do header ───────────────────────────────────────────\n         Gradiente horizontal navy → navy2 → navy com linha superior cyan */\n      .bpc-noc-hdr {\n        display:       flex;\n        align-items:   center;\n        gap:           16px;\n        background:    linear-gradient(90deg, ${CFG_THEME.navy} 0%, ${CFG_THEME.navy2} 50%, ${CFG_THEME.navy} 100%);\n        border:        1px solid rgba(0,180,216,0.14);\n        border-top:    ${Z.header.borderTopW} solid rgba(0,180,216,0.40);\n        border-radius: 10px;\n        padding:       ${Z.header.padding};\n        height:        100%;\n        box-sizing:    border-box;\n        font-family:   'Inter','Segoe UI',sans-serif;\n      }\n\n      /* ── Logótipo ────────────────────────────────────────────────────\n         .bpc-noc-logo-fallback → exibido quando a imagem falha (onerror) */\n      .bpc-noc-logo          { height:${Z.logo.height}px; flex-shrink:0; }\n      .bpc-noc-logo-fallback {\n        height:${Z.logo.height}px; width:52px; flex-shrink:0;\n        background:rgba(255,255,255,0.04);\n        border:1px dashed rgba(255,255,255,0.12);\n        border-radius:7px; display:flex; align-items:center;\n        justify-content:center; font-size:10px; font-weight:800;\n        color:rgba(255,255,255,0.28); letter-spacing:1px;\n      }\n\n      /* ── Centro — título e subtítulo ─────────────────────────────────\n         <em> dentro do título → cor dourada (nocLabel)                  */\n      .bpc-noc-center { flex:1; text-align:center; }\n      .bpc-noc-title  {\n        font-size:${Z.title.size}; font-weight:800; letter-spacing:${Z.title.letterSpacing};\n        text-transform:uppercase; color:#fff; line-height:1;\n      }\n      .bpc-noc-title em { color:var(--bpc-gold, ${CFG_THEME.gold}); font-style:normal; }\n      .bpc-noc-sub    {\n        font-size:${Z.subtitle.size}; color:rgba(255,255,255,0.22);\n        letter-spacing:.14em; text-transform:uppercase; margin-top:4px;\n      }\n\n      /* ── Relógio ─────────────────────────────────────────────────────\n         Dígitos com tabular-nums para evitar saltos visuais ao mudar    */\n      .bpc-noc-right { text-align:right; flex-shrink:0; }\n      .bpc-noc-time  {\n        font-size:${Z.clock.timeSize}; font-weight:800; color:var(--bpc-cyan, ${CFG_THEME.cyan});\n        letter-spacing:3px; display:block;\n        font-variant-numeric:tabular-nums; line-height:1;\n      }\n      .bpc-noc-date  {\n        font-size:${Z.clock.dateSize}; color:rgba(255,255,255,0.22);\n        margin-top:3px; text-transform:capitalize;\n      }\n\n    `;\n    document.head.appendChild(s);\n    if (window.BPC?.log) BPC.log('CSS header injectado (' + CFG_META.version + ')');\n  }\n\n})(); // fim BLOCO 2\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██████╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ╚════██╗\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║      ▄███╔╝\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║      ▀▀══╝\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝      ██╗\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝       ╚═╝\n//\n//  HTML DO CABEÇALHO NOC\n//\n//  Aguarda o elemento #bpc-header-root no DOM (injectado pelo painel\n//  Grafana \"Text\") e preenche-o com o cabeçalho.\n//\n//  Contém:\n//    • Função renderHeader(el) → gera o HTML do cabeçalho\n//    • Função renderClock()    → actualiza hora + data a cada segundo\n//    • Polling para #bpc-header-root (timeout 10s)\n//\n//  Todo o texto e aparência vêm de CFG_HEADER, CFG_SIZES, CFG_THEME (BLOCO 1).\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function initHeader() {\n\n  // ── renderClock — actualiza #bpc-clock-time e #bpc-clock-date ────────────\n\n  function renderClock() {\n    const now = new Date();\n    const pad = n => String(n).padStart(2, '0');\n    const tEl = document.getElementById('bpc-clock-time');\n    const dEl = document.getElementById('bpc-clock-date');\n    if (!tEl || !dEl) return;\n    tEl.textContent =\n      pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());\n    dEl.textContent =\n      CFG_CLOCK.days[now.getDay()] + ', ' +\n      now.getDate() + ' de ' +\n      CFG_CLOCK.months[now.getMonth()] + ' de ' +\n      now.getFullYear();\n  }\n\n\n  // ── renderHeader — gera o HTML e inicia o relógio ─────────────────────────\n  //\n  //  Estrutura:\n  //    .bpc-noc-hdr\n  //    ├── [logo ou fallback textual]\n  //    ├── .bpc-noc-center  (título + subtítulo)\n  //    └── .bpc-noc-right   (relógio + data)\n\n  function renderHeader(el) {\n    const C = CFG_HEADER;\n    const Z = CFG_SIZES;\n\n    // Logótipo: tenta carregar a imagem; se falhar, mostra fallback textual\n    const logoHTML = C.logoUrl\n      ? `<img src=\"${C.logoUrl}\"\n              height=\"${Z.logo.height}\"\n              class=\"bpc-noc-logo\"\n              onerror=\"this.style.display='none';this.nextElementSibling.style.display='flex'\">\n         <div class=\"bpc-noc-logo-fallback\" style=\"display:none\">${C.title}</div>`\n      : `<div class=\"bpc-noc-logo-fallback\">${C.title}</div>`;\n\n    el.innerHTML = `\n      <div class=\"bpc-noc-hdr\">\n\n        <!-- Logótipo -->\n        <div style=\"display:flex;align-items:center;gap:10px;flex-shrink:0\">\n          ${logoHTML}\n        </div>\n\n        <!-- Título + Subtítulo -->\n        <div class=\"bpc-noc-center\">\n          <div class=\"bpc-noc-title\">\n            ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em>\n          </div>\n          ${C.subtitle ? `<div class=\"bpc-noc-sub\">${C.subtitle}</div>` : ''}\n        </div>\n\n        <!-- Relógio -->\n        <div class=\"bpc-noc-right\">\n          <span class=\"bpc-noc-time\" id=\"bpc-clock-time\">--:--:--</span>\n          <div  class=\"bpc-noc-date\" id=\"bpc-clock-date\">…</div>\n        </div>\n\n      </div>`;\n\n    // Inicia o relógio (limpa timer anterior se o header for re-renderizado)\n    if (window._bpc_clock_interval) clearInterval(window._bpc_clock_interval);\n    renderClock();\n    window._bpc_clock_interval = setInterval(renderClock, 1000);\n\n    if (window.BPC?.log) BPC.log('Header renderizado (' + CFG_META.version + ')');\n  }\n\n\n  // ── Aguardar #bpc-header-root no DOM ─────────────────────────────────────\n  //\n  //  O Grafana injecta os painéis de forma assíncrona; o elemento pode\n  //  ainda não existir quando este script executa.\n  //  Polling a cada 50ms com timeout de 10s.\n\n  const t0 = Date.now();\n  const poll = setInterval(() => {\n    const el = document.getElementById('bpc-header-root');\n    if (el) {\n      clearInterval(poll);\n      renderHeader(el);\n      return;\n    }\n    if (Date.now() - t0 > 10000) {\n      clearInterval(poll);\n      console.warn('[BPC] Header: #bpc-header-root não encontrado após 10s');\n    }\n  }, 50);\n\n})(); // fim BLOCO 3\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██╗  ██╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ██║  ██║\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║    ███████║\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║    ╚════██║\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝         ██║\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝          ╚═╝\n//\n//  BOOTSTRAP — NAMESPACE · UTILS · RPC\n//\n//  Inicializa o namespace global window.BPC e expõe:\n//    BPC.rpc        → função async para chamar a API Zabbix via Grafana proxy\n//    BPC.utils      → utilitários partilhados (formatação, builders, ICMP…)\n//    BPC.log        → wrapper de console com prefixo [BPC]\n//    BPC.onReady    → registar callback a executar quando o runtime estiver pronto\n//    BPC.setReady   → chamado internamente ao criar o rpc; dispara callbacks\n//    window.waitForBPC → helper global para painéis que precisam do runtime\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function bootstrap() {\n\n  const VERSION = CFG_META.version;\n\n\n  // ── Guard — evita dupla inicialização ────────────────────────────────────\n  //\n  //  Se já existir uma instância com a mesma versão E todos os componentes\n  //  presentes, termina sem fazer nada.\n  //  Se o estado for parcial (crash parcial, recarga do painel), reinicializa.\n\n  if (window.BPC && window.BPC.version === VERSION) {\n    const ok =\n      !!document.getElementById('bpc-global-css') &&\n      typeof (window.BPC.utils && window.BPC.utils.waitForElement) === 'function' &&\n      typeof window.BPC.rpc === 'function' &&\n      typeof window.BPC.log === 'function';\n    if (ok) return;\n    // Init em curso noutro afterRender concorrente — não re-inicializar\n    if (window.BPC._initPending) return;\n    console.warn('[BPC] Estado parcial — reinicializando (' + VERSION + ')');\n    window.BPC._ready = false;\n    window.BPC.rpc = null;\n  }\n  if (!window.BPC) window.BPC = {};\n  window.BPC._initPending = true;\n\n\n  // ── Namespace window.BPC ─────────────────────────────────────────────────\n\n  window.BPC = window.BPC || {};\n  Object.assign(window.BPC, {\n    version: VERSION,\n    rpc: null,\n    _ready: false,\n    _callbacks: window.BPC._callbacks || [],\n\n    // Registar um callback para quando o runtime estiver pronto.\n    // Se já estiver pronto, executa imediatamente.\n    onReady(cb) {\n      if (this._ready && typeof this.rpc === 'function') {\n        try { cb(this.rpc); } catch (e) { console.error('[BPC] onReady:', e); }\n      } else {\n        this._callbacks.push(cb);\n      }\n    },\n\n    // Chamado internamente para marcar o runtime como pronto e\n    // disparar todos os callbacks acumulados em onReady().\n    setReady(rpcFn) {\n      this.rpc = rpcFn;\n      this._ready = true;\n      this._initPending = false;\n      BPC.log('Runtime pronto');\n      this._callbacks.splice(0).forEach(cb => {\n        try { cb(rpcFn); } catch (e) { console.error('[BPC] setReady:', e); }\n      });\n    },\n  });\n\n\n  // ── BPC.log ───────────────────────────────────────────────────────────────\n\n  window.BPC.log = function (msg, level) {\n    const p = '[BPC]';\n    if (level === 'error') console.error(p, msg);\n    else if (level === 'warn') console.warn(p, msg);\n    else console.log(p, msg);\n  };\n\n  const BPC = window.BPC;\n\n\n  // ── window.waitForBPC ────────────────────────────────────────────────────\n  //\n  //  Usado pelos painéis individuais para aguardar o runtime.\n  //  Polling a cada 30ms com timeout de 15s.\n  //  Se expirar, mostra aviso nos cards que ainda estejam vazios.\n\n  if (typeof window.waitForBPC !== 'function' || window.waitForBPC._v !== VERSION) {\n    window.waitForBPC = function (cb) {\n      const t0 = Date.now();\n      const poll = setInterval(() => {\n        if (\n          window.BPC?._ready &&\n          typeof window.BPC.rpc === 'function' &&\n          typeof window.BPC.utils?.waitForElement === 'function' &&\n          typeof window.BPC.log === 'function'\n        ) {\n          clearInterval(poll);\n          try { cb(window.BPC.rpc); } catch (e) { console.error('[BPC] waitForBPC:', e); }\n          return;\n        }\n        if (Date.now() - t0 > 15000) {\n          clearInterval(poll);\n          console.error('[BPC] waitForBPC: timeout 15s');\n          // Mostra aviso nos cards que ainda não foram preenchidos\n          document.querySelectorAll('[id^=\"bpc-card-\"]').forEach(el => {\n            if (!el.innerHTML.trim())\n              el.innerHTML = '<div style=\"color:#EF4444;padding:12px;font-size:.75rem\">⚠ Header não inicializou</div>';\n          });\n        }\n      }, 30);\n    };\n    window.waitForBPC._v = VERSION;\n    BPC.log('waitForBPC registado (' + VERSION + ')');\n  }\n\n\n  // ── BPC.utils ────────────────────────────────────────────────────────────\n  //\n  //  Utilitários partilhados por todos os painéis.\n  //\n  //  Grupos:\n  //    DOM          → waitForElement, startRefresh\n  //    Estado       → stateClass, stateAccent, stateLabel, statePillClass,\n  //                   stateAbove, stateBelow\n  //    Formatação   → fmtBytes, fmtMb, fmtMs, fmtPct, fmtTime\n  //    Dados        → fetchICMP\n  //    Visualização → buildSparkline, buildMiniBar\n  //    Builders     → buildLayerCard, buildError, buildSkeleton, buildStatusBar\n\n  window.BPC.utils = {\n\n    // ── DOM ───────────────────────────────────────────────────────────────\n\n    // Aguarda um elemento pelo ID e chama cb quando disponível (timeout ms)\n    waitForElement(id, cb, ms) {\n      const t0 = Date.now();\n      const p = setInterval(() => {\n        const el = document.getElementById(id);\n        if (el) { clearInterval(p); cb(el); return; }\n        if (Date.now() - t0 > (ms || 10000)) { clearInterval(p); BPC.log('waitForElement: timeout #' + id, 'warn'); }\n      }, 50);\n    },\n\n    // Inicia (ou reinicia) um setInterval associado ao elemento\n    startRefresh(el, fn, ms) {\n      if (el._bpcTimer) clearInterval(el._bpcTimer);\n      el._bpcTimer = setInterval(fn, ms);\n    },\n\n\n    // ── Estado ────────────────────────────────────────────────────────────\n\n    // Devolve a classe CSS de cor para o estado dado ('ok'|'warn'|'down')\n    stateClass(s) { return { ok: 'bpc-ok', warn: 'bpc-warn', down: 'bpc-crit' }[s] || 'bpc-mute'; },\n\n    // Devolve a cor hexadecimal do accent para o estado dado\n    stateAccent(s) { const C = window.BPC.theme; return { ok: C.ok, warn: C.warn, down: C.crit }[s] || C.mute; },\n\n    // Devolve o label legível para o estado dado\n    stateLabel(s) { return { ok: 'OK', warn: 'Degradado', down: 'Down' }[s] || '—'; },\n\n    // Devolve a classe da pill para o estado dado\n    statePillClass(s) { return { ok: 'ok', warn: 'warn', down: 'down' }[s] || 'ok'; },\n\n    // Estado por threshold crescente: ok → warn → down (ex: CPU, latência)\n    // thr = { warn: Number, crit: Number }\n    stateAbove(v, t) { if (v == null || isNaN(v)) return 'mute'; if (v >= t.crit) return 'down'; if (v >= t.warn) return 'warn'; return 'ok'; },\n\n    // Estado por threshold decrescente: ok → warn → down (ex: disponibilidade)\n    stateBelow(v, t) { if (v == null || isNaN(v)) return 'mute'; if (v <= t.crit) return 'down'; if (v <= t.warn) return 'warn'; return 'ok'; },\n\n\n    // ── Formatação ────────────────────────────────────────────────────────\n\n    fmtBytes(b) { if (b == null || isNaN(b) || b < 0) return '—'; if (b >= 1e12) return (b / 1e12).toFixed(2) + ' TB'; if (b >= 1e9) return (b / 1e9).toFixed(1) + ' GB'; if (b >= 1e6) return (b / 1e6).toFixed(1) + ' MB'; if (b >= 1e3) return (b / 1e3).toFixed(0) + ' KB'; return b + ' B'; },\n    fmtMb(mb) { if (mb == null || isNaN(mb) || mb < 0) return '—'; if (mb >= 1048576) return (mb / 1048576).toFixed(2) + ' TB'; if (mb >= 1024) return (mb / 1024).toFixed(1) + ' GB'; return mb + ' MB'; },\n    fmtMs(ms) { if (ms == null || isNaN(ms) || ms < 0) return '—'; if (ms >= 1000) return (ms / 1000).toFixed(2) + ' s'; return ms.toFixed(2) + ' ms'; },\n    fmtPct(v, d) { if (v == null || isNaN(v)) return '—'; return v.toFixed(d ?? 1) + '%'; },\n    fmtTime(u) { if (!u) return '—'; return new Date(u * 1000).toLocaleTimeString('pt-PT'); },\n\n\n    // ── Dados — fetchICMP ─────────────────────────────────────────────────\n    //\n    //  Consulta o Zabbix para um grupo de hosts e devolve:\n    //  { total, down, warn, ok, rtt, loss, sparkData }\n    //\n    //  rpc     → função BPC.rpc\n    //  groupid → ID do host group no Zabbix\n    //  thr     → { rttWarnMs, lossWarnPct } — omitir usa CFG_THRESHOLDS\n\n    async fetchICMP(rpc, groupid, thr) {\n      const rttWarn = thr?.rttWarnMs || CFG_THRESHOLDS.rttWarnMs;\n      const lossWarn = thr?.lossWarnPct || CFG_THRESHOLDS.lossWarnPct;\n      BPC.log('fetchICMP → groupid=' + groupid);\n\n      // Busca todos os items ICMP do grupo\n      const allItems = await rpc('item.get', {\n        groupids: [groupid],\n        search: { key_: 'icmpping' },\n        filter: { status: 0 },\n        output: ['hostid', 'key_', 'lastvalue', 'itemid'],\n      });\n\n      // Agrupa por host\n      const byHost = {};\n      allItems.forEach(i => {\n        if (!byHost[i.hostid]) byHost[i.hostid] = { up: null, rtt: 0, loss: 0, rttItemId: null };\n        const h = byHost[i.hostid];\n        if (i.key_ === 'icmpping') h.up = i.lastvalue === '1';\n        if (i.key_.startsWith('icmppingsec')) { h.rtt = parseFloat(i.lastvalue) * 1000; h.rttItemId = i.itemid; }\n        if (i.key_.startsWith('icmppingloss')) h.loss = parseFloat(i.lastvalue);\n      });\n\n      const hostIds = Object.keys(byHost);\n      const total = hostIds.length;\n      if (!total) return { total: 0, down: 0, warn: 0, ok: 0, rtt: 0, loss: 0, sparkData: [] };\n\n      // Classifica cada host\n      const downSet = new Set(), warnSet = new Set();\n      hostIds.forEach(id => {\n        const h = byHost[id];\n        if (h.up === false || h.up === null) downSet.add(id);\n        else if (h.rtt > rttWarn || h.loss > lossWarn) warnSet.add(id);\n      });\n\n      // Médias dos hosts UP\n      const upIds = hostIds.filter(id => !downSet.has(id));\n      const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;\n      const avgRtt = avg(upIds.map(id => byHost[id].rtt).filter(v => v > 0));\n      const avgLoss = avg(upIds.map(id => byHost[id].loss).filter(v => v > 0));\n\n      // Histórico RTT para o sparkline (último 1h, 30 pontos)\n      let sparkData = [];\n      const firstUp = upIds.find(id => byHost[id].rttItemId);\n      if (firstUp) {\n        const now = Math.floor(Date.now() / 1000);\n        const hist = await rpc('history.get', {\n          itemids: [byHost[firstUp].rttItemId],\n          time_from: now - 3600, time_till: now,\n          output: 'extend', sortfield: 'clock', sortorder: 'ASC', limit: 30,\n        });\n        sparkData = hist.map(h => parseFloat(h.value) * 1000);\n      }\n\n      BPC.log('fetchICMP ← total=' + total + ' down=' + downSet.size + ' warn=' + warnSet.size);\n      return { total, down: downSet.size, warn: warnSet.size, ok: Math.max(0, total - downSet.size - warnSet.size), rtt: avgRtt, loss: avgLoss, sparkData };\n    },\n\n\n    // ── Visualização — buildSparkline ─────────────────────────────────────\n    //\n    //  Gera um SVG de linha (140×32) a partir de um array de valores.\n    //  Usado em cards que precisam de um gráfico inline simples.\n\n    buildSparkline(data, color) {\n      if (!data || data.length < 2) return '';\n      const W = 140, H = 32, mn = Math.min(...data), mx = Math.max(...data), rng = mx - mn || 1, step = W / (data.length - 1);\n      const pts = data.map((v, i) => (i * step).toFixed(1) + ',' + (H - ((v - mn) / rng) * (H - 4) - 2).toFixed(1)).join(' ');\n      return `<svg width=\"${W}\" height=\"${H}\" viewBox=\"0 0 ${W} ${H}\"><polyline points=\"${pts}\" fill=\"none\" stroke=\"${color || 'var(--bpc-cyan)'}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\" opacity=\"0.80\"/></svg>`;\n    },\n\n\n    // ── Visualização — buildMiniBar ───────────────────────────────────────\n    //\n    //  Gera um histograma de barras verticais a partir de um array de valores.\n    //  As alturas são normalizadas entre o min e max do array.\n\n    buildMiniBar(data, color) {\n      if (!data || !data.length) return '';\n      const mn = Math.min(...data), mx = Math.max(...data), rng = mx - mn || 1;\n      const st = color ? `background:${color};` : '';\n      return '<div class=\"bpc-mini-bar\">'\n        + data.map(v => `<div class=\"bpc-bar-seg\" style=\"height:${Math.max(8, Math.round(((v - mn) / rng) * 100))}%;${st}\"></div>`).join('')\n        + '</div>';\n    },\n\n\n    // ── Builder — buildLayerCard ──────────────────────────────────────────\n    //\n    //  Gera o HTML completo de um card de camada de rede (ICMP).\n    //\n    //  cfg = { label, dashUid, color?, groupid? }\n    //  d   = { total, down, warn, ok, rtt, loss, sparkData? }\n\n    buildLayerCard(cfg, d) {\n      const u = window.BPC.utils;\n      const status = d.down > 0 ? 'down' : d.warn > 0 ? 'warn' : 'ok';\n      const accent = cfg.color || u.stateAccent(status);\n      const avail = d.total > 0 ? Math.round((d.ok / d.total) * 100) : 0;\n      const aC = avail === 100 ? 'bpc-ok' : avail >= 80 ? 'bpc-warn' : 'bpc-crit';\n      const barData = (d.sparkData && d.sparkData.length > 1) ? d.sparkData : Array.from({ length: 14 }, () => Math.random() * 100);\n      const bar = u.buildMiniBar(barData, accent);\n      const rttLabel = d.down === d.total ? '—' : u.fmtMs(d.rtt);\n      const lossLabel = d.down === d.total ? '—' : u.fmtPct(d.loss);\n      const lossClass = d.loss > 5 ? 'bpc-warn' : 'bpc-ok';\n\n      return `<a href=\"/d/${cfg.dashUid}\" style=\"text-decoration:none;display:block;height:100%\">\n        <div class=\"bpc bpc-card state-${status}\" style=\"--card-accent:${accent};height:100%;cursor:pointer;display:flex;flex-direction:column;gap:8px;\">\n          <div class=\"bpc-flex\" style=\"justify-content:space-between;align-items:flex-start\">\n            <div>\n              <div class=\"bpc-label\" style=\"margin-bottom:2px\">NOC · Compute</div>\n              <div style=\"font-size:.90rem;font-weight:700;color:#E6EDF3;line-height:1.2\">${cfg.label}</div>\n            </div>\n            <span class=\"bpc-pill ${u.statePillClass(status)}\">${u.stateLabel(status)}</span>\n          </div>\n          <div class=\"bpc-flex bpc-gap-12\">\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-lg\">${d.total}</span><span class=\"bpc-label\">Total</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-md bpc-crit\">${d.down}</span><span class=\"bpc-label\">Down</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-md bpc-warn\">${d.warn}</span><span class=\"bpc-label\">Degradado</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\" style=\"margin-left:auto;text-align:right\">\n              <span class=\"bpc-value-md ${aC}\">${avail}%</span>\n              <span class=\"bpc-label\">Disponib.</span>\n            </div>\n          </div>\n          <div class=\"bpc-flex bpc-gap-12\">\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-sm bpc-info\">${rttLabel}</span><span class=\"bpc-label\">RTT médio</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-sm ${lossClass}\">${lossLabel}</span><span class=\"bpc-label\">Loss médio</span></div>\n          </div>\n          ${bar}\n          <div class=\"bpc-flex\" style=\"justify-content:space-between;margin-top:auto;padding-top:4px\">\n            <span style=\"font-size:.68rem;color:var(--bpc-cyan)\">Ver detalhe →</span>\n            <span class=\"bpc-timestamp\">Grupo ${cfg.groupid || '—'}</span>\n          </div>\n        </div>\n      </a>`;\n    },\n\n\n    // ── Builder — buildError ──────────────────────────────────────────────\n    //\n    //  Card de erro inline — exibido quando uma chamada RPC falha.\n    //  label   → título opcional (ex: \"Camada 3 — Core\")\n    //  message → mensagem de erro\n    //  color   → cor do accent (default: vermelho crítico)\n\n    buildError(label, message, color) {\n      const a = color || 'var(--bpc-crit)';\n      return `<div class=\"bpc bpc-card state-down\" style=\"--card-accent:${a};height:100%\">\n        ${label ? `<div class=\"bpc-label\" style=\"color:${a};margin-bottom:6px\">${label}</div>` : ''}\n        <div class=\"bpc-error-msg\">⚠ ${message}</div>\n      </div>`;\n    },\n\n\n    // ── Builder — buildSkeleton ───────────────────────────────────────────\n    //\n    //  Card de carregamento — exibido enquanto os dados ainda não chegaram.\n    //  color → cor do accent (default: cinzento muted)\n\n    buildSkeleton(color) {\n      const a = color || 'var(--bpc-mute)';\n      return `<div class=\"bpc bpc-card\" style=\"--card-accent:${a};height:100%;display:flex;flex-direction:column;gap:10px\">\n        <div class=\"bpc-skeleton\" style=\"height:10px;width:45%\"></div>\n        <div class=\"bpc-skeleton\" style=\"height:26px;width:55%\"></div>\n        <div class=\"bpc-skeleton\" style=\"height:11px;width:75%\"></div>\n        <div class=\"bpc-skeleton\" style=\"height:11px;width:40%;margin-top:auto\"></div>\n      </div>`;\n    },\n\n\n    // ── Builder — buildStatusBar ──────────────────────────────────────────\n    //\n    //  Barra horizontal de contagem de estados.\n    //  counts = { ok, warn, crit, label? }\n    //  label  → texto de timestamp ou identificação (alinhado à direita)\n\n    buildStatusBar(counts) {\n      const { ok = 0, warn = 0, crit = 0, label = '' } = counts;\n      const ts = label ? `<span style=\"font-size:.67rem;color:var(--bpc-mute);margin-left:auto\">${label}</span>` : '';\n      return `<div class=\"bpc-status-bar\">\n        <span class=\"bpc-status-pill ok\">  <span class=\"bpc-status-dot\"></span>OK: ${ok}</span>\n        <span class=\"bpc-status-pill warn\"><span class=\"bpc-status-dot\"></span>Degradado: ${warn}</span>\n        <span class=\"bpc-status-pill crit\"><span class=\"bpc-status-dot\"></span>Crítico: ${crit}</span>\n        <span class=\"bpc-status-sep\"></span>${ts}\n      </div>`;\n    },\n\n  }; // fim BPC.utils\n\n  BPC.log('utils inicializado (' + VERSION + ')');\n\n\n  // ── RPC — Zabbix via proxy Grafana ────────────────────────────────────────\n  //\n  //  O URL vem de CFG_META.apiUrl (BLOCO 1).\n  //  Envia um POST JSON-RPC e devolve json.result.\n  //  Lança Error se HTTP não-OK ou se a resposta contiver json.error.\n\n  window.BPC.setReady(async function rpc(method, params) {\n    BPC.log('rpc → ' + method);\n    const res = await fetch(CFG_META.apiUrl, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', 'x-grafana-org-id': '1' },\n      credentials: 'include',\n      body: JSON.stringify({ method, params }),\n    });\n    if (!res.ok) throw new Error('HTTP ' + res.status);\n    const json = await res.json();\n    if (json.error) throw new Error(json.error.data || json.error.message);\n    return json.result;\n  });\n\n})(); // fim BLOCO 4\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ███████╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ██╔════╝\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║    ███████╗\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║    ╚════██║\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝    ███████║\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝     ╚══════╝\n//\n//  CONTRATO §5.1 — THEME · BPC_SHARED · BPC_CHARTS · BPC.state\n//\n//  Símbolos que TODO o painel de conteúdo assume existirem (via initWithRetry).\n//  Definidos UMA vez aqui; nunca redefinidos num card (engenharia §5.1/§9).\n//  Dependem de CFG_THEME (BLOCO 1), acessível neste mesmo ficheiro/escopo.\n//\n//    window.BPC.THEME   → tokens visuais (colorOk/Warn/Crit/Info/Mute/Dis, sz*, …)\n//    window.BPC.theme   → alias legado (CFG_THEME cru: .ok/.warn/.crit) p/ BPC.utils\n//    window.BPC_SHARED  → helpers puros (esc, ts, cls, divider, pbar, fmtNum,\n//                         fmtTb, worstState, severityToState, stateAbove/Below, toFloat)\n//    window.BPC_CHARTS  → SVG (gaugeSemi, sparkline, pbar, dot)\n//    window.BPC.state   → modelo de estado §6.1 (metric, worst, host, color)\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function contractGlobals() {\n\n  window.BPC = window.BPC || {};\n\n  // ── BPC.THEME — tokens visuais consumidos pelos cards (§5.1) ───────────────\n  window.BPC.THEME = {\n    colorOk:   CFG_THEME.ok,\n    colorWarn: CFG_THEME.warn,\n    colorCrit: CFG_THEME.crit,\n    colorInfo: CFG_THEME.info,\n    colorMute: CFG_THEME.mute,\n    colorDis:  CFG_THEME.mute,\n    navy: CFG_THEME.navy, navy2: CFG_THEME.navy2,\n    cyan: CFG_THEME.cyan, gold: CFG_THEME.gold,\n    fontBody:    \"'Inter','Segoe UI',sans-serif\",\n    szLg:        '1.80rem',\n    szMd:        '1.10rem',\n    szSm:        '0.85rem',\n    szLabel:     '0.67rem',\n    cardPadding: '13px 15px 11px',\n  };\n\n  // Alias legado: BPC.utils.stateAccent lê window.BPC.theme.{ok,warn,crit}\n  window.BPC.theme = CFG_THEME;\n\n  // ── BPC.state — modelo de estado, única fonte de cálculo (§6.1) ────────────\n  window.BPC.state = {\n    // classifica UMA métrica contra { warn, crit }; dir 'above' (default) | 'below'\n    metric: function (value, thr, dir) {\n      dir = dir || 'above';\n      if (value == null || isNaN(value) || !thr) return 'ok';\n      if (dir === 'below') {\n        if (value <= thr.crit) return 'crit';\n        if (value <= thr.warn) return 'warn';\n        return 'ok';\n      }\n      if (value >= thr.crit) return 'crit';\n      if (value >= thr.warn) return 'warn';\n      return 'ok';\n    },\n\n    // pior de uma lista; precedência down > crit > warn > ok > mute\n    worst: function (states) {\n      var order = { down: 4, crit: 3, warn: 2, ok: 1, mute: 0 };\n      var w = 'ok', wv = 1;\n      (states || []).forEach(function (s) {\n        var v = order[s] != null ? order[s] : 0;\n        if (v > wv) { wv = v; w = s; }\n      });\n      return w;\n    },\n\n    // estado de um host a partir das métricas já classificadas;\n    // metrics.reachable === false → 'down'\n    host: function (metrics) {\n      if (!metrics) return 'ok';\n      if (metrics.reachable === false) return 'down';\n      var vals = [];\n      Object.keys(metrics).forEach(function (k) {\n        if (k !== 'reachable') vals.push(metrics[k]);\n      });\n      return window.BPC.state.worst(vals);\n    },\n\n    // cor hexadecimal de um estado (via BPC.THEME, nunca hex no card)\n    color: function (state) {\n      var T = window.BPC.THEME;\n      var map = {\n        ok: T.colorOk, warn: T.colorWarn, crit: T.colorCrit,\n        down: T.colorCrit, info: T.colorInfo, mute: T.colorMute,\n      };\n      return map[state] || T.colorMute;\n    },\n  };\n\n  // ── BPC_CHARTS — componentes SVG partilhados (§5.1) ────────────────────────\n  window.BPC_CHARTS = {\n    // gauge semicircular; opts = { max, color, size, label, unit }\n    gaugeSemi: function (value, opts) {\n      opts = opts || {};\n      var max = opts.max || 100;\n      var color = opts.color || 'var(--bpc-cyan)';\n      var size = opts.size || 90;\n      var v = Math.max(0, Math.min(max, value || 0));\n      var r = size / 2 - 8;\n      var cx = size / 2, cy = size / 2;\n      var len = Math.PI * r;            // comprimento do semicírculo\n      var dash = len * (v / max);\n      var arc = 'M8 ' + cy + ' A ' + r + ' ' + r + ' 0 0 1 ' + (size - 8) + ' ' + cy;\n      var label = opts.label != null ? opts.label : Math.round(v) + (opts.unit || '%');\n      return '<svg width=\"' + size + '\" height=\"' + (size / 2 + 12) + '\" viewBox=\"0 0 ' + size + ' ' + (size / 2 + 12) + '\">'\n        + '<path d=\"' + arc + '\" fill=\"none\" stroke=\"rgba(255,255,255,0.08)\" stroke-width=\"8\" stroke-linecap=\"round\"/>'\n        + '<path d=\"' + arc + '\" fill=\"none\" stroke=\"' + color + '\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-dasharray=\"' + dash.toFixed(1) + ' ' + len.toFixed(1) + '\"/>'\n        + '<text x=\"' + cx + '\" y=\"' + (cy - 3) + '\" text-anchor=\"middle\" fill=\"#E6EDF3\" font-size=\"' + (size * 0.20).toFixed(0) + '\" font-weight=\"700\">' + label + '</text>'\n        + '</svg>';\n    },\n\n    // linha sparkline (delega no util já testado)\n    sparkline: function (data, color) {\n      return window.BPC.utils.buildSparkline(data, color);\n    },\n\n    // barra de progresso horizontal; pct 0..100\n    pbar: function (pct, color) {\n      pct = Math.max(0, Math.min(100, pct || 0));\n      color = color || 'var(--bpc-cyan)';\n      return '<div style=\"background:rgba(255,255,255,0.08);border-radius:4px;height:6px;width:100%;overflow:hidden\">'\n        + '<div style=\"height:100%;width:' + pct + '%;background:' + color + ';border-radius:4px\"></div></div>';\n    },\n\n    // ponto colorido de estado (ok|warn|crit|down|info|mute)\n    dot: function (state) {\n      var c = window.BPC.state.color(state);\n      return '<span style=\"display:inline-block;width:8px;height:8px;border-radius:50%;background:' + c + '\"></span>';\n    },\n  };\n\n  // ── BPC_SHARED — helpers puros, sem efeitos laterais (§5.1) ────────────────\n  window.BPC_SHARED = {\n    esc: function (s) {\n      return String(s == null ? '' : s).replace(/[&<>\"']/g, function (c) {\n        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c];\n      });\n    },\n    ts: function (ms) { return ms ? new Date(ms).toLocaleTimeString('pt-PT') : '—'; },\n    cls: function (state) {\n      return { ok: 'bpc-ok', warn: 'bpc-warn', crit: 'bpc-crit', down: 'bpc-crit', info: 'bpc-info' }[state] || 'bpc-mute';\n    },\n    divider: function () { return '<div class=\"bpc-divider\"></div>'; },\n    pbar: function (pct, color) { return window.BPC_CHARTS.pbar(pct, color); },\n    fmtNum: function (n, d) {\n      if (n == null || isNaN(n)) return '—';\n      return Number(n).toLocaleString('pt-PT', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });\n    },\n    fmtTb: function (bytes) {\n      if (bytes == null || isNaN(bytes)) return '—';\n      if (bytes >= 1e12) return (bytes / 1e12).toFixed(2) + ' TB';\n      if (bytes >= 1e9) return (bytes / 1e9).toFixed(1) + ' GB';\n      return (bytes / 1e6).toFixed(0) + ' MB';\n    },\n    worstState: function (states) { return window.BPC.state.worst(states); },\n    // severidade Zabbix → estado: 0-1→ok, 2-3→warn, ≥critPriority(4)→crit (§6.2)\n    severityToState: function (sev, critPriority) {\n      sev = parseInt(sev, 10) || 0;\n      var cp = critPriority || 4;\n      if (sev >= cp) return 'crit';\n      if (sev >= 2) return 'warn';\n      return 'ok';\n    },\n    stateAbove: function (v, t) { return window.BPC.state.metric(v, t, 'above'); },\n    stateBelow: function (v, t) { return window.BPC.state.metric(v, t, 'below'); },\n    toFloat: function (v) { var n = parseFloat(v); return isNaN(n) ? null : n; },\n  };\n\n  if (window.BPC && window.BPC.log) {\n    window.BPC.log('Contrato §5.1 exposto: THEME · state · BPC_CHARTS · BPC_SHARED (' + CFG_META.version + ')');\n  }\n\n})(); // fim BLOCO 5\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//  REFERÊNCIA RÁPIDA — v9\n//  ─────────────────────────────────────────────────────────────────────────\n//\n//  ONDE EDITAR (apenas BLOCO 1):\n//    URL API Zabbix      → CFG_META.apiUrl\n//    Versão do runtime   → CFG_META.version\n//    Logo / Título       → CFG_HEADER (logoUrl, title, nocLabel, subtitle)\n//    Paleta de cores     → CFG_THEME  (navy, cyan, gold, ok, warn, crit…)\n//    Tamanhos / fontes   → CFG_SIZES  (header, title, clock, logo…)\n//    Animações de estado → CFG_PULSE  (enabled, intensity, speed…)\n//    Idioma do relógio   → CFG_CLOCK  (days[], months[])\n//    Alertas ICMP        → CFG_THRESHOLDS (rttWarnMs, lossWarnPct)\n//\n//  COMO APLICAR A BARRA DE ACENTO DE COR NOS CARDS:\n//    <div class=\"bpc bpc-card state-down\" style=\"--card-accent:#EF4444\">\n//\n//  RECEITAS CFG_PULSE:\n//    Activar pulse:         enabled:true\n//    Apenas borda, sem glow: intensity:{ warn:0, crit:0 }\n//    Apenas glow, sem borda: borderWidth:'0px'\n//    Desligar completamente: enabled:false\n//\n// ══════════════════════════════════════════════════════════════════════════════",
+        "content": "<div id=\"bpc-header-root\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-AG"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": false,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 101,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — N3 · REDE · WAN · CARDS DE LINKS  v1.0                      ║\n// ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║\n// ║  Datasource: BPC-NETWORK (ffo8sp8zllog0e) · Zabbix 7.0                ║\n// ║                                                                          ║\n// ║  5 cards (1 por router WAN) com estado em tempo real:                  ║\n// ║   • WAN-INT  — BGP peers ITA/AT/MSTELCOM + IP SLA por probe            ║\n// ║   • WAN-EMIS — circuitos ATELECOM/MSTELECOM/UNITEL                     ║\n// ║   • WAN-AG   — DMVPN agências+edifícios + Azure ER + P2P carriers      ║\n// ║   • PARC     — parceiros e operadoras de voz (17 sub-interfaces)        ║\n// ║   • GTW01    — tunnels MINFIN/INSS/BODIVA + FW-Parc                    ║\n// ║                                                                          ║\n// ║  Dados: net.if.status + icmpping/loss/sec + rttMonCtrlAdmin*           ║\n// ║  [1] CFG  [2] HELPERS  [3] FETCH  [4] COMPUTE  [5] RENDER  [6] BOOT   ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [1] CFG\n// ────────────────────────────────────────────────────────────────────────────\n\nvar CFG_WAN = {\n  elementId: 'bpc-n3wan-cards',\n  refreshMs:  60000,\n  maxAgeSec:  600,\n\n  // IP SLA sense: 1=OK, 2=disconnected, 3=overThreshold, 4=timeout, 5=busy, 6=notConnected\n  iplsaSenseLabel: { '1':'OK', '2':'desligado', '3':'acima threshold', '4':'timeout', '5':'ocupado', '6':'sem ligação' },\n\n  hosts: [\n    {\n      name:   'DC1-RTE-WAN-INT',\n      hostid: '10838',\n      label:  'Internet / BGP',\n      desc:   'ISR4451 · ITA · AT · MSTELCOM',\n      hasIpSla: true,\n      sections: [\n        { label: 'BGP Peers', ifRe: /^Po2\\.\\d/i, excludeRe: null },\n      ],\n    },\n    {\n      name:   'DC1-RTE-WAN-EMIS',\n      hostid: '10839',\n      label:  'EMIS',\n      desc:   'ISR4451 · ATELECOM · MSTELECOM · UNITEL',\n      hasIpSla: false,\n      sections: [\n        { label: 'Circuitos EMIS', ifRe: /^Po2\\.\\d/i, excludeRe: null },\n      ],\n    },\n    {\n      name:   'DC1-RTE-WAN-AG',\n      hostid: '10996',\n      label:  'Agências / Azure',\n      desc:   'C8500L · DMVPN DC + Edifícios + Azure ER + P2P',\n      hasIpSla: false,\n      sections: [\n        { label: 'DMVPN — DC',         ifRe: /^Tu1\\d\\d$/i,       excludeRe: null },\n        { label: 'DMVPN — Edifícios',  ifRe: /^Tu2\\d\\d$/i,       excludeRe: null },\n        { label: 'Azure ExpressRoute', ifRe: /^Po2\\.293[12]$/i,   excludeRe: null },\n        { label: 'P2P Carriers',       ifRe: /^Po2\\.\\d/i,         excludeRe: /^Po2\\.293[12]$/i },\n      ],\n    },\n    {\n      name:   'DC1-RTE-PARC',\n      hostid: '11001',\n      label:  'Parceiros / Voz',\n      desc:   'ISR4451 · CUBE · Unitel · AT · Multitel · Connectis',\n      hasIpSla: false,\n      sections: [\n        { label: 'Sub-interfaces Po2', ifRe: /^Po2\\.\\d/i, excludeRe: null },\n      ],\n    },\n    {\n      name:   'DC1-RTE-GTW01',\n      hostid: '10840',\n      label:  'GTW01 — Tunnels',\n      desc:   'C8200 · MINFIN · INSS · BODIVA · FW-Parc · Po1 DOWN',\n      hasIpSla: false,\n      sections: [\n        { label: 'Gi0/0/1 sub-interfaces', ifRe: /^Gi0\\/0\\/1/i,     excludeRe: null },\n        { label: 'Tunnels GRE',            ifRe: /^Tu\\d/i,           excludeRe: null },\n        { label: 'FW-Parc',               ifRe: /^Gi0\\/0\\/0\\.896/i,  excludeRe: null },\n      ],\n    },\n  ],\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [2] HELPERS\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction wEsc(s) {\n  return String(s == null ? '' : s).replace(/[&<>\"']/g, function(c) {\n    return {'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]\n  })\n}\n\nfunction wParseIf(name) {\n  var m = /Interface\\s+([^(\\s]+)\\(([^)]*)\\)/.exec(name || '')\n  if (!m) { var m2 = /Interface\\s+(\\S+)/.exec(name||''); return {ifname:m2?m2[1].trim():'',desc:''} }\n  return {ifname:m[1].trim(), desc:(m[2]||'').trim()}\n}\n\nfunction wStale(clock) {\n  return !clock || (Math.floor(Date.now()/1000) - parseInt(clock,10)) > CFG_WAN.maxAgeSec\n}\n\nfunction wDot(up, stale, size) {\n  var T = window.BPC.THEME\n  var c = stale ? T.colorMute : (up ? T.colorOk : T.colorCrit)\n  var pulse = !stale && !up ? 'animation:bpc-pulse-pill 1.2s ease-in-out infinite;' : ''\n  var sz = size || 9\n  return '<span style=\"display:inline-block;width:'+sz+'px;height:'+sz+'px;border-radius:50%;'\n    + 'background:'+c+';flex-shrink:0;'+pulse+'\"></span>'\n}\n\nfunction wMs(sec) {\n  if (sec == null || sec === '') return '—'\n  var ms = parseFloat(sec) * 1000\n  return ms < 1 ? (ms*1000).toFixed(0)+' µs' : ms.toFixed(1)+' ms'\n}\n\nfunction wLossColor(loss) {\n  var v = parseFloat(loss)\n  if (isNaN(v) || v===0) return 'var(--bpc-ok)'\n  return v < 5 ? 'var(--bpc-warn)' : 'var(--bpc-crit)'\n}\n\nfunction wIpSlaColor(sense) {\n  return sense === '1' ? 'var(--bpc-ok)' : 'var(--bpc-crit)'\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [3] FETCH\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction wFetch(rpc) {\n  var hids = CFG_WAN.hosts.map(function(h){return h.hostid})\n  return Promise.all([\n    rpc('item.get', {\n      hostids: hids, output: ['hostid','name','key_','lastvalue','lastclock'],\n      filter: {status:0}, search: {key_:'net.if.status'},\n    }),\n    rpc('item.get', {\n      hostids: hids, output: ['hostid','name','key_','lastvalue','lastclock'],\n      filter: {status:0, key_:['icmpping','icmppingloss','icmppingsec']},\n    }),\n    rpc('item.get', {\n      hostids: ['10838'],  // só WAN-INT tem IP SLA\n      output: ['hostid','name','key_','lastvalue','lastclock'],\n      filter: {status:0},\n      search: {key_:'rttMonCtrlAdmin'},\n    }),\n  ]).then(function(res){ return {ifItems:res[0], icmpItems:res[1], ipslaItems:res[2]} })\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [4] COMPUTE\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction wCompute(data) {\n  var ifItems   = data.ifItems\n  var icmpItems = data.icmpItems\n  var ipslaItems = data.ipslaItems\n\n  // Montar mapa IP SLA por índice: index → {sense, completionTime, threshold, status}\n  var ipslaByIdx = {}\n  ipslaItems.forEach(function(it) {\n    var m = /rttMonCtrlAdmin(\\w+)\\[(\\d+)\\]/.exec(it.key_)\n    if (!m) return\n    var field = m[1], idx = m[2]\n    if (!ipslaByIdx[idx]) ipslaByIdx[idx] = {}\n    ipslaByIdx[idx][field] = {val: it.lastvalue, stale: wStale(it.lastclock)}\n  })\n\n  return CFG_WAN.hosts.map(function(hcfg) {\n    // ICMP\n    var icmp = {}\n    icmpItems.forEach(function(it){ if(it.hostid===hcfg.hostid) icmp[it.key_]={val:it.lastvalue,stale:wStale(it.lastclock)} })\n\n    // Secções de interfaces\n    var sections = hcfg.sections.map(function(sec) {\n      var ifaces = []\n      ifItems.forEach(function(it) {\n        if (it.hostid !== hcfg.hostid) return\n        var p = wParseIf(it.name)\n        if (!p.ifname || !sec.ifRe.test(p.ifname)) return\n        if (sec.excludeRe && sec.excludeRe.test(p.ifname)) return\n        ifaces.push({ifname:p.ifname, desc:p.desc, up:it.lastvalue==='1', stale:wStale(it.lastclock)})\n      })\n      ifaces.sort(function(a,b){return a.ifname<b.ifname?-1:1})\n      return {label:sec.label, ifaces:ifaces, downCount:ifaces.filter(function(i){return !i.up&&!i.stale}).length}\n    }).filter(function(s){return s.ifaces.length>0})\n\n    // IP SLA (só WAN-INT)\n    var ipsla = hcfg.hasIpSla ? ipslaByIdx : null\n\n    var totalDown = sections.reduce(function(a,s){return a+s.downCount},0)\n    return {cfg:hcfg, icmp:icmp, sections:sections, ipsla:ipsla, totalDown:totalDown}\n  })\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [5] RENDER\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction wRenderIcmp(icmp) {\n  var ping = icmp['icmpping'], loss = icmp['icmppingloss'], rtt = icmp['icmppingsec']\n  var up   = ping && !ping.stale && ping.val==='1'\n  return '<span style=\"display:inline-flex;align-items:center;gap:7px;font-size:.83rem\">'\n    + wDot(up, ping?ping.stale:true, 8)\n    + (up\n        ? '<span style=\"color:var(--bpc-ok)\">UP</span>'\n        + ' <span style=\"color:rgba(255,255,255,0.25)\">·</span>'\n        + ' RTT <span style=\"color:#CDD9E5\">'+wMs(rtt?rtt.val:null)+'</span>'\n        + ' <span style=\"color:rgba(255,255,255,0.25)\">·</span>'\n        + ' perda <span style=\"color:'+wLossColor(loss?loss.val:null)+'\">'+((loss&&loss.val!=null)?loss.val+'%':'—')+'</span>'\n        : '<span style=\"color:var(--bpc-crit)\">SEM RESPOSTA ICMP</span>')\n    + '</span>'\n}\n\nfunction wRenderIpSla(ipslaByIdx) {\n  if (!ipslaByIdx || !Object.keys(ipslaByIdx).length) return ''\n  var rows = Object.keys(ipslaByIdx).sort().map(function(idx) {\n    var d = ipslaByIdx[idx]\n    var sense = d['Sense'] ? d['Sense'].val : null\n    var rtt   = d['CompletionTime'] ? d['CompletionTime'].val : null\n    var thr   = d['Threshold'] ? d['Threshold'].val : null\n    var stale = d['Sense'] ? d['Sense'].stale : true\n    var label = CFG_WAN.iplsaSenseLabel[sense] || ('sense='+sense)\n    var col   = stale ? 'var(--bpc-mute)' : wIpSlaColor(sense)\n    return '<tr style=\"border-top:1px solid rgba(255,255,255,0.04)\">'\n      + '<td style=\"padding:3px 8px;font-size:.82rem;color:rgba(255,255,255,0.50)\">SLA #'+wEsc(idx)+'</td>'\n      + '<td style=\"padding:3px 8px\">'+wDot(sense==='1',stale,8)+'</td>'\n      + '<td style=\"padding:3px 8px;font-size:.82rem;color:'+col+'\">'+wEsc(label)+'</td>'\n      + '<td style=\"padding:3px 8px;font-size:.82rem;color:#CDD9E5\">'+(rtt?rtt+' ms':'—')+'</td>'\n      + '<td style=\"padding:3px 8px;font-size:.80rem;color:rgba(255,255,255,0.30)\">thr '+(thr?thr+' ms':'—')+'</td>'\n      + '</tr>'\n  }).join('')\n  return '<div style=\"margin-top:8px\">'\n    + '<div style=\"font-size:.76rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,0.30);margin-bottom:4px\">IP SLA</div>'\n    + '<table style=\"border-collapse:collapse\"><tbody>'+rows+'</tbody></table>'\n    + '</div>'\n}\n\nfunction wRenderSection(sec) {\n  var pills = sec.ifaces.map(function(iface) {\n    var T   = window.BPC.THEME\n    var col = iface.stale?T.colorMute:(iface.up?T.colorOk:T.colorCrit)\n    var bg  = iface.stale?'rgba(255,255,255,0.04)':(iface.up?'rgba(63,185,80,0.09)':'rgba(248,81,73,0.12)')\n    var pulse = !iface.stale&&!iface.up ? 'animation:bpc-pulse-pill 1.2s ease-in-out infinite;':''\n    var lbl = iface.desc ? iface.desc.replace(/^\\*+|\\*+$/g,'').trim() : iface.ifname\n    return '<span title=\"'+wEsc(iface.ifname+(iface.desc?' · '+iface.desc:''))+'\"'\n      +' style=\"display:inline-flex;align-items:center;gap:4px;padding:3px 7px;'\n      +'border-radius:10px;background:'+bg+';border:1px solid '+col+'33;'\n      +'font-size:.80rem;color:#CDD9E5;'+pulse+'white-space:nowrap\">'\n      +wDot(iface.up,iface.stale,7)+wEsc(lbl)+'</span>'\n  }).join('')\n\n  return '<div style=\"margin-bottom:8px\">'\n    + '<div style=\"font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;'\n    + 'color:rgba(255,255,255,0.30);margin-bottom:5px\">'+wEsc(sec.label)\n    + (sec.downCount?' <span style=\"color:var(--bpc-crit)\">· '+sec.downCount+' DOWN</span>':'')+'</div>'\n    + '<div style=\"display:flex;flex-wrap:wrap;gap:4px\">'+pills+'</div>'\n    + '</div>'\n}\n\nfunction wRenderCard(host) {\n  var T = window.BPC.THEME\n  var pingOk  = host.icmp['icmpping']&&!host.icmp['icmpping'].stale&&host.icmp['icmpping'].val==='1'\n  var hasDown = host.totalDown > 0\n  var accentColor = hasDown ? T.colorCrit : (!pingOk ? T.colorWarn : T.colorOk)\n\n  var badge = hasDown\n    ? '<span style=\"font-size:.79rem;padding:2px 7px;border-radius:8px;background:rgba(248,81,73,0.15);color:var(--bpc-crit);font-weight:600\">'+host.totalDown+' DOWN</span>'\n    : '<span style=\"font-size:.79rem;padding:2px 7px;border-radius:8px;background:rgba(63,185,80,0.10);color:var(--bpc-ok)\">OK</span>'\n\n  var totalIfs  = host.sections.reduce(function(a,s){return a+s.ifaces.length},0)\n  var downIfs   = host.totalDown\n  var ifSummary = '<span style=\"font-size:.80rem;color:rgba(255,255,255,0.35)\">'+\n    (totalIfs-downIfs)+'/'+totalIfs+' interfaces UP</span>'\n\n  return '<div style=\"background:rgba(14,20,60,0.45);border:1px solid rgba(255,255,255,0.07);'\n    + 'border-left:3px solid '+accentColor+';border-radius:8px;padding:12px 16px;margin-bottom:10px\">'\n\n    // ── cabeçalho do card ──\n    + '<div style=\"display:flex;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:10px\">'\n    + '<div style=\"flex:1;min-width:0\">'\n    + '<div style=\"display:flex;align-items:center;gap:8px;flex-wrap:wrap\">'\n    + '<span style=\"font-size:1.0rem;font-weight:700;color:#CDD9E5\">'+wEsc(host.cfg.name)+'</span>'\n    + badge\n    + ifSummary\n    + '</div>'\n    + '<div style=\"font-size:.83rem;color:rgba(255,255,255,0.40);margin-top:2px\">'+wEsc(host.cfg.desc)+'</div>'\n    + '</div>'\n    + '<div style=\"text-align:right\">'+wRenderIcmp(host.icmp)+'</div>'\n    + '</div>'\n\n    // ── secções de interfaces ──\n    + host.sections.map(wRenderSection).join('')\n\n    // ── IP SLA (só WAN-INT) ──\n    + (host.ipsla ? wRenderIpSla(host.ipsla) : '')\n\n    + '</div>'\n}\n\nfunction wRender(el, model) {\n  var totalDown = model.reduce(function(a,h){return a+h.totalDown},0)\n  var headline  = totalDown===0\n    ? '<span class=\"bpc-ok\">Todos os links WAN operacionais</span>'\n    : '<span class=\"bpc-crit\">'+totalDown+' link(s) WAN em baixo</span>'\n\n  // resumo rápido (barra de 5 dots)\n  var dots = model.map(function(h) {\n    var T = window.BPC.THEME\n    var pingOk = h.icmp['icmpping']&&!h.icmp['icmpping'].stale&&h.icmp['icmpping'].val==='1'\n    var col = h.totalDown>0 ? T.colorCrit : (!pingOk ? T.colorWarn : T.colorOk)\n    return '<span style=\"display:inline-flex;align-items:center;gap:5px;padding:3px 10px;'\n      +'border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid '+col+'44\">'\n      +wDot(h.totalDown===0&&pingOk,false,8)\n      +'<span style=\"font-size:.80rem;color:#CDD9E5\">'+wEsc(h.cfg.label)+'</span>'\n      +'</span>'\n  }).join('')\n\n  el.innerHTML = [\n    '<div class=\"bpc\" style=\"font-family:\\'Inter\\',\\'Segoe UI\\',sans-serif\">',\n\n    // título + headline\n    '<div style=\"display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap\">',\n    '<span style=\"font-size:1.0rem;font-weight:700;color:#CDD9E5;letter-spacing:.08em;text-transform:uppercase\">Links WAN</span>',\n    '<span style=\"font-size:.90rem;color:var(--bpc-mute)\">'+headline+'</span>',\n    '</div>',\n\n    // barra de estado rápida\n    '<div style=\"display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px\">'+dots+'</div>',\n\n    // cards\n    model.map(wRenderCard).join(''),\n\n    '</div>',\n  ].join('')\n}\n\nfunction wRenderError(el, msg) {\n  el.innerHTML = '<div class=\"bpc bpc-card state-down\"><div class=\"bpc-error-msg\">⚠ Links WAN: '+wEsc(msg)+'</div></div>'\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [6] BOOTSTRAP\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction wLoad(rpc) {\n  var el = document.getElementById(CFG_WAN.elementId)\n  if (!el) return\n  el.innerHTML = '<div style=\"padding:16px;color:var(--bpc-mute)\">A carregar links WAN…</div>'\n  wFetch(rpc)\n    .then(function(data){ wRender(el, wCompute(data)) })\n    .catch(function(err){ wRenderError(el, err.message||String(err)) })\n  window.BPC.utils.startRefresh(el, function(){wLoad(rpc)}, CFG_WAN.refreshMs)\n}\n\nfunction wInitWithRetry(attempt) {\n  attempt = attempt || 0\n  if (typeof window.waitForBPC === 'function') { window.waitForBPC(wLoad); return }\n  if (attempt > 50) { console.error('[BPC] l3-wan-cards: waitForBPC nunca disponivel'); return }\n  setTimeout(function(){wInitWithRetry(attempt+1)}, 100)\n}\n\nwInitWithRetry()\n",
+        "content": "<div id=\"bpc-n3wan-cards\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-AG"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": false,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 8,
+            "lineWidth": 2,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      },
+      "id": 102,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "ICMP response time"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-EMIS"
+          },
+          "item": {
+            "filter": "ICMP response time"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-AG"
+          },
+          "item": {
+            "filter": "ICMP response time"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-PARC"
+          },
+          "item": {
+            "filter": "ICMP response time"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-GTW01"
+          },
+          "item": {
+            "filter": "ICMP response time"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        }
+      ],
+      "title": "Latência ICMP — Todos os routers WAN (ms)",
+      "transformations": [],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 8,
+            "lineWidth": 2,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 61
+      },
+      "id": 103,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "ICMP loss"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "F",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-EMIS"
+          },
+          "item": {
+            "filter": "ICMP loss"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "G",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-AG"
+          },
+          "item": {
+            "filter": "ICMP loss"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "H",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-PARC"
+          },
+          "item": {
+            "filter": "ICMP loss"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "I",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-GTW01"
+          },
+          "item": {
+            "filter": "ICMP loss"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "J",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        }
+      ],
+      "title": "Packet Loss ICMP — Todos os routers WAN (%)",
+      "transformations": [],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 8,
+            "lineWidth": 2,
+            "showPoints": "never"
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 69
+      },
+      "id": 104,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "rttMonCtrlAdminCompletionTime[2]"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "rttMonCtrlAdminCompletionTime[3]"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "rttMonCtrlAdminCompletionTime[60]"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "rttMonCtrlAdminCompletionTime[62]"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "D",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        },
+        {
+          "application": {
+            "filter": ""
+          },
+          "countTriggersBy": "",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "evaltype": "0",
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "rttMonCtrlAdminCompletionTime[65]"
+          },
+          "itemTag": {
+            "filter": ""
+          },
+          "macro": {
+            "filter": ""
+          },
+          "options": {
+            "count": false,
+            "disableDataAlignment": false,
+            "showDisabledItems": false,
+            "skipEmptyValues": true,
+            "useTrends": "default",
+            "useZabbixValueMapping": false
+          },
+          "proxy": {
+            "filter": ""
+          },
+          "queryType": "0",
+          "refId": "E",
+          "resultFormat": "time_series",
+          "schema": 12,
+          "table": {
+            "skipEmptyValues": false
+          },
+          "tags": {
+            "filter": ""
+          },
+          "textFilter": "",
+          "trigger": {
+            "filter": ""
+          }
+        }
+      ],
+      "title": "IP SLA RTT — WAN-INT por probe (ms)",
+      "transformations": [],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 24,
+        "x": 0,
+        "y": 25
+      },
+      "id": 106,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — N3 · REDE · WAN · VISTA DE NEGÓCIO  v1.0                   ║\n// ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║\n// ║  Datasource: BPC-NETWORK (ffo8sp8zllog0e) · Zabbix 7.0                ║\n// ║                                                                          ║\n// ║  Vista por provider/link (não por dispositivo):                         ║\n// ║    Internet   — ITA · AT · MSTELCOM (BGP_PEER_* + IP SLA)              ║\n// ║    Agências   — Azure ER ×2 · DMVPN ×7 providers (UNITEL, ITA, …)     ║\n// ║    EMIS       — ATELECOM · UNITEL · MSTELECOM                          ║\n// ║    Parceiros  — BNA · MINFIN · INSS · BODIVA · CONNECTIS · …           ║\n// ║    Gateway    — MINFIN tunnels · INSS · BODIVA · FW-Parc               ║\n// ║                                                                          ║\n// ║  Cada card: provider · oper-status · tráfego in/out · IP SLA RTT       ║\n// ║  (IP SLA apenas Internet; demais: status + tráfego via net.if.in/out)  ║\n// ║                                                                          ║\n// ║  [1] CFG  [2] HELPERS  [3] FETCH  [4] COMPUTE  [5] RENDER  [6] BOOT   ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [1] CFG\n// ────────────────────────────────────────────────────────────────────────────\n\nvar CFG_NEG = {\n  elementId: 'bpc-wan-negocio',\n  refreshMs:  60000,\n  maxAgeSec:  600,\n\n  // Grupos de negócio: cada link tem name, router hostid, regex para casar\n  // a descrição do item net.if.status, e opcionalmente o índice IP SLA\n  groups: [\n    {\n      label:   'Internet / BGP',\n      color:   '#00B4D8',\n      icon:    '🌍',\n      note:    'BGP por proxy de interface · estado real = IP SLA',\n      links: [\n        { name: 'ITA',      hostid: '10838', descRe: /BGP_PEER_ITA/i,      slaIdx: '65'  },\n        { name: 'AT',       hostid: '10838', descRe: /BGP_PEER_AT\\b/i,     slaIdx: null  },\n        { name: 'MSTELCOM', hostid: '10838', descRe: /BGP_PEER_MSTELCOM/i,  slaIdx: null  },\n      ],\n    },\n    {\n      label:   'Agências',\n      color:   '#22C55E',\n      icon:    '🏢',\n      note:    'DMVPN hub · estado por oper-status de túnel',\n      links: [\n        { name: 'Azure ER 1',  hostid: '10996', descRe: /Po2\\.2931/i,   slaIdx: null },\n        { name: 'Azure ER 2',  hostid: '10996', descRe: /Po2\\.2932/i,   slaIdx: null },\n        { name: 'UNITEL',      hostid: '10996', descRe: /\\bTu101\\b/i,   slaIdx: null },\n        { name: 'ITA',         hostid: '10996', descRe: /\\bTu102\\b/i,   slaIdx: null },\n        { name: 'IPWORLD',     hostid: '10996', descRe: /\\bTu103\\b/i,   slaIdx: null },\n        { name: 'MULTITEL',    hostid: '10996', descRe: /\\bTu104\\b/i,   slaIdx: null },\n        { name: 'MST FIBRA',   hostid: '10996', descRe: /\\bTu105\\b/i,   slaIdx: null },\n        { name: 'MST VSAT',    hostid: '10996', descRe: /\\bTu106\\b/i,   slaIdx: null },\n        { name: 'MST MW',      hostid: '10996', descRe: /\\bTu107\\b/i,   slaIdx: null },\n      ],\n    },\n    {\n      label:   'EMIS',\n      color:   '#F0A500',\n      icon:    '🏦',\n      note:    'Interligação ao sistema EMIS',\n      links: [\n        { name: 'ATELECOM',  hostid: '10839', descRe: /SP_EMIS_ATELECOM/i,   slaIdx: null },\n        { name: 'UNITEL',    hostid: '10839', descRe: /SP_EMIS_UNITEL/i,     slaIdx: null },\n        { name: 'MSTELECOM', hostid: '10839', descRe: /SP_EMIS_MSTELECOM/i,  slaIdx: null },\n      ],\n    },\n    {\n      label:   'Parceiros / Gov',\n      color:   '#A78BFA',\n      icon:    '🤝',\n      note:    'Sub-interfaces Po2 · inclui voz CUBE/CUCM (FXS idle = normal)',\n      links: [\n        { name: 'BNA via AT',         hostid: '11001', descRe: /AT.*BNA|BNA.*AT/i,         slaIdx: null },\n        { name: 'BNA via MULTITEL',   hostid: '11001', descRe: /MULTITEL.*BNA|BNA.*MULTI/i, slaIdx: null },\n        { name: 'BNA via UNITEL',     hostid: '11001', descRe: /UNITEL.*BNA|BNA.*UNITEL/i,  slaIdx: null },\n        { name: 'MINFIN via AT',      hostid: '11001', descRe: /AT.*MINFIN|MINFIN.*AT/i,    slaIdx: null },\n        { name: 'CONNECTIS → MJDH',   hostid: '11001', descRe: /CONNECTIS.*MJDH|MJDH/i,     slaIdx: null },\n        { name: 'CONNECTIS → UCALL',  hostid: '11001', descRe: /UCALL/i,                     slaIdx: null },\n        { name: 'UNITEL SIP/SMs',     hostid: '11001', descRe: /UNITEL.*(SIP|SMS|USSD|MONEY)/i, slaIdx: null },\n        { name: 'Mundial Seguros',    hostid: '11001', descRe: /MUNDIAL/i,                   slaIdx: null },\n      ],\n    },\n    {\n      label:   'Gateway / Core',\n      color:   '#F472B6',\n      icon:    '⚙️',\n      note:    'Tunnels Gov + FW Parceiros · Po1 DOWN (incidente activo)',\n      links: [\n        { name: 'MINFIN (Kwanza/MST)', hostid: '10840', descRe: /MINFIN.*MST|Kwanza/i,  slaIdx: null },\n        { name: 'MINFIN (UNITEL)',      hostid: '10840', descRe: /MINFIN.*UNITEL/i,       slaIdx: null },\n        { name: 'INSS (MULTITEL)',      hostid: '10840', descRe: /INSS/i,                 slaIdx: null },\n        { name: 'BODIVA',               hostid: '10840', descRe: /BODIVA/i,               slaIdx: null },\n        { name: 'FW Parceiros (P2P)',   hostid: '10840', descRe: /Gi0\\/0\\/0\\.896/i,       slaIdx: null },\n        { name: 'Po1 (Fabric)',         hostid: '10840', descRe: /^Po1$/i,                slaIdx: null },\n      ],\n    },\n  ],\n\n  // Todos os hostids usados (derivado dos grupos acima; mantido para fetch)\n  allHostIds: ['10838', '10839', '10840', '10996', '11001'],\n  wanIntHostId: '10838',\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [2] HELPERS\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction nEsc(s) {\n  return String(s == null ? '' : s).replace(/[&<>\"']/g, function(c) {\n    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c]\n  })\n}\n\nfunction nStale(clock) {\n  return !clock || (Math.floor(Date.now() / 1000) - parseInt(clock, 10)) > CFG_NEG.maxAgeSec\n}\n\n// Converte octets/s em texto legível (bps)\nfunction nFmtBps(octPerSec) {\n  if (octPerSec == null || isNaN(octPerSec) || octPerSec < 0) return '—'\n  var bps = octPerSec * 8\n  if (bps >= 1e9) return (bps / 1e9).toFixed(2) + ' Gbps'\n  if (bps >= 1e6) return (bps / 1e6).toFixed(1) + ' Mbps'\n  if (bps >= 1e3) return (bps / 1e3).toFixed(0) + ' Kbps'\n  return bps.toFixed(0) + ' bps'\n}\n\n// Extrai nome de interface do campo \"name\" do item\nfunction nParseIf(name) {\n  var m = /Interface\\s+([^(\\s]+)(?:\\(([^)]*)\\))?/.exec(name || '')\n  if (!m) return { ifname: '', desc: '' }\n  return { ifname: m[1].trim(), desc: (m[2] || '').trim() }\n}\n\n// Dado um item de tráfego (net.if.in ou net.if.out) devolve o ifname\nfunction nParseTrafficIf(name) {\n  // \"Interface X(desc): Bits received/sent\"\n  var m = /Interface\\s+([^(\\s]+)/.exec(name || '')\n  return m ? m[1].trim() : ''\n}\n\n// Ponto de status colorido\nfunction nDot(up, stale, sz) {\n  var T = window.BPC.THEME\n  var c = stale ? T.colorMute : (up ? T.colorOk : T.colorCrit)\n  var pulse = !stale && !up ? 'animation:bpc-pulse-pill 1.2s ease-in-out infinite;' : ''\n  var s = sz || 9\n  return '<span style=\"display:inline-block;width:' + s + 'px;height:' + s + 'px;border-radius:50%;'\n    + 'background:' + c + ';flex-shrink:0;' + pulse + '\"></span>'\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [3] FETCH\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction nFetch(rpc) {\n  var hids = CFG_NEG.allHostIds\n  return Promise.all([\n    // Interface oper-status (fonte de estado de cada link)\n    rpc('item.get', {\n      hostids: hids, filter: { status: 0 },\n      search: { key_: 'net.if.status' },\n      output: ['hostid', 'name', 'key_', 'lastvalue', 'lastclock'],\n    }),\n    // Tráfego IN (octets/s; usar speedtest-like para bps)\n    rpc('item.get', {\n      hostids: hids, filter: { status: 0 },\n      search: { key_: 'net.if.in' },\n      output: ['hostid', 'name', 'key_', 'lastvalue', 'lastclock'],\n    }),\n    // Tráfego OUT\n    rpc('item.get', {\n      hostids: hids, filter: { status: 0 },\n      search: { key_: 'net.if.out' },\n      output: ['hostid', 'name', 'key_', 'lastvalue', 'lastclock'],\n    }),\n    // IP SLA no WAN-INT (sense + completionTime)\n    rpc('item.get', {\n      hostids: [CFG_NEG.wanIntHostId], filter: { status: 0 },\n      search: { key_: 'rttMonCtrlAdmin' },\n      output: ['hostid', 'name', 'key_', 'lastvalue', 'lastclock'],\n    }),\n  ]).then(function(r) {\n    return { ifStatus: r[0], ifIn: r[1], ifOut: r[2], ipsla: r[3] }\n  })\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [4] COMPUTE\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction nCompute(data) {\n  // ── Índice de status por hostid+ifname ──\n  var statusIdx = {}  // key: hostid+'|'+ifname → {up, stale, desc}\n  data.ifStatus.forEach(function(it) {\n    var p = nParseIf(it.name)\n    if (!p.ifname) return\n    var key = it.hostid + '|' + p.ifname\n    statusIdx[key] = { up: it.lastvalue === '1', stale: nStale(it.lastclock), desc: p.desc }\n  })\n\n  // ── Índice de tráfego por hostid+ifname ──\n  var trafficIdx = {}  // key: hostid+'|'+ifname → {inBps, outBps}\n  function indexTraffic(items, field) {\n    items.forEach(function(it) {\n      var ifname = nParseTrafficIf(it.name)\n      if (!ifname) return\n      var key = it.hostid + '|' + ifname\n      if (!trafficIdx[key]) trafficIdx[key] = {}\n      trafficIdx[key][field] = nStale(it.lastclock) ? null : parseFloat(it.lastvalue)\n    })\n  }\n  indexTraffic(data.ifIn,  'inBps')\n  indexTraffic(data.ifOut, 'outBps')\n\n  // ── Índice IP SLA por índice ──\n  var slaIdx = {}  // idx → {sense, rttMs, stale}\n  data.ipsla.forEach(function(it) {\n    var m = /rttMonCtrlAdmin(\\w+)\\[(\\d+)\\]/.exec(it.key_)\n    if (!m) return\n    var field = m[1], idx = m[2]\n    if (!slaIdx[idx]) slaIdx[idx] = {}\n    slaIdx[idx][field] = { val: it.lastvalue, stale: nStale(it.lastclock) }\n  })\n\n  // ── Resolver cada link ──\n  var groups = CFG_NEG.groups.map(function(grp) {\n    var links = grp.links.map(function(lcfg) {\n      // encontrar a interface no statusIdx que casa com descRe (testa ifname e desc)\n      var matchKey = null\n      Object.keys(statusIdx).forEach(function(key) {\n        if (matchKey) return\n        var parts = key.split('|')\n        if (parts[0] !== lcfg.hostid) return\n        var entry = statusIdx[key]\n        var ifname = parts[1]\n        // testa o regex contra o ifname E contra a descrição\n        if (lcfg.descRe.test(ifname) || lcfg.descRe.test(entry.desc)) {\n          matchKey = key\n        }\n      })\n\n      var status = matchKey ? statusIdx[matchKey] : null\n      var traffic = matchKey ? (trafficIdx[matchKey] || {}) : {}\n      var ifname  = matchKey ? matchKey.split('|')[1] : '—'\n\n      // IP SLA (só Internet links com slaIdx definido)\n      var sla = null\n      if (lcfg.slaIdx && slaIdx[lcfg.slaIdx]) {\n        var sd = slaIdx[lcfg.slaIdx]\n        sla = {\n          sense:  sd['Sense']          ? sd['Sense'].val          : null,\n          rttMs:  sd['CompletionTime'] ? sd['CompletionTime'].val : null,\n          thr:    sd['Threshold']      ? sd['Threshold'].val      : null,\n          stale:  sd['Sense']          ? sd['Sense'].stale        : true,\n        }\n      }\n\n      var up    = status ? (!status.stale && status.up) : null\n      var stale = status ? status.stale : true\n\n      // Estado efectivo: se tem SLA e sense≠1 → down mesmo que if-UP\n      var effectiveDown = up === false || (sla && !sla.stale && sla.sense !== '1')\n\n      return {\n        name:    lcfg.name,\n        ifname:  ifname,\n        desc:    status ? status.desc : '',\n        up:      up,\n        stale:   stale,\n        down:    effectiveDown,\n        inBps:   traffic.inBps  != null ? traffic.inBps  : null,\n        outBps:  traffic.outBps != null ? traffic.outBps : null,\n        sla:     sla,\n        found:   !!matchKey,\n      }\n    })\n\n    var downCount = links.filter(function(l) { return l.down }).length\n    var unknownCount = links.filter(function(l) { return !l.found }).length\n    return { cfg: grp, links: links, downCount: downCount, unknownCount: unknownCount }\n  })\n\n  var totalLinks = groups.reduce(function(a, g) { return a + g.links.length }, 0)\n  var totalDown  = groups.reduce(function(a, g) { return a + g.downCount  }, 0)\n  return { groups: groups, totalLinks: totalLinks, totalDown: totalDown }\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [5] RENDER\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction nRenderLinkCard(link, groupColor) {\n  var T = window.BPC.THEME\n\n  // ── Estado ──\n  var stateColor = link.stale ? T.colorMute\n    : (link.down ? T.colorCrit : (link.up ? T.colorOk : T.colorMute))\n  var stateLbl = link.stale ? 'Sem dados'\n    : (link.down ? 'DOWN' : (link.up ? 'UP' : '—'))\n  var bgState = link.stale ? 'rgba(255,255,255,0.02)'\n    : (link.down ? 'rgba(248,81,73,0.08)' : 'rgba(34,197,94,0.05)')\n\n  // ── IP SLA badge ──\n  var slaBadge = ''\n  if (link.sla) {\n    var sOk    = !link.sla.stale && link.sla.sense === '1'\n    var sColor = link.sla.stale ? T.colorMute : (sOk ? T.colorOk : T.colorCrit)\n    var rtt    = link.sla.rttMs != null ? link.sla.rttMs + ' ms' : '—'\n    slaBadge = '<div style=\"margin-top:6px;padding:4px 7px;border-radius:5px;'\n      + 'background:' + sColor + '18;border:1px solid ' + sColor + '33;'\n      + 'display:flex;align-items:center;gap:8px;flex-wrap:wrap\">'\n      + '<span style=\"font-size:.70rem;font-weight:700;color:' + sColor + ';text-transform:uppercase\">IP SLA</span>'\n      + '<span style=\"font-size:.75rem;color:#CDD9E5\">RTT: <b>' + nEsc(rtt) + '</b></span>'\n      + (link.sla.thr ? '<span style=\"font-size:.70rem;color:var(--bpc-mute)\">thr ' + nEsc(link.sla.thr) + ' ms</span>' : '')\n      + (!sOk && !link.sla.stale ? '<span style=\"font-size:.70rem;color:var(--bpc-crit);font-weight:700\">⚠ FAIL</span>' : '')\n      + '</div>'\n  }\n\n  // ── Tráfego ──\n  var traffic = ''\n  if (link.inBps != null || link.outBps != null) {\n    traffic = '<div style=\"display:flex;gap:12px;margin-top:5px\">'\n      + '<div style=\"font-size:.75rem\"><span style=\"color:var(--bpc-mute)\">↓ IN </span>'\n      + '<span style=\"color:#CDD9E5;font-weight:600\">' + nFmtBps(link.inBps) + '</span></div>'\n      + '<div style=\"font-size:.75rem\"><span style=\"color:var(--bpc-mute)\">↑ OUT </span>'\n      + '<span style=\"color:#CDD9E5;font-weight:600\">' + nFmtBps(link.outBps) + '</span></div>'\n      + '</div>'\n  }\n\n  return '<div style=\"background:' + bgState + ';border:1px solid ' + stateColor + '33;'\n    + 'border-left:3px solid ' + stateColor + ';border-radius:7px;padding:9px 12px;'\n    + 'flex:1;min-width:165px\">'\n\n    // Linha de título: dot + provider + badge UP/DOWN\n    + '<div style=\"display:flex;align-items:center;gap:6px;margin-bottom:4px\">'\n    + nDot(link.up, link.stale, 8)\n    + '<span style=\"font-size:.88rem;font-weight:700;color:#CDD9E5;flex:1\">' + nEsc(link.name) + '</span>'\n    + '<span style=\"font-size:.70rem;font-weight:700;color:' + stateColor + '\">' + nEsc(stateLbl) + '</span>'\n    + '</div>'\n\n    // Interface name (secundário)\n    + (link.found\n        ? '<div style=\"font-size:.70rem;color:var(--bpc-mute);margin-bottom:2px\" title=\"' + nEsc(link.desc) + '\">'\n          + nEsc(link.ifname) + (link.desc ? ' · ' + nEsc(link.desc.substring(0, 28)) : '') + '</div>'\n        : '<div style=\"font-size:.70rem;color:var(--bpc-crit);font-style:italic\">interface não encontrada</div>')\n\n    + slaBadge\n    + traffic\n\n    + '</div>'\n}\n\nfunction nRenderGroup(grp) {\n  var gcfg = grp.cfg\n  var downColor = grp.downCount > 0 ? 'var(--bpc-crit)' : gcfg.color\n  var groupState = grp.downCount > 0\n    ? '<span style=\"font-size:.75rem;color:var(--bpc-crit);font-weight:700\">' + grp.downCount + ' DOWN</span>'\n    : '<span style=\"font-size:.75rem;color:var(--bpc-ok)\">OK</span>'\n\n  return '<div style=\"margin-bottom:16px\">'\n    // ── Cabeçalho do grupo ──\n    + '<div style=\"display:flex;align-items:center;gap:8px;margin-bottom:8px;'\n    + 'border-bottom:1px solid ' + gcfg.color + '33;padding-bottom:5px\">'\n    + '<span style=\"font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;'\n    + 'color:' + gcfg.color + '\">' + nEsc(gcfg.label) + '</span>'\n    + groupState\n    + '<span style=\"font-size:.70rem;color:var(--bpc-mute);margin-left:4px\">· ' + nEsc(gcfg.note) + '</span>'\n    + '</div>'\n    // ── Cards dos links ──\n    + '<div style=\"display:flex;flex-wrap:wrap;gap:6px\">'\n    + grp.links.map(function(l) { return nRenderLinkCard(l, gcfg.color) }).join('')\n    + '</div>'\n    + '</div>'\n}\n\nfunction nRender(el, model) {\n  var headline = model.totalDown === 0\n    ? '<span style=\"color:var(--bpc-ok)\">Todos os links operacionais</span>'\n    : '<span style=\"color:var(--bpc-crit)\">' + model.totalDown + ' link(s) em baixo</span>'\n\n  // Barra de resumo rápido por grupo\n  var summary = model.groups.map(function(g) {\n    var col = g.downCount > 0 ? 'var(--bpc-crit)' : g.cfg.color\n    var upCount = g.links.length - g.downCount\n    return '<span style=\"display:inline-flex;align-items:center;gap:5px;'\n      + 'padding:3px 9px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid ' + col + '44\">'\n      + '<span style=\"width:7px;height:7px;border-radius:50%;background:' + col + ';display:inline-block\"></span>'\n      + '<span style=\"font-size:.78rem;color:#CDD9E5\">' + nEsc(g.cfg.label) + '</span>'\n      + '<span style=\"font-size:.75rem;color:' + col + ';font-weight:700\">' + upCount + '/' + g.links.length + '</span>'\n      + '</span>'\n  }).join('')\n\n  el.innerHTML = '<div class=\"bpc\" style=\"font-family:\\'Inter\\',\\'Segoe UI\\',sans-serif\">'\n    // ── Título + headline ──\n    + '<div style=\"display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap\">'\n    + '<span style=\"font-size:1.0rem;font-weight:700;color:#CDD9E5;letter-spacing:.06em;text-transform:uppercase\">Links WAN · Vista de Negócio</span>'\n    + '<span style=\"font-size:.88rem\">' + headline + '</span>'\n    + '</div>'\n    // ── Resumo por categoria ──\n    + '<div style=\"display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px\">' + summary + '</div>'\n    // ── Grupos ──\n    + model.groups.map(nRenderGroup).join('')\n    + '</div>'\n}\n\nfunction nRenderError(el, msg) {\n  el.innerHTML = '<div class=\"bpc bpc-card state-down\"><div class=\"bpc-error-msg\">⚠ Vista de Negócio WAN: ' + nEsc(msg) + '</div></div>'\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [6] BOOT\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction nLoad(rpc) {\n  var el = document.getElementById(CFG_NEG.elementId)\n  if (!el) return\n  el.innerHTML = '<div style=\"padding:12px;color:var(--bpc-mute);font-size:.85rem\">A carregar vista de negócio WAN…</div>'\n  nFetch(rpc)\n    .then(function(data) { nRender(el, nCompute(data)) })\n    .catch(function(err) { nRenderError(el, err.message || String(err)) })\n  window.BPC.utils.startRefresh(el, function() { nLoad(rpc) }, CFG_NEG.refreshMs)\n}\n\nfunction nInitWithRetry(attempt) {\n  attempt = attempt || 0\n  if (typeof window.waitForBPC === 'function') { window.waitForBPC(nLoad); return }\n  if (attempt > 50) { console.error('[BPC] l3-wan-negocio: waitForBPC nunca disponivel'); return }\n  setTimeout(function() { nInitWithRetry(attempt + 1) }, 100)\n}\n\nnInitWithRetry()\n",
+        "content": "<div id=\"bpc-wan-negocio\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "group": {
+            "filter": "HG_DC_SWITCHES"
+          },
+          "host": {
+            "filter": "DC1-SPINE-11"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "id": 109,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — N3 · REDE · WAN · TRIGGERS  v1.0                            ║\n// ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║\n// ║  Datasource: BPC-NETWORK (ffo8sp8zllog0e) · Zabbix 7.0                ║\n// ║                                                                          ║\n// ║  Alertas activos nos 5 routers WAN (grupo 27), ordenados por           ║\n// ║  severidade descendente. Cada linha tem link drill → N4 device.        ║\n// ║  Máximo 20 triggers exibidos.                                           ║\n// ║                                                                          ║\n// ║  [1] CFG  [2] FETCH  [3] RENDER  [4] BOOT                              ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [1] CFG\n// ────────────────────────────────────────────────────────────────────────────\n\nvar CFG_TRG = {\n  elementId: 'bpc-wan-triggers',\n  refreshMs:  60000,\n  maxRows:    20,\n  n4DashUid:  '8ddc4833-be01-47ea-8ada-a89531d4babb',\n\n  // 5 routers WAN (grupo 27) + hostids para link drill N4\n  wanHosts: [\n    { hostid: '10838', name: 'WAN-INT'  },\n    { hostid: '10839', name: 'WAN-EMIS' },\n    { hostid: '10840', name: 'GTW01'    },\n    { hostid: '10996', name: 'WAN-AG'   },\n    { hostid: '11001', name: 'PARC'     },\n  ],\n\n  // Severidade Zabbix → label + cor\n  sevMap: {\n    5: { label: 'Desastre',  color: '#ff0000' },\n    4: { label: 'Alto',      color: '#f85149' },\n    3: { label: 'Médio',     color: '#d29922' },\n    2: { label: 'Aviso',     color: '#a37e00' },\n    1: { label: 'Info',      color: '#00B4D8' },\n    0: { label: 'N/D',       color: '#64748B' },\n  },\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [2] FETCH\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction tFetch(rpc) {\n  var hids = CFG_TRG.wanHosts.map(function(h) { return h.hostid })\n  return rpc('trigger.get', {\n    hostids: hids,\n    filter: { value: 1 },\n    output: ['triggerid', 'priority', 'description', 'lastchange'],\n    selectHosts: ['hostid', 'host'],\n    sortfield: ['priority', 'lastchange'],\n    sortorder: 'DESC',\n    limit: CFG_TRG.maxRows,\n  })\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [3] RENDER\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction tEsc(s) {\n  return String(s == null ? '' : s).replace(/[&<>\"']/g, function(c) {\n    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c]\n  })\n}\n\nfunction tFmtAge(lastchange) {\n  if (!lastchange) return '—'\n  var sec = Math.floor(Date.now() / 1000) - parseInt(lastchange, 10)\n  if (sec < 60)   return sec + 's'\n  if (sec < 3600) return Math.floor(sec / 60) + 'm'\n  if (sec < 86400) return Math.floor(sec / 3600) + 'h'\n  return Math.floor(sec / 86400) + 'd'\n}\n\nfunction tRender(el, triggers) {\n  if (!triggers.length) {\n    el.innerHTML = '<div class=\"bpc\" style=\"padding:14px;text-align:center;color:var(--bpc-ok);font-size:.90rem\">'\n      + '✓ Sem alertas activos nos routers WAN</div>'\n    return\n  }\n\n  // Mapa hostid→nome (para lookup rápido)\n  var hostMap = {}\n  CFG_TRG.wanHosts.forEach(function(h) { hostMap[h.hostid] = h.name })\n\n  var rows = triggers.map(function(t) {\n    var sev     = parseInt(t.priority, 10) || 0\n    var sevInfo = CFG_TRG.sevMap[sev] || CFG_TRG.sevMap[0]\n    var host    = (t.hosts && t.hosts[0]) || {}\n    var hostId  = host.hostid || ''\n    var hostName = hostMap[hostId] || tEsc(host.host || '—')\n    var age     = tFmtAge(t.lastchange)\n\n    var routerHostName = tEsc(host.host || hostName)\n    var drillHref = CFG_TRG.n4DashUid\n      ? '/d/' + CFG_TRG.n4DashUid + '/n4-rede-wan-router?var-routerName=' + encodeURIComponent(host.host || hostName)\n      : null\n\n    var hostCell = drillHref\n      ? '<a href=\"' + drillHref + '\" style=\"color:var(--bpc-cyan);text-decoration:none\">' + tEsc(hostName) + ' →</a>'\n      : '<span style=\"color:#CDD9E5\">' + tEsc(hostName) + '</span>'\n\n    return '<tr style=\"border-top:1px solid rgba(255,255,255,0.04)\">'\n      + '<td style=\"padding:5px 8px;white-space:nowrap\">'\n      + '<span style=\"display:inline-block;padding:2px 7px;border-radius:6px;font-size:.72rem;font-weight:700;'\n      + 'letter-spacing:.04em;background:' + sevInfo.color + '22;color:' + sevInfo.color + ';border:1px solid ' + sevInfo.color + '44\">'\n      + tEsc(sevInfo.label) + '</span></td>'\n      + '<td style=\"padding:5px 8px;font-size:.83rem\">' + hostCell + '</td>'\n      + '<td style=\"padding:5px 10px;font-size:.83rem;color:rgba(255,255,255,0.70);max-width:420px\">'\n      + tEsc(t.description) + '</td>'\n      + '<td style=\"padding:5px 8px;font-size:.78rem;color:var(--bpc-mute);white-space:nowrap;text-align:right\">'\n      + tEsc(age) + '</td>'\n      + '</tr>'\n  }).join('')\n\n  el.innerHTML = '<div class=\"bpc\">'\n    + '<div style=\"display:flex;align-items:center;gap:8px;margin-bottom:8px\">'\n    + '<span style=\"font-size:.90rem;font-weight:700;color:#CDD9E5;letter-spacing:.05em;text-transform:uppercase\">Alertas activos</span>'\n    + '<span style=\"font-size:.82rem;color:var(--bpc-mute)\">routers WAN · grupo 27</span>'\n    + '<span style=\"margin-left:auto;font-size:.75rem;color:var(--bpc-mute)\">' + triggers.length + ' alerta(s)</span>'\n    + '</div>'\n    + '<div style=\"overflow-x:auto\">'\n    + '<table style=\"border-collapse:collapse;width:100%\">'\n    + '<thead><tr style=\"border-bottom:1px solid rgba(255,255,255,0.10)\">'\n    + '<th style=\"padding:4px 8px;font-size:.70rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--bpc-mute);text-align:left\">Sev</th>'\n    + '<th style=\"padding:4px 8px;font-size:.70rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--bpc-mute);text-align:left\">Router</th>'\n    + '<th style=\"padding:4px 8px;font-size:.70rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--bpc-mute);text-align:left\">Descrição</th>'\n    + '<th style=\"padding:4px 8px;font-size:.70rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--bpc-mute);text-align:right\">Duração</th>'\n    + '</tr></thead>'\n    + '<tbody>' + rows + '</tbody>'\n    + '</table>'\n    + '</div>'\n    + '</div>'\n}\n\nfunction tRenderError(el, msg) {\n  el.innerHTML = '<div class=\"bpc bpc-card state-down\"><div class=\"bpc-error-msg\">⚠ Triggers WAN: ' + tEsc(msg) + '</div></div>'\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [4] BOOT\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction tLoad(rpc) {\n  var el = document.getElementById(CFG_TRG.elementId)\n  if (!el) return\n  el.innerHTML = '<div style=\"padding:10px;color:var(--bpc-mute);font-size:.85rem\">A carregar alertas WAN…</div>'\n  tFetch(rpc)\n    .then(function(triggers) { tRender(el, triggers) })\n    .catch(function(err) { tRenderError(el, err.message || String(err)) })\n  window.BPC.utils.startRefresh(el, function() { tLoad(rpc) }, CFG_TRG.refreshMs)\n}\n\nfunction tInitWithRetry(attempt) {\n  attempt = attempt || 0\n  if (typeof window.waitForBPC === 'function') { window.waitForBPC(tLoad); return }\n  if (attempt > 50) { console.error('[BPC] l3-wan-triggers: waitForBPC nunca disponivel'); return }\n  setTimeout(function() { tInitWithRetry(attempt + 1) }, 100)\n}\n\ntInitWithRetry()\n",
+        "content": "<div id=\"bpc-wan-triggers\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "group": {
+            "filter": "HG_DC_SWITCHES"
+          },
+          "host": {
+            "filter": "DC1-SPINE-11"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": [
+    "bpc",
+    "rede",
+    "n3",
+    "wan"
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "N3 · WAN",
+  "uid": "1702465e-0539-4fa7-a8eb-c0d3a655d99b",
+  "version": 9
+}

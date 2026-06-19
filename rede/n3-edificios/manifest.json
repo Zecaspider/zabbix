@@ -13,7 +13,7 @@
     },
     {
       "file": "l3-edificios-table.js",
-      "id": null,
+      "id": 101,
       "role": "content",
       "title": "Edifícios — Tabela",
       "content": "<div id=\"bpc-n3ed-table\"></div>"
