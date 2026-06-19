@@ -141,6 +141,109 @@ sistema-de-observabilidade/
 4. Subpastas vazias (ainda por construir) levam um `.gitkeep` para a hierarquia
    sobreviver no git.
 
+### 4.2 Hierarquia no Grafana (organização de pastas + Portal N1)
+
+> **Estado actual (2026-06-19): a corrigir.** O Grafana tem 82 dashboards
+> espalhados por 12 pastas. A pasta de trabalho v5 (`dashboards v5`, UID
+> `efpbu5tvrhce8a`) tem 17 dashboards **achatados**, sem agrupamento por domínio,
+> com 3 convenções de nomes diferentes a coexistir (`N2 - Armazenamento`,
+> `n2-rede`, `n3-sv-versao-a-bt`) e 3 dashboards de teste à mistura. Não existe
+> porta de entrada. Isto contradiz a §1 (sistema com fluxo intuitivo) e tem de
+> ser reorganizado. Esta secção é a estrutura-alvo aprovada.
+
+**Princípio:** a estrutura de pastas no Grafana espelha o modelo mental do NOC
+— **uma pasta de topo por domínio**. Dentro de cada pasta, os dashboards usam
+prefixo de nível (`N2 · …`, `N3 · …`, `N4 · …`) que os ordena sozinhos. As
+pastas servem para *descoberta*; o *fluxo* faz-se por drill-down (links por
+UID, §7). O sistema de produção fica **limpo**, sem coexistir com o legado.
+
+**Estrutura-alvo (pastas de domínio no topo):**
+
+```
+📁 00 · Visão Geral            ⭐ Portal NOC (N1) — Home do Grafana
+📁 01 · Rede                   N2 · Segmentos · N3 · DC Core / Edifícios / WAN / WAN—Carriers · N4 · WAN Router / DC Switch
+📁 02 · Servidores Físicos     N2 · Visão Geral · N3 · Detalhe Host
+📁 03 · Servidores Virtuais    N2 · Visão Geral · N3 · VMs · N3 · vCenter Detalhe
+📁 04 · Armazenamento          N2 · Visão Geral
+📁 05 · Segurança              (Fase 5 — vazia)
+📁 06 · Bases de Dados         (Fase 6 — vazia)
+📁 07 · APIs e Serviços        (vazia)
+📁 08 · Serviços de Negócio    (vazia)
+📁 09 · Agências               (vazia)
+📁 99 · Arquivo                TODO o legado consolidado aqui (destino decidido no fim)
+```
+
+**Convenção de nomes dentro de cada pasta de domínio:** como a pasta já dá o
+domínio, o título do dashboard só precisa do **nível + detalhe**, com `·` como
+separador, ordenável e legível:
+
+| Nível | Formato | Exemplos (domínio Rede) |
+|---|---|---|
+| N2 | `N2 · <detalhe>` | `N2 · Segmentos` |
+| N3 | `N3 · <detalhe>` | `N3 · DC Core` · `N3 · WAN — Carriers` |
+| N4 | `N4 · <detalhe>` | `N4 · WAN Router` · `N4 · DC Switch` |
+
+> Renomear o **título** de um dashboard é seguro: os links de drill-down (§7)
+> referenciam o **UID**, que nunca muda. O `slug` da URL acompanha o título mas
+> os links por UID continuam válidos.
+
+**Mapa de migração (14 dashboards de produção v5 → pasta + novo título):**
+
+| UID | Título actual | Pasta-alvo | Novo título |
+|---|---|---|---|
+| `ec590abd-…` | n2-rede | 01 · Rede | `N2 · Segmentos` |
+| `a75e2ba6-…` | n3-rede-dc-core | 01 · Rede | `N3 · DC Core` |
+| `471f2208-…` | n3-rede-edificios | 01 · Rede | `N3 · Edifícios` |
+| `1702465e-…` | n3-rede-wan | 01 · Rede | `N3 · WAN` |
+| `31bace26-…` | n3-rede-wan-carriers | 01 · Rede | `N3 · WAN — Carriers` |
+| `8ddc4833-…` | n4-rede-wan-router | 01 · Rede | `N4 · WAN Router` |
+| `7baea796-…` | n4-rede-dc-switch | 01 · Rede | `N4 · DC Switch` |
+| `8f6a94be-…` | N2 - Servidores Físicos (ESXi) | 02 · Servidores Físicos | `N2 · Visão Geral` |
+| `b55d5481-…` | N3 - Servidores Fisicos (ESXi) - Detalhe | 02 · Servidores Físicos | `N3 · Detalhe Host` |
+| `0758c24e-…` | n2-servidores-virtuais | 03 · Servidores Virtuais | `N2 · Visão Geral` |
+| `7b09c683-…` | n3-servidores-virtuais | 03 · Servidores Virtuais | `N3 · VMs` |
+| `59e7e4b2-…` | n3-vcenter-detalhe | 03 · Servidores Virtuais | `N3 · vCenter Detalhe` |
+| `993834a3-…` | N2 - Armazenamento | 04 · Armazenamento | `N2 · Visão Geral` |
+| `a967e936-…` | n2-infraestrutura-vmware | **a esclarecer** | duplicado aparente de `N2 · Servidores Virtuais` — decidir se funde ou é vista distinta antes de migrar |
+
+**Quarentena (não migrar; mover p/ `99 · Arquivo` ou `_quarentena`):**
+`n3-sv-versao-a-bt`, `n3-sv-versao-b-nativo` (experiências A/B), `TESTE - utils
+v9`, `BPC Teste API`, `teste-panel`, `New dashboard`, `storage2`,
+`D01- Visão geral - Nivel 1.v2`. A eliminação fica para o utilizador (uma IA
+não apaga dashboards).
+
+**Legado (65 dashboards das pastas `00`–`08` numeradas + `99 - Arquivo` +
+`99 - Arquivo v5 legado`):** consolidar **tudo** numa única pasta `99 ·
+Arquivo`. Destino final (apagar/manter) decide-se quando o v5 estiver
+completo.
+
+#### Portal NOC (N1) — porta de entrada única
+
+O sistema precisa de **um dashboard de entrada** (não uma lista de dashboards
+crua) — é o que torna isto um sistema de observabilidade e não uma amálgama.
+
+- **Onde:** pasta `00 · Visão Geral`, definido como **Home Dashboard** da org
+  (`PUT /api/org/preferences { homeDashboardUID }`) → abrir o Grafana cai aqui.
+- **Topo:** logo BPC + título + relógio (reutiliza o header canónico do
+  `utils.js`, §5.1).
+- **Corpo:** grelha de **cartões, um por domínio** (Rede, Servidores Físicos,
+  Servidores Virtuais, Armazenamento, Segurança, Bases de Dados, APIs, Serviços
+  de Negócio, Agências). Cada cartão tem: ícone do domínio, nome, **rollup de
+  saúde ao vivo** (contagem de down/warn via RPC, modelo de estado §6) e
+  **liga ao N2 desse domínio** (drill-down por UID, §7).
+- **Painel:** Business Text (`marcusolsson-dynamictext-panel`), mesmo contrato
+  de bootstrap e estado dos restantes (§5, §6). Domínios ainda não construídos
+  aparecem com cartão "em construção" (sem link), não escondidos — o portal é
+  o mapa de cobertura do sistema.
+- **Disco:** vive em `visao-geral/n1/` (§4.1), com o seu `manifest.json`.
+
+> **Reconciliação com o CLAUDE.md:** o constraint actual "Pasta Grafana de
+> trabalho = dashboards v5 / UID `efpbu5tvrhce8a`" deixa de fazer sentido quando
+> os dashboards passam para pastas de domínio no topo. Ao **executar** esta
+> reorganização (sessão dedicada, com confirmação de push), actualizar esse
+> constraint do CLAUDE.md para a nova estrutura e esvaziar/arquivar a pasta
+> `dashboards v5`. Enquanto a reorg não acontece, o constraint mantém-se válido.
+
 ## 5. Arquitectura do dashboard
 
 ### Painéis por nível (regra híbrida aplicada)

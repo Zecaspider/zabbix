@@ -146,17 +146,34 @@
 | 9.2 | N3 detalhe agência/link | ☐ | | |
 | 9.3 | Navegação + teste + commit | ☐ | | |
 
-## Fase 10 · N1 · Visão Geral (depende de 1–9)
+## Fase 10 · N1 · Portal NOC (porta de entrada — spec em engenharia §4.2)
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 10.1 | Cards compostos, 1 por domínio (BT) | ☐ | | cada um liga ao `dashUid` do N2 |
-| 10.2 | Estado agregado coerente (consome `BPC.state`) | ☐ | | N1 não contradiz N2/N3 |
-| 10.3 | Layout wallboard + teste + commit | ☐ | | |
+| 10.1 | Cards compostos, 1 por domínio (BT) | ☐ | | cada um liga ao `dashUid` do N2; domínios por construir = card "em construção" sem link |
+| 10.2 | Estado agregado coerente (consome `BPC.state`) | ☐ | | rollup down/warn ao vivo por card; N1 não contradiz N2/N3 |
+| 10.3 | Logo + header canónico (reutiliza `utils.js` §5.1) | ☐ | | é o menu de entrada com logo que o utilizador pediu |
+| 10.4 | Definir como Home da org (`PUT /api/org/preferences`) | ☐ | | abrir Grafana cai no Portal |
+| 10.5 | Layout wallboard + teste + commit | ☐ | | vive em `visao-geral/n1/` |
 
 ## Fase 11 · (Fase 2 do projecto) N0 · Executivo/SLA
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
 | 11.1 | Disponibilidade %, tendências, SLA | ☐ | | adiado |
+
+## Fase 12 · Reorganização da estrutura no Grafana (transversal — spec em engenharia §4.2)
+> Decisões 2026-06-19: pastas de domínio **no topo** (sistema limpo, sem
+> coexistir com legado) · TODO o legado consolidado numa pasta `99 · Arquivo`
+> única (destino decidido no fim) · execução em sessão dedicada, com confirmação
+> de push. Estado actual = 82 dashboards, 17 achatados na `dashboards v5`.
+
+| # | Tarefa | Estado | Data | Nota |
+|---|---|---|---|---|
+| 12.1 | Criar pastas de domínio no topo (`00`–`09`) + `99 · Arquivo` | ☐ | | via `/api/folders` |
+| 12.2 | Mover + renomear os 14 dashboards de produção v5 | ☐ | | mapa de migração em engenharia §4.2; renomear título é seguro (links por UID) |
+| 12.3 | Esclarecer duplicado `n2-infraestrutura-vmware` vs `N2 · Servidores Virtuais` | ☐ | | fundir ou manter como vista distinta antes de migrar |
+| 12.4 | Consolidar 65 legados + 8 de teste em `99 · Arquivo` | ☐ | | IA não apaga; eliminação fica para o utilizador |
+| 12.5 | Esvaziar/arquivar `dashboards v5` + actualizar constraint do CLAUDE.md | ☐ | | o constraint UID `efpbu5tvrhce8a` deixa de aplicar |
+| 12.6 | Sincronizar `dashboardTitle` nos `manifest.json` com os novos títulos | ☐ | | manter paridade disco↔Grafana |
 
 ---
 
