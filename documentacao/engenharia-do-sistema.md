@@ -165,7 +165,7 @@ cronograma e as pastas de domínio do disco (§4.1) 1-para-1:
 📁 01 · Infraestrutura VMware  N2 · VMware · N3 · ESXi / ESXi Detalhe / vCenter  [infraestrutura-vmware/]
 📁 02 · Armazenamento          N2 · Visão Geral                          [armazenamento/]
 📁 03 · Servidores Virtuais    N2 · VMs · N3 · VM Detalhe                [servidores-virtuais/]
-📁 04 · Rede                   N2 · Segmentos · N3 · DC Core / Edifícios / WAN / WAN—Carriers · N4 · WAN Router / DC Switch  [rede/]
+📁 04 · Rede                   N2 · Rede · N3 · DC Core / Edifícios / WAN / WAN—Carriers · N4 · WAN Router / DC Switch  [rede/]
 📁 05 · Segurança              (Fase 5 — vazia)                          [seguranca/]
 📁 06 · Bases de Dados         (Fase 6 — vazia)                          [bases-dados/]
 📁 07 · APIs e Serviços        (vazia)                                   [apis/]
@@ -188,7 +188,7 @@ separador, ordenável e legível:
 
 | Nível | Formato | Exemplos (domínio Rede) |
 |---|---|---|
-| N2 | `N2 · <detalhe>` | `N2 · Segmentos` |
+| N2 | `N2 · <detalhe>` | `N2 · Rede` |
 | N3 | `N3 · <detalhe>` | `N3 · DC Core` · `N3 · WAN — Carriers` |
 | N4 | `N4 · <detalhe>` | `N4 · WAN Router` · `N4 · DC Switch` |
 
@@ -209,7 +209,7 @@ classificação por domínio:
 | `993834a3-…` | N2 - Armazenamento | `armazenamento/n2` | 02 · Armazenamento | `N2 · Visão Geral` |
 | `0758c24e-…` | n2-servidores-virtuais | `servidores-virtuais/n2` | 03 · Servidores Virtuais | `N2 · VMs` |
 | `0ae673a3-…` | n3-sv-versao-a-bt | `servidores-virtuais/n3` | 03 · Servidores Virtuais | `N3 · VM Detalhe` |
-| `ec590abd-…` | n2-rede | `rede/n2` | 04 · Rede | `N2 · Segmentos` |
+| `ec590abd-…` | n2-rede | `rede/n2` | 04 · Rede | `N2 · Rede` |
 | `a75e2ba6-…` | n3-rede-dc-core | `rede/n3-dc` | 04 · Rede | `N3 · DC Core` |
 | `471f2208-…` | n3-rede-edificios | `rede/n3-edificios` | 04 · Rede | `N3 · Edifícios` |
 | `1702465e-…` | n3-rede-wan | `rede/n3-wan` | 04 · Rede | `N3 · WAN` |

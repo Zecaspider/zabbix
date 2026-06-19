@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-18 (1.20 ☑ conformidade; 1.21 ☑ navegação N2-VMware↔N3-vCenter; 1.22 ☑ N3-ESXi back link + nocLabel corrigido)
+Última actualização: 2026-06-19 (4.3 ☑ N2 Rede layout+drills; 4.5 ◐ N3 Edifícios conformado excl. drill N4; 4.8 ☑ navegação ponta-a-ponta + conformance test completo; 4.9 ☑ snapshots 7 dashboards)
 
 ---
 
@@ -107,13 +107,15 @@
 | 4.0 | Plano de arquitectura N2+N3+N4 | ☑ | 2026-06-18 | `documentacao/rede-arquitectura.md`; 3 decisões aprovadas |
 | 4.1 | Links WAN (grupo 35 vazio) — RESOLVIDO + topologia auditada | ☑ | 2026-06-18 | Auditoria directa → `documentacao/rede-topologia.md` + `topologia-dc.svg`. WAN = links nas interfaces do g27. IP SLA = verdade de serviço |
 | 4.2 | Fundação — consolidar `utils.js` rede | ☑ | 2026-06-18 | 4 cópias (n3-wan, n3-wan-carriers, n4-wan-router, n4-dc-switch) com nocLabel próprio. Pushed e testado |
-| 4.3 | N2 refactor — l2-kpi + l2-segmentos + l2-triggers | ◐ | 2026-06-18 | Pushed. Falta: layout final (4.8) + teste browser confirmado |
-| 4.4 | N3 DC Core — fabric + table + WAN links | ☑ | 2026-06-19 | UID `a75e2ba6` · 4 painéis (utils/fabric/table/wan) · pushed + committed · `rede/n3-dc/` |
-| 4.5 | N3 Edifícios | ◐ | | UID `471f2208` · pushed anteriormente · falta drill N4 |
-| 4.6 | N3 WAN — negócio + cards + triggers + carriers | ☑ | 2026-06-19 | UID `1702465e` (n3-wan) · UID `31bace26` (n3-wan-carriers) · 4+2 painéis · 3 "não identificado" residuais (aceitável) · pushed + committed |
-| 4.7a | N4 WAN Router — ficha técnica por router | ☑ | 2026-06-19 | UID `8ddc4833` · var `routerName` (Custom, 5 routers) · BT: ficha+circuitos categorizados+impacto negócio+flapping 4h+BGP prefixos+IP SLA · TS nativo: tráfego+CPU/RAM+RTT · pushed + committed |
-| 4.7b | N4 DC Switch — ficha técnica por switch | ☑ | 2026-06-19 | UID `7baea796` · var `switchName` (Query→HG_DC_SWITCHES, auto-popula) · BT: ficha+fabric categorizado+impacto negócio+BGP EVPN+erros CRC+flapping 4h · TS nativo: tráfego+CPU+erros · pushed + committed |
-| 4.8 | Navegação ponta-a-ponta + layout final + teste confirmado | ☐ | | back-links N2→N3→N4 · gridPos final · screenshot NOC |
+| 4.3 | N2 · Rede refactor — l2-kpi + l2-segmentos + l2-triggers | ☑ | 2026-06-19 | Título corrigido "N2 · Rede" (era "N2 · Segmentos") · drills N4 por grupo (g26→DC Switch / g27→WAN Router) em l2-triggers · dead code "N3 em construção" removido de l2-segmentos · layout compactado (buraco 18 linhas eliminado) |
+| 4.4 | N3 DC Core — fabric + table + WAN links | ☑ | 2026-06-19 | UID `a75e2ba6` · 4 painéis · l3-dc-table re-pushed com drills N4 (estavam ausentes do Grafana) · layout compactado (buraco 8 linhas utils↔fabric) · snapshot gravado |
+| 4.5 | N3 Edifícios | ◐ | 2026-06-19 | UID `471f2208` · conformado: CPU threshold corrigido (60/85), manifest id corrigido · drill N4 **adiado** (N4 Edifícios não existe ainda) · snapshot gravado |
+| 4.6 | N3 WAN — negócio + cards + triggers + carriers | ☑ | 2026-06-19 | UID `1702465e` (n3-wan) reestruturado: duplicados eliminados (5 painéis→7 canonical), n4DashUid preenchido em l3-wan-triggers, layout novo · UID `31bace26` (n3-wan-carriers) h=48→28 · snapshots gravados |
+| 4.7a | N4 WAN Router — ficha técnica por router | ☑ | 2026-06-19 | UID `8ddc4833` · back-link "← N3 WAN" pushed (estava ausente do Grafana) · snapshot gravado |
+| 4.7b | N4 DC Switch — ficha técnica por switch | ☑ | 2026-06-19 | UID `7baea796` · back-link "← N3 DC Core" pushed (estava ausente do Grafana) · snapshot gravado |
+| 4.8 | Navegação ponta-a-ponta + layout final + conformance test | ☑ | 2026-06-19 | Teste de conformidade executado em todos os 7 dashboards (`documentacao/teste-conformidade-fase4-rede.md`) · 23 defeitos identificados e aplicados (F-01→F-23, excepto F-11 adiado) · back-links N3→N2 e N4→N3 funcionais · drills N2→N3→N4 operacionais |
+| 4.9 | Snapshots e registos finais | ☑ | 2026-06-19 | `dashboard-completo.json` gravado para os 7 dashboards (n2, n3-dc, n3-edificios, n3-wan, n3-wan-carriers, n4-wan-router, n4-dc-switch) |
+| 4.10 | Drill N4 Edifícios (g28/g29) | ⏸ | | Bloqueado: N4 Edifícios não existe. Implementar quando o dashboard for criado. |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |
