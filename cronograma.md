@@ -97,21 +97,23 @@
 
 > **Arquitectura aprovada 2026-06-18** (lente NOC + redes) em
 > `documentacao/rede-arquitectura.md`. Modelo de 4 níveis: N2 (wallboard, 3 cards
-> de segmento) → N3 ×3 (DC / Edifícios / WAN) → N4 (detalhe device/link
-> parametrizado por `var-hostid`). Decisões: N4 como nível novo · WAN via
-> interfaces do grupo 27 (grupo 35 vazio, não esperar hosts) · N3 WAN separado.
+> de segmento) → N3 ×3 (DC / Edifícios / WAN) → N4 (ficha por device,
+> parametrizado por variável Grafana hostname). Decisões: N4 como nível novo ·
+> WAN via interfaces do grupo 27 · N3 WAN separado · N4 usa hostname (não hostid)
+> para compatibilidade com painéis nativos Time Series.
 
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
 | 4.0 | Plano de arquitectura N2+N3+N4 | ☑ | 2026-06-18 | `documentacao/rede-arquitectura.md`; 3 decisões aprovadas |
-| 4.1 | Links WAN (grupo 35 vazio) — RESOLVIDO + topologia auditada | ☑ | 2026-06-18 | Auditoria directa (proxy Grafana) → `documentacao/rede-topologia.md`. WAN = dezenas de links (BGP_PEER, DMVPN×7, Azure ER×2, EMIS, SP parceiros) nas interfaces do g27, não hosts. IP SLA = verdade de serviço. Chaves reais: cpu.util[N], vm.memory.util[N.1], sensor.temp.value, rttMonCtrlAdminSense |
-| 4.2 | Fundação — consolidar `utils.js` rede (thresholds §4, nocLabel) | ◐ | 2026-06-18 | Local OK: 3 cópias idênticas (só `nocLabel` difere), `apiUrl`→Network em todas (corrigido bug n3-dc/n3-edificios que apontavam Infra), catálogo `window.BPC.NET_THR` (rtt/loss/cpu/mem/ifUtil/ifErrors/temp) exposto no BLOCO 5. node--check ✓. Falta push + teste browser |
-| 4.3 | N2 refactor — l2-kpi (5 KPIs) + l2-segmentos (3 cards) + l2-triggers | ◐ | 2026-06-18 | Pushed: l2-kpi v2.0 (5 KPIs; BGP-proxy corrigido = net.if.status BGP_PEER + IP SLA sense) · l2-segmentos (card WAN agora conta LINKS reais via marcadores + IP SLA, não 5 routers) · l2-triggers slim · manifest IDs fixados (seg=103, trg=104; removido duplicado 102). node--check ✓. Falta: layout final (4.8) + teste browser confirmado |
-| 4.4 | N3 DC — promover `l3-dc-table` + drill N4 | ☐ | | UID `a75e2ba6` |
-| 4.5 | N3 Edifícios — drill N4 | ☐ | | UID `471f2208` |
-| 4.6 | N3 WAN (novo `rede/n3-wan/`) — links/IP SLA/BGP-proxy (grupo 27) | ☐ | | |
-| 4.7 | N4 device (novo `rede/n4-device/`) — header→séries→interfaces→BGP/sensores cond.→eventos | ☐ | | parametrizado var-hostid |
-| 4.8 | Navegação ponta-a-ponta + teste + layout final + commit | ☐ | | back-links + UIDs + snapshot |
+| 4.1 | Links WAN (grupo 35 vazio) — RESOLVIDO + topologia auditada | ☑ | 2026-06-18 | Auditoria directa → `documentacao/rede-topologia.md` + `topologia-dc.svg`. WAN = links nas interfaces do g27. IP SLA = verdade de serviço |
+| 4.2 | Fundação — consolidar `utils.js` rede | ☑ | 2026-06-18 | 4 cópias (n3-wan, n3-wan-carriers, n4-wan-router, n4-dc-switch) com nocLabel próprio. Pushed e testado |
+| 4.3 | N2 refactor — l2-kpi + l2-segmentos + l2-triggers | ◐ | 2026-06-18 | Pushed. Falta: layout final (4.8) + teste browser confirmado |
+| 4.4 | N3 DC Core — fabric + table + WAN links | ☑ | 2026-06-19 | UID `a75e2ba6` · 4 painéis (utils/fabric/table/wan) · pushed + committed · `rede/n3-dc/` |
+| 4.5 | N3 Edifícios | ◐ | | UID `471f2208` · pushed anteriormente · falta drill N4 |
+| 4.6 | N3 WAN — negócio + cards + triggers + carriers | ☑ | 2026-06-19 | UID `1702465e` (n3-wan) · UID `31bace26` (n3-wan-carriers) · 4+2 painéis · 3 "não identificado" residuais (aceitável) · pushed + committed |
+| 4.7a | N4 WAN Router — ficha técnica por router | ☑ | 2026-06-19 | UID `8ddc4833` · var `routerName` (Custom, 5 routers) · BT: ficha+circuitos categorizados+impacto negócio+flapping 4h+BGP prefixos+IP SLA · TS nativo: tráfego+CPU/RAM+RTT · pushed + committed |
+| 4.7b | N4 DC Switch — ficha técnica por switch | ☑ | 2026-06-19 | UID `7baea796` · var `switchName` (Query→HG_DC_SWITCHES, auto-popula) · BT: ficha+fabric categorizado+impacto negócio+BGP EVPN+erros CRC+flapping 4h · TS nativo: tráfego+CPU+erros · pushed + committed |
+| 4.8 | Navegação ponta-a-ponta + layout final + teste confirmado | ☐ | | back-links N2→N3→N4 · gridPos final · screenshot NOC |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |
