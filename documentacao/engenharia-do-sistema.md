@@ -157,21 +157,30 @@ prefixo de nível (`N2 · …`, `N3 · …`, `N4 · …`) que os ordena sozinhos
 pastas servem para *descoberta*; o *fluxo* faz-se por drill-down (links por
 UID, §7). O sistema de produção fica **limpo**, sem coexistir com o legado.
 
-**Estrutura-alvo (pastas de domínio no topo):**
+**Estrutura-alvo (pastas de domínio no topo).** A numeração espelha as Fases do
+cronograma e as pastas de domínio do disco (§4.1) 1-para-1:
 
 ```
-📁 00 · Visão Geral            ⭐ Portal NOC (N1) — Home do Grafana
-📁 01 · Rede                   N2 · Segmentos · N3 · DC Core / Edifícios / WAN / WAN—Carriers · N4 · WAN Router / DC Switch
-📁 02 · Servidores Físicos     N2 · Visão Geral · N3 · Detalhe Host
-📁 03 · Servidores Virtuais    N2 · Visão Geral · N3 · VMs · N3 · vCenter Detalhe
-📁 04 · Armazenamento          N2 · Visão Geral
-📁 05 · Segurança              (Fase 5 — vazia)
-📁 06 · Bases de Dados         (Fase 6 — vazia)
-📁 07 · APIs e Serviços        (vazia)
-📁 08 · Serviços de Negócio    (vazia)
-📁 09 · Agências               (vazia)
+📁 00 · Visão Geral            ⭐ Portal NOC (N1) — Home do Grafana       [visao-geral/]
+📁 01 · Infraestrutura VMware  N2 · VMware · N3 · ESXi / ESXi Detalhe / vCenter  [infraestrutura-vmware/]
+📁 02 · Armazenamento          N2 · Visão Geral                          [armazenamento/]
+📁 03 · Servidores Virtuais    N2 · VMs · N3 · VM Detalhe                [servidores-virtuais/]
+📁 04 · Rede                   N2 · Segmentos · N3 · DC Core / Edifícios / WAN / WAN—Carriers · N4 · WAN Router / DC Switch  [rede/]
+📁 05 · Segurança              (Fase 5 — vazia)                          [seguranca/]
+📁 06 · Bases de Dados         (Fase 6 — vazia)                          [bases-dados/]
+📁 07 · APIs e Serviços        (vazia)                                   [apis/]
+📁 08 · Serviços de Negócio    (vazia)                                   [servicos-negocio/]
+📁 09 · Agências               (vazia)                                   [agencias/]
 📁 99 · Arquivo                TODO o legado consolidado aqui (destino decidido no fim)
 ```
+
+> **Infraestrutura VMware ≠ Servidores Virtuais (blueprint §linhas 56-57).** São
+> dois domínios/cards distintos: VMware = camada de infra (vCenters, clusters,
+> ESXi); Servidores Virtuais = camada de workload (saúde das VMs, filtro por
+> ambiente). Não fundir. **Não existe domínio "Servidores Físicos":** os
+> dashboards Grafana com esse título (`8f6a94be`, `b55d5481`) são os ESXi e já
+> estão reclassificados no disco como `n3-esxi` / `n3-esxi-detalhe` dentro de
+> `infraestrutura-vmware/`.
 
 **Convenção de nomes dentro de cada pasta de domínio:** como a pasta já dá o
 domínio, o título do dashboard só precisa do **nível + detalhe**, com `·` como
@@ -187,30 +196,42 @@ separador, ordenável e legível:
 > referenciam o **UID**, que nunca muda. O `slug` da URL acompanha o título mas
 > os links por UID continuam válidos.
 
-**Mapa de migração (14 dashboards de produção v5 → pasta + novo título):**
+**Mapa de migração (13 dashboards de produção v5 → pasta + novo título).**
+UIDs validados contra os `manifest.json` do disco (§4.1) — fonte de verdade da
+classificação por domínio:
 
-| UID | Título actual | Pasta-alvo | Novo título |
-|---|---|---|---|
-| `ec590abd-…` | n2-rede | 01 · Rede | `N2 · Segmentos` |
-| `a75e2ba6-…` | n3-rede-dc-core | 01 · Rede | `N3 · DC Core` |
-| `471f2208-…` | n3-rede-edificios | 01 · Rede | `N3 · Edifícios` |
-| `1702465e-…` | n3-rede-wan | 01 · Rede | `N3 · WAN` |
-| `31bace26-…` | n3-rede-wan-carriers | 01 · Rede | `N3 · WAN — Carriers` |
-| `8ddc4833-…` | n4-rede-wan-router | 01 · Rede | `N4 · WAN Router` |
-| `7baea796-…` | n4-rede-dc-switch | 01 · Rede | `N4 · DC Switch` |
-| `8f6a94be-…` | N2 - Servidores Físicos (ESXi) | 02 · Servidores Físicos | `N2 · Visão Geral` |
-| `b55d5481-…` | N3 - Servidores Fisicos (ESXi) - Detalhe | 02 · Servidores Físicos | `N3 · Detalhe Host` |
-| `0758c24e-…` | n2-servidores-virtuais | 03 · Servidores Virtuais | `N2 · Visão Geral` |
-| `7b09c683-…` | n3-servidores-virtuais | 03 · Servidores Virtuais | `N3 · VMs` |
-| `59e7e4b2-…` | n3-vcenter-detalhe | 03 · Servidores Virtuais | `N3 · vCenter Detalhe` |
-| `993834a3-…` | N2 - Armazenamento | 04 · Armazenamento | `N2 · Visão Geral` |
-| `a967e936-…` | n2-infraestrutura-vmware | **a esclarecer** | duplicado aparente de `N2 · Servidores Virtuais` — decidir se funde ou é vista distinta antes de migrar |
+| UID | Título actual no Grafana | Disco (manifest) | Pasta-alvo | Novo título |
+|---|---|---|---|---|
+| `a967e936-…` | n2-infraestrutura-vmware | `infraestrutura-vmware/n2` | 01 · Infraestrutura VMware | `N2 · VMware` |
+| `8f6a94be-…` | N2 - Servidores Físicos (ESXi) | `infraestrutura-vmware/n3-esxi` | 01 · Infraestrutura VMware | `N3 · ESXi` |
+| `b55d5481-…` | N3 - Servidores Fisicos (ESXi) - Detalhe | `infraestrutura-vmware/n3-esxi-detalhe` | 01 · Infraestrutura VMware | `N3 · ESXi Detalhe` |
+| `59e7e4b2-…` | n3-vcenter-detalhe | `infraestrutura-vmware/n3-vcenter` | 01 · Infraestrutura VMware | `N3 · vCenter Detalhe` |
+| `993834a3-…` | N2 - Armazenamento | `armazenamento/n2` | 02 · Armazenamento | `N2 · Visão Geral` |
+| `0758c24e-…` | n2-servidores-virtuais | `servidores-virtuais/n2` | 03 · Servidores Virtuais | `N2 · VMs` |
+| `0ae673a3-…` | n3-sv-versao-a-bt | `servidores-virtuais/n3` | 03 · Servidores Virtuais | `N3 · VM Detalhe` |
+| `ec590abd-…` | n2-rede | `rede/n2` | 04 · Rede | `N2 · Segmentos` |
+| `a75e2ba6-…` | n3-rede-dc-core | `rede/n3-dc` | 04 · Rede | `N3 · DC Core` |
+| `471f2208-…` | n3-rede-edificios | `rede/n3-edificios` | 04 · Rede | `N3 · Edifícios` |
+| `1702465e-…` | n3-rede-wan | `rede/n3-wan` | 04 · Rede | `N3 · WAN` |
+| `31bace26-…` | n3-rede-wan-carriers | `rede/n3-wan-carriers` | 04 · Rede | `N3 · WAN — Carriers` |
+| `8ddc4833-…` | n4-rede-wan-router | `rede/n4-wan-router` | 04 · Rede | `N4 · WAN Router` |
+| `7baea796-…` | n4-rede-dc-switch | `rede/n4-dc-switch` | 04 · Rede | `N4 · DC Switch` |
 
-**Quarentena (não migrar; mover p/ `99 · Arquivo` ou `_quarentena`):**
-`n3-sv-versao-a-bt`, `n3-sv-versao-b-nativo` (experiências A/B), `TESTE - utils
-v9`, `BPC Teste API`, `teste-panel`, `New dashboard`, `storage2`,
-`D01- Visão geral - Nivel 1.v2`. A eliminação fica para o utilizador (uma IA
-não apaga dashboards).
+> Nota: `8f6a94be` mantém o título legado "N2 - Servidores Físicos (ESXi)" no
+> Grafana mas o disco já o reclassificou como `n3-esxi` — a migração corrige o
+> título para `N3 · ESXi`.
+
+**Quarentena (não migrar; mover p/ `99 · Arquivo`):**
+`n3-sv-versao-b-nativo` (`0812353b`, alternativa B descartada do N3 VMs),
+`n3-servidores-virtuais` (`7b09c683`, órfão — não está em nenhum manifest do
+disco), `TESTE - utils v9` (`75f53aac`), `BPC Teste API`, `teste-panel`,
+`New dashboard`, `storage2`, `D01- Visão geral - Nivel 1.v2`. A eliminação fica
+para o utilizador (uma IA não apaga dashboards).
+
+> **Ponto aberto:** o N2 ESXi (`8f6a94be`) referencia os grupos `600` e `640`
+> (além do `603`), que podem conter servidores físicos bare-metal reais (não
+> ESXi). Confirmar na execução se há workload físico que justifique um painel
+> próprio dentro de VMware ou se é só hardware-host dos hypervisores.
 
 **Legado (65 dashboards das pastas `00`–`08` numeradas + `99 - Arquivo` +
 `99 - Arquivo v5 legado`):** consolidar **tudo** numa única pasta `99 ·

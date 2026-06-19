@@ -170,7 +170,7 @@
 |---|---|---|---|---|
 | 12.1 | Criar pastas de domínio no topo (`00`–`09`) + `99 · Arquivo` | ☐ | | via `/api/folders` |
 | 12.2 | Mover + renomear os 14 dashboards de produção v5 | ☐ | | mapa de migração em engenharia §4.2; renomear título é seguro (links por UID) |
-| 12.3 | Esclarecer duplicado `n2-infraestrutura-vmware` vs `N2 · Servidores Virtuais` | ☐ | | fundir ou manter como vista distinta antes de migrar |
+| 12.3 | ~~Esclarecer duplicado vmware vs virtuais~~ — RESOLVIDO | ☑ | 2026-06-19 | Não é duplicado: são 2 domínios (blueprint §56-57). VMware (`a967e936`)→pasta 01; Servidores Virtuais (`0758c24e`)→pasta 03. Mapa de migração corrigido em engenharia §4.2 |
 | 12.4 | Consolidar 65 legados + 8 de teste em `99 · Arquivo` | ☐ | | IA não apaga; eliminação fica para o utilizador |
 | 12.5 | Esvaziar/arquivar `dashboards v5` + actualizar constraint do CLAUDE.md | ☐ | | o constraint UID `efpbu5tvrhce8a` deixa de aplicar |
 | 12.6 | Sincronizar `dashboardTitle` nos `manifest.json` com os novos títulos | ☐ | | manter paridade disco↔Grafana |
