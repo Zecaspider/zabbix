@@ -45,11 +45,15 @@ N1 · Visão Geral NOC  ── wallboard, 1 card por domínio (tudo Dynamic Text
  │                               └─► N3 · Detalhe VM (por VM)
  ├─ Armazenamento ────────► N2 · Armazenamento ──────► N3 · Storage (por array/tape)
  ├─ Bases de Dados ───────► N2 · Bases de Dados ──────► N3 · Instância (por DB)
- ├─ Rede ─────────────────► N2 · Rede (DC/Edif/WAN) ──► N3 · Link/Segmento   [Zabbix network]
+ ├─ Rede ─────────────────► N2 · Rede ──► N3 · WAN — Serviços ──────────────► N4 · WAN — Device (var-hostid)
+ │                                    ├─► N3 · DC — Fabric ───────────────► N4 · DC — Switch (var-hostid)
+ │                                    ├─► N3 · Edifícios ─────────────────► N4 · Rede — Device (var-hostid)
+ │                                    └─► N3 · Agências (geomap + lista) ──► N4 · Agência — Device (var-hostid)
+ │                  [Zabbix network — grupos 24/25/26/27/28/29]
+ │                  [Agências integradas em Rede — decisão 2026-06-19]
  ├─ Segurança ────────────► N2 · Segurança ───────────► N3 · Firewall/WAF/Darktrace
  ├─ APIs & Serviços ──────► N2 · APIs ─────────────────► N3 · Endpoint/Aplicação
- ├─ Serviços de Negócio ──► N2 · eBankit ──────────────► N3 · Jornada/Transacção
- └─ Agências ─────────────► N2 · Agências (geomap) ────► N3 · Detalhe Agência/Link  [Zabbix network]
+ └─ Serviços de Negócio ──► N2 · eBankit ──────────────► N3 · Jornada/Transacção
 ```
 
 Decisões de estrutura:
@@ -60,6 +64,15 @@ Decisões de estrutura:
 - **Datastores** dobrado em Servidores Virtuais (vista N3), não é domínio próprio.
 - **APIs (técnico)** e **Serviços de Negócio (eBankit)** mantêm-se separados
   (consumidores diferentes: engenharia vs gestão/operação).
+- **Agências integradas em Rede** (decisão 2026-06-19): Agências deixa de ser
+  domínio independente e passa a sub-domínio de Rede (N3-Agências). Edifícios e
+  Agências têm a mesma natureza operacional (routers + switches de acesso); separá-los
+  no N1 criava fragmentação sem valor. O N1 terá um único card "Rede" que agrega WAN,
+  DC Fabric, Edifícios e Agências.
+- **N4 · Device** (ficha do dispositivo) existe em todos os sub-domínios de Rede:
+  dashboard parametrizado (`var-hostid`) com séries temporais (interfaces in/out,
+  CPU, memória se disponível), tabela de interfaces UP/DOWN, triggers activos do host,
+  e link de retorno ao N3 pai. Inspiração: marketplace Grafana (Network Device Dashboard).
 - **N0 · Executivo/SLA** (disponibilidade %, tendências) — slot reservado,
   construído por último (fase 2).
 

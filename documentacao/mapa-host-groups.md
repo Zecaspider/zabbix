@@ -40,32 +40,98 @@ Zabbix, não usar nos cards (usar sempre o datasource Zabbix).
 Eixo SERVICO/* tem ~55 serviços de negócio (ACM, SWIFT, Essence, ToBe…) —
 usados para a vista de Serviços de Negócio, não para os N2 de infraestrutura.
 
-## Inventário Network (Zabbix `10.10.233.140`) → domínios Rede / Agências
+## Inventário Network (Zabbix `10.10.233.140`) → domínio 04 · Rede
 
-Sondado 2026-06-16 via API directa. 15 grupos; relevantes:
+> **Decisão de design 2026-06-19:** Agências passa a sub-domínio de **Rede**
+> (domínio 04), não domínio independente. Edifícios e Agências são ambos
+> extensões físicas da rede BPC com a mesma natureza (routers + switches de
+> acesso); separá-los era uma decisão errada. O domínio 04 · Rede cobre agora
+> toda a camada de conectividade: DC · WAN · Edifícios · Agências.
 
-| Domínio (N2) | groupId | Grupo Zabbix | Hosts | Papel |
+Sondado 2026-06-16 + re-validado 2026-06-19 via API Grafana proxy. 15 grupos totais.
+
+### Tabela completa de grupos Network
+
+| groupId | Grupo Zabbix | Hosts | Sub-domínio Rede | Papel |
 |---|---|---|---|---|
-| **Agências** | `24` | HG_AGENCIAS_ROUTERS | 220 | âncora (routers das agências) |
-| └ Agências | `25` | HG_AGENCIAS_SWITCHES | 27 | enriquecimento (switches) |
-| **Rede** — Datacenter | `26` | HG_DC_SWITCHES | 7 | DC switches |
-| **Rede** — Datacenter | `27` | HG_DC_ROUTERS | 5 | DC routers |
-| **Rede** — Edifícios | `28` | HG_EDIFICIOS_ROUTERS | 9 | edifícios routers |
-| **Rede** — Edifícios | `29` | HG_EDIFICIOS_SWITCHES | 46 | edifícios switches |
-| **Rede** — WAN/Links | `35` | LINKS | 0 | links WAN (vazio agora — confirmar onde vivem os links) |
-| (gestão) | `22` | Switchs Gestao | 1 | gestão out-of-band |
+| `27` | HG_DC_ROUTERS | 5 | **WAN** | 5 routers de borda WAN do DC (ISR4451 + C8500L + GTW01) |
+| `26` | HG_DC_SWITCHES | 7 | **DC Fabric** | 2 SPINEs + 4 LEAFs + 1 LEAF standalone |
+| `28` | HG_EDIFICIOS_ROUTERS | 9 | **Edifícios** | Routers Cisco dos edifícios BPC (prefixo `RTE-DRL-*`) |
+| `29` | HG_EDIFICIOS_SWITCHES | 46 | **Edifícios** | Switches dos edifícios BPC |
+| `24` | HG_AGENCIAS_ROUTERS | 220 | **Agências** | Routers das agências (prefixo `RT*`, ex: `RTMBANZ00`) |
+| `25` | HG_AGENCIAS_SWITCHES | 27 | **Agências** | Switches das agências (enriquecimento por agência) |
+| `22` | Switchs Gestão | 1 | **DC Fabric** | Switch de gestão OOB (`DC-IMP-SWA-EDGE`) |
+| `35` | LINKS | 0 | — | Grupo de links WAN (vazio — links vivem como interfaces nos routers) |
+| `5` | Discovered hosts | 111 | — | Equipamento por classificar (não usar em dashboards) |
+| `19` | Applications | 0 | — | Grupo genérico vazio |
+| `20` | Databases | 0 | — | Grupo genérico vazio |
+| `7` | Hypervisors | 0 | — | Grupo genérico vazio |
+| `6` | Virtual machines | 0 | — | Grupo genérico vazio |
+| `2` | Linux servers | 0 | — | Grupo genérico vazio |
+| `4` | Zabbix servers | 1 | — | Servidor Zabbix Network (infra interna) |
 
-Notas:
-- **Agências** ancora em `24` (routers, 220 hosts) — é a vista geomapa; `25`
-  (switches) entra como enriquecimento por agência.
-- **Rede** é multi-grupo por natureza (DC + Edifícios + WAN). O N2 de Rede
-  agrega os grupos `26/27/28/29/35`; não há um único groupId âncora — usar a
-  segmentação DC / Edifícios / WAN como sub-secções (alinha com a estrutura
-  antiga `rede/l2-datacenter`, `l2-edificios`, `l2-wan`).
-- `LINKS` (35) está a 0 hosts — antes de construir a vista WAN, confirmar onde
-  estão modelados os links (item por interface vs host dedicado).
-- Grupos genéricos Zabbix (Linux servers, Discovered hosts 111h, etc.) não são
-  domínio — `Discovered hosts` pode conter equipamento por classificar.
+### Relações entre grupos
+
+```
+HG_DC_ROUTERS (27) — 5 routers WAN
+  ├── DC1-RTE-WAN-INT  (10838) — BGP Internet     → interfaces físicas (Gi/Te) + túneis
+  ├── DC1-RTE-WAN-EMIS (10839) — EMIS interbancário → interfaces por operadora
+  ├── DC1-RTE-WAN-AG   (10996) — DMVPN hub agências → Tu* por carrier (1 tunnel/carrier)
+  ├── DC1-RTE-PARC     (11001) — Parceiros + CUBE voz → sub-ifs por parceiro + EFXS
+  └── DC1-RTE-GTW01    (10840) — Azure ExpressRoute + Gov (Po1 DOWN)
+        │
+        │ uplink físico (PortChannel)
+        ▼
+HG_DC_SWITCHES (26) — fabric Nexus
+  ├── DC1-LEAF-101 (10843) ─┐ vPC-A (uplink dos routers WAN-AG + GTW01)
+  ├── DC1-LEAF-102 (10845) ─┘
+  ├── DC1-LEAF-103 (10842) ─┐ vPC-B (uplink dos ISR4451: WAN-INT/EMIS/PARC)
+  ├── DC1-LEAF-104 (10846) ─┘
+  ├── DC1-LEAF-105 (10844)   standalone
+  ├── DC1-SPINE-11 (10847) ─┐ route-reflectors EVPN, ligados a todos os LEAFs
+  └── DC1-SPINE-12 (10848) ─┘
+
+  + Switchs Gestão (22): DC-IMP-SWA-EDGE (10667) — switch OOB, sem relação directa ao fabric
+
+HG_EDIFICIOS_ROUTERS (28) — 9 routers de edifícios BPC (prefixo RTE-DRL-*)
+  ├── RTE-DRL-EDF-SEDE  (10671)   Sede BPC
+  ├── RTE-DRL-DSI-MUTA  (10852)   DSI / Mutamba
+  ├── RTE-DRL-MAUR-JUN  (10899)   Maurício / Junqueiro
+  ├── RTE-DRL-ARQU-MULE (10900)   Arquivo / Mulenvos
+  ├── RTE-DRL-DPS-MBEN  (10901)   DPS / Mbengueira
+  ├── RTE-DRL-DPS-PELOU (10902)   DPS / Pelouros
+  ├── RTE-DRL-FENIX     (10903)   Fénix
+  ├── RTLARA00          (11002)   Lara (convenção de nome de agência — reclassificar?)
+  └── RTE-DRL-DPS-TRANS (11003)   DPS / Transportes
+        │
+        │ uplink WAN (via WAN-AG DMVPN ou circuito dedicado)
+        ▼
+HG_AGENCIAS_ROUTERS (24) — 220 routers de agências (prefixo RT*)
+  Exemplos: RTMBANZ00, RTSAMB00, RTMALA00, RTNELI00, RTSIAC_LUENA00 …
+  Cada agência: 1 router spoke DMVPN (grupo 24) + opcionalmente 1 switch (grupo 25)
+        │
+        └── HG_AGENCIAS_SWITCHES (25) — 27 switches de agências
+              Relação: 1 switch por agência (enriquecimento, não todas têm switch)
+
+LIGAÇÃO FÍSICA WAN-AG → Agências:
+  WAN-AG (10996) actua como hub DMVPN
+    Tu101 DMVPN_HUB_UNITEL  → todos os spokes Unitel (routers grupo 24)
+    Tu102 DMVPN_HUB_ITA     → todos os spokes ITA
+    Tu103 DMVPN_HUB_MST     → todos os spokes MST
+    Tu104 DMVPN_HUB_AT      → todos os spokes AT
+    Tu105 DMVPN_HUB_MULTI   → todos os spokes Multitel
+  Estado do hub ≠ estado das agências individuais — hub UP apenas garante
+  que o carrier está operacional.
+```
+
+### Grupos operacionalmente relevantes (usar em dashboards)
+
+| Grupos | Sub-domínio | N2 âncora | N3 | N4 |
+|---|---|---|---|---|
+| 27 | WAN | ✓ | N3-WAN (5 cards por serviço) | N4-WAN-Device (var-hostid) |
+| 26 + 22 | DC Fabric | ✓ | N3-DC (fabric: LEAFs + SPINEs) | N4-DC-Switch (var-hostid) |
+| 28 + 29 | Edifícios | ✓ | N3-Edifícios (tabela por edifício) | N4-Rede-Device (var-hostid) |
+| 24 + 25 | Agências | ✓ | N3-Agências (geomap + lista) | N4-Agência (var-hostid) |
 
 ## Sondagem 1.1 — Grupo 603 (Servidores Físicos) — 2026-06-16
 

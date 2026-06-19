@@ -2,8 +2,14 @@
   "dashboardUid": "ec590abd-c1ab-4b83-ac26-2b998aa80556",
   "dashboardTitle": "N2 · Rede",
   "folderUid": "bfpm0sdxiclxcf",
-  "datasource": "3_KgG43nz",
-  "groupIds": ["26", "27", "28", "29"],
+  "datasource": "ffo8sp8zllog0e",
+  "groupIds": ["22", "24", "25", "26", "27", "28", "29"],
+  "anchor": {
+    "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},
+    "group": {"filter": "HG_DC_ROUTERS"},
+    "host": {"filter": "DC1-RTE-WAN-INT"},
+    "item": {"filter": "ICMP ping"}
+  },
   "panels": [
     {
       "file": "utils.js",
@@ -25,13 +31,6 @@
       "role": "content",
       "title": "Segmentos",
       "content": "<div id=\"bpc-net-seg\"></div>"
-    },
-    {
-      "file": "l2-triggers.js",
-      "id": 104,
-      "role": "content",
-      "title": "Top Triggers",
-      "content": "<div id=\"bpc-net-trg\"></div>"
     }
   ]
 }

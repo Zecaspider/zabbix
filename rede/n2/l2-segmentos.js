@@ -24,15 +24,18 @@ const CFG_SEG = {
   refreshMs:  60000,
 
   segmentos: [
-    { key: 'dc',   label: 'DC Core',   icon: '🖥',  groupIds: ['26', '27'],
-      desc: 'Fabric Spine-Leaf + Routers WAN',
-      dashUid: 'a75e2ba6-0ecc-49ee-bceb-4bcbafb419da', dashSlug: 'n3-rede-dc-core' },
+    { key: 'wan',  label: 'WAN',       icon: '🌐', groupIds: ['27'],
+      desc: 'Internet · EMIS · Agências · Parceiros · Azure/Gov',
+      dashUid: null, dashSlug: 'n3-rede-wan' },
+    { key: 'dc',   label: 'DC Fabric', icon: '🖥',  groupIds: ['26', '22'],
+      desc: '7 switches Spine-Leaf + 1 OOB (DC1)',
+      dashUid: null, dashSlug: 'n3-rede-dc' },
     { key: 'edif', label: 'Edifícios', icon: '🏢', groupIds: ['28', '29'],
-      desc: 'Routers + Switches por andar',
-      dashUid: '471f2208-d032-46d4-8d35-6fdfe770c967', dashSlug: 'n3-rede-edificios' },
-    { key: 'wan',  label: 'WAN / Links', icon: '🌐', groupIds: ['27'],
-      desc: 'Internet · Agências · EMIS · Parceiros',
-      dashUid: '1702465e-0539-4fa7-a8eb-c0d3a655d99b', dashSlug: 'n3-rede-wan' },
+      desc: '9 routers + 46 switches · 4 edifícios BPC',
+      dashUid: null, dashSlug: 'n3-rede-edificios' },
+    { key: 'ag',   label: 'Agências',  icon: '🏦', groupIds: ['24', '25'],
+      desc: '220 routers + 27 switches · 220 agências',
+      dashUid: null, dashSlug: 'n3-rede-agencias' },
   ],
 }
 
@@ -96,10 +99,11 @@ async function segFetchIcmp(rpc, groupIds) {
 //   "link de serviço" de uma categoria = interface com descrição entre parênteses
 //   (nomeada pela equipa de rede); deduplicamos variantes _EDIFICIO no down-count.
 const SEG_WAN_CATS = [
-  { key: 'inet', label: 'Internet',  hostids: ['10838'], inet: true },   // DC1-RTE-WAN-INT
-  { key: 'emis', label: 'EMIS',      hostids: ['10839'] },               // DC1-RTE-WAN-EMIS
-  { key: 'ag',   label: 'Agências',  hostids: ['10996'] },               // DC1-RTE-WAN-AG
-  { key: 'parc', label: 'Parceiros', hostids: ['10840', '11001'] },      // GTW01 + PARC
+  { key: 'inet', label: 'Internet',   hostids: ['10838'], inet: true },  // DC1-RTE-WAN-INT
+  { key: 'emis', label: 'EMIS',       hostids: ['10839'] },              // DC1-RTE-WAN-EMIS
+  { key: 'ag',   label: 'Agências',   hostids: ['10996'] },              // DC1-RTE-WAN-AG (hub DMVPN)
+  { key: 'parc', label: 'Parceiros',  hostids: ['11001'] },              // PARC
+  { key: 'az',   label: 'Azure/Gov',  hostids: ['10840'] },              // GTW01 (ExpressRoute + Gov)
 ]
 const SEG_WAN_DESC = /\(([^)]+)\)/   // interface nomeada pela equipa de rede
 
@@ -216,7 +220,7 @@ function segCard(seg, d) {
 
   const footer = seg.dashUid
     ? '<span style="font-size:.90rem;color:var(--bpc-cyan)">Ver detalhe (N3) →</span>'
-    : ''
+    : '<span style="font-size:.90rem;color:var(--bpc-mute);opacity:.55">Ver detalhe (N3) →</span>'
 
   const inner = ''
     + '<div class="bpc bpc-card state-' + cardSt + '"'
@@ -249,7 +253,7 @@ function segCard(seg, d) {
 }
 
 function segRender(el, results) {
-  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;height:100%">'
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">'
     + CFG_SEG.segmentos.map(function (seg, i) { return '<div>' + segCard(seg, results[i]) + '</div>' }).join('')
     + '</div>'
 }
@@ -268,7 +272,7 @@ function segLoad(rpc) {
   const el = document.getElementById(CFG_SEG.elementId)
   if (!el) return
 
-  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;height:100%">'
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">'
     + CFG_SEG.segmentos.map(function () { return '<div>' + window.BPC.utils.buildSkeleton() + '</div>' }).join('')
     + '</div>'
 
