@@ -1,6 +1,7 @@
 {
   "dashboardUid": "59e7e4b2-2ccd-4c97-b523-e7b50b705666",
-  "dashboardTitle": "n3-vcenter-detalhe",
+  "folderUid": "bfpm0sdhhi22od",
+  "dashboardTitle": "N3 · vCenter Detalhe",
   "panels": [
     {
       "file": "utils.js",

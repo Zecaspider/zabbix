@@ -1,6 +1,7 @@
 {
   "dashboardUid": "a967e936-99a3-47c8-af98-052d7a80beb8",
-  "dashboardTitle": "n2-infraestrutura-vmware",
+  "folderUid": "bfpm0sdhhi22od",
+  "dashboardTitle": "N2 · VMware",
   "panels": [
     {
       "file": "utils.js",

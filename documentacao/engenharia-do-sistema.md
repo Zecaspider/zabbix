@@ -196,7 +196,7 @@ separador, ordenável e legível:
 > referenciam o **UID**, que nunca muda. O `slug` da URL acompanha o título mas
 > os links por UID continuam válidos.
 
-**Mapa de migração (13 dashboards de produção v5 → pasta + novo título).**
+**Mapa de migração (14 dashboards de produção v5 → pasta + novo título).**
 UIDs validados contra os `manifest.json` do disco (§4.1) — fonte de verdade da
 classificação por domínio:
 

@@ -168,12 +168,12 @@
 
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 12.1 | Criar pastas de domínio no topo (`00`–`09`) + `99 · Arquivo` | ☐ | | via `/api/folders` |
-| 12.2 | Mover + renomear os 14 dashboards de produção v5 | ☐ | | mapa de migração em engenharia §4.2; renomear título é seguro (links por UID) |
+| 12.1 | Criar pastas de domínio no topo (`00`–`09`) + `99 · Arquivo` | ☑ | 2026-06-19 | 11 pastas criadas via `/api/folders`; UIDs registados no CLAUDE.md |
+| 12.2 | Mover + renomear os 14 dashboards de produção v5 | ☑ | 2026-06-19 | 14/14 OK: 01·VMware (4), 02·Armazenamento (1), 03·Virtuais (2), 04·Rede (7). Títulos `N2/N3/N4 · …` |
 | 12.3 | ~~Esclarecer duplicado vmware vs virtuais~~ — RESOLVIDO | ☑ | 2026-06-19 | Não é duplicado: são 2 domínios (blueprint §56-57). VMware (`a967e936`)→pasta 01; Servidores Virtuais (`0758c24e`)→pasta 03. Mapa de migração corrigido em engenharia §4.2 |
-| 12.4 | Consolidar 65 legados + 8 de teste em `99 · Arquivo` | ☐ | | IA não apaga; eliminação fica para o utilizador |
-| 12.5 | Esvaziar/arquivar `dashboards v5` + actualizar constraint do CLAUDE.md | ☐ | | o constraint UID `efpbu5tvrhce8a` deixa de aplicar |
-| 12.6 | Sincronizar `dashboardTitle` nos `manifest.json` com os novos títulos | ☐ | | manter paridade disco↔Grafana |
+| 12.4 | Consolidar legados + testes em `99 · Arquivo` | ☑ | 2026-06-19 | 67/68 arquivados. 1 preso: `visao-geral-v5` (payload não transferível via CDP) — já estava em pasta de arquivo legado, fica lá. IA não apaga; eliminação fica para o utilizador |
+| 12.5 | Esvaziar/arquivar `dashboards v5` + actualizar constraint do CLAUDE.md | ☑ | 2026-06-19 | `dashboards v5` (`efpbu5tvrhce8a`) ficou vazia; constraint do CLAUDE.md substituído pelos UIDs das pastas de domínio. Pastas legadas numeradas `00`–`08` (com `-`) ficaram vazias — eliminação fica para o utilizador |
+| 12.6 | Sincronizar `dashboardTitle` + `folderUid` nos `manifest.json` | ☑ | 2026-06-19 | 14 manifests actualizados (título novo + folderUid da pasta de domínio; 4 sem folderUid passaram a tê-lo). Evita que o próximo push devolva o dashboard à pasta velha. JSON validado |
 
 ---
 

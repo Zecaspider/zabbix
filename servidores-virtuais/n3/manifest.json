@@ -1,6 +1,7 @@
 {
   "dashboardUid": "0ae673a3-44c8-41e0-98f5-f5c53473ad54",
-  "dashboardTitle": "n3-sv-versao-a-bt",
+  "folderUid": "cfpm0sdsxjb40c",
+  "dashboardTitle": "N3 · VM Detalhe",
   "anchor": {
     "group": {
       "filter": "$groupid"
