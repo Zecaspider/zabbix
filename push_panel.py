@@ -55,7 +55,7 @@ def gapi(method, path, data=None, token=None):
           headers={'Authorization': 'Bearer ' + token,
                    'Content-Type': 'application/json; charset=utf-8'})
     try:
-        with urllib.request.urlopen(req, timeout=20) as r:
+        with urllib.request.urlopen(req, timeout=120) as r:
             return json.loads(r.read())
     except urllib.error.HTTPError as e:
         body = e.read()

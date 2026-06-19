@@ -1,6 +1,6 @@
 {
   "dashboardUid": "31bace26-1af8-4b82-a6c1-f5c9116f4b83",
-  "dashboardTitle": "N3 · WAN — Carriers",
+  "dashboardTitle": "N3 · WAN — Provedores",
   "folderUid": "bfpm0sdxiclxcf",
   "datasource": "ffo8sp8zllog0e",
   "anchor": {
@@ -29,11 +29,18 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
-      "file": "l3-wan-carriers.js",
+      "file": "l3-wan-provedores.js",
       "id": 102,
       "role": "content",
-      "title": "WAN — Por Carrier",
-      "content": "<div id=\"bpc-wan-carriers\"></div>"
+      "title": "WAN — Provedores",
+      "content": "<div id=\"bpc-wan-provedores\"></div>"
+    },
+    {
+      "file": "l3-wan-alertas.js",
+      "id": 101,
+      "role": "content",
+      "title": "WAN — Alertas Activos",
+      "content": "<div id=\"bpc-wan-alertas\"></div>"
     }
   ]
 }

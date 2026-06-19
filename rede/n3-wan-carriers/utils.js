@@ -63,7 +63,7 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC',
-  nocLabel: 'REDE · WAN CARRIERS — NÍVEL 3',
+  nocLabel: 'REDE · WAN — LIGAÇÕES POR PROVEDOR',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
 };
 
