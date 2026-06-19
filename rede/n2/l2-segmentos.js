@@ -32,7 +32,7 @@ const CFG_SEG = {
       dashUid: '471f2208-d032-46d4-8d35-6fdfe770c967', dashSlug: 'n3-rede-edificios' },
     { key: 'wan',  label: 'WAN / Links', icon: '🌐', groupIds: ['27'],
       desc: 'Internet · Agências · EMIS · Parceiros',
-      dashUid: null, dashSlug: null },   // N3 WAN em construção (4.6)
+      dashUid: '1702465e-0539-4fa7-a8eb-c0d3a655d99b', dashSlug: 'n3-rede-wan' },
   ],
 }
 

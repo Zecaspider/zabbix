@@ -1,4 +1,4 @@
-﻿// â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+﻿﻿// â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
 // â•‘  BPC NOC â€” HEADER GLOBAL                                  v8 Â· BPC-UI   â•‘
 // â•‘                                                                          â•‘
 // â•‘  Carregado UMA Ãºnica vez, no painel de cabeÃ§alho do Grafana.            â•‘
@@ -64,7 +64,8 @@ const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC',
   nocLabel: 'REDE DC — NÍVEL 4',
-  subtitle: 'Banco de PoupanÃ§a e CrÃ©dito Â· Centro de OperaÃ§Ãµes de Rede',
+  subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
+  backLink: { url: '/d/a75e2ba6-0ecc-49ee-bceb-4bcbafb419da/n3-rede-dc-core', label: '← N3 DC Core' },
 };
 
 
@@ -572,15 +573,22 @@ const CFG_THRESHOLDS = {
          <div class="bpc-noc-logo-fallback" style="display:none">${C.title}</div>`
       : `<div class="bpc-noc-logo-fallback">${C.title}</div>`;
 
+    const backHTML = C.backLink
+      ? `<a href="${C.backLink.url}" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);font-size:.78rem;font-weight:600;letter-spacing:.04em;text-decoration:none;border:1px solid rgba(255,255,255,0.10);transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.13)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">${C.backLink.label}</a>`
+      : '';
+
     el.innerHTML = `
       <div class="bpc-noc-hdr">
 
-        <!-- LogÃ³tipo -->
-        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
-          ${logoHTML}
+        <!-- Logotipo + back-link -->
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:10px">
+            ${logoHTML}
+          </div>
+          ${backHTML}
         </div>
 
-        <!-- TÃ­tulo + SubtÃ­tulo -->
+        <!-- Titulo + Subtitulo -->
         <div class="bpc-noc-center">
           <div class="bpc-noc-title">
             ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em>
@@ -588,10 +596,10 @@ const CFG_THRESHOLDS = {
           ${C.subtitle ? `<div class="bpc-noc-sub">${C.subtitle}</div>` : ''}
         </div>
 
-        <!-- RelÃ³gio -->
+        <!-- Relogio -->
         <div class="bpc-noc-right">
           <span class="bpc-noc-time" id="bpc-clock-time">--:--:--</span>
-          <div  class="bpc-noc-date" id="bpc-clock-date">â€¦</div>
+          <div  class="bpc-noc-date" id="bpc-clock-date">...</div>
         </div>
 
       </div>`;

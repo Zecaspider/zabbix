@@ -411,10 +411,13 @@ function dcRenderSwitchRow(row, prevFuncao) {
   var bg = dcRowBg(row.rowState)
   var bl = dcRowBorderLeft(row.rowState)
 
+  var swDrillUrl = '/d/7baea796-e40b-4346-90ea-66516f369f8a/n4-rede-dc-switch?var-switchName=' + encodeURIComponent(row.name)
+  var swNameCell = '<a href="' + swDrillUrl + '" style="color:#CDD9E5;text-decoration:none;font-weight:600;font-size:1.03rem" title="Abrir ficha N4">' + dcEsc(row.name) + ' <span style="font-size:.70rem;opacity:.45">↗</span></a>'
+
   return separator + [
     '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);background:' + bg + ';' + bl + '">',
     '<td style="padding:6px 8px;text-align:center">' + dcStateDot(row.rowState) + '</td>',
-    '<td style="padding:6px 8px;font-size:1.03rem;font-weight:600;color:#CDD9E5">' + dcEsc(row.name) + '</td>',
+    '<td style="padding:6px 8px">' + swNameCell + '</td>',
     '<td style="padding:6px 8px;font-size:.93rem;font-weight:700;color:' + tierColor + '">' + tierLabel + '</td>',
     '<td style="padding:6px 8px;font-size:.90rem;color:rgba(255,255,255,0.38)">' + dcEsc(row.model || '—') + '</td>',
     '<td style="padding:6px 8px;text-align:right;font-size:.98rem">' + dcFmtPct(row.cpu, CFG_DC.thresholds.cpuPct) + '</td>',
@@ -430,11 +433,13 @@ function dcRenderRouterRow(row) {
   var peersHtml  = row.parceiro ? dcEsc(row.parceiro) : '<span class="bpc-mute">—</span>'
   var bg = dcRowBg(row.rowState)
   var bl = dcRowBorderLeft(row.rowState)
+  var rtDrillUrl  = '/d/8ddc4833-be01-47ea-8ada-a89531d4babb/n4-rede-wan-router?var-routerName=' + encodeURIComponent(row.name)
+  var rtNameCell  = '<a href="' + rtDrillUrl + '" style="color:#CDD9E5;text-decoration:none;font-weight:600;font-size:1.03rem" title="Abrir ficha N4">' + dcEsc(row.name) + ' <span style="font-size:.70rem;opacity:.45">↗</span></a>'
 
   return [
     '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);background:' + bg + ';' + bl + '">',
     '<td style="padding:6px 8px;text-align:center">' + dcStateDot(row.rowState) + '</td>',
-    '<td style="padding:6px 8px;font-size:1.03rem;font-weight:600;color:#CDD9E5">' + dcEsc(row.name) + '</td>',
+    '<td style="padding:6px 8px">' + rtNameCell + '</td>',
     '<td style="padding:6px 8px;font-size:.90rem;color:var(--bpc-mute)">' + dcEsc(funcLabel) + '</td>',
     '<td style="padding:6px 8px;font-size:.90rem;color:rgba(255,255,255,0.55)">' + peersHtml + '</td>',
     '<td style="padding:6px 8px;text-align:right;font-size:.98rem">' + dcFmtRtt(row.rtt) + '</td>',
