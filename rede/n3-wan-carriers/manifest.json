@@ -1,0 +1,39 @@
+{
+  "dashboardUid": "31bace26-1af8-4b82-a6c1-f5c9116f4b83",
+  "dashboardTitle": "n3-rede-wan-carriers",
+  "folderUid": "efpbu5tvrhce8a",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    },
+    "queryType": "0",
+    "resultFormat": "time_series"
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-wan-carriers.js",
+      "id": 102,
+      "role": "content",
+      "title": "WAN — Por Carrier",
+      "content": "<div id=\"bpc-wan-carriers\"></div>"
+    }
+  ]
+}

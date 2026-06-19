@@ -1,0 +1,270 @@
+{
+  "dashboardUid": "8ddc4833-be01-47ea-8ada-a89531d4babb",
+  "dashboardTitle": "n4-rede-wan-router",
+  "folderUid": "efpbu5tvrhce8a",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    },
+    "queryType": "0",
+    "resultFormat": "time_series"
+  },
+  "variable": {
+    "name": "routerName",
+    "label": "Router WAN",
+    "type": "custom",
+    "query": "DC1-RTE-WAN-INT — Internet BGP : DC1-RTE-WAN-INT,DC1-RTE-WAN-AG — Hub Agências : DC1-RTE-WAN-AG,DC1-RTE-WAN-EMIS — EMIS : DC1-RTE-WAN-EMIS,DC1-RTE-PARC — Parceiros/Voz : DC1-RTE-PARC,DC1-RTE-GTW01 — Gateway/VRFs : DC1-RTE-GTW01",
+    "current": {
+      "text": "DC1-RTE-WAN-INT — Internet BGP",
+      "value": "DC1-RTE-WAN-INT"
+    },
+    "note": "Valor = hostname. BT resolve hostname→hostid via host.get. Time Series usam $routerName directamente."
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l4-wan-router-ficha.js",
+      "id": 101,
+      "role": "content",
+      "title": "WAN Router — Ficha Técnica",
+      "content": "<div id=\"bpc-n4-wan-router\"></div>"
+    }
+  ],
+  "nativePanels": [
+    {
+      "_note": "Tráfego In/Out top interfaces — last 6h. Incluir no dashboard JSON ao criar via API.",
+      "type": "timeseries",
+      "title": "Tráfego — interfaces de serviço",
+      "transparent": true,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bps",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 10
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "out"
+            },
+            "properties": [
+              {
+                "id": "custom.transform",
+                "value": "negative-Y"
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "refId": "in",
+          "queryType": "0",
+          "resultFormat": "time_series",
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "/^$routerName$/"
+          },
+          "item": {
+            "filter": "/net\\.if\\.in/"
+          },
+          "options": {
+            "showDisabledItems": false
+          }
+        },
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "refId": "out",
+          "queryType": "0",
+          "resultFormat": "time_series",
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "/^$routerName$/"
+          },
+          "item": {
+            "filter": "/net\\.if\\.out/"
+          },
+          "options": {
+            "showDisabledItems": false
+          }
+        }
+      ]
+    },
+    {
+      "_note": "CPU e RAM histórico — last 24h.",
+      "type": "timeseries",
+      "title": "CPU / RAM — últimas 24h",
+      "transparent": true,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8
+          }
+        }
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "refId": "cpu",
+          "queryType": "0",
+          "resultFormat": "time_series",
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "/^$routerName$/"
+          },
+          "item": {
+            "filter": "/system\\.cpu\\.util/"
+          },
+          "options": {
+            "showDisabledItems": false
+          }
+        },
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "refId": "ram",
+          "queryType": "0",
+          "resultFormat": "time_series",
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "/^$routerName$/"
+          },
+          "item": {
+            "filter": "/vm\\.memory\\.util/"
+          },
+          "options": {
+            "showDisabledItems": false
+          }
+        }
+      ]
+    },
+    {
+      "_note": "RTT IP SLA — last 6h. Só WAN-INT tem SLA; nos outros routers este painel fica vazio (sem dados).",
+      "type": "timeseries",
+      "title": "RTT IP SLA — últimas 6h",
+      "transparent": true,
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 6
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Threshold"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "refId": "rtt",
+          "queryType": "0",
+          "resultFormat": "time_series",
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "/^$routerName$/"
+          },
+          "item": {
+            "filter": "/rttMonCtrlAdminCompletionTime/"
+          },
+          "options": {
+            "showDisabledItems": false
+          }
+        }
+      ]
+    }
+  ]
+}

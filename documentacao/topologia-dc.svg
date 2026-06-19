@@ -1,0 +1,85 @@
+<svg width="100%" viewBox="0 0 680 600" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Topologia DC BPC — hosts Zabbix e links, auditada 2026-06-18</title>
+<desc>Diagrama spine-leaf com nomes e hostids reais do Zabbix. Caixas cheias sao hosts monitorizados; pilulas tracejadas sao links/providers que vivem em interfaces. Os 3 ISR4451 ligam ao vPC-B (LEAF-103/104); WAN-AG ao vPC-A (LEAF-101/102); SPINEs em full-mesh com todos os LEAFs; LEAF-105 standalone; GTW01 com Po1 em baixo.</desc>
+
+<rect x="40" y="40" width="600" height="50" rx="7" fill="#F1EFE8" stroke="#D3D1C7"/>
+<text x="52" y="61" font-size="11" fill="#2C2C2A"><tspan font-weight="500">Caixa cheia</tspan> = host no Zabbix (com hostid)   ·   <tspan font-weight="500">pilula tracejada</tspan> = link / provider (vive numa interface, nao e host)</text>
+<text x="52" y="80" font-size="11" fill="#5F5E5A">Traducao: SPINE = nucleo/backbone · LEAF = onde tudo liga (acesso+distribuicao) · Po = EtherChannel/trunk · vPC = 2 switches como 1 (tipo stack)</text>
+
+<g font-size="10" fill="#888780" font-family="Anthropic Sans, sans-serif">
+<text x="10" y="120">WAN</text><text x="10" y="206">Routers</text><text x="10" y="310">LEAF</text><text x="10" y="414">SPINE</text>
+</g>
+
+<g stroke="#B4B2A9" stroke-width="1" fill="none" opacity="0.65">
+<line x1="119" y1="334" x2="255" y2="384"/><line x1="119" y1="334" x2="425" y2="384"/>
+<line x1="237" y1="334" x2="255" y2="384"/><line x1="237" y1="334" x2="425" y2="384"/>
+<line x1="355" y1="334" x2="255" y2="384"/><line x1="355" y1="334" x2="425" y2="384"/>
+<line x1="473" y1="334" x2="255" y2="384"/><line x1="473" y1="334" x2="425" y2="384"/>
+<line x1="591" y1="334" x2="255" y2="384"/><line x1="591" y1="334" x2="425" y2="384"/>
+</g>
+<g stroke="#185FA5" stroke-width="2" fill="none">
+<line x1="119" y1="230" x2="237" y2="280"/><line x1="119" y1="230" x2="355" y2="280"/>
+<line x1="237" y1="230" x2="237" y2="280"/><line x1="237" y1="230" x2="355" y2="280"/>
+<line x1="355" y1="230" x2="355" y2="280"/><line x1="355" y1="230" x2="237" y2="280"/>
+<line x1="591" y1="230" x2="591" y2="280"/><line x1="591" y1="230" x2="473" y2="280"/>
+</g>
+<line x1="473" y1="230" x2="473" y2="272" stroke="#E24B4A" stroke-width="2" stroke-dasharray="5 4"/>
+<g stroke="#0F6E56" stroke-width="3"><line x1="287" y1="304" x2="305" y2="304"/><line x1="287" y1="310" x2="305" y2="310"/><line x1="523" y1="304" x2="541" y2="304"/><line x1="523" y1="310" x2="541" y2="310"/></g>
+
+<g font-family="Anthropic Sans, sans-serif">
+
+<g fill="#F1EFE8" stroke="#888780" stroke-width="1" stroke-dasharray="4 3">
+<rect x="70" y="104" width="98" height="26" rx="13"/><rect x="188" y="104" width="98" height="26" rx="13"/>
+<rect x="306" y="104" width="98" height="26" rx="13"/><rect x="424" y="104" width="98" height="26" rx="13"/>
+<rect x="542" y="104" width="98" height="26" rx="13"/></g>
+<g text-anchor="middle" font-size="10" fill="#444441">
+<text x="119" y="121">ITA·AT·MSTELCOM</text><text x="237" y="121">EMIS x3</text><text x="355" y="121">Gov·SMS·Voz</text>
+<text x="473" y="121">MINFIN·INSS·BODIVA</text><text x="591" y="121">Azure·DMVPN x7</text></g>
+
+<rect x="70" y="140" width="334" height="22" rx="5" fill="#D3D1C7" stroke="#5F5E5A"/>
+<text x="237" y="155" text-anchor="middle" font-size="10.5" fill="#2C2C2A">DC-ITA-SWA-SP — handoff operadoras (Po2) · switch externo, fora do Zabbix</text>
+<g stroke="#888780" stroke-width="1.5">
+<line x1="119" y1="130" x2="119" y2="140"/><line x1="237" y1="130" x2="237" y2="140"/><line x1="355" y1="130" x2="355" y2="140"/>
+<line x1="119" y1="162" x2="119" y2="176"/><line x1="237" y1="162" x2="237" y2="176"/><line x1="355" y1="162" x2="355" y2="176"/>
+<line x1="473" y1="130" x2="473" y2="176"/><line x1="591" y1="130" x2="591" y2="176"/></g>
+
+<g class="c-blue"><rect x="70" y="176" width="98" height="54" rx="7"/><rect x="188" y="176" width="98" height="54" rx="7"/><rect x="306" y="176" width="98" height="54" rx="7"/><rect x="542" y="176" width="98" height="54" rx="7"/></g>
+<rect x="424" y="176" width="98" height="54" rx="7" fill="#FCEBEB" stroke="#A32D2D" stroke-width="1.5"/>
+<g text-anchor="middle">
+<text x="119" y="194" font-size="11" fill="#0C447C" font-weight="500">DC1-RTE-WAN-INT</text><text x="119" y="208" font-size="9" fill="#185FA5">ISR4451 · internet</text><text x="119" y="223" font-size="8.5" fill="#185FA5" font-family="monospace">id 10838</text>
+<text x="237" y="194" font-size="11" fill="#0C447C" font-weight="500">DC1-RTE-WAN-EMIS</text><text x="237" y="208" font-size="9" fill="#185FA5">ISR4451 · EMIS</text><text x="237" y="223" font-size="8.5" fill="#185FA5" font-family="monospace">id 10839</text>
+<text x="355" y="194" font-size="11" fill="#0C447C" font-weight="500">DC1-RTE-PARC</text><text x="355" y="208" font-size="9" fill="#185FA5">ISR4451 · CUBE voz</text><text x="355" y="223" font-size="8.5" fill="#185FA5" font-family="monospace">id 11001</text>
+<text x="473" y="192" font-size="11" fill="#A32D2D" font-weight="500">DC1-RTE-GTW01</text><text x="473" y="205" font-size="8.5" fill="#A32D2D">C8200 · Po1 down</text><text x="473" y="216" font-size="8" fill="#A32D2D">via FW-Parc / tuneis</text><text x="473" y="227" font-size="8.5" fill="#A32D2D" font-family="monospace">id 10840</text>
+<text x="591" y="194" font-size="11" fill="#0C447C" font-weight="500">DC1-RTE-WAN-AG</text><text x="591" y="208" font-size="9" fill="#185FA5">C8500L · agencias</text><text x="591" y="223" font-size="8.5" fill="#185FA5" font-family="monospace">id 10996</text>
+</g>
+
+<g class="c-gray"><rect x="70" y="280" width="98" height="54" rx="7"/></g>
+<g class="c-teal"><rect x="188" y="280" width="98" height="54" rx="7"/><rect x="306" y="280" width="98" height="54" rx="7"/><rect x="424" y="280" width="98" height="54" rx="7"/><rect x="542" y="280" width="98" height="54" rx="7"/></g>
+<g text-anchor="middle">
+<text x="119" y="298" font-size="11" fill="#2C2C2A" font-weight="500">DC1-LEAF-105</text><text x="119" y="312" font-size="9" fill="#5F5E5A">standalone</text><text x="119" y="324" font-size="8.5" fill="#5F5E5A" font-family="monospace">id 10844</text>
+<text x="237" y="297" font-size="11" fill="#04342C" font-weight="500">DC1-LEAF-103</text><text x="237" y="310" font-size="8.5" fill="#0F6E56">93108TC · vPC-B</text><text x="237" y="324" font-size="8.5" fill="#0F6E56" font-family="monospace">id 10842</text>
+<text x="355" y="297" font-size="11" fill="#04342C" font-weight="500">DC1-LEAF-104</text><text x="355" y="310" font-size="8.5" fill="#0F6E56">93108TC · vPC-B</text><text x="355" y="324" font-size="8.5" fill="#0F6E56" font-family="monospace">id 10846</text>
+<text x="473" y="297" font-size="11" fill="#04342C" font-weight="500">DC1-LEAF-101</text><text x="473" y="310" font-size="8.5" fill="#0F6E56">93180YC · vPC-A</text><text x="473" y="324" font-size="8.5" fill="#0F6E56" font-family="monospace">id 10843</text>
+<text x="591" y="297" font-size="11" fill="#04342C" font-weight="500">DC1-LEAF-102</text><text x="591" y="310" font-size="8.5" fill="#0F6E56">93180YC · vPC-A</text><text x="591" y="324" font-size="8.5" fill="#0F6E56" font-family="monospace">id 10845</text>
+</g>
+
+<g class="c-purple"><rect x="180" y="384" width="150" height="54" rx="7"/><rect x="350" y="384" width="150" height="54" rx="7"/></g>
+<g text-anchor="middle">
+<text x="255" y="404" font-size="11" fill="#26215C" font-weight="500">DC1-SPINE-11</text><text x="255" y="418" font-size="8.5" fill="#534AB7">C9332C · RR EVPN · id 10847</text><text x="255" y="431" font-size="8.5" fill="#A32D2D">nve1 overlay down</text>
+<text x="425" y="404" font-size="11" fill="#26215C" font-weight="500">DC1-SPINE-12</text><text x="425" y="418" font-size="8.5" fill="#534AB7">C9332C · RR EVPN · id 10848</text><text x="425" y="431" font-size="8.5" fill="#A32D2D">nve1 overlay down</text>
+</g>
+
+<rect x="40" y="460" width="600" height="56" rx="7" fill="#F1EFE8" stroke="#D3D1C7"/>
+<text x="50" y="478" font-size="10.5" fill="#444441" font-weight="500">Servicos pendurados nos LEAFs (nao sao switches — sao servidores/appliances):</text>
+<text x="50" y="494" font-size="10" fill="#5F5E5A">Checkpoint · VxBlock · IBM Power P9/P7 · Storage Unity 400 / Storwize / DataDomain · UC/voz (CUCM·CUBE·WLC) · Darktrace · Imperva</text>
+<text x="50" y="508" font-size="10" fill="#5F5E5A">SWIFT · CCTV/biometria · PowerFlex · 2o uplink ITA: DC-ITA-SW-PFX (LEAF-101/102) · GWs voz RT-VC-GW00 + VGTW02 (vPC-B)</text>
+
+<g font-size="9.5" fill="#5F5E5A">
+<line x1="40" y1="540" x2="66" y2="540" stroke="#185FA5" stroke-width="2"/><text x="70" y="543">router liga ao LEAF</text>
+<line x1="185" y1="540" x2="211" y2="540" stroke="#B4B2A9" stroke-width="1"/><text x="215" y="543">underlay: cada LEAF aos 2 SPINEs</text>
+<g stroke="#0F6E56" stroke-width="2.5"><line x1="408" y1="538" x2="434" y2="538"/><line x1="408" y1="542" x2="434" y2="542"/></g><text x="438" y="543">vPC peer-link</text>
+<line x1="548" y1="540" x2="574" y2="540" stroke="#E24B4A" stroke-width="2" stroke-dasharray="5 4"/><text x="578" y="543">em baixo</text>
+</g>
+
+</g>
+</svg>

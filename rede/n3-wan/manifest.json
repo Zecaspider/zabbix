@@ -1,0 +1,53 @@
+{
+  "dashboardUid": "1702465e-0539-4fa7-a8eb-c0d3a655d99b",
+  "dashboardTitle": "n3-rede-wan",
+  "folderUid": "efpbu5tvrhce8a",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    },
+    "queryType": "0",
+    "resultFormat": "time_series"
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 105,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-wan-negocio.js",
+      "id": null,
+      "role": "content",
+      "title": "Links WAN — Vista de Negócio",
+      "content": "<div id=\"bpc-wan-negocio\"></div>"
+    },
+    {
+      "file": "l3-wan-cards.js",
+      "id": null,
+      "role": "content",
+      "title": "Links WAN — Cards por Router",
+      "content": "<div id=\"bpc-n3wan-cards\"></div>"
+    },
+    {
+      "file": "l3-wan-triggers.js",
+      "id": null,
+      "role": "content",
+      "title": "Alertas WAN",
+      "content": "<div id=\"bpc-wan-triggers\"></div>"
+    }
+  ]
+}

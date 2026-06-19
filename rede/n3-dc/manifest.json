@@ -12,11 +12,25 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
+      "file": "l3-dc-fabric.js",
+      "id": 102,
+      "role": "content",
+      "title": "DC Core — Saúde do Fabric",
+      "content": "<div id=\"bpc-n3dc-fabric\"></div>"
+    },
+    {
       "file": "l3-dc-table.js",
-      "id": null,
+      "id": 103,
       "role": "content",
       "title": "DC Core — Tabela",
       "content": "<div id=\"bpc-n3dc-table\"></div>"
+    },
+    {
+      "file": "l3-dc-wan.js",
+      "id": 104,
+      "role": "content",
+      "title": "DC · WAN — Links por Router",
+      "content": "<div id=\"bpc-n3dc-wan\"></div>"
     }
   ]
 }
