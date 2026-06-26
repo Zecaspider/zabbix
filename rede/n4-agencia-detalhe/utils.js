@@ -1,4 +1,4 @@
-// ╔══════════════════════════════════════════════════════════════════════════╗
+﻿// ╔══════════════════════════════════════════════════════════════════════════╗
 // ║  BPC NOC — HEADER GLOBAL                                  v8 · BPC-UI   ║
 // ║                                                                          ║
 // ║  Carregado UMA única vez, no painel de cabeçalho do Grafana.            ║
@@ -63,8 +63,9 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC-Observe',
-  nocLabel: 'INFRAESTRUTURA VMWARE - DETALHE VCENTER',
+  nocLabel: 'AGÊNCIAS - NÍVEL 4',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
+  backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
 };
 
 
@@ -572,12 +573,19 @@ const CFG_THRESHOLDS = {
          <div class="bpc-noc-logo-fallback" style="display:none">${C.title}</div>`
       : `<div class="bpc-noc-logo-fallback">${C.title}</div>`;
 
+    const backHTML = C.backLink
+      ? `<a href="${C.backLink.url}" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);font-size:.78rem;font-weight:600;letter-spacing:.04em;text-decoration:none;border:1px solid rgba(255,255,255,0.10);transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.13)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">${C.backLink.label}</a>`
+      : '';
+
     el.innerHTML = `
       <div class="bpc-noc-hdr">
 
-        <!-- Logótipo -->
-        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
-          ${logoHTML}
+        <!-- Logótipo + back-link -->
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:10px">
+            ${logoHTML}
+          </div>
+          ${backHTML}
         </div>
 
         <!-- Título + Subtítulo -->

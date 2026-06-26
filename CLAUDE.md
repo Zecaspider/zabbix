@@ -1,7 +1,7 @@
-# CLAUDE.md — Sistema de Observabilidade BPC NOC
+# CLAUDE.md — BPC-Observe
 
 > **Autoridade única e auto-suficiente deste directório.** Todo o trabalho vive
-> dentro de `sistema-de-observabilidade/` — não depender de nada fora dele.
+> dentro de `bpc-observe/` — não depender de nada fora dele.
 > Documentos de referência (todos internos a esta pasta):
 > - `README.md` — índice da estrutura
 > - `cronograma.md` — painel de progresso vivo (estado de cada ponto)

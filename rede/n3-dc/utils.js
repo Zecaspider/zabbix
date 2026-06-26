@@ -62,8 +62,8 @@ const CFG_META = {
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
-  title: 'BPC',
-  nocLabel: 'REDE - DC CORE - NÍVEL 3',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
+  title: 'BPC-Observe',
+  nocLabel: 'REDE · DC — FABRIC · NÍVEL 3',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
 };
 

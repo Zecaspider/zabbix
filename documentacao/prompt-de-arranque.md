@@ -11,10 +11,10 @@
 ---
 
 ```
-Estás a continuar a construção do Sistema de Observabilidade BPC NOC (Grafana 12 + Zabbix 7.4).
+Estás a continuar a construção do BPC-Observe (Grafana 12 + Zabbix 7.4).
 
 Directório de trabalho (auto-suficiente — não dependas de nada fora dele):
-C:\Repositorios\zabbix\sistema-de-observabilidade
+C:\Repositorios\zabbix\bpc-observe
 
 ARRANQUE — lê por esta ordem, antes de qualquer acção:
 1. CLAUDE.md          → fluxo de trabalho e regras deste directório (autoridade única)

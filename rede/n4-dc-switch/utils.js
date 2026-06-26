@@ -62,7 +62,7 @@ const CFG_META = {
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
-  title: 'BPC',
+  title: 'BPC-Observe',
   nocLabel: 'REDE DC — NÍVEL 4',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
   backLink: { url: '/d/a75e2ba6-0ecc-49ee-bceb-4bcbafb419da/n3-rede-dc-core', label: '← N3 DC Core' },

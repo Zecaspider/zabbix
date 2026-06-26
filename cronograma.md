@@ -1,4 +1,4 @@
-# Cronograma de Actividades — Sistema de Observabilidade BPC NOC
+# Cronograma de Actividades — BPC-Observe
 
 > **Painel de controlo vivo.** Única fonte de verdade do progresso. Actualizar
 > a cada ponto concluído (marca o estado + data + nota). O

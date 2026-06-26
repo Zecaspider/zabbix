@@ -36,7 +36,7 @@ const CFG_META = {
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
-  title: 'BPC',
+  title: 'BPC-Observe',
   nocLabel: 'NOC — VISÃO GERAL',   // ← N1 Portal
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
   backLink: null,

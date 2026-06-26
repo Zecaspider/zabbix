@@ -62,7 +62,7 @@ const CFG_META = {
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
-  title: 'BPC',
+  title: 'BPC-Observe',
   nocLabel: 'INFRAESTRUTURA VMware (ESXi) - NÍVEL 3',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
   backUrl: 'http://10.10.126.22:3000/d/a967e936-99a3-47c8-af98-052d7a80beb8/n2-infraestrutura-vmware',

@@ -62,7 +62,7 @@ const CFG_META = {
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
-  title: 'BPC',
+  title: 'BPC-Observe',
   nocLabel: 'REDE · VISÃO GERAL · NÍVEL 2',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
 };

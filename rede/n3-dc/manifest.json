@@ -1,8 +1,14 @@
 {
   "dashboardUid": "a75e2ba6-0ecc-49ee-bceb-4bcbafb419da",
-  "dashboardTitle": "N3 · DC Core",
+  "dashboardTitle": "N3 · DC — Fabric",
   "folderUid": "bfpm0sdxiclxcf",
-  "datasource": "3_KgG43nz",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},
+    "group": {"filter": "HG_DC_SWITCHES"},
+    "host": {"filter": "DC1-SPINE-11"},
+    "item": {"filter": "ICMP ping"}
+  },
   "panels": [
     {
       "file": "utils.js",
@@ -12,25 +18,18 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
+      "file": "l3-dc-kpi.js",
+      "id": null,
+      "role": "content",
+      "title": "KPI Strip DC",
+      "content": "<div id=\"bpc-n3dc-kpi\"></div>"
+    },
+    {
       "file": "l3-dc-fabric.js",
-      "id": 102,
+      "id": null,
       "role": "content",
-      "title": "DC Core — Saúde do Fabric",
+      "title": "4 Blocos Fabric",
       "content": "<div id=\"bpc-n3dc-fabric\"></div>"
-    },
-    {
-      "file": "l3-dc-table.js",
-      "id": 103,
-      "role": "content",
-      "title": "DC Core — Tabela",
-      "content": "<div id=\"bpc-n3dc-table\"></div>"
-    },
-    {
-      "file": "l3-dc-wan.js",
-      "id": 104,
-      "role": "content",
-      "title": "DC · WAN — Links por Router",
-      "content": "<div id=\"bpc-n3dc-wan\"></div>"
     }
   ]
 }

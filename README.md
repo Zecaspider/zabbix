@@ -1,4 +1,4 @@
-# Sistema de Observabilidade BPC NOC
+# BPC-Observe
 
 > Novo directorio de trabalho (substitui `dashs/novos_dashboards/v5`, que estava
 > poluido com duplicados, rascunhos e versoes paralelas). Estrutura limpa,
@@ -7,7 +7,7 @@
 ## Estrutura
 
 ```
-sistema-de-observabilidade/
+bpc-observe/
 ├── CLAUDE.md                  # fluxo de trabalho (local-first, incremental, manifest)
 ├── cronograma.md              # painel de progresso vivo (estado de cada ponto)
 ├── documentacao/

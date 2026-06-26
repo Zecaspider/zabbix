@@ -1,4 +1,4 @@
-# Engenharia do Sistema de Observabilidade BPC NOC (v5)
+# Engenharia do BPC-Observe (v5)
 
 > **Documento mestre.** Define arquitectura, fluxo de trabalho, padrões de
 > código, teste, operação e manutenção. Serve de base ao `CLAUDE.md` e guia
@@ -100,10 +100,10 @@ Esta é a regra que traduz a arquitectura lógica (níveis + domínios) para a
 árvore de ficheiros. Uma IA deve poder reproduzir esta estrutura **só a partir
 desta secção**, sem adivinhar.
 
-Raiz de trabalho: `C:\Repositorios\zabbix\sistema-de-observabilidade\`.
+Raiz de trabalho: `C:\Repositorios\zabbix\bpc-observe\`.
 
 ```
-sistema-de-observabilidade/
+bpc-observe/
 ├── CLAUDE.md                       # fluxo de trabalho (esta pasta)
 ├── README.md                       # indice da estrutura
 ├── _comum/                         # FONTE DE VERDADE do painel utilitario canonico

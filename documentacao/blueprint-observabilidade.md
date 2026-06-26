@@ -1,4 +1,4 @@
-# Blueprint — Sistema de Observabilidade BPC NOC (v5)
+# Blueprint — BPC-Observe (v5)
 
 > Documento de referência da arquitectura-alvo. Aprovado em 2026-06-16.
 > Complementa o `../CLAUDE.md` (fluxo de trabalho) e o

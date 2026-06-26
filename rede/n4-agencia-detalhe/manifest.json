@@ -1,0 +1,69 @@
+{
+  "dashboardUid": "n4-agencia-detalhe",
+  "dashboardTitle": "N4 · Agência — Detalhe",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "notes": "Dashboard por agência (router = agência). Variáveis passadas pelo N3 via URL.",
+  "drilldownFrom": "n3-agencias",
+  "drilldownUrl": "/d/n4-agencia-detalhe?var-group=HG_AGENCIAS_ROUTERS&var-host=<HOSTNAME>",
+  "drilldownTo": {
+    "n4-wan-device": "/d/n4-wan-device?var-group=${group}&var-host=${host}&var-iface=Gi0%2F1"
+  },
+  "variables": [
+    {
+      "name": "group", "label": "Host Group", "type": "textbox",
+      "default": "HG_AGENCIAS_ROUTERS", "hide": true,
+      "note": "Passado pelo N3 via URL. Oculto."
+    },
+    {
+      "name": "host", "label": "Host", "type": "textbox",
+      "default": "",
+      "note": "Hostname Zabbix do router da agência. Passado pelo N3 via URL."
+    }
+  ],
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": null,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l4-ag-ficha.js",
+      "id": null,
+      "role": "content",
+      "title": "",
+      "content": "<div id=\"bpc-n4-ag-ficha\"></div>"
+    }
+  ],
+  "nativePanels": [
+    {
+      "title": "ICMP — Latência e Packet Loss",
+      "type": "timeseries",
+      "items": ["/ICMP response time/", "/ICMP loss/"],
+      "refIds": ["A", "B"],
+      "units": ["ms", "percent"]
+    },
+    {
+      "title": "WAN — Tráfego Recebido",
+      "type": "timeseries",
+      "items": ["/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Bits received/"],
+      "refIds": ["C"],
+      "units": ["bps"]
+    },
+    {
+      "title": "WAN — Tráfego Enviado",
+      "type": "timeseries",
+      "items": ["/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Bits sent/"],
+      "refIds": ["D"],
+      "units": ["bps"]
+    },
+    {
+      "title": "WAN — Estado das Interfaces",
+      "type": "state-timeline",
+      "items": ["/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Operational status/"],
+      "refIds": ["E"]
+    }
+  ]
+}

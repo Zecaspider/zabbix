@@ -26,7 +26,7 @@ const CFG_SEG = {
   segmentos: [
     { key: 'wan',  label: 'WAN',       icon: '🌐', groupIds: ['27'],
       desc: 'Internet · EMIS · Agências · Parceiros · Azure/Gov',
-      dashUid: null, dashSlug: 'n3-rede-wan' },
+      dashUid: '1702465e-0539-4fa7-a8eb-c0d3a655d99b', dashSlug: 'n3-c2b7-wan' },
     { key: 'dc',   label: 'DC Fabric', icon: '🖥',  groupIds: ['26', '22'],
       desc: '7 switches Spine-Leaf + 1 OOB (DC1)',
       dashUid: null, dashSlug: 'n3-rede-dc' },
