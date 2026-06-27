@@ -1,6 +1,6 @@
 {
-  "dashboardUid": "a1c5e3cb-2b19-4ee0-82f7-833c1b8cf0cd",
-  "dashboardTitle": "N1 · Portal NOC",
+  "dashboardUid": "visao-geral-v5-rebuild",
+  "dashboardTitle": "N1 · Visão Geral — Estado global",
   "folderUid": "bfpm0sdaos074d",
   "datasource": "3_KgG43nz",
   "panels": [
@@ -13,7 +13,7 @@
     },
     {
       "file": "n1-cards.js",
-      "id": 101,
+      "id": 11,
       "role": "content",
       "title": "",
       "content": "<div id=\"bpc-n1-cards\"></div>"
