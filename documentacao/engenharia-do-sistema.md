@@ -745,7 +745,43 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 - **Alterações partilhadas:** qualquer escrita no Grafana partilhado pede
   confirmação explícita.
 
-## 12. Roadmap e checklist
+## 12. Bugs conhecidos e dívida técnica
+
+> Actualizado 2026-06-27 após teste de fluxo ponta-a-ponta N1→N2→N3→N4→N4-WAN (agência Balombo).
+
+### 12.1 Bugs activos (bloqueantes)
+
+| ID | Nível | Descrição | Causa | Acção |
+|---|---|---|---|---|
+| B-01 | N2 Rede | Painel Segmentos: `Cannot read properties of undefined (reading 'css')` — nenhum dos 4 cards renderiza | Divergência entre `l2-segmentos.js` local e versão publicada no Grafana; accessor `.css` não existe no código local | Re-push do ficheiro local; se persiste, inspecionar console do browser |
+| B-02 | N2 Rede | KPI strip mostra 0 dispositivos / 0% UP / 0 alertas | Provável consequência do mesmo crash do B-01 (utils não definido) | Corrigir B-01 primeiro |
+| B-03 | N4 Agência | Quando a agência está **DOWN**, o utils panel mostra "The query didn't return any results." e o header BPC NOC desaparece | Anchor query do utils configurado com item do próprio router da agência — falha quando o host não responde. Deve usar a âncora canónica `Storage - IBM FS9500 / ICMP ping` (§7 do CLAUDE.md) | Corrigir a Zabbix query do painel utils em `n4-agencia-detalhe` |
+
+### 12.2 Dívida técnica (não bloqueante)
+
+| ID | Nível | Descrição | Prioridade |
+|---|---|---|---|
+| T-01 | N1 | Card "Agências" mostra "EM CONSTRUÇÃO" — `dashUid: null` em `n1-cards.js`; o operador não sabe que deve ir por Rede→N3 | Alta |
+| T-02 | N1 | Painel utils com título "Header + Shared" visível e espaço vazio excessivo — `transparent: true` + título vazio não aplicados no Grafana (passo 3 do fecho, CLAUDE.md §4) | Média |
+| T-03 | N4 Agência | Link N4→N4-WAN passa `var-iface=Gi0/1` hardcoded — incorrecto para agências que usam outra interface WAN principal | Média |
+| T-04 | Todos | UIDs canónicos (C3): 16 dashboards ainda têm UIDs UUID/slug antigos em vez de `dominio.nivel.funcao` | Baixa (sessão dedicada) |
+| T-05 | N1/N3 | Links "Ver N2 →" e links da tabela N3 não navegam ao clique em alguns contextos (BT panel vs. Grafana data links) — requer teste no browser real fora do MCP | Média |
+
+### 12.3 Resultado do teste de fluxo 2026-06-27
+
+Percurso: N1 → N2 Rede → N3 Agências → N4 Agência (Balombo/RTBALO00) → N4 WAN Device
+
+| Nível | Estado | Notas |
+|---|---|---|
+| N1 Visão Geral (`n1-visao-geral-noc`) | ✅ Funciona | 9 cards, dados reais, KPIs correctos |
+| N2 Rede (`ec590abd`) | ❌ Quebrado | B-01 + B-02 |
+| N3 Agências (`n3-agencias`) | ✅ Funciona | 153 Em Serviço, 8 Lenta, 11 Sem Sistema; geomap + tabela alertas OK |
+| N4 Agência Detalhe (`n4-agencia-detalhe`) | ✅ Funciona (c/ ressalvas) | Ficha + ICMP + gráfico correctos; B-03 quando host DOWN |
+| N4 WAN Device (`n4-wan-device`) | ✅ Funciona | Gráficos tráfego interfaces OK; confirma queda às ~09:40 |
+
+Caso real validado: Balombo DOWN desde ~09:40 (100% packet loss), 5 links WAN, providers MStelecom + Unitel, sub-interfaces Gi0/1/0–Gi0/1/3 sem tráfego.
+
+## 13. Roadmap e checklist
 
 O roadmap detalhado e o estado de cada ponto vivem no **`../cronograma.md`**
 (painel de controlo vivo, ponto por ponto, com datas). Este documento define a
