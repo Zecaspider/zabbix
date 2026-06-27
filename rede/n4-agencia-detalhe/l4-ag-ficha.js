@@ -27,7 +27,7 @@ function fmtMs(v) {
 function fmtPct(v) {
   var n = parseFloat(v)
   if (isNaN(n)) return '<span style="color:#6E7681">—</span>'
-  var color = n > 5 ? '#F85149' : n > 1 ? '#D29922' : '#3FB950'
+  var color = n >= 20 ? '#F85149' : n > 5 ? '#D29922' : '#3FB950'
   return '<span style="color:' + color + '">' + n.toFixed(1) + '%</span>'
 }
 

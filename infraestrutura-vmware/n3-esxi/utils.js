@@ -63,10 +63,9 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC-Observe',
-  nocLabel: 'INFRAESTRUTURA VMware (ESXi) - NÍVEL 3',
+  nocLabel: 'INFRAESTRUTURA VMware (ESXi) - NÍVEL 3',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
-  backUrl: 'http://10.10.126.22:3000/d/a967e936-99a3-47c8-af98-052d7a80beb8/n2-infraestrutura-vmware',
-  backLabel: '← N2 · INFRAESTRUTURA VMware',
+  backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
 };
 
 
@@ -176,10 +175,13 @@ const CFG_CLOCK = {
 //  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.
 //  rttWarnMs    → RTT acima deste valor (ms) marca o host como "degradado"
 //  lossWarnPct  → packet loss acima deste valor (%) marca como "degradado"
+//  Valores alinhados com os macros Zabbix nos templates Cisco IOS by SNMP:
+//    {$ICMP_RESPONSE_TIME_WARN} = 0.15 s = 150 ms
+//    {$ICMP_LOSS_WARN}          = 20 %
 
 const CFG_THRESHOLDS = {
-  rttWarnMs: 5,
-  lossWarnPct: 5,
+  rttWarnMs: 150,
+  lossWarnPct: 20,
 };
 
 
@@ -574,12 +576,19 @@ const CFG_THRESHOLDS = {
          <div class="bpc-noc-logo-fallback" style="display:none">${C.title}</div>`
       : `<div class="bpc-noc-logo-fallback">${C.title}</div>`;
 
+    const backHTML = C.backLink
+      ? `<a href="${C.backLink.url}" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);font-size:.78rem;font-weight:600;letter-spacing:.04em;text-decoration:none;border:1px solid rgba(255,255,255,0.10);transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.13)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">${C.backLink.label}</a>`
+      : '';
+
     el.innerHTML = `
       <div class="bpc-noc-hdr">
 
-        <!-- Logótipo -->
-        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
-          ${logoHTML}
+        <!-- Logótipo + back-link -->
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:10px">
+            ${logoHTML}
+          </div>
+          ${backHTML}
         </div>
 
         <!-- Título + Subtítulo -->
@@ -590,9 +599,8 @@ const CFG_THRESHOLDS = {
           ${C.subtitle ? `<div class="bpc-noc-sub">${C.subtitle}</div>` : ''}
         </div>
 
-        <!-- Relógio + back nav -->
+        <!-- Relógio -->
         <div class="bpc-noc-right">
-          ${C.backUrl ? `<a href="${C.backUrl}" style="font-size:12px;color:#8B949E;text-decoration:none;padding:3px 10px;border:1px solid rgba(139,148,158,.25);border-radius:5px;background:rgba(139,148,158,.07);margin-right:10px;white-space:nowrap">${C.backLabel || '← N2'}</a>` : ''}
           <span class="bpc-noc-time" id="bpc-clock-time">--:--:--</span>
           <div  class="bpc-noc-date" id="bpc-clock-date">…</div>
         </div>
@@ -670,10 +678,14 @@ const CFG_THRESHOLDS = {
       typeof window.BPC.rpc === 'function' &&
       typeof window.BPC.log === 'function';
     if (ok) return;
+    // Init em curso noutro afterRender concorrente — não re-inicializar
+    if (window.BPC._initPending) return;
     console.warn('[BPC] Estado parcial — reinicializando (' + VERSION + ')');
     window.BPC._ready = false;
     window.BPC.rpc = null;
   }
+  if (!window.BPC) window.BPC = {};
+  window.BPC._initPending = true;
 
 
   // ── Namespace window.BPC ─────────────────────────────────────────────────
@@ -700,6 +712,7 @@ const CFG_THRESHOLDS = {
     setReady(rpcFn) {
       this.rpc = rpcFn;
       this._ready = true;
+      this._initPending = false;
       BPC.log('Runtime pronto');
       this._callbacks.splice(0).forEach(cb => {
         try { cb(rpcFn); } catch (e) { console.error('[BPC] setReady:', e); }

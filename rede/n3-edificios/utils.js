@@ -34,7 +34,7 @@
 //    CFG_SIZES   → tipografia e espaçamentos do header
 //    CFG_PULSE   → animações de estado dos cards
 //    CFG_CLOCK   → idioma do relógio (dias, meses)
-//    CFG_THRESHOLDS → limites ICMP por defeito + catálogo de rede (.net)
+//    CFG_THRESHOLDS → limites de alerta ICMP por defeito
 //
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -47,7 +47,7 @@
 
 const CFG_META = {
   version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
-  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
+  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',
 };
 
 
@@ -65,6 +65,7 @@ const CFG_HEADER = {
   title: 'BPC-Observe',
   nocLabel: 'REDE - EDIFÍCIOS - NÍVEL 3',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
+  backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
 };
 
 
@@ -169,33 +170,18 @@ const CFG_CLOCK = {
 };
 
 
-// ── CFG_THRESHOLDS — Limites de alerta ICMP + catálogo de rede ───────────────
+// ── CFG_THRESHOLDS — Limites de alerta ICMP por defeito ──────────────────────
 //
-//  rttWarnMs / lossWarnPct → defaults legados do utilitário fetchICMP (compat;
-//                            usados só quando o caller não passa thresholds).
-//
-//  net → CATÁLOGO DE THRESHOLDS DE REDE (§4 documentacao/rede-arquitectura.md).
-//        Fonte de verdade ÚNICA partilhada pelos 4 níveis do domínio Rede
-//        (N2/N3-DC/N3-Edifícios/N3-WAN/N4). Exposto em window.BPC.NET_THR
-//        (BLOCO 5). Os cards classificam com BPC.state.metric(v, BPC.NET_THR.x).
-//        Estado de interface (net.if.status) e BGP-proxy (BGP_PEER_*) são
-//        booleanos (down/up) — não entram neste catálogo numérico.
+//  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.
+//  rttWarnMs    → RTT acima deste valor (ms) marca o host como "degradado"
+//  lossWarnPct  → packet loss acima deste valor (%) marca como "degradado"
+//  Valores alinhados com os macros Zabbix nos templates Cisco IOS by SNMP:
+//    {$ICMP_RESPONSE_TIME_WARN} = 0.15 s = 150 ms
+//    {$ICMP_LOSS_WARN}          = 20 %
 
 const CFG_THRESHOLDS = {
-  // ICMP defaults (compat fetchICMP)
-  rttWarnMs: 5,
-  lossWarnPct: 5,
-
-  // Catálogo de rede — partilhado pelos 4 níveis (warn/crit)
-  net: {
-    rtt:      { warn:  5, crit: 50 },   // ms     · icmppingsec
-    loss:     { warn:  1, crit: 10 },   // %      · icmppingloss
-    cpu:      { warn: 60, crit: 85 },   // %      · system.cpu.util
-    mem:      { warn: 80, crit: 92 },   // %      · *memory*
-    ifUtil:   { warn: 70, crit: 90 },   // %      · net.if.in/out ÷ speed
-    ifErrors: { warn:  1, crit: 10 },   // count  · net.if.*.errors / intervalo
-    temp:     { warn: 60, crit: 75 },   // °C     · sensor temp (Nexus)
-  },
+  rttWarnMs: 150,
+  lossWarnPct: 20,
 };
 
 
@@ -590,12 +576,19 @@ const CFG_THRESHOLDS = {
          <div class="bpc-noc-logo-fallback" style="display:none">${C.title}</div>`
       : `<div class="bpc-noc-logo-fallback">${C.title}</div>`;
 
+    const backHTML = C.backLink
+      ? `<a href="${C.backLink.url}" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);font-size:.78rem;font-weight:600;letter-spacing:.04em;text-decoration:none;border:1px solid rgba(255,255,255,0.10);transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,0.13)'" onmouseout="this.style.background='rgba(255,255,255,0.07)'">${C.backLink.label}</a>`
+      : '';
+
     el.innerHTML = `
       <div class="bpc-noc-hdr">
 
-        <!-- Logótipo -->
-        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
-          ${logoHTML}
+        <!-- Logótipo + back-link -->
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:10px">
+            ${logoHTML}
+          </div>
+          ${backHTML}
         </div>
 
         <!-- Título + Subtítulo -->
@@ -1113,11 +1106,6 @@ const CFG_THRESHOLDS = {
 
   // Alias legado: BPC.utils.stateAccent lê window.BPC.theme.{ok,warn,crit}
   window.BPC.theme = CFG_THEME;
-
-  // ── BPC.NET_THR — catálogo de thresholds de rede (§4 rede-arquitectura) ─────
-  //  Fonte única consumida pelos cards dos 4 níveis de Rede.
-  //  Uso: window.BPC.state.metric(valor, window.BPC.NET_THR.cpu)
-  window.BPC.NET_THR = CFG_THRESHOLDS.net;
 
   // ── BPC.state — modelo de estado, única fonte de cálculo (§6.1) ────────────
   window.BPC.state = {

@@ -1,89 +1,89 @@
-﻿// â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
-// â•‘  BPC NOC â€” HEADER GLOBAL                                  v8 Â· BPC-UI   â•‘
-// â•‘                                                                          â•‘
-// â•‘  Carregado UMA Ãºnica vez, no painel de cabeÃ§alho do Grafana.            â•‘
-// â•‘  Tudo o que Ã© partilhado entre painÃ©is vive aqui.                       â•‘
-// â•‘                                                                          â•‘
-// â•‘  ESTRUTURA DO FICHEIRO                                                   â•‘
-// â•‘  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€  â•‘
-// â•‘  BLOCO 1 â€” CFG         Toda a configuraÃ§Ã£o editÃ¡vel (cores, labelsâ€¦)    â•‘
-// â•‘  BLOCO 2 â€” CSS         Estilos globais BPC (cards, pills, skeletonâ€¦)    â•‘
-// â•‘  BLOCO 3 â€” HTML        Render do cabeÃ§alho NOC + relÃ³gio                â•‘
-// â•‘  BLOCO 4 â€” BOOTSTRAP   Namespace Â· utils Â· RPC Â· guards de versÃ£o       â•‘
-// â•‘                                                                          â•‘
-// â•‘  REGRA DE OURO: para mudar qualquer coisa visual ou textual,            â•‘
-// â•‘  editar APENAS o BLOCO 1. NÃ£o tocar nos outros blocos.                  â•‘
-// â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║  BPC NOC — HEADER GLOBAL                                  v8 · BPC-UI   ║
+// ║                                                                          ║
+// ║  Carregado UMA única vez, no painel de cabeçalho do Grafana.            ║
+// ║  Tudo o que é partilhado entre painéis vive aqui.                       ║
+// ║                                                                          ║
+// ║  ESTRUTURA DO FICHEIRO                                                   ║
+// ║  ─────────────────────────────────────────────────────────────────────  ║
+// ║  BLOCO 1 — CFG         Toda a configuração editável (cores, labels…)    ║
+// ║  BLOCO 2 — CSS         Estilos globais BPC (cards, pills, skeleton…)    ║
+// ║  BLOCO 3 — HTML        Render do cabeçalho NOC + relógio                ║
+// ║  BLOCO 4 — BOOTSTRAP   Namespace · utils · RPC · guards de versão       ║
+// ║                                                                          ║
+// ║  REGRA DE OURO: para mudar qualquer coisa visual ou textual,            ║
+// ║  editar APENAS o BLOCO 1. Não tocar nos outros blocos.                  ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 //
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•—      â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—      â–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•â•â•â•â• â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—    â–ˆâ–ˆâ–ˆâ•‘
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•     â–ˆâ–ˆâ•‘
-//  â•šâ•â•â•â•â•â• â•šâ•â•â•â•â•â•â• â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•      â•šâ•â•
+//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗      ██╗
+//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ███║
+//  ██████╔╝██║     ██║   ██║██║      ██║   ██║     ██║
+//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║     ██║
+//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝     ██║
+//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝      ╚═╝
 //
-//  CONFIGURAÃ‡ÃƒO GLOBAL â€” EDITAR AQUI E APENAS AQUI
+//  CONFIGURAÇÃO GLOBAL — EDITAR AQUI E APENAS AQUI
 //
-//  ContÃ©m:
-//    CFG_META    â†’ versÃ£o, ambiente, URL da API Zabbix
-//    CFG_HEADER  â†’ logÃ³tipo, tÃ­tulo, subtÃ­tulo, labels
-//    CFG_THEME   â†’ toda a paleta de cores BPC
-//    CFG_SIZES   â†’ tipografia e espaÃ§amentos do header
-//    CFG_PULSE   â†’ animaÃ§Ãµes de estado dos cards
-//    CFG_CLOCK   â†’ idioma do relÃ³gio (dias, meses)
-//    CFG_THRESHOLDS â†’ limites de alerta ICMP por defeito
+//  Contém:
+//    CFG_META    → versão, ambiente, URL da API Zabbix
+//    CFG_HEADER  → logótipo, título, subtítulo, labels
+//    CFG_THEME   → toda a paleta de cores BPC
+//    CFG_SIZES   → tipografia e espaçamentos do header
+//    CFG_PULSE   → animações de estado dos cards
+//    CFG_CLOCK   → idioma do relógio (dias, meses)
+//    CFG_THRESHOLDS → limites de alerta ICMP por defeito
 //
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 
-// â”€â”€ CFG_META â€” IdentificaÃ§Ã£o e infra â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CFG_META — Identificação e infra ─────────────────────────────────────────
 //
-//  version   â†’ identificador interno do runtime; incrementar em alteraÃ§Ãµes
-//              incompatÃ­veis (forÃ§a re-inicializaÃ§Ã£o do namespace BPC)
-//  apiUrl    â†’ endpoint do proxy Grafana para a API Zabbix
+//  version   → identificador interno do runtime; incrementar em alterações
+//              incompatíveis (força re-inicialização do namespace BPC)
+//  apiUrl    → endpoint do proxy Grafana para a API Zabbix
 //              Alterar se o IP/porta do Grafana mudar
 
 const CFG_META = {
-  version: 'v9',   // v9 â€” contrato Â§5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
-  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
+  version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
+  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',
 };
 
 
-// â”€â”€ CFG_HEADER â€” Identidade visual do cabeÃ§alho â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CFG_HEADER — Identidade visual do cabeçalho ───────────────────────────────
 //
-//  logoUrl   â†’ caminho para a imagem do logÃ³tipo (relativo ao Grafana public/)
-//              '' â†’ mostra o fallback textual com CFG_HEADER.title
-//  title     â†’ texto principal (aparece a branco)
-//  nocLabel  â†’ palavra destacada a dourado apÃ³s o separador  |
-//  subtitle  â†’ linha pequena por baixo do tÃ­tulo
-//              '' â†’ omite a linha de subtÃ­tulo
+//  logoUrl   → caminho para a imagem do logótipo (relativo ao Grafana public/)
+//              '' → mostra o fallback textual com CFG_HEADER.title
+//  title     → texto principal (aparece a branco)
+//  nocLabel  → palavra destacada a dourado após o separador  |
+//  subtitle  → linha pequena por baixo do título
+//              '' → omite a linha de subtítulo
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC-Observe',
-    nocLabel: 'REDE WAN — NÍVEL 4',
+  nocLabel: 'REDE WAN — NÍVEL 4',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
-  backLink: { url: '/d/1702465e-0539-4fa7-a8eb-c0d3a655d99b/n3-rede-wan', label: '← N3 WAN' },
+  backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
 };
 
 
-// â”€â”€ CFG_THEME â€” Paleta de cores BPC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CFG_THEME — Paleta de cores BPC ──────────────────────────────────────────
 //
-//  navy   â†’ fundo principal do header e cards (azul-marinho escuro)
-//  navy2  â†’ fundo secundÃ¡rio / gradiente do header
-//  cyan   â†’ accent primÃ¡rio: relÃ³gio, links, mÃ©tricas informativas
-//  gold   â†’ accent dourado: palavra "NOC", destaques especiais
-//  ok     â†’ estado saudÃ¡vel (verde) â€” Â§6 modelo de estado
-//  warn   â†’ estado de aviso (Ã¢mbar) â€” Â§6: #d29922 (decoplado do gold; ver nota)
-//  crit   â†’ estado crÃ­tico / down (vermelho) â€” Â§6: #f85149
-//  info   â†’ mÃ©trica informativa (igual ao cyan)
-//  mute   â†’ texto e labels secundÃ¡rios (cinzento azulado)
+//  navy   → fundo principal do header e cards (azul-marinho escuro)
+//  navy2  → fundo secundário / gradiente do header
+//  cyan   → accent primário: relógio, links, métricas informativas
+//  gold   → accent dourado: palavra "NOC", destaques especiais
+//  ok     → estado saudável (verde) — §6 modelo de estado
+//  warn   → estado de aviso (âmbar) — §6: #d29922 (decoplado do gold; ver nota)
+//  crit   → estado crítico / down (vermelho) — §6: #f85149
+//  info   → métrica informativa (igual ao cyan)
+//  mute   → texto e labels secundários (cinzento azulado)
 //
-//  NOTA v9: as cores de estado (ok/warn/crit) seguem o catÃ¡logo canÃ³nico do
-//  modelo de estado (engenharia Â§6/Â§6.1), para que BPC.state.color() e o CSS
-//  .bpc-* sejam UMA Ãºnica fonte de verdade. O `gold` (#F0A500) mantÃ©m-se como
+//  NOTA v9: as cores de estado (ok/warn/crit) seguem o catálogo canónico do
+//  modelo de estado (engenharia §6/§6.1), para que BPC.state.color() e o CSS
+//  .bpc-* sejam UMA única fonte de verdade. O `gold` (#F0A500) mantém-se como
 //  accent de marca (palavra destacada no header), agora distinto do `warn`.
 
 const CFG_THEME = {
@@ -99,20 +99,20 @@ const CFG_THEME = {
 };
 
 
-// â”€â”€ CFG_SIZES â€” DimensÃµes e tipografia â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CFG_SIZES — Dimensões e tipografia ───────────────────────────────────────
 //
-//  Controla os tamanhos de texto e espaÃ§amentos do header.
+//  Controla os tamanhos de texto e espaçamentos do header.
 //  Os cards usam as classes bpc-value-lg/md/sm definidas no BLOCO 2 (CSS).
 //
-//  header.padding       â†’ padding vertical do wrapper (px) â€” manter â‰¤12 para
-//                         nÃ£o expandir o painel Grafana
-//  header.borderTopW    â†’ espessura da barra superior decorativa
-//  title.size           â†’ tamanho do tÃ­tulo principal "BPC | NOC"
-//  title.letterSpacing  â†’ espaÃ§amento entre letras do tÃ­tulo (em)
-//  subtitle.size        â†’ tamanho da linha de subtÃ­tulo
-//  clock.timeSize       â†’ tamanho dos dÃ­gitos do relÃ³gio
-//  clock.dateSize       â†’ tamanho da linha de data
-//  logo.height          â†’ altura do logÃ³tipo em pÃ­xeis
+//  header.padding       → padding vertical do wrapper (px) — manter ≤12 para
+//                         não expandir o painel Grafana
+//  header.borderTopW    → espessura da barra superior decorativa
+//  title.size           → tamanho do título principal "BPC | NOC"
+//  title.letterSpacing  → espaçamento entre letras do título (em)
+//  subtitle.size        → tamanho da linha de subtítulo
+//  clock.timeSize       → tamanho dos dígitos do relógio
+//  clock.dateSize       → tamanho da linha de data
+//  logo.height          → altura do logótipo em píxeis
 
 const CFG_SIZES = {
   header: {
@@ -136,18 +136,18 @@ const CFG_SIZES = {
 };
 
 
-// â”€â”€ CFG_PULSE â€” AnimaÃ§Ãµes de estado dos cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CFG_PULSE — Animações de estado dos cards ─────────────────────────────────
 //
-//  enabled:false â†’ bordas estÃ¡ticas coloridas (recomendado para ecrÃ£ NOC 24h,
-//                  reduz distracÃ§Ã£o e carga GPU)
-//  enabled:true  â†’ borda + glow pulsante por estado
+//  enabled:false → bordas estáticas coloridas (recomendado para ecrã NOC 24h,
+//                  reduz distracção e carga GPU)
+//  enabled:true  → borda + glow pulsante por estado
 //
-//  borderWidth   â†’ espessura da borda dos cards em modo animado
-//  borderRadius  â†’ raio dos cantos em modo animado
-//  intensity     â†’ opacidade mÃ¡xima do glow { warn, crit }  (0.0 â€“ 1.0)
+//  borderWidth   → espessura da borda dos cards em modo animado
+//  borderRadius  → raio dos cantos em modo animado
+//  intensity     → opacidade máxima do glow { warn, crit }  (0.0 – 1.0)
 //                  0 = sem glow, apenas borda
-//  speed         â†’ perÃ­odo da animaÃ§Ã£o em segundos { warn, crit }
-//  minSpeedSec   â†’ velocidade mÃ­nima (evita animaÃ§Ãµes demasiado rÃ¡pidas)
+//  speed         → período da animação em segundos { warn, crit }
+//  minSpeedSec   → velocidade mínima (evita animações demasiado rápidas)
 
 const CFG_PULSE = {
   enabled: false,
@@ -159,61 +159,64 @@ const CFG_PULSE = {
 };
 
 
-// â”€â”€ CFG_CLOCK â€” LocalizaÃ§Ã£o do relÃ³gio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CFG_CLOCK — Localização do relógio ───────────────────────────────────────
 //
-//  Substituir arrays por traduÃ§Ãµes para outro idioma se necessÃ¡rio.
-//  Ãndice 0 = Domingo (padrÃ£o JS).
+//  Substituir arrays por traduções para outro idioma se necessário.
+//  Índice 0 = Domingo (padrão JS).
 
 const CFG_CLOCK = {
-  days: ['Domingo', 'Segunda-feira', 'TerÃ§a-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'SÃ¡bado'],
-  months: ['Janeiro', 'Fevereiro', 'MarÃ§o', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+  days: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+  months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
 };
 
 
-// â”€â”€ CFG_THRESHOLDS â€” Limites de alerta ICMP por defeito â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── CFG_THRESHOLDS — Limites de alerta ICMP por defeito ──────────────────────
 //
-//  Usados pelo utilitÃ¡rio fetchICMP quando o caller nÃ£o passa thresholds.
-//  rttWarnMs    â†’ RTT acima deste valor (ms) marca o host como "degradado"
-//  lossWarnPct  â†’ packet loss acima deste valor (%) marca como "degradado"
+//  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.
+//  rttWarnMs    → RTT acima deste valor (ms) marca o host como "degradado"
+//  lossWarnPct  → packet loss acima deste valor (%) marca como "degradado"
+//  Valores alinhados com os macros Zabbix nos templates Cisco IOS by SNMP:
+//    {$ICMP_RESPONSE_TIME_WARN} = 0.15 s = 150 ms
+//    {$ICMP_LOSS_WARN}          = 20 %
 
 const CFG_THRESHOLDS = {
-  rttWarnMs: 5,
-  lossWarnPct: 5,
+  rttWarnMs: 150,
+  lossWarnPct: 20,
 };
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 //
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•—      â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—     â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•â•â•â•â• â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—    â•šâ•â•â•â•â–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ–ˆâ•”â•
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•”â•â•â•
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•     â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—
-//  â•šâ•â•â•â•â•â• â•šâ•â•â•â•â•â•â• â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•      â•šâ•â•â•â•â•â•â•
+//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██████╗
+//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ╚════██╗
+//  ██████╔╝██║     ██║   ██║██║      ██║   ██║      ███╔╝
+//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║     ██╔══╝
+//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝     ███████╗
+//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝      ╚══════╝
 //
 //  CSS GLOBAL BPC
 //
-//  Injectado UMA vez em <head>. NÃ£o editar directamente â€”
-//  os valores vÃªm do BLOCO 1 (CFG_THEME, CFG_PULSE).
+//  Injectado UMA vez em <head>. Não editar directamente —
+//  os valores vêm do BLOCO 1 (CFG_THEME, CFG_PULSE).
 //
-//  ContÃ©m:
-//    â€¢ VariÃ¡veis CSS --bpc-* (sincronizadas com CFG_THEME)
-//    â€¢ Base .bpc
-//    â€¢ Cards (.bpc-card, ::before, estados, hover)
-//    â€¢ Layout helpers (.bpc-flex, .bpc-flex-col, .bpc-gap-*)
-//    â€¢ Tipografia (.bpc-label, .bpc-value-lg/md/sm)
-//    â€¢ Cores de estado (.bpc-ok, .bpc-warn, .bpc-crit, .bpc-info, .bpc-mute)
-//    â€¢ Pills (.bpc-pill ok/warn/down)
-//    â€¢ Skeleton loader (.bpc-skeleton)
-//    â€¢ Auxiliares (divider, timestamp, mini-bar, erro inline, status-bar)
-//    â€¢ CSS de pulse/bordas de estado (gerado a partir de CFG_PULSE)
-//    â€¢ CSS especÃ­fico do header NOC (.bpc-noc-hdr, logo, tÃ­tulo, relÃ³gio)
+//  Contém:
+//    • Variáveis CSS --bpc-* (sincronizadas com CFG_THEME)
+//    • Base .bpc
+//    • Cards (.bpc-card, ::before, estados, hover)
+//    • Layout helpers (.bpc-flex, .bpc-flex-col, .bpc-gap-*)
+//    • Tipografia (.bpc-label, .bpc-value-lg/md/sm)
+//    • Cores de estado (.bpc-ok, .bpc-warn, .bpc-crit, .bpc-info, .bpc-mute)
+//    • Pills (.bpc-pill ok/warn/down)
+//    • Skeleton loader (.bpc-skeleton)
+//    • Auxiliares (divider, timestamp, mini-bar, erro inline, status-bar)
+//    • CSS de pulse/bordas de estado (gerado a partir de CFG_PULSE)
+//    • CSS específico do header NOC (.bpc-noc-hdr, logo, título, relógio)
 //
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 
 (function injectAllCSS() {
 
-  // â”€â”€ CSS Global (cards, pills, layout, etc.) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── CSS Global (cards, pills, layout, etc.) ───────────────────────────────
 
   if (!document.getElementById('bpc-global-css')) {
     const T = CFG_THEME;
@@ -221,7 +224,7 @@ const CFG_THRESHOLDS = {
     s.id = 'bpc-global-css';
     s.textContent = `
 
-      /* â”€â”€ VariÃ¡veis BPC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      /* ── Variáveis BPC ───────────────────────────────────────────────
          Definidas em :root E .theme-dark para cobrir os dois contextos
          que o Grafana pode aplicar consoante o tema seleccionado.      */
       :root,
@@ -238,13 +241,13 @@ const CFG_THRESHOLDS = {
         --bpc-mute:  ${T.mute};
       }
 
-      /* â”€â”€ Base â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      /* ── Base ────────────────────────────────────────────────────────
          Fonte e box-model aplicados a todos os elementos BPC.          */
       .bpc { font-family:'Inter','Segoe UI',sans-serif; box-sizing:border-box; }
 
-      /* â”€â”€ Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         Contentor principal de cada mÃ©trica.
-         --card-accent â†’ cor da barra de topo; definir inline em cada card:
+      /* ── Card ────────────────────────────────────────────────────────
+         Contentor principal de cada métrica.
+         --card-accent → cor da barra de topo; definir inline em cada card:
            <div class="bpc-card" style="--card-accent:#22C55E">
          O ::before gera a barra de 3px colorida no topo do card.       */
       .bpc-card {
@@ -270,10 +273,10 @@ const CFG_THRESHOLDS = {
         background:   rgba(14,20,60,0.70);
       }
 
-      /* â”€â”€ Estados dos cards â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         .state-ok  â†’ sem override (herda o estilo base do card)
-         .state-warnâ†’ borda esquerda Ã¢mbar
-         .state-downâ†’ borda esquerda vermelha + fundo levemente vermelho */
+      /* ── Estados dos cards ───────────────────────────────────────────
+         .state-ok  → sem override (herda o estilo base do card)
+         .state-warn→ borda esquerda âmbar
+         .state-down→ borda esquerda vermelha + fundo levemente vermelho */
       .bpc-card.state-ok   {}
       .bpc-card.state-warn {
         border-color: rgba(240,165,0,0.28);
@@ -285,25 +288,25 @@ const CFG_THRESHOLDS = {
         background:   rgba(239,68,68,0.04);
       }
 
-      /* â”€â”€ Layout helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         UtilitÃ¡rios de flexbox para compor o interior dos cards.       */
+      /* ── Layout helpers ──────────────────────────────────────────────
+         Utilitários de flexbox para compor o interior dos cards.       */
       .bpc-flex     { display:flex; align-items:center; }
       .bpc-flex-col { display:flex; flex-direction:column; }
       .bpc-gap-4    { gap:4px;  }
       .bpc-gap-8    { gap:8px;  }
       .bpc-gap-12   { gap:12px; }
 
-      /* â”€â”€ Tipografia â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         .bpc-label    â†’ rÃ³tulo pequeno uppercase (ex: "Total", "Down")
-         .bpc-value-lg â†’ nÃºmero grande principal (ex: total de hosts)
-         .bpc-value-md â†’ nÃºmero mÃ©dio (ex: down, warn)
-         .bpc-value-sm â†’ valor pequeno (ex: RTT, Loss)                  */
+      /* ── Tipografia ──────────────────────────────────────────────────
+         .bpc-label    → rótulo pequeno uppercase (ex: "Total", "Down")
+         .bpc-value-lg → número grande principal (ex: total de hosts)
+         .bpc-value-md → número médio (ex: down, warn)
+         .bpc-value-sm → valor pequeno (ex: RTT, Loss)                  */
       .bpc-label    { font-size:.67rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--bpc-mute); }
       .bpc-value-lg { font-size:1.80rem; font-weight:700; color:#E6EDF3; line-height:1; }
       .bpc-value-md { font-size:1.10rem; font-weight:600; color:#E6EDF3; line-height:1; }
       .bpc-value-sm { font-size:.85rem;  font-weight:600; color:#E6EDF3; line-height:1; }
 
-      /* â”€â”€ Classes de cor de estado â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      /* ── Classes de cor de estado ────────────────────────────────────
          Aplicar directamente a qualquer elemento de texto.             */
       .bpc-ok   { color:var(--bpc-ok);   }
       .bpc-warn { color:var(--bpc-warn); }
@@ -311,9 +314,9 @@ const CFG_THRESHOLDS = {
       .bpc-info { color:var(--bpc-info); }
       .bpc-mute { color:var(--bpc-mute); }
 
-      /* â”€â”€ Pills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+      /* ── Pills ───────────────────────────────────────────────────────
          Pastilha colorida de estado (ex: "OK", "Degradado", "Down").
-         .bpc-pill.down inclui animaÃ§Ã£o de pulse para chamar a atenÃ§Ã£o.  */
+         .bpc-pill.down inclui animação de pulse para chamar a atenção.  */
       .bpc-pill {
         font-size:.65rem; font-weight:700; letter-spacing:.05em;
         text-transform:uppercase; padding:2px 9px;
@@ -329,8 +332,8 @@ const CFG_THRESHOLDS = {
         50%     { box-shadow:0 0 0 4px rgba(239,68,68,0);    }
       }
 
-      /* â”€â”€ Skeleton loader â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         AnimaÃ§Ã£o de shimmer enquanto os dados carregam.                */
+      /* ── Skeleton loader ─────────────────────────────────────────────
+         Animação de shimmer enquanto os dados carregam.                */
       .bpc-skeleton {
         background:      linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);
         background-size: 200% 100%;
@@ -342,22 +345,22 @@ const CFG_THRESHOLDS = {
         100% { background-position:-200%  0; }
       }
 
-      /* â”€â”€ Auxiliares â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         .bpc-divider   â†’ separador vertical subtil entre colunas
-         .bpc-timestamp â†’ data/hora de actualizaÃ§Ã£o no rodapÃ© do card   */
+      /* ── Auxiliares ──────────────────────────────────────────────────
+         .bpc-divider   → separador vertical subtil entre colunas
+         .bpc-timestamp → data/hora de actualização no rodapé do card   */
       .bpc-divider   { width:1px; align-self:stretch; flex-shrink:0; background:rgba(255,255,255,0.07); }
       .bpc-timestamp { font-size:.58rem; color:rgba(255,255,255,0.18); text-align:right; margin-top:4px; }
 
-      /* â”€â”€ Mini bar (histograma de actividade) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         RepresentaÃ§Ã£o visual de histÃ³rico de valores (ex: RTT).
+      /* ── Mini bar (histograma de actividade) ─────────────────────────
+         Representação visual de histórico de valores (ex: RTT).
          Cada segmento tem altura proporcional ao valor relativo.        */
       .bpc-mini-bar { display:flex; align-items:flex-end; gap:2px; height:22px; margin-top:8px; }
       .bpc-bar-seg  { flex:1; border-radius:2px 2px 0 0; background:var(--card-accent,var(--bpc-cyan));
                       opacity:.45; min-height:2px; transition:opacity .2s; }
       .bpc-card:hover .bpc-bar-seg { opacity:.68; }
 
-      /* â”€â”€ Erro inline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         Bloco de erro visÃ­vel dentro de um card quando a API falha.    */
+      /* ── Erro inline ─────────────────────────────────────────────────
+         Bloco de erro visível dentro de um card quando a API falha.    */
       .bpc-error-msg {
         display:flex; align-items:center; gap:6px;
         font-size:.70rem; color:rgba(239,68,68,0.85);
@@ -367,8 +370,8 @@ const CFG_THRESHOLDS = {
         padding:4px 8px; margin-top:6px;
       }
 
-      /* â”€â”€ Status bar global â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         Barra de resumo "OK: N Â· Degradado: N Â· CrÃ­tico: N"            */
+      /* ── Status bar global ───────────────────────────────────────────
+         Barra de resumo "OK: N · Degradado: N · Crítico: N"            */
       .bpc-status-bar  { display:flex; align-items:center; gap:8px; padding:4px 0 8px; flex-wrap:wrap; }
       .bpc-status-pill {
         display:flex; align-items:center; gap:5px;
@@ -387,11 +390,11 @@ const CFG_THRESHOLDS = {
   }
 
 
-  // â”€â”€ CSS de Pulse / bordas de estado â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── CSS de Pulse / bordas de estado ──────────────────────────────────────
   //
   //  Gerado a partir de CFG_PULSE (BLOCO 1).
-  //  enabled:false â†’ bordas estÃ¡ticas (sem animaÃ§Ã£o, recomendado para NOC 24h)
-  //  enabled:true  â†’ animaÃ§Ã£o de glow pulsante
+  //  enabled:false → bordas estáticas (sem animação, recomendado para NOC 24h)
+  //  enabled:true  → animação de glow pulsante
 
   if (!document.getElementById('bpc-pulse-css')) {
     const p = CFG_PULSE;
@@ -400,16 +403,16 @@ const CFG_THRESHOLDS = {
     s.id = 'bpc-pulse-css';
 
     if (!p.enabled) {
-      // Bordas estÃ¡ticas â€” mais limpo para uso contÃ­nuo
+      // Bordas estáticas — mais limpo para uso contínuo
       s.textContent = [
         '.bpc-card.state-ok   {}',
         '.bpc-card.state-warn { border-color:rgba(240,165,0,0.30); border-left:2px solid rgba(240,165,0,0.70); }',
         '.bpc-card.state-down { border-color:rgba(239,68,68,0.30); border-left:2px solid rgba(239,68,68,0.75); background:rgba(239,68,68,0.04); }',
       ].join('\n');
       document.head.appendChild(s);
-      if (window.BPC?.log) BPC.log('Pulse: bordas estÃ¡ticas (enabled=false)');
+      if (window.BPC?.log) BPC.log('Pulse: bordas estáticas (enabled=false)');
     } else {
-      // Glow animado â€” gerado dinamicamente a partir de CFG_PULSE e CFG_THEME
+      // Glow animado — gerado dinamicamente a partir de CFG_PULSE e CFG_THEME
       const hex = v => Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16).padStart(2, '0');
       const wS = Math.max(p.minSpeedSec, p.speed.warn) + 's';
       const cS = Math.max(p.minSpeedSec, p.speed.crit) + 's';
@@ -426,20 +429,20 @@ const CFG_THRESHOLDS = {
         .bpc-card.state-down{ border:${p.borderWidth} solid ${T.crit}70; border-radius:${p.borderRadius}; animation:bpc-down ${cS} ease-in-out infinite; }
       `;
       document.head.appendChild(s);
-      if (window.BPC?.log) BPC.log('Pulse: animado â€” warn:' + wS + ' crit:' + cS);
+      if (window.BPC?.log) BPC.log('Pulse: animado — warn:' + wS + ' crit:' + cS);
     }
   }
 
 
-  // â”€â”€ CSS do Header NOC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── CSS do Header NOC ─────────────────────────────────────────────────────
   //
   //  Gerado a partir de CFG_SIZES e CFG_THEME (BLOCO 1).
   //
   //  NOTA v8: padding controlado por CFG_SIZES.header.padding.
-  //  Manter â‰¤12px vertical para nÃ£o expandir o painel Grafana.
-  //  Sem position:relative ou overflow:hidden no wrapper â€” evita expansÃ£o.
-  //  Sem elementos com position:absolute â€” evita que o browser expanda
-  //  o container para acomodar conteÃºdo "fora do fluxo".
+  //  Manter ≤12px vertical para não expandir o painel Grafana.
+  //  Sem position:relative ou overflow:hidden no wrapper — evita expansão.
+  //  Sem elementos com position:absolute — evita que o browser expanda
+  //  o container para acomodar conteúdo "fora do fluxo".
 
   if (!document.getElementById('bpc-header-css')) {
     const Z = CFG_SIZES;
@@ -447,8 +450,8 @@ const CFG_THRESHOLDS = {
     s.id = 'bpc-header-css';
     s.textContent = `
 
-      /* â”€â”€ Wrapper do header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         Gradiente horizontal navy â†’ navy2 â†’ navy com linha superior cyan */
+      /* ── Wrapper do header ───────────────────────────────────────────
+         Gradiente horizontal navy → navy2 → navy com linha superior cyan */
       .bpc-noc-hdr {
         display:       flex;
         align-items:   center;
@@ -463,8 +466,8 @@ const CFG_THRESHOLDS = {
         font-family:   'Inter','Segoe UI',sans-serif;
       }
 
-      /* â”€â”€ LogÃ³tipo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         .bpc-noc-logo-fallback â†’ exibido quando a imagem falha (onerror) */
+      /* ── Logótipo ────────────────────────────────────────────────────
+         .bpc-noc-logo-fallback → exibido quando a imagem falha (onerror) */
       .bpc-noc-logo          { height:${Z.logo.height}px; flex-shrink:0; }
       .bpc-noc-logo-fallback {
         height:${Z.logo.height}px; width:52px; flex-shrink:0;
@@ -475,8 +478,8 @@ const CFG_THRESHOLDS = {
         color:rgba(255,255,255,0.28); letter-spacing:1px;
       }
 
-      /* â”€â”€ Centro â€” tÃ­tulo e subtÃ­tulo â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         <em> dentro do tÃ­tulo â†’ cor dourada (nocLabel)                  */
+      /* ── Centro — título e subtítulo ─────────────────────────────────
+         <em> dentro do título → cor dourada (nocLabel)                  */
       .bpc-noc-center { flex:1; text-align:center; }
       .bpc-noc-title  {
         font-size:${Z.title.size}; font-weight:800; letter-spacing:${Z.title.letterSpacing};
@@ -488,8 +491,8 @@ const CFG_THRESHOLDS = {
         letter-spacing:.14em; text-transform:uppercase; margin-top:4px;
       }
 
-      /* â”€â”€ RelÃ³gio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-         DÃ­gitos com tabular-nums para evitar saltos visuais ao mudar    */
+      /* ── Relógio ─────────────────────────────────────────────────────
+         Dígitos com tabular-nums para evitar saltos visuais ao mudar    */
       .bpc-noc-right { text-align:right; flex-shrink:0; }
       .bpc-noc-time  {
         font-size:${Z.clock.timeSize}; font-weight:800; color:var(--bpc-cyan, ${CFG_THEME.cyan});
@@ -509,32 +512,32 @@ const CFG_THRESHOLDS = {
 })(); // fim BLOCO 2
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 //
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•—      â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—     â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•â•â•â•â• â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—    â•šâ•â•â•â•â–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘      â–„â–ˆâ–ˆâ–ˆâ•”â•
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘      â–€â–€â•â•â•
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•      â–ˆâ–ˆâ•—
-//  â•šâ•â•â•â•â•â• â•šâ•â•â•â•â•â•â• â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•       â•šâ•â•
+//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██████╗
+//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ╚════██╗
+//  ██████╔╝██║     ██║   ██║██║      ██║   ██║      ▄███╔╝
+//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║      ▀▀══╝
+//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝      ██╗
+//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝       ╚═╝
 //
-//  HTML DO CABEÃ‡ALHO NOC
+//  HTML DO CABEÇALHO NOC
 //
 //  Aguarda o elemento #bpc-header-root no DOM (injectado pelo painel
-//  Grafana "Text") e preenche-o com o cabeÃ§alho.
+//  Grafana "Text") e preenche-o com o cabeçalho.
 //
-//  ContÃ©m:
-//    â€¢ FunÃ§Ã£o renderHeader(el) â†’ gera o HTML do cabeÃ§alho
-//    â€¢ FunÃ§Ã£o renderClock()    â†’ actualiza hora + data a cada segundo
-//    â€¢ Polling para #bpc-header-root (timeout 10s)
+//  Contém:
+//    • Função renderHeader(el) → gera o HTML do cabeçalho
+//    • Função renderClock()    → actualiza hora + data a cada segundo
+//    • Polling para #bpc-header-root (timeout 10s)
 //
-//  Todo o texto e aparÃªncia vÃªm de CFG_HEADER, CFG_SIZES, CFG_THEME (BLOCO 1).
+//  Todo o texto e aparência vêm de CFG_HEADER, CFG_SIZES, CFG_THEME (BLOCO 1).
 //
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 
 (function initHeader() {
 
-  // â”€â”€ renderClock â€” actualiza #bpc-clock-time e #bpc-clock-date â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── renderClock — actualiza #bpc-clock-time e #bpc-clock-date ────────────
 
   function renderClock() {
     const now = new Date();
@@ -552,19 +555,19 @@ const CFG_THRESHOLDS = {
   }
 
 
-  // â”€â”€ renderHeader â€” gera o HTML e inicia o relÃ³gio â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── renderHeader — gera o HTML e inicia o relógio ─────────────────────────
   //
   //  Estrutura:
   //    .bpc-noc-hdr
-  //    â”œâ”€â”€ [logo ou fallback textual]
-  //    â”œâ”€â”€ .bpc-noc-center  (tÃ­tulo + subtÃ­tulo)
-  //    â””â”€â”€ .bpc-noc-right   (relÃ³gio + data)
+  //    ├── [logo ou fallback textual]
+  //    ├── .bpc-noc-center  (título + subtítulo)
+  //    └── .bpc-noc-right   (relógio + data)
 
   function renderHeader(el) {
     const C = CFG_HEADER;
     const Z = CFG_SIZES;
 
-    // LogÃ³tipo: tenta carregar a imagem; se falhar, mostra fallback textual
+    // Logótipo: tenta carregar a imagem; se falhar, mostra fallback textual
     const logoHTML = C.logoUrl
       ? `<img src="${C.logoUrl}"
               height="${Z.logo.height}"
@@ -580,7 +583,7 @@ const CFG_THRESHOLDS = {
     el.innerHTML = `
       <div class="bpc-noc-hdr">
 
-        <!-- Logotipo + back-link -->
+        <!-- Logótipo + back-link -->
         <div style="display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex-shrink:0">
           <div style="display:flex;align-items:center;gap:10px">
             ${logoHTML}
@@ -588,7 +591,7 @@ const CFG_THRESHOLDS = {
           ${backHTML}
         </div>
 
-        <!-- Titulo + Subtitulo -->
+        <!-- Título + Subtítulo -->
         <div class="bpc-noc-center">
           <div class="bpc-noc-title">
             ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em>
@@ -596,15 +599,15 @@ const CFG_THRESHOLDS = {
           ${C.subtitle ? `<div class="bpc-noc-sub">${C.subtitle}</div>` : ''}
         </div>
 
-        <!-- Relogio -->
+        <!-- Relógio -->
         <div class="bpc-noc-right">
           <span class="bpc-noc-time" id="bpc-clock-time">--:--:--</span>
-          <div  class="bpc-noc-date" id="bpc-clock-date">...</div>
+          <div  class="bpc-noc-date" id="bpc-clock-date">…</div>
         </div>
 
       </div>`;
 
-    // Inicia o relÃ³gio (limpa timer anterior se o header for re-renderizado)
+    // Inicia o relógio (limpa timer anterior se o header for re-renderizado)
     if (window._bpc_clock_interval) clearInterval(window._bpc_clock_interval);
     renderClock();
     window._bpc_clock_interval = setInterval(renderClock, 1000);
@@ -613,10 +616,10 @@ const CFG_THRESHOLDS = {
   }
 
 
-  // â”€â”€ Aguardar #bpc-header-root no DOM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Aguardar #bpc-header-root no DOM ─────────────────────────────────────
   //
-  //  O Grafana injecta os painÃ©is de forma assÃ­ncrona; o elemento pode
-  //  ainda nÃ£o existir quando este script executa.
+  //  O Grafana injecta os painéis de forma assíncrona; o elemento pode
+  //  ainda não existir quando este script executa.
   //  Polling a cada 50ms com timeout de 10s.
 
   const t0 = Date.now();
@@ -629,42 +632,42 @@ const CFG_THRESHOLDS = {
     }
     if (Date.now() - t0 > 10000) {
       clearInterval(poll);
-      console.warn('[BPC] Header: #bpc-header-root nÃ£o encontrado apÃ³s 10s');
+      console.warn('[BPC] Header: #bpc-header-root não encontrado após 10s');
     }
   }, 50);
 
 })(); // fim BLOCO 3
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 //
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•—      â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—     â–ˆâ–ˆâ•—  â–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•â•â•â•â• â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—    â–ˆâ–ˆâ•‘  â–ˆâ–ˆâ•‘
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘    â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘    â•šâ•â•â•â•â–ˆâ–ˆâ•‘
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•         â–ˆâ–ˆâ•‘
-//  â•šâ•â•â•â•â•â• â•šâ•â•â•â•â•â•â• â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•          â•šâ•â•
+//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██╗  ██╗
+//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ██║  ██║
+//  ██████╔╝██║     ██║   ██║██║      ██║   ██║    ███████║
+//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║    ╚════██║
+//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝         ██║
+//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝          ╚═╝
 //
-//  BOOTSTRAP â€” NAMESPACE Â· UTILS Â· RPC
+//  BOOTSTRAP — NAMESPACE · UTILS · RPC
 //
-//  Inicializa o namespace global window.BPC e expÃµe:
-//    BPC.rpc        â†’ funÃ§Ã£o async para chamar a API Zabbix via Grafana proxy
-//    BPC.utils      â†’ utilitÃ¡rios partilhados (formataÃ§Ã£o, builders, ICMPâ€¦)
-//    BPC.log        â†’ wrapper de console com prefixo [BPC]
-//    BPC.onReady    â†’ registar callback a executar quando o runtime estiver pronto
-//    BPC.setReady   â†’ chamado internamente ao criar o rpc; dispara callbacks
-//    window.waitForBPC â†’ helper global para painÃ©is que precisam do runtime
+//  Inicializa o namespace global window.BPC e expõe:
+//    BPC.rpc        → função async para chamar a API Zabbix via Grafana proxy
+//    BPC.utils      → utilitários partilhados (formatação, builders, ICMP…)
+//    BPC.log        → wrapper de console com prefixo [BPC]
+//    BPC.onReady    → registar callback a executar quando o runtime estiver pronto
+//    BPC.setReady   → chamado internamente ao criar o rpc; dispara callbacks
+//    window.waitForBPC → helper global para painéis que precisam do runtime
 //
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 
 (function bootstrap() {
 
   const VERSION = CFG_META.version;
 
 
-  // â”€â”€ Guard â€” evita dupla inicializaÃ§Ã£o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Guard — evita dupla inicialização ────────────────────────────────────
   //
-  //  Se jÃ¡ existir uma instÃ¢ncia com a mesma versÃ£o E todos os componentes
+  //  Se já existir uma instância com a mesma versão E todos os componentes
   //  presentes, termina sem fazer nada.
   //  Se o estado for parcial (crash parcial, recarga do painel), reinicializa.
 
@@ -675,9 +678,9 @@ const CFG_THRESHOLDS = {
       typeof window.BPC.rpc === 'function' &&
       typeof window.BPC.log === 'function';
     if (ok) return;
-    // Init em curso noutro afterRender concorrente â€” nÃ£o re-inicializar
+    // Init em curso noutro afterRender concorrente — não re-inicializar
     if (window.BPC._initPending) return;
-    console.warn('[BPC] Estado parcial â€” reinicializando (' + VERSION + ')');
+    console.warn('[BPC] Estado parcial — reinicializando (' + VERSION + ')');
     window.BPC._ready = false;
     window.BPC.rpc = null;
   }
@@ -685,7 +688,7 @@ const CFG_THRESHOLDS = {
   window.BPC._initPending = true;
 
 
-  // â”€â”€ Namespace window.BPC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Namespace window.BPC ─────────────────────────────────────────────────
 
   window.BPC = window.BPC || {};
   Object.assign(window.BPC, {
@@ -695,7 +698,7 @@ const CFG_THRESHOLDS = {
     _callbacks: window.BPC._callbacks || [],
 
     // Registar um callback para quando o runtime estiver pronto.
-    // Se jÃ¡ estiver pronto, executa imediatamente.
+    // Se já estiver pronto, executa imediatamente.
     onReady(cb) {
       if (this._ready && typeof this.rpc === 'function') {
         try { cb(this.rpc); } catch (e) { console.error('[BPC] onReady:', e); }
@@ -718,7 +721,7 @@ const CFG_THRESHOLDS = {
   });
 
 
-  // â”€â”€ BPC.log â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── BPC.log ───────────────────────────────────────────────────────────────
 
   window.BPC.log = function (msg, level) {
     const p = '[BPC]';
@@ -730,9 +733,9 @@ const CFG_THRESHOLDS = {
   const BPC = window.BPC;
 
 
-  // â”€â”€ window.waitForBPC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── window.waitForBPC ────────────────────────────────────────────────────
   //
-  //  Usado pelos painÃ©is individuais para aguardar o runtime.
+  //  Usado pelos painéis individuais para aguardar o runtime.
   //  Polling a cada 30ms com timeout de 15s.
   //  Se expirar, mostra aviso nos cards que ainda estejam vazios.
 
@@ -753,10 +756,10 @@ const CFG_THRESHOLDS = {
         if (Date.now() - t0 > 15000) {
           clearInterval(poll);
           console.error('[BPC] waitForBPC: timeout 15s');
-          // Mostra aviso nos cards que ainda nÃ£o foram preenchidos
+          // Mostra aviso nos cards que ainda não foram preenchidos
           document.querySelectorAll('[id^="bpc-card-"]').forEach(el => {
             if (!el.innerHTML.trim())
-              el.innerHTML = '<div style="color:#EF4444;padding:12px;font-size:.75rem">âš  Header nÃ£o inicializou</div>';
+              el.innerHTML = '<div style="color:#EF4444;padding:12px;font-size:.75rem">⚠ Header não inicializou</div>';
           });
         }
       }, 30);
@@ -766,24 +769,24 @@ const CFG_THRESHOLDS = {
   }
 
 
-  // â”€â”€ BPC.utils â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── BPC.utils ────────────────────────────────────────────────────────────
   //
-  //  UtilitÃ¡rios partilhados por todos os painÃ©is.
+  //  Utilitários partilhados por todos os painéis.
   //
   //  Grupos:
-  //    DOM          â†’ waitForElement, startRefresh
-  //    Estado       â†’ stateClass, stateAccent, stateLabel, statePillClass,
+  //    DOM          → waitForElement, startRefresh
+  //    Estado       → stateClass, stateAccent, stateLabel, statePillClass,
   //                   stateAbove, stateBelow
-  //    FormataÃ§Ã£o   â†’ fmtBytes, fmtMb, fmtMs, fmtPct, fmtTime
-  //    Dados        â†’ fetchICMP
-  //    VisualizaÃ§Ã£o â†’ buildSparkline, buildMiniBar
-  //    Builders     â†’ buildLayerCard, buildError, buildSkeleton, buildStatusBar
+  //    Formatação   → fmtBytes, fmtMb, fmtMs, fmtPct, fmtTime
+  //    Dados        → fetchICMP
+  //    Visualização → buildSparkline, buildMiniBar
+  //    Builders     → buildLayerCard, buildError, buildSkeleton, buildStatusBar
 
   window.BPC.utils = {
 
-    // â”€â”€ DOM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── DOM ───────────────────────────────────────────────────────────────
 
-    // Aguarda um elemento pelo ID e chama cb quando disponÃ­vel (timeout ms)
+    // Aguarda um elemento pelo ID e chama cb quando disponível (timeout ms)
     waitForElement(id, cb, ms) {
       const t0 = Date.now();
       const p = setInterval(() => {
@@ -800,7 +803,7 @@ const CFG_THRESHOLDS = {
     },
 
 
-    // â”€â”€ Estado â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Estado ────────────────────────────────────────────────────────────
 
     // Devolve a classe CSS de cor para o estado dado ('ok'|'warn'|'down')
     stateClass(s) { return { ok: 'bpc-ok', warn: 'bpc-warn', down: 'bpc-crit' }[s] || 'bpc-mute'; },
@@ -808,42 +811,42 @@ const CFG_THRESHOLDS = {
     // Devolve a cor hexadecimal do accent para o estado dado
     stateAccent(s) { const C = window.BPC.theme; return { ok: C.ok, warn: C.warn, down: C.crit }[s] || C.mute; },
 
-    // Devolve o label legÃ­vel para o estado dado
-    stateLabel(s) { return { ok: 'OK', warn: 'Degradado', down: 'Down' }[s] || 'â€”'; },
+    // Devolve o label legível para o estado dado
+    stateLabel(s) { return { ok: 'OK', warn: 'Degradado', down: 'Down' }[s] || '—'; },
 
     // Devolve a classe da pill para o estado dado
     statePillClass(s) { return { ok: 'ok', warn: 'warn', down: 'down' }[s] || 'ok'; },
 
-    // Estado por threshold crescente: ok â†’ warn â†’ down (ex: CPU, latÃªncia)
+    // Estado por threshold crescente: ok → warn → down (ex: CPU, latência)
     // thr = { warn: Number, crit: Number }
     stateAbove(v, t) { if (v == null || isNaN(v)) return 'mute'; if (v >= t.crit) return 'down'; if (v >= t.warn) return 'warn'; return 'ok'; },
 
-    // Estado por threshold decrescente: ok â†’ warn â†’ down (ex: disponibilidade)
+    // Estado por threshold decrescente: ok → warn → down (ex: disponibilidade)
     stateBelow(v, t) { if (v == null || isNaN(v)) return 'mute'; if (v <= t.crit) return 'down'; if (v <= t.warn) return 'warn'; return 'ok'; },
 
 
-    // â”€â”€ FormataÃ§Ã£o â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Formatação ────────────────────────────────────────────────────────
 
-    fmtBytes(b) { if (b == null || isNaN(b) || b < 0) return 'â€”'; if (b >= 1e12) return (b / 1e12).toFixed(2) + ' TB'; if (b >= 1e9) return (b / 1e9).toFixed(1) + ' GB'; if (b >= 1e6) return (b / 1e6).toFixed(1) + ' MB'; if (b >= 1e3) return (b / 1e3).toFixed(0) + ' KB'; return b + ' B'; },
-    fmtMb(mb) { if (mb == null || isNaN(mb) || mb < 0) return 'â€”'; if (mb >= 1048576) return (mb / 1048576).toFixed(2) + ' TB'; if (mb >= 1024) return (mb / 1024).toFixed(1) + ' GB'; return mb + ' MB'; },
-    fmtMs(ms) { if (ms == null || isNaN(ms) || ms < 0) return 'â€”'; if (ms >= 1000) return (ms / 1000).toFixed(2) + ' s'; return ms.toFixed(2) + ' ms'; },
-    fmtPct(v, d) { if (v == null || isNaN(v)) return 'â€”'; return v.toFixed(d ?? 1) + '%'; },
-    fmtTime(u) { if (!u) return 'â€”'; return new Date(u * 1000).toLocaleTimeString('pt-PT'); },
+    fmtBytes(b) { if (b == null || isNaN(b) || b < 0) return '—'; if (b >= 1e12) return (b / 1e12).toFixed(2) + ' TB'; if (b >= 1e9) return (b / 1e9).toFixed(1) + ' GB'; if (b >= 1e6) return (b / 1e6).toFixed(1) + ' MB'; if (b >= 1e3) return (b / 1e3).toFixed(0) + ' KB'; return b + ' B'; },
+    fmtMb(mb) { if (mb == null || isNaN(mb) || mb < 0) return '—'; if (mb >= 1048576) return (mb / 1048576).toFixed(2) + ' TB'; if (mb >= 1024) return (mb / 1024).toFixed(1) + ' GB'; return mb + ' MB'; },
+    fmtMs(ms) { if (ms == null || isNaN(ms) || ms < 0) return '—'; if (ms >= 1000) return (ms / 1000).toFixed(2) + ' s'; return ms.toFixed(2) + ' ms'; },
+    fmtPct(v, d) { if (v == null || isNaN(v)) return '—'; return v.toFixed(d ?? 1) + '%'; },
+    fmtTime(u) { if (!u) return '—'; return new Date(u * 1000).toLocaleTimeString('pt-PT'); },
 
 
-    // â”€â”€ Dados â€” fetchICMP â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Dados — fetchICMP ─────────────────────────────────────────────────
     //
     //  Consulta o Zabbix para um grupo de hosts e devolve:
     //  { total, down, warn, ok, rtt, loss, sparkData }
     //
-    //  rpc     â†’ funÃ§Ã£o BPC.rpc
-    //  groupid â†’ ID do host group no Zabbix
-    //  thr     â†’ { rttWarnMs, lossWarnPct } â€” omitir usa CFG_THRESHOLDS
+    //  rpc     → função BPC.rpc
+    //  groupid → ID do host group no Zabbix
+    //  thr     → { rttWarnMs, lossWarnPct } — omitir usa CFG_THRESHOLDS
 
     async fetchICMP(rpc, groupid, thr) {
       const rttWarn = thr?.rttWarnMs || CFG_THRESHOLDS.rttWarnMs;
       const lossWarn = thr?.lossWarnPct || CFG_THRESHOLDS.lossWarnPct;
-      BPC.log('fetchICMP â†’ groupid=' + groupid);
+      BPC.log('fetchICMP → groupid=' + groupid);
 
       // Busca todos os items ICMP do grupo
       const allItems = await rpc('item.get', {
@@ -875,13 +878,13 @@ const CFG_THRESHOLDS = {
         else if (h.rtt > rttWarn || h.loss > lossWarn) warnSet.add(id);
       });
 
-      // MÃ©dias dos hosts UP
+      // Médias dos hosts UP
       const upIds = hostIds.filter(id => !downSet.has(id));
       const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
       const avgRtt = avg(upIds.map(id => byHost[id].rtt).filter(v => v > 0));
       const avgLoss = avg(upIds.map(id => byHost[id].loss).filter(v => v > 0));
 
-      // HistÃ³rico RTT para o sparkline (Ãºltimo 1h, 30 pontos)
+      // Histórico RTT para o sparkline (último 1h, 30 pontos)
       let sparkData = [];
       const firstUp = upIds.find(id => byHost[id].rttItemId);
       if (firstUp) {
@@ -894,15 +897,15 @@ const CFG_THRESHOLDS = {
         sparkData = hist.map(h => parseFloat(h.value) * 1000);
       }
 
-      BPC.log('fetchICMP â† total=' + total + ' down=' + downSet.size + ' warn=' + warnSet.size);
+      BPC.log('fetchICMP ← total=' + total + ' down=' + downSet.size + ' warn=' + warnSet.size);
       return { total, down: downSet.size, warn: warnSet.size, ok: Math.max(0, total - downSet.size - warnSet.size), rtt: avgRtt, loss: avgLoss, sparkData };
     },
 
 
-    // â”€â”€ VisualizaÃ§Ã£o â€” buildSparkline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Visualização — buildSparkline ─────────────────────────────────────
     //
-    //  Gera um SVG de linha (140Ã—32) a partir de um array de valores.
-    //  Usado em cards que precisam de um grÃ¡fico inline simples.
+    //  Gera um SVG de linha (140×32) a partir de um array de valores.
+    //  Usado em cards que precisam de um gráfico inline simples.
 
     buildSparkline(data, color) {
       if (!data || data.length < 2) return '';
@@ -912,10 +915,10 @@ const CFG_THRESHOLDS = {
     },
 
 
-    // â”€â”€ VisualizaÃ§Ã£o â€” buildMiniBar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Visualização — buildMiniBar ───────────────────────────────────────
     //
     //  Gera um histograma de barras verticais a partir de um array de valores.
-    //  As alturas sÃ£o normalizadas entre o min e max do array.
+    //  As alturas são normalizadas entre o min e max do array.
 
     buildMiniBar(data, color) {
       if (!data || !data.length) return '';
@@ -927,7 +930,7 @@ const CFG_THRESHOLDS = {
     },
 
 
-    // â”€â”€ Builder â€” buildLayerCard â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Builder — buildLayerCard ──────────────────────────────────────────
     //
     //  Gera o HTML completo de um card de camada de rede (ICMP).
     //
@@ -942,15 +945,15 @@ const CFG_THRESHOLDS = {
       const aC = avail === 100 ? 'bpc-ok' : avail >= 80 ? 'bpc-warn' : 'bpc-crit';
       const barData = (d.sparkData && d.sparkData.length > 1) ? d.sparkData : Array.from({ length: 14 }, () => Math.random() * 100);
       const bar = u.buildMiniBar(barData, accent);
-      const rttLabel = d.down === d.total ? 'â€”' : u.fmtMs(d.rtt);
-      const lossLabel = d.down === d.total ? 'â€”' : u.fmtPct(d.loss);
+      const rttLabel = d.down === d.total ? '—' : u.fmtMs(d.rtt);
+      const lossLabel = d.down === d.total ? '—' : u.fmtPct(d.loss);
       const lossClass = d.loss > 5 ? 'bpc-warn' : 'bpc-ok';
 
       return `<a href="/d/${cfg.dashUid}" style="text-decoration:none;display:block;height:100%">
         <div class="bpc bpc-card state-${status}" style="--card-accent:${accent};height:100%;cursor:pointer;display:flex;flex-direction:column;gap:8px;">
           <div class="bpc-flex" style="justify-content:space-between;align-items:flex-start">
             <div>
-              <div class="bpc-label" style="margin-bottom:2px">NOC Â· Compute</div>
+              <div class="bpc-label" style="margin-bottom:2px">NOC · Compute</div>
               <div style="font-size:.90rem;font-weight:700;color:#E6EDF3;line-height:1.2">${cfg.label}</div>
             </div>
             <span class="bpc-pill ${u.statePillClass(status)}">${u.stateLabel(status)}</span>
@@ -965,39 +968,39 @@ const CFG_THRESHOLDS = {
             </div>
           </div>
           <div class="bpc-flex bpc-gap-12">
-            <div class="bpc-flex-col bpc-gap-4"><span class="bpc-value-sm bpc-info">${rttLabel}</span><span class="bpc-label">RTT mÃ©dio</span></div>
-            <div class="bpc-flex-col bpc-gap-4"><span class="bpc-value-sm ${lossClass}">${lossLabel}</span><span class="bpc-label">Loss mÃ©dio</span></div>
+            <div class="bpc-flex-col bpc-gap-4"><span class="bpc-value-sm bpc-info">${rttLabel}</span><span class="bpc-label">RTT médio</span></div>
+            <div class="bpc-flex-col bpc-gap-4"><span class="bpc-value-sm ${lossClass}">${lossLabel}</span><span class="bpc-label">Loss médio</span></div>
           </div>
           ${bar}
           <div class="bpc-flex" style="justify-content:space-between;margin-top:auto;padding-top:4px">
-            <span style="font-size:.68rem;color:var(--bpc-cyan)">Ver detalhe â†’</span>
-            <span class="bpc-timestamp">Grupo ${cfg.groupid || 'â€”'}</span>
+            <span style="font-size:.68rem;color:var(--bpc-cyan)">Ver detalhe →</span>
+            <span class="bpc-timestamp">Grupo ${cfg.groupid || '—'}</span>
           </div>
         </div>
       </a>`;
     },
 
 
-    // â”€â”€ Builder â€” buildError â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Builder — buildError ──────────────────────────────────────────────
     //
-    //  Card de erro inline â€” exibido quando uma chamada RPC falha.
-    //  label   â†’ tÃ­tulo opcional (ex: "Camada 3 â€” Core")
-    //  message â†’ mensagem de erro
-    //  color   â†’ cor do accent (default: vermelho crÃ­tico)
+    //  Card de erro inline — exibido quando uma chamada RPC falha.
+    //  label   → título opcional (ex: "Camada 3 — Core")
+    //  message → mensagem de erro
+    //  color   → cor do accent (default: vermelho crítico)
 
     buildError(label, message, color) {
       const a = color || 'var(--bpc-crit)';
       return `<div class="bpc bpc-card state-down" style="--card-accent:${a};height:100%">
         ${label ? `<div class="bpc-label" style="color:${a};margin-bottom:6px">${label}</div>` : ''}
-        <div class="bpc-error-msg">âš  ${message}</div>
+        <div class="bpc-error-msg">⚠ ${message}</div>
       </div>`;
     },
 
 
-    // â”€â”€ Builder â€” buildSkeleton â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Builder — buildSkeleton ───────────────────────────────────────────
     //
-    //  Card de carregamento â€” exibido enquanto os dados ainda nÃ£o chegaram.
-    //  color â†’ cor do accent (default: cinzento muted)
+    //  Card de carregamento — exibido enquanto os dados ainda não chegaram.
+    //  color → cor do accent (default: cinzento muted)
 
     buildSkeleton(color) {
       const a = color || 'var(--bpc-mute)';
@@ -1010,11 +1013,11 @@ const CFG_THRESHOLDS = {
     },
 
 
-    // â”€â”€ Builder â€” buildStatusBar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Builder — buildStatusBar ──────────────────────────────────────────
     //
     //  Barra horizontal de contagem de estados.
     //  counts = { ok, warn, crit, label? }
-    //  label  â†’ texto de timestamp ou identificaÃ§Ã£o (alinhado Ã  direita)
+    //  label  → texto de timestamp ou identificação (alinhado à direita)
 
     buildStatusBar(counts) {
       const { ok = 0, warn = 0, crit = 0, label = '' } = counts;
@@ -1022,7 +1025,7 @@ const CFG_THRESHOLDS = {
       return `<div class="bpc-status-bar">
         <span class="bpc-status-pill ok">  <span class="bpc-status-dot"></span>OK: ${ok}</span>
         <span class="bpc-status-pill warn"><span class="bpc-status-dot"></span>Degradado: ${warn}</span>
-        <span class="bpc-status-pill crit"><span class="bpc-status-dot"></span>CrÃ­tico: ${crit}</span>
+        <span class="bpc-status-pill crit"><span class="bpc-status-dot"></span>Crítico: ${crit}</span>
         <span class="bpc-status-sep"></span>${ts}
       </div>`;
     },
@@ -1032,14 +1035,14 @@ const CFG_THRESHOLDS = {
   BPC.log('utils inicializado (' + VERSION + ')');
 
 
-  // â”€â”€ RPC â€” Zabbix via proxy Grafana â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── RPC — Zabbix via proxy Grafana ────────────────────────────────────────
   //
   //  O URL vem de CFG_META.apiUrl (BLOCO 1).
   //  Envia um POST JSON-RPC e devolve json.result.
-  //  LanÃ§a Error se HTTP nÃ£o-OK ou se a resposta contiver json.error.
+  //  Lança Error se HTTP não-OK ou se a resposta contiver json.error.
 
   window.BPC.setReady(async function rpc(method, params) {
-    BPC.log('rpc â†’ ' + method);
+    BPC.log('rpc → ' + method);
     const res = await fetch(CFG_META.apiUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-grafana-org-id': '1' },
@@ -1055,35 +1058,35 @@ const CFG_THRESHOLDS = {
 })(); // fim BLOCO 4
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 //
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â–ˆâ–ˆâ•—      â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—     â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•”â•â•â•â•â• â–ˆâ–ˆâ•”â•â•â•â–ˆâ–ˆâ•—    â–ˆâ–ˆâ•”â•â•â•â•â•
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘    â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—
-//  â–ˆâ–ˆâ•”â•â•â–ˆâ–ˆâ•—â–ˆâ–ˆâ•‘     â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘â–ˆâ–ˆâ•‘      â–ˆâ–ˆâ•‘   â–ˆâ–ˆâ•‘    â•šâ•â•â•â•â–ˆâ–ˆâ•‘
-//  â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•—â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•— â•šâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•”â•    â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ•‘
-//  â•šâ•â•â•â•â•â• â•šâ•â•â•â•â•â•â• â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•  â•šâ•â•â•â•â•â•     â•šâ•â•â•â•â•â•â•
+//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ███████╗
+//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ██╔════╝
+//  ██████╔╝██║     ██║   ██║██║      ██║   ██║    ███████╗
+//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║    ╚════██║
+//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝    ███████║
+//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝     ╚══════╝
 //
-//  CONTRATO Â§5.1 â€” THEME Â· BPC_SHARED Â· BPC_CHARTS Â· BPC.state
+//  CONTRATO §5.1 — THEME · BPC_SHARED · BPC_CHARTS · BPC.state
 //
-//  SÃ­mbolos que TODO o painel de conteÃºdo assume existirem (via initWithRetry).
-//  Definidos UMA vez aqui; nunca redefinidos num card (engenharia Â§5.1/Â§9).
-//  Dependem de CFG_THEME (BLOCO 1), acessÃ­vel neste mesmo ficheiro/escopo.
+//  Símbolos que TODO o painel de conteúdo assume existirem (via initWithRetry).
+//  Definidos UMA vez aqui; nunca redefinidos num card (engenharia §5.1/§9).
+//  Dependem de CFG_THEME (BLOCO 1), acessível neste mesmo ficheiro/escopo.
 //
-//    window.BPC.THEME   â†’ tokens visuais (colorOk/Warn/Crit/Info/Mute/Dis, sz*, â€¦)
-//    window.BPC.theme   â†’ alias legado (CFG_THEME cru: .ok/.warn/.crit) p/ BPC.utils
-//    window.BPC_SHARED  â†’ helpers puros (esc, ts, cls, divider, pbar, fmtNum,
+//    window.BPC.THEME   → tokens visuais (colorOk/Warn/Crit/Info/Mute/Dis, sz*, …)
+//    window.BPC.theme   → alias legado (CFG_THEME cru: .ok/.warn/.crit) p/ BPC.utils
+//    window.BPC_SHARED  → helpers puros (esc, ts, cls, divider, pbar, fmtNum,
 //                         fmtTb, worstState, severityToState, stateAbove/Below, toFloat)
-//    window.BPC_CHARTS  â†’ SVG (gaugeSemi, sparkline, pbar, dot)
-//    window.BPC.state   â†’ modelo de estado Â§6.1 (metric, worst, host, color)
+//    window.BPC_CHARTS  → SVG (gaugeSemi, sparkline, pbar, dot)
+//    window.BPC.state   → modelo de estado §6.1 (metric, worst, host, color)
 //
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════
 
 (function contractGlobals() {
 
   window.BPC = window.BPC || {};
 
-  // â”€â”€ BPC.THEME â€” tokens visuais consumidos pelos cards (Â§5.1) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── BPC.THEME — tokens visuais consumidos pelos cards (§5.1) ───────────────
   window.BPC.THEME = {
     colorOk:   CFG_THEME.ok,
     colorWarn: CFG_THEME.warn,
@@ -1101,12 +1104,12 @@ const CFG_THRESHOLDS = {
     cardPadding: '13px 15px 11px',
   };
 
-  // Alias legado: BPC.utils.stateAccent lÃª window.BPC.theme.{ok,warn,crit}
+  // Alias legado: BPC.utils.stateAccent lê window.BPC.theme.{ok,warn,crit}
   window.BPC.theme = CFG_THEME;
 
-  // â”€â”€ BPC.state â€” modelo de estado, Ãºnica fonte de cÃ¡lculo (Â§6.1) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── BPC.state — modelo de estado, única fonte de cálculo (§6.1) ────────────
   window.BPC.state = {
-    // classifica UMA mÃ©trica contra { warn, crit }; dir 'above' (default) | 'below'
+    // classifica UMA métrica contra { warn, crit }; dir 'above' (default) | 'below'
     metric: function (value, thr, dir) {
       dir = dir || 'above';
       if (value == null || isNaN(value) || !thr) return 'ok';
@@ -1120,7 +1123,7 @@ const CFG_THRESHOLDS = {
       return 'ok';
     },
 
-    // pior de uma lista; precedÃªncia down > crit > warn > ok > mute
+    // pior de uma lista; precedência down > crit > warn > ok > mute
     worst: function (states) {
       var order = { down: 4, crit: 3, warn: 2, ok: 1, mute: 0 };
       var w = 'ok', wv = 1;
@@ -1131,8 +1134,8 @@ const CFG_THRESHOLDS = {
       return w;
     },
 
-    // estado de um host a partir das mÃ©tricas jÃ¡ classificadas;
-    // metrics.reachable === false â†’ 'down'
+    // estado de um host a partir das métricas já classificadas;
+    // metrics.reachable === false → 'down'
     host: function (metrics) {
       if (!metrics) return 'ok';
       if (metrics.reachable === false) return 'down';
@@ -1154,7 +1157,7 @@ const CFG_THRESHOLDS = {
     },
   };
 
-  // â”€â”€ BPC_CHARTS â€” componentes SVG partilhados (Â§5.1) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── BPC_CHARTS — componentes SVG partilhados (§5.1) ────────────────────────
   window.BPC_CHARTS = {
     // gauge semicircular; opts = { max, color, size, label, unit }
     gaugeSemi: function (value, opts) {
@@ -1165,7 +1168,7 @@ const CFG_THRESHOLDS = {
       var v = Math.max(0, Math.min(max, value || 0));
       var r = size / 2 - 8;
       var cx = size / 2, cy = size / 2;
-      var len = Math.PI * r;            // comprimento do semicÃ­rculo
+      var len = Math.PI * r;            // comprimento do semicírculo
       var dash = len * (v / max);
       var arc = 'M8 ' + cy + ' A ' + r + ' ' + r + ' 0 0 1 ' + (size - 8) + ' ' + cy;
       var label = opts.label != null ? opts.label : Math.round(v) + (opts.unit || '%');
@@ -1176,7 +1179,7 @@ const CFG_THRESHOLDS = {
         + '</svg>';
     },
 
-    // linha sparkline (delega no util jÃ¡ testado)
+    // linha sparkline (delega no util já testado)
     sparkline: function (data, color) {
       return window.BPC.utils.buildSparkline(data, color);
     },
@@ -1196,31 +1199,31 @@ const CFG_THRESHOLDS = {
     },
   };
 
-  // â”€â”€ BPC_SHARED â€” helpers puros, sem efeitos laterais (Â§5.1) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── BPC_SHARED — helpers puros, sem efeitos laterais (§5.1) ────────────────
   window.BPC_SHARED = {
     esc: function (s) {
       return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
       });
     },
-    ts: function (ms) { return ms ? new Date(ms).toLocaleTimeString('pt-PT') : 'â€”'; },
+    ts: function (ms) { return ms ? new Date(ms).toLocaleTimeString('pt-PT') : '—'; },
     cls: function (state) {
       return { ok: 'bpc-ok', warn: 'bpc-warn', crit: 'bpc-crit', down: 'bpc-crit', info: 'bpc-info' }[state] || 'bpc-mute';
     },
     divider: function () { return '<div class="bpc-divider"></div>'; },
     pbar: function (pct, color) { return window.BPC_CHARTS.pbar(pct, color); },
     fmtNum: function (n, d) {
-      if (n == null || isNaN(n)) return 'â€”';
+      if (n == null || isNaN(n)) return '—';
       return Number(n).toLocaleString('pt-PT', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });
     },
     fmtTb: function (bytes) {
-      if (bytes == null || isNaN(bytes)) return 'â€”';
+      if (bytes == null || isNaN(bytes)) return '—';
       if (bytes >= 1e12) return (bytes / 1e12).toFixed(2) + ' TB';
       if (bytes >= 1e9) return (bytes / 1e9).toFixed(1) + ' GB';
       return (bytes / 1e6).toFixed(0) + ' MB';
     },
     worstState: function (states) { return window.BPC.state.worst(states); },
-    // severidade Zabbix â†’ estado: 0-1â†’ok, 2-3â†’warn, â‰¥critPriority(4)â†’crit (Â§6.2)
+    // severidade Zabbix → estado: 0-1→ok, 2-3→warn, ≥critPriority(4)→crit (§6.2)
     severityToState: function (sev, critPriority) {
       sev = parseInt(sev, 10) || 0;
       var cp = critPriority || 4;
@@ -1234,25 +1237,25 @@ const CFG_THRESHOLDS = {
   };
 
   if (window.BPC && window.BPC.log) {
-    window.BPC.log('Contrato Â§5.1 exposto: THEME Â· state Â· BPC_CHARTS Â· BPC_SHARED (' + CFG_META.version + ')');
+    window.BPC.log('Contrato §5.1 exposto: THEME · state · BPC_CHARTS · BPC_SHARED (' + CFG_META.version + ')');
   }
 
 })(); // fim BLOCO 5
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-//  REFERÃŠNCIA RÃPIDA â€” v9
-//  â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ══════════════════════════════════════════════════════════════════════════════
+//  REFERÊNCIA RÁPIDA — v9
+//  ─────────────────────────────────────────────────────────────────────────
 //
 //  ONDE EDITAR (apenas BLOCO 1):
-//    URL API Zabbix      â†’ CFG_META.apiUrl
-//    VersÃ£o do runtime   â†’ CFG_META.version
-//    Logo / TÃ­tulo       â†’ CFG_HEADER (logoUrl, title, nocLabel, subtitle)
-//    Paleta de cores     â†’ CFG_THEME  (navy, cyan, gold, ok, warn, critâ€¦)
-//    Tamanhos / fontes   â†’ CFG_SIZES  (header, title, clock, logoâ€¦)
-//    AnimaÃ§Ãµes de estado â†’ CFG_PULSE  (enabled, intensity, speedâ€¦)
-//    Idioma do relÃ³gio   â†’ CFG_CLOCK  (days[], months[])
-//    Alertas ICMP        â†’ CFG_THRESHOLDS (rttWarnMs, lossWarnPct)
+//    URL API Zabbix      → CFG_META.apiUrl
+//    Versão do runtime   → CFG_META.version
+//    Logo / Título       → CFG_HEADER (logoUrl, title, nocLabel, subtitle)
+//    Paleta de cores     → CFG_THEME  (navy, cyan, gold, ok, warn, crit…)
+//    Tamanhos / fontes   → CFG_SIZES  (header, title, clock, logo…)
+//    Animações de estado → CFG_PULSE  (enabled, intensity, speed…)
+//    Idioma do relógio   → CFG_CLOCK  (days[], months[])
+//    Alertas ICMP        → CFG_THRESHOLDS (rttWarnMs, lossWarnPct)
 //
 //  COMO APLICAR A BARRA DE ACENTO DE COR NOS CARDS:
 //    <div class="bpc bpc-card state-down" style="--card-accent:#EF4444">
@@ -1263,4 +1266,4 @@ const CFG_THRESHOLDS = {
 //    Apenas glow, sem borda: borderWidth:'0px'
 //    Desligar completamente: enabled:false
 //
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════════════════════════════════════════════════════

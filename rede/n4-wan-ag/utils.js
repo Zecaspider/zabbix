@@ -47,7 +47,7 @@
 
 const CFG_META = {
   version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
-  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
+  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',
 };
 
 
@@ -63,7 +63,7 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC-Observe',
-  nocLabel: 'REDE · WAN-AG — INTERFACES · NÍVEL 4',
+  nocLabel: 'REDE · WAN-AG — INTERFACES · NÍVEL 4',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
   backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
 };
@@ -175,10 +175,13 @@ const CFG_CLOCK = {
 //  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.
 //  rttWarnMs    → RTT acima deste valor (ms) marca o host como "degradado"
 //  lossWarnPct  → packet loss acima deste valor (%) marca como "degradado"
+//  Valores alinhados com os macros Zabbix nos templates Cisco IOS by SNMP:
+//    {$ICMP_RESPONSE_TIME_WARN} = 0.15 s = 150 ms
+//    {$ICMP_LOSS_WARN}          = 20 %
 
 const CFG_THRESHOLDS = {
-  rttWarnMs: 5,
-  lossWarnPct: 5,
+  rttWarnMs: 150,
+  lossWarnPct: 20,
 };
 
 

@@ -1,4 +1,4 @@
-﻿// ╔══════════════════════════════════════════════════════════════════════════╗
+// ╔══════════════════════════════════════════════════════════════════════════╗
 // ║  BPC NOC — HEADER GLOBAL                                  v8 · BPC-UI   ║
 // ║                                                                          ║
 // ║  Carregado UMA única vez, no painel de cabeçalho do Grafana.            ║
@@ -175,10 +175,13 @@ const CFG_CLOCK = {
 //  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.
 //  rttWarnMs    → RTT acima deste valor (ms) marca o host como "degradado"
 //  lossWarnPct  → packet loss acima deste valor (%) marca como "degradado"
+//  Valores alinhados com os macros Zabbix nos templates Cisco IOS by SNMP:
+//    {$ICMP_RESPONSE_TIME_WARN} = 0.15 s = 150 ms
+//    {$ICMP_LOSS_WARN}          = 20 %
 
 const CFG_THRESHOLDS = {
-  rttWarnMs: 5,
-  lossWarnPct: 5,
+  rttWarnMs: 150,
+  lossWarnPct: 20,
 };
 
 

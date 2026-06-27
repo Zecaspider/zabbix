@@ -24,14 +24,14 @@
   "panels": [
     {
       "file": "utils.js",
-      "id": null,
+      "id": 1,
       "role": "utils",
       "title": "Header + Shared",
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
       "file": "l4-ag-ficha.js",
-      "id": null,
+      "id": 2,
       "role": "content",
       "title": "",
       "content": "<div id=\"bpc-n4-ag-ficha\"></div>"
