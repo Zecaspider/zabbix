@@ -41,12 +41,12 @@
   com o provider entre parênteses, ex. `Gi0/0/0.914(WAN UNITEL)`), não as tags manuais
   `wan_fornecedor`/`wan_tipo`/`wan_links` (metadados, podem estar desactualizados).
   A ficha mostra as tags; sinalizar divergência tag↔interface é trabalho futuro.
-- **Redundância resolvida (opção 2)**: o histórico de flaps foi **fundido** na tabela
-  `Links WAN — Estado` via coluna `Estado / histórico` (transform `timeSeriesTable` →
-  sparkline por interface). O painel state-timeline `WAN — Estado das Interfaces` foi
-  **removido**. Trade-off: ao fundir, o estado UP/DOWN deixa de ter fundo colorido vivo
-  (a cor passa para a linha do sparkline) — variante de 2 colunas (Estado colorido +
-  Histórico) fica como opção se se quiser recuperar o destaque.
+- **Redundância resolvida (opção b — 2 colunas lado a lado)**: no bloco LINKS WAN,
+  `Links WAN — Estado` (tabela, célula `Estado` com fundo verde/vermelho — `reduce`
+  lastNotNull + `color-background`) **ao lado** de `Histórico (flaps)` (state-timeline,
+  mesma query/ordem de interfaces). Estado actual com cor + histórico com cor, alinhados
+  por interface. (Tentou-se fundir tudo numa só coluna com sparkline, mas o pipeline
+  linear de transforms do Grafana não permite valor-colorido + sparkline na mesma tabela.)
 - **Filtro por nome de item** (lição do `d04agencia2`): o datasource Zabbix filtra pelo
   **nome** visível do item, não pela chave. Items de agência confirmados: CPU
   `#7: CPU utilization`, Memória `Processor: Free memory`, Uptime `Uptime (network)`,

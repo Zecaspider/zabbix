@@ -32,28 +32,22 @@
   ],
   "transformations": [
     {
-      "id": "timeSeriesTable",
+      "id": "reduce",
       "options": {
-        "A": {
-          "stat": "lastNotNull",
-          "timeField": "Time"
-        }
+        "reducers": [
+          "lastNotNull"
+        ],
+        "includeTimeField": false,
+        "mode": "seriesToRows"
       }
     },
     {
       "id": "organize",
       "options": {
-        "excludeByName": {
-          "host": true,
-          "item_key": true
-        },
         "renameByName": {
-          "item": "Interface",
-          "Trend #A": "Estado / histórico"
-        },
-        "indexByName": {
-          "item": 0,
-          "Trend #A": 1
+          "Field": "Interface",
+          "Last *": "Estado",
+          "Last": "Estado"
         }
       }
     }
@@ -74,29 +68,10 @@
     "overrides": [
       {
         "matcher": {
-          "id": "byName",
-          "options": "Interface"
+          "id": "byRegexp",
+          "options": "Estado|Last.*"
         },
         "properties": [
-          {
-            "id": "custom.width",
-            "value": 520
-          }
-        ]
-      },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Estado / histórico"
-        },
-        "properties": [
-          {
-            "id": "custom.cellOptions",
-            "value": {
-              "type": "sparkline",
-              "hideValue": false
-            }
-          },
           {
             "id": "mappings",
             "value": [
@@ -118,24 +93,18 @@
             ]
           },
           {
-            "id": "thresholds",
+            "id": "custom.cellOptions",
             "value": {
-              "mode": "absolute",
-              "steps": [
-                {
-                  "color": "green",
-                  "value": null
-                },
-                {
-                  "color": "red",
-                  "value": 2
-                }
-              ]
+              "type": "color-background"
             }
           },
           {
+            "id": "custom.align",
+            "value": "center"
+          },
+          {
             "id": "custom.width",
-            "value": 420
+            "value": 120
           }
         ]
       }
