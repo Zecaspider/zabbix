@@ -747,39 +747,43 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 
 ## 12. Bugs conhecidos e dívida técnica
 
-> Actualizado 2026-06-27 após teste de fluxo ponta-a-ponta N1→N2→N3→N4→N4-WAN (agência Balombo).
+> Actualizado 2026-06-27 — reconstrução do N4 Agência (triagem NOC). Bugs B-01/B-02/B-03/T-01/T-03 **resolvidos**.
+
+### 12.0 Resolvidos (2026-06-27)
+
+| ID | Nível | Causa **real** | Correcção |
+|---|---|---|---|
+| B-01 | N2 Rede | `window.BPC.NET_THR` (thresholds RTT/perda) consumido por `l2-kpi`/`l2-segmentos` mas **nunca definido** no utils (o `.css` registado antes era impreciso) | + `BPC.NET_THR` (RTT 5/50, perda 1/10) em `_comum/utils.js` + cópia N2 |
+| B-02 | N2 Rede | Mesma raiz (NET_THR) **+** `CFG_META.apiUrl` do utils apontava ao Zabbix **Infra**; grupos 24-29 só existem no Network → arrays vazios sem erro | NET_THR + `apiUrl`→`ffo8sp8zllog0e` (Network) no `rede/n2/utils.js` |
+| B-03 | N4 Agência | **Mismatch de datasource**: painel = Network, mas o *target* da âncora = Infra (Storage) → query corre na rede com filtro Infra → 0 linhas (não era só o host da agência) | Âncora própria no manifest: `DC1-RTE-WAN-INT` (host de rede sempre UP), datasource da âncora == datasource do painel |
+| T-01 | N1 | Card Agências `dashUid: null` | Liga a `n3-agencias` + `linkLabel` configurável |
+| T-03 | N4 Agência | Link com `var-iface=Gi0/1` hardcoded | N4 passa a fazer drill ao **N5** com `var-host` (sem iface fixa) |
 
 ### 12.1 Bugs activos (bloqueantes)
 
-| ID | Nível | Descrição | Causa | Acção |
-|---|---|---|---|---|
-| B-01 | N2 Rede | Painel Segmentos: `Cannot read properties of undefined (reading 'css')` — nenhum dos 4 cards renderiza | Divergência entre `l2-segmentos.js` local e versão publicada no Grafana; accessor `.css` não existe no código local | Re-push do ficheiro local; se persiste, inspecionar console do browser |
-| B-02 | N2 Rede | KPI strip mostra 0 dispositivos / 0% UP / 0 alertas | Provável consequência do mesmo crash do B-01 (utils não definido) | Corrigir B-01 primeiro |
-| B-03 | N4 Agência | Quando a agência está **DOWN**, o utils panel mostra "The query didn't return any results." e o header BPC NOC desaparece | Anchor query do utils configurado com item do próprio router da agência — falha quando o host não responde. Deve usar a âncora canónica `Storage - IBM FS9500 / ICMP ping` (§7 do CLAUDE.md) | Corrigir a Zabbix query do painel utils em `n4-agencia-detalhe` |
+*(nenhum)*
 
 ### 12.2 Dívida técnica (não bloqueante)
 
 | ID | Nível | Descrição | Prioridade |
 |---|---|---|---|
-| T-01 | N1 | Card "Agências" mostra "EM CONSTRUÇÃO" — `dashUid: null` em `n1-cards.js`; o operador não sabe que deve ir por Rede→N3 | Alta |
-| T-02 | N1 | Painel utils com título "Header + Shared" visível e espaço vazio excessivo — `transparent: true` + título vazio não aplicados no Grafana (passo 3 do fecho, CLAUDE.md §4) | Média |
-| T-03 | N4 Agência | Link N4→N4-WAN passa `var-iface=Gi0/1` hardcoded — incorrecto para agências que usam outra interface WAN principal | Média |
-| T-04 | Todos | UIDs canónicos (C3): 16 dashboards ainda têm UIDs UUID/slug antigos em vez de `dominio.nivel.funcao` | Baixa (sessão dedicada) |
-| T-05 | N1/N3 | Links "Ver N2 →" e links da tabela N3 não navegam ao clique em alguns contextos (BT panel vs. Grafana data links) — requer teste no browser real fora do MCP | Média |
+| T-02 | N1 | Painel utils com título "Header + Shared" visível (no N4 já corrigido; rever N1/outros) | Média |
+| T-04 | Todos | UIDs canónicos (C3): dashboards ainda com UUID/slug em vez de `dominio.nivel.funcao` | Baixa |
+| T-05 | N1/N3 | Links BT vs Grafana data links — testar no browser real | Média |
+| T-06 | N4/N5 | Provider/Tipo/nº de links derivados das **tags** manuais; derivar do **nome real da interface** (verdade viva SNMP) e sinalizar divergências | Média |
+| T-07 | Agências | Agências **ponto-a-ponto sem router próprio** ficam invisíveis (não estão em `HG_AGENCIAS_ROUTERS`) — mapear pela sub-interface do router-pai | Alta (pós-N5) |
 
-### 12.3 Resultado do teste de fluxo 2026-06-27
+### 12.3 Estado do fluxo Agências (2026-06-27, pós-reconstrução)
 
-Percurso: N1 → N2 Rede → N3 Agências → N4 Agência (Balombo/RTBALO00) → N4 WAN Device
+`N1 ✅ → N2 ✅(corrigido) → N3 ✅ → N4 ✅(reconstruído) → N5 ☐(pendente)`
 
-| Nível | Estado | Notas |
+| Nível | UID | Estado |
 |---|---|---|
-| N1 Visão Geral (`n1-visao-geral-noc`) | ✅ Funciona | 9 cards, dados reais, KPIs correctos |
-| N2 Rede (`ec590abd`) | ❌ Quebrado | B-01 + B-02 |
-| N3 Agências (`n3-agencias`) | ✅ Funciona | 153 Em Serviço, 8 Lenta, 11 Sem Sistema; geomap + tabela alertas OK |
-| N4 Agência Detalhe (`n4-agencia-detalhe`) | ✅ Funciona (c/ ressalvas) | Ficha + ICMP + gráfico correctos; B-03 quando host DOWN |
-| N4 WAN Device (`n4-wan-device`) | ✅ Funciona | Gráficos tráfego interfaces OK; confirma queda às ~09:40 |
-
-Caso real validado: Balombo DOWN desde ~09:40 (100% packet loss), 5 links WAN, providers MStelecom + Unitel, sub-interfaces Gi0/1/0–Gi0/1/3 sem tráfego.
+| N1 Visão Geral | `n1-visao-geral-noc` | ✅ card Agências liga ao N3 |
+| N2 Rede | `ec590abd` | ✅ 315 disp., 649 alertas reais (NET_THR + apiUrl Network) |
+| N3 Agências | `n3-agencias` | ✅ geomap + tabela → N4 |
+| **N4 Agência** | `n4-agencia-detalhe` | ✅ **reconstruído** — triagem NOC (ESTADO/PORQUÊ/LINKS WAN/PROBLEMAS nativos/TENDÊNCIA), dropdown por nome, ficha nativa. Detalhe em `fluxo-agencias-n4-n5.md` |
+| **N5 Agência Interfaces** | `n5-agencia-interfaces` | ☐ pendente |
 
 ## 13. Roadmap e checklist
 

@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-19 (4.3 ☑ N2 Rede layout+drills; 4.5 ◐ N3 Edifícios conformado excl. drill N4; 4.8 ☑ navegação ponta-a-ponta + conformance test completo; 4.9 ☑ snapshots 7 dashboards)
+Última actualização: 2026-06-27 (9.x Agências: bugs B-01/B-02/B-03/T-01/T-03 resolvidos; **N4 Agência reconstruído** — triagem NOC, dropdown por nome, ficha+contexto nativos, LINKS WAN estado+histórico, problemas nativos, drill N5; N5 pendente. Doc `fluxo-agencias-n4-n5.md` criada)
 
 ---
 
@@ -141,12 +141,20 @@
 | 8.1 | N2 + N3 (jornadas/transacções) | ☐ | | |
 | 8.2 | Navegação + teste + commit | ☐ | | |
 
-## Fase 9 · Agências (anchor 24 + 25, **Network**)
+## Fase 9 · Agências (anchor 24 + 25, **Network**) — sub-domínio de Rede
+
+> **Fluxo real (2026-06-27):** Agências é sub-domínio de Rede. Percurso
+> `N1 → N2 Rede → N3 Agências (geomap) → N4 Agência (detalhe/diagnóstico) → N5 Interfaces`.
+> Desenho e decisões em `documentacao/fluxo-agencias-n4-n5.md`.
+
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 9.1 | N2 geomapa (nativo) + card KPIs do link (BT) | ☐ | | 220 routers |
-| 9.2 | N3 detalhe agência/link | ☐ | | |
-| 9.3 | Navegação + teste + commit | ☐ | | |
+| 9.0 | Bugs do fluxo (B-01/B-02 N2, B-03 N4, T-01 N1, T-03) | ☑ | 2026-06-27 | NET_THR + apiUrl Network (N2); âncora de rede no N4 (B-03); N1 liga ao N3 (T-01); drill por var-host (T-03). Detalhe em engenharia §12.0. Commits `3dcc616` |
+| 9.1 | N3 Agências — geomap + tabela de alertas (nativo) | ☑ | 2026-06-27 | UID `n3-agencias`; geomap + tabela → drill N4 (dataLink) |
+| 9.2 | **N4 Agência — reconstruído (triagem NOC)** | ☑ | 2026-06-27 | UID `n4-agencia-detalhe`. Dropdown por **nome** (MySQL); ESTADO (disponib+ficha nativa) · PORQUÊ (CPU/RAM/uptime/lat/loss) · LINKS WAN (estado colorido + histórico timeline) · PROBLEMAS (painel **nativo** Zabbix) · TENDÊNCIA · botão N5. Item filtrado por **nome**. Commits `9d98685`/`a833c5a`/`996d566` |
+| 9.3 | **N5 Agência — Interfaces** (exclusivo, `n5-agencia-interfaces`) | ☐ | | só as ifaces daquele router: bits rx/tx, packet loss/discards, errors, op-status. Botão do N4 já aponta (404 até existir) |
+| 9.4 | Refinamentos: provider/tipo da interface (T-06) · agências sem router (T-07) | ☐ | | pós-N5 |
+| 9.5 | Navegação ponta-a-ponta + commit final | ◐ | 2026-06-27 | N1→N4 validado; falta N5 + push git (repo sem remote configurado) |
 
 ## Fase 10 · N1 · Portal NOC (porta de entrada — spec em engenharia §4.2)
 | # | Tarefa | Estado | Data | Nota |

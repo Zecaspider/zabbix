@@ -9,6 +9,7 @@
 > - `documentacao/blueprint-observabilidade.md` — mapa de drill-down N1→N2→N3
 > - `documentacao/mapa-host-groups.md` — domínio → groupId/datasource
 > - `documentacao/framework-de-criacao-de-cards.md` — contrato de dados do card
+> - `documentacao/fluxo-agencias-n4-n5.md` — fluxo de drill das Agências (N1→N5)
 > - `<dominio>/CLAUDE.md` — regras específicas de um domínio (quando existir)
 
 ---
@@ -25,6 +26,11 @@ Estas regras são sempre verdade. Não requerem verificação por sessão — vi
 | **Utils canónico** | `_comum/utils.js` é a fonte de verdade · para cada dashboard: **copiar** o ficheiro inteiro e ajustar só o `nocLabel` · nunca editar a cópia directamente |
 | **Push ao Grafana** | Parar e pedir confirmação explícita ao utilizador antes de qualquer escrita |
 | **Git commit** | Parar e pedir confirmação explícita ao utilizador antes de qualquer commit |
+| **Documentar após aprovado** | Depois de algo ser **aprovado e bem testado**, actualizar de imediato a documentação (`documentacao/*`), este `CLAUDE.md`, o `cronograma.md` e outros relevantes — antes de avançar. Contrato de processo do utilizador (2026-06-27) |
+| **Fluxo Agências (N1→N5)** | `N1 → N2 Rede → N3 Agências (geomap) → N4 Agência (detalhe/diagnóstico, `n4-agencia-detalhe`) → N5 Interfaces (exclusivo, `n5-agencia-interfaces`)`. O N4 é o detalhe rico (triagem NOC); o N5 são só as interfaces do router. O `n4-wan-device` genérico fica para o fluxo **DC/WAN-core**, separado. Detalhe em `fluxo-agencias-n4-n5.md` |
+| **Datasource Zabbix filtra por NOME** | Nos painéis nativos, o filtro `item` casa pelo **nome visível** do item, não pela chave (ex.: usar `/CPU utilization/`, não `system.cpu.util`). Lição do `d04agencia2` (dava "No data" por items renomeados) |
+| **Dashboards de REDE → datasource Network** | Em dashboards de rede, o `CFG_META.apiUrl` do `BPC.rpc` **e** a âncora (datasource do *target*) têm de apontar ao Zabbix **Network** (`ffo8sp8zllog0e`); o datasource da âncora tem de ser **igual** ao datasource do painel (senão a query corre no datasource errado → vazio). Metadados de agência (ficha/dropdown por nome) via MySQL Network `cfo3cgypdrdvkf` |
+| **Painel de problemas Zabbix está instalado** | `alexanderzobnin-zabbix-app v6.3.0` traz o `alexanderzobnin-zabbix-triggers-panel` — usar o painel **nativo** de problemas (não Business Text) para triggers de host |
 | **`content` no manifest** | Cada entrada de painel em `manifest.json` **deve** ter `"content": "<div id=\"...\"></div>"` com o `elementId` exacto declarado no CFG do `.js` · sem este campo o `push_panel.py` gera um ID errado e o painel fica em branco |
 | **Sem scroll nos painéis** | Cada painel deve ter `gridPos.h` dimensionado para que o seu conteúdo caiba inteiramente no viewport sem barra de scroll interna · ajustar no passo de layout final (§4) |
 
@@ -35,10 +41,12 @@ Estas regras são sempre verdade. Não requerem verificação por sessão — vi
 **Stack:** Grafana **12.4.2** · Zabbix **7.4** (Infra) e **7.0** (Network) · plugin Business Text (`marcusolsson-dynamictext-panel`) v6.2.0
 
 **Datasources Grafana:**
-| UID | Nome | Zabbix |
+| UID | Nome | Tipo |
 |---|---|---|
 | `3_KgG43nz` | BPC - INFRA | Zabbix 7.4 Infra |
 | `ffo8sp8zllog0e` | BPC-NETWORK | Zabbix 7.0 Network |
+| `afor1g5862fb4c` | MYSQL - INFRA ZABBIX | MySQL (config/inventário Infra) |
+| `cfo3cgypdrdvkf` | MYSQL - ZABBIX NETWORK | MySQL (tags/inventário Network — ficha + dropdown agências) |
 
 **Plugin para painéis BPC:** Business Text (`marcusolsson-dynamictext-panel`).
 - Nome no código: `"type": "marcusolsson-dynamictext-panel"`
