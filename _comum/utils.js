@@ -1157,6 +1157,15 @@ const CFG_THRESHOLDS = {
     },
   };
 
+  // ── BPC.NET_THR — catálogo de thresholds de rede (rede-arquitectura §4) ────
+  //  Promovido para o utils partilhado: consumido por l2-kpi / l2-segmentos e
+  //  qualquer painel de rede via window.BPC.state.metric(valor, NET_THR.<m>).
+  //  Forma { warn, crit } compatível com state.metric (dir 'above').
+  window.BPC.NET_THR = {
+    rtt:  { warn: 5, crit: 50 },   // ICMP RTT (ms)  — icmppingsec
+    loss: { warn: 1, crit: 10 },   // perda ICMP (%) — icmppingloss
+  };
+
   // ── BPC_CHARTS — componentes SVG partilhados (§5.1) ────────────────────────
   window.BPC_CHARTS = {
     // gauge semicircular; opts = { max, color, size, label, unit }

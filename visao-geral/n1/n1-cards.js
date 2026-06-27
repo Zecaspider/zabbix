@@ -98,10 +98,12 @@ var CFG = {
       id: 'agencias',
       label: 'Agências',
       sublabel: 'Routers · Links WAN',
-      groupids: ['24'],
+      groupids: ['24', '25'],
       datasource: 'network',
-      dashUid: null,
-      dashSlug: null,
+      // Agências é sub-domínio de Rede — salta directo para o N3 (sem N2 próprio)
+      dashUid: 'n3-agencias',
+      dashSlug: 'n3-agencias',
+      linkLabel: 'Ver detalhe (N3) →',
     },
   ],
 };
@@ -224,7 +226,7 @@ function renderDomainCard(domain, result) {
   var footer = hasN2
     ? '<a href="/d/' + domain.dashUid + '/' + domain.dashSlug + '" '
         + 'style="font-size:.70rem;color:var(--bpc-cyan);text-decoration:none;margin-top:auto;padding-top:8px;display:block;">'
-        + 'Ver N2 →</a>'
+        + esc(domain.linkLabel || 'Ver N2 →') + '</a>'
     : '<span style="font-size:.70rem;color:rgba(255,255,255,0.15);margin-top:auto;padding-top:8px;display:block;">—</span>';
 
   var errorNote = result.error

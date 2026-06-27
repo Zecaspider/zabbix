@@ -47,7 +47,10 @@
 
 const CFG_META = {
   version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
-  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',
+  // Dashboard de REDE → BPC.rpc tem de bater no Zabbix Network (grupos 24-29 só
+  // existem aqui). Âncora continua em Infra/Storage (rede-arquitectura.md §5);
+  // só os DADOS via RPC vêm da rede. Datasource Network: ffo8sp8zllog0e.
+  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
 };
 
 
@@ -1155,6 +1158,15 @@ const CFG_THRESHOLDS = {
       };
       return map[state] || T.colorMute;
     },
+  };
+
+  // ── BPC.NET_THR — catálogo de thresholds de rede (rede-arquitectura §4) ────
+  //  Promovido para o utils partilhado: consumido por l2-kpi / l2-segmentos e
+  //  qualquer painel de rede via window.BPC.state.metric(valor, NET_THR.<m>).
+  //  Forma { warn, crit } compatível com state.metric (dir 'above').
+  window.BPC.NET_THR = {
+    rtt:  { warn: 5, crit: 50 },   // ICMP RTT (ms)  — icmppingsec
+    loss: { warn: 1, crit: 10 },   // perda ICMP (%) — icmppingloss
   };
 
   // ── BPC_CHARTS — componentes SVG partilhados (§5.1) ────────────────────────
