@@ -35,7 +35,7 @@ const CFG_SEG = {
       dashUid: null, dashSlug: 'n3-rede-edificios' },
     { key: 'ag',   label: 'Agências',  icon: '🏦', groupIds: ['24', '25'],
       desc: '220 routers + 27 switches · 220 agências',
-      dashUid: null, dashSlug: 'n3-rede-agencias' },
+      dashUid: 'n3-agencias', dashSlug: 'n3-c2b7-agencias' },
   ],
 }
 
