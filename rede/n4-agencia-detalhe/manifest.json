@@ -4,6 +4,22 @@
   "folderUid": "bfpm0sdxiclxcf",
   "datasource": "ffo8sp8zllog0e",
   "notes": "Dashboard por agência (router = agência). Variáveis passadas pelo N3 via URL.",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_ROUTERS"
+    },
+    "host": {
+      "filter": "DC1-RTE-WAN-INT"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "notes_anchor": "Âncora na REDE (host core sempre UP), não no router da agência — senão o header (utils) some quando a agência está DOWN. Datasource da âncora == datasource do painel (Network) para evitar mismatch (B-03).",
   "drilldownFrom": "n3-agencias",
   "drilldownUrl": "/d/n4-agencia-detalhe?var-group=HG_AGENCIAS_ROUTERS&var-host=<HOSTNAME>",
   "drilldownTo": {
@@ -11,14 +27,17 @@
   },
   "variables": [
     {
-      "name": "group", "label": "Host Group", "type": "textbox",
-      "default": "HG_AGENCIAS_ROUTERS", "hide": true,
-      "note": "Passado pelo N3 via URL. Oculto."
+      "name": "group",
+      "label": "Host Group",
+      "type": "textbox",
+      "default": "HG_AGENCIAS_ROUTERS",
+      "hide": true
     },
     {
-      "name": "host", "label": "Host", "type": "textbox",
-      "default": "",
-      "note": "Hostname Zabbix do router da agência. Passado pelo N3 via URL."
+      "name": "host",
+      "label": "Agência",
+      "type": "query (mysql)",
+      "note": "Dropdown por NOME da agência (unidade_negocio) -> valor=host. DS MySQL Network."
     }
   ],
   "panels": [
@@ -30,40 +49,118 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
-      "file": "l4-ag-ficha.js",
-      "id": 2,
+      "file": "n4-ficha-table.json",
+      "id": 207,
       "role": "content",
-      "title": "",
-      "content": "<div id=\"bpc-n4-ag-ficha\"></div>"
+      "title": "Ficha da Agência"
+    },
+    {
+      "file": "n4-stat-icmp.json",
+      "id": 200,
+      "role": "content",
+      "title": "Disponibilidade"
+    },
+    {
+      "file": "n4-stat-latency.json",
+      "id": 201,
+      "role": "content",
+      "title": "Latência ICMP"
+    },
+    {
+      "file": "n4-stat-loss.json",
+      "id": 202,
+      "role": "content",
+      "title": "Packet Loss"
+    },
+    {
+      "file": "n4-stat-cpu.json",
+      "id": 203,
+      "role": "content",
+      "title": "CPU"
+    },
+    {
+      "file": "n4-stat-mem.json",
+      "id": 204,
+      "role": "content",
+      "title": "Memória livre"
+    },
+    {
+      "file": "n4-stat-uptime.json",
+      "id": 205,
+      "role": "content",
+      "title": "Uptime"
+    },
+    {
+      "file": "n4-table-ifaces.json",
+      "id": 206,
+      "role": "content",
+      "title": "Links WAN — Estado"
+    },
+    {
+      "file": "n4-triggers.json",
+      "id": 208,
+      "role": "content",
+      "title": "Problemas Activos"
+    },
+    {
+      "file": "n4-n5-button.json",
+      "id": 209,
+      "role": "content",
+      "title": ""
     }
   ],
   "nativePanels": [
     {
       "title": "ICMP — Latência e Packet Loss",
       "type": "timeseries",
-      "items": ["/ICMP response time/", "/ICMP loss/"],
-      "refIds": ["A", "B"],
-      "units": ["ms", "percent"]
+      "items": [
+        "/ICMP response time/",
+        "/ICMP loss/"
+      ],
+      "refIds": [
+        "A",
+        "B"
+      ],
+      "units": [
+        "ms",
+        "percent"
+      ]
     },
     {
       "title": "WAN — Tráfego Recebido",
       "type": "timeseries",
-      "items": ["/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Bits received/"],
-      "refIds": ["C"],
-      "units": ["bps"]
+      "items": [
+        "/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Bits received/"
+      ],
+      "refIds": [
+        "C"
+      ],
+      "units": [
+        "bps"
+      ]
     },
     {
       "title": "WAN — Tráfego Enviado",
       "type": "timeseries",
-      "items": ["/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Bits sent/"],
-      "refIds": ["D"],
-      "units": ["bps"]
+      "items": [
+        "/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Bits sent/"
+      ],
+      "refIds": [
+        "D"
+      ],
+      "units": [
+        "bps"
+      ]
     },
     {
       "title": "WAN — Estado das Interfaces",
       "type": "state-timeline",
-      "items": ["/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Operational status/"],
-      "refIds": ["E"]
+      "items": [
+        "/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Operational status/"
+      ],
+      "refIds": [
+        "E"
+      ]
     }
   ]
 }
