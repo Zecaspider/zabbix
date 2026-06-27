@@ -294,15 +294,39 @@ para o utilizador (uma IA não apaga dashboards).
 
 A reorganização de pastas Grafana está **incompleta** enquanto qualquer um dos critérios abaixo não for cumprido. Nenhum domínio conta como "pronto" (§10.1) se os seus dashboards ainda estiverem na pasta `General`.
 
-**Checklist de conclusão:**
-- [ ] Todos os dashboards da tabela de migração acima estão na pasta de domínio correcta (nenhum em `General`)
-- [ ] Todos os títulos seguem a convenção §4.0 (`Domínio · Âmbito — Propósito · Nx`)
-- [ ] Todos os UIDs canónicos (coluna "UID canónico" da tabela) estão atribuídos no Grafana
-- [ ] `test-push-check` e outros dashboards de teste estão apagados ou em `99 · Arquivo`
-- [ ] `CLAUDE.md` constraint "Pastas Grafana" actualizado para reflectir o estado real (sem referência a `General`)
-- [ ] `GET /api/search?folderIds=<General>` devolve 0 dashboards de produção
+**Checklist de conclusão (estado 2026-06-27):**
+- [x] Todos os dashboards da tabela de migração acima estão na pasta de domínio correcta (nenhum em `General`) — executado 2026-06-27
+- [x] Todos os títulos seguem a convenção §4.0 (`Domínio · Âmbito — Propósito · Nx`) — executado 2026-06-27
+- [ ] Todos os UIDs canónicos (coluna "UID canónico" da tabela) estão atribuídos no Grafana — **pendente**: requer sessão dedicada; renomear UIDs invalida links em todos os `.js`
+- [x] Dashboards de teste em `99 · Arquivo` (`test-push-check`, `TESTE utils v9`, `BPC Teste API`, `teste-panel`) — executado 2026-06-27
+- [x] `CLAUDE.md` constraint "Pastas Grafana" actualizado — executado 2026-06-27
+- [x] `GET /api/search?folderIds=<General>` devolve 0 dashboards de produção — verificado 2026-06-27
 
 **Regra de execução:** esta reorganização é uma **sessão dedicada** — não intercalar com construção de painéis. Requer confirmação explícita de push antes de mover qualquer dashboard. Ao concluir, actualizar este checklist e o constraint do `CLAUDE.md`.
+
+#### Workflow obrigatório após qualquer alteração com impacto no Grafana
+
+Aplicar sempre nesta ordem — não saltar passos, não inverter:
+
+```
+1. REVALIDAR   — verificar o estado actual antes de qualquer acção
+                 (API Grafana ou node --check conforme o tipo de alteração)
+2. COMITAR     — commit git dos ficheiros locais alterados
+                 (pedir confirmação; incluir mensagem descritiva)
+3. PUSH        — push para o Grafana
+                 (pedir confirmação; uma operação de cada vez)
+4. REVALIDAR   — verificar o resultado no Grafana após o push
+                 (screenshot + console se painel; API se estrutura)
+5. CORRIGIR    — se a revalidação detectar desvios, corrigir o .js local
+                 e repetir a partir do passo 1
+6. DOCUMENTAR  — actualizar checklists, DoD e constraints afectados
+                 (engenharia-do-sistema.md, CLAUDE.md, manifest.json)
+```
+
+Regras:
+- O passo 2 (commit) precede o passo 3 (push) — o repo é sempre a fonte de verdade; nunca subir algo que não está no git.
+- A revalidação do passo 4 usa os mesmos critérios da revalidação do passo 1 — confirmar que o estado melhorou e não introduziu regressões.
+- O passo 6 (documentar) fecha o ciclo — uma alteração sem documentação actualizada está incompleta.
 
 **Legado (65 dashboards das pastas `00`–`08` numeradas + `99 - Arquivo` +
 `99 - Arquivo v5 legado`):** consolidar **tudo** numa única pasta `99 ·
