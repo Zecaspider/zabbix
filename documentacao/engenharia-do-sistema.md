@@ -84,8 +84,58 @@ sub-secção; a query âncora aponta para um grupo real e estável (ex.: `26`).
 
 ## 4. Naming canónico
 
+### 4.0 Convenção de títulos e UIDs de dashboards (aprovada 2026-06-27)
+
+**Título do dashboard:**
 ```
-Dashboards:  n1-visao-geral · n2-<dominio> · n3-<dominio>-detalhe
+Domínio · Âmbito — O que vê e faz · Nx
+```
+
+| Parte | Regra | Exemplo |
+|---|---|---|
+| `Domínio · Âmbito` | breadcrumb de hierarquia, separado por ` · ` | `Rede · WAN` |
+| ` — ` | separador fixo entre hierarquia e propósito | |
+| `O que vê e faz` | conteúdo/propósito em linguagem de operador | `Serviços e circuitos` |
+| ` · Nx` | sufixo de nível (N1…N4) | `· N3` |
+
+Regras:
+- Sempre sentence case. Nunca "N2/N3/N4" como prefixo. Nunca "Dashboard" ou "Painel".
+- O ` · ` separa segmentos de hierarquia. O ` — ` (traço longo com espaços) separa da descrição.
+- O nível `Nx` é sempre sufixo — nunca prefixo, nunca no meio.
+- **Agências é sub-domínio de Rede** — os seus dashboards vivem na pasta `04 · Rede` e usam `Rede · Agências` como âmbito.
+
+Exemplos canónicos:
+```
+Visão Geral — Estado global · N1
+Rede — Segmentos e alertas · N2
+Rede · WAN — Serviços e circuitos · N3
+Rede · WAN — Por provedor · N3
+Rede · DC Fabric — Estado dos switches · N3
+Rede · Edifícios BPC — Routers e switches · N3
+Rede · Agências — Mapa de estado · N3
+Rede · Agência — Diagnóstico · N4
+Rede · WAN · Dispositivo — Interfaces · N4
+Rede · WAN · Interface — Tráfego · N4
+Rede · WAN · Provedor — SLA e circuitos · N4
+Rede · DC · Switch — Interfaces · N4
+VMware — Estado geral · N2
+VMware · ESXi — Hosts e clusters · N3
+VMware · ESXi — Detalhe do host · N3
+VMware · vCenter — Inventário · N3
+Servidores — Estado geral das VMs · N2
+Servidores · VM — Diagnóstico · N3
+```
+
+**UID do dashboard:**
+```
+<dominio>.<nivel>.<funcao>
+```
+Exemplos: `rede.n3.agencias`, `rede.n4.agencia`, `vmware.n3.esxi`, `visao-geral.n1.noc`
+
+Regras: minúsculas, hífens como separador interno, ponto como separador de segmento. O UID não muda após criação — é a âncora de todos os links de drill-down.
+
+**Ficheiros locais:**
+```
 Ficheiros:   lowercase-com-hifens.js (sem acentos, sem versão no nome)
   painel utils:   utils.js (ou *-header-global.js em dashboards herdados)
   conteúdo N2/N3: l2-*.js / l3-*.js  (prefixo de nível)
@@ -182,15 +232,16 @@ cronograma e as pastas de domínio do disco (§4.1) 1-para-1:
 > estão reclassificados no disco como `n3-esxi` / `n3-esxi-detalhe` dentro de
 > `infraestrutura-vmware/`.
 
-**Convenção de nomes dentro de cada pasta de domínio:** como a pasta já dá o
-domínio, o título do dashboard só precisa do **nível + detalhe**, com `·` como
-separador, ordenável e legível:
+**Convenção de nomes dentro de cada pasta de domínio:** ver §4.0 para a
+convenção completa. O título usa `Domínio · Âmbito — Propósito · Nx`. Como a
+pasta já identifica o domínio de topo, o título é auto-suficiente e legível
+fora de contexto:
 
-| Nível | Formato | Exemplos (domínio Rede) |
-|---|---|---|
-| N2 | `N2 · <detalhe>` | `N2 · Rede` |
-| N3 | `N3 · <detalhe>` | `N3 · DC Core` · `N3 · WAN — Carriers` |
-| N4 | `N4 · <detalhe>` | `N4 · WAN Router` · `N4 · DC Switch` |
+| Nível | Exemplo (domínio Rede) |
+|---|---|
+| N2 | `Rede — Segmentos e alertas · N2` |
+| N3 | `Rede · DC Fabric — Estado dos switches · N3` |
+| N4 | `Rede · WAN · Dispositivo — Interfaces · N4` |
 
 > Renomear o **título** de um dashboard é seguro: os links de drill-down (§7)
 > referenciam o **UID**, que nunca muda. O `slug` da URL acompanha o título mas
@@ -200,22 +251,28 @@ separador, ordenável e legível:
 UIDs validados contra os `manifest.json` do disco (§4.1) — fonte de verdade da
 classificação por domínio:
 
-| UID | Título actual no Grafana | Disco (manifest) | Pasta-alvo | Novo título |
+| UID actual | Disco (manifest) | UID canónico (§4.0) | Pasta-alvo | Título canónico (§4.0) |
 |---|---|---|---|---|
-| `a967e936-…` | n2-infraestrutura-vmware | `infraestrutura-vmware/n2` | 01 · Infraestrutura VMware | `N2 · VMware` |
-| `8f6a94be-…` | N2 - Servidores Físicos (ESXi) | `infraestrutura-vmware/n3-esxi` | 01 · Infraestrutura VMware | `N3 · ESXi` |
-| `b55d5481-…` | N3 - Servidores Fisicos (ESXi) - Detalhe | `infraestrutura-vmware/n3-esxi-detalhe` | 01 · Infraestrutura VMware | `N3 · ESXi Detalhe` |
-| `59e7e4b2-…` | n3-vcenter-detalhe | `infraestrutura-vmware/n3-vcenter` | 01 · Infraestrutura VMware | `N3 · vCenter Detalhe` |
-| `993834a3-…` | N2 - Armazenamento | `armazenamento/n2` | 02 · Armazenamento | `N2 · Visão Geral` |
-| `0758c24e-…` | n2-servidores-virtuais | `servidores-virtuais/n2` | 03 · Servidores Virtuais | `N2 · VMs` |
-| `0ae673a3-…` | n3-sv-versao-a-bt | `servidores-virtuais/n3` | 03 · Servidores Virtuais | `N3 · VM Detalhe` |
-| `ec590abd-…` | n2-rede | `rede/n2` | 04 · Rede | `N2 · Rede` |
-| `a75e2ba6-…` | n3-rede-dc-core | `rede/n3-dc` | 04 · Rede | `N3 · DC Core` |
-| `471f2208-…` | n3-rede-edificios | `rede/n3-edificios` | 04 · Rede | `N3 · Edifícios` |
-| `1702465e-…` | n3-rede-wan | `rede/n3-wan` | 04 · Rede | `N3 · WAN` |
-| `31bace26-…` | n3-rede-wan-carriers | `rede/n3-wan-carriers` | 04 · Rede | `N3 · WAN — Carriers` |
-| `8ddc4833-…` | n4-rede-wan-router | `rede/n4-wan-router` | 04 · Rede | `N4 · WAN Router` |
-| `7baea796-…` | n4-rede-dc-switch | `rede/n4-dc-switch` | 04 · Rede | `N4 · DC Switch` |
+| `a967e936-…` | `infraestrutura-vmware/n2` | `vmware.n2.resumo` | 01 · Infraestrutura VMware | `VMware — Estado geral · N2` |
+| `8f6a94be-…` | `infraestrutura-vmware/n3-esxi` | `vmware.n3.esxi` | 01 · Infraestrutura VMware | `VMware · ESXi — Hosts e clusters · N3` |
+| `b55d5481-…` | `infraestrutura-vmware/n3-esxi-detalhe` | `vmware.n3.esxi-detalhe` | 01 · Infraestrutura VMware | `VMware · ESXi — Detalhe do host · N3` |
+| `59e7e4b2-…` | `infraestrutura-vmware/n3-vcenter` | `vmware.n3.vcenter` | 01 · Infraestrutura VMware | `VMware · vCenter — Inventário · N3` |
+| `993834a3-…` | `armazenamento/n2` | `storage.n2.resumo` | 02 · Armazenamento | `Armazenamento — Estado geral · N2` |
+| `0758c24e-…` | `servidores-virtuais/n2` | `servidores.n2.resumo` | 03 · Servidores Virtuais | `Servidores — Estado geral das VMs · N2` |
+| `0ae673a3-…` | `servidores-virtuais/n3` | `servidores.n3.vm` | 03 · Servidores Virtuais | `Servidores · VM — Diagnóstico · N3` |
+| `ec590abd-…` | `rede/n2` | `rede.n2.resumo` | 04 · Rede | `Rede — Segmentos e alertas · N2` |
+| `a75e2ba6-…` | `rede/n3-dc` | `rede.n3.dc` | 04 · Rede | `Rede · DC Fabric — Estado dos switches · N3` |
+| `471f2208-…` | `rede/n3-edificios` | `rede.n3.edificios` | 04 · Rede | `Rede · Edifícios BPC — Routers e switches · N3` |
+| `1702465e-…` | `rede/n3-wan` | `rede.n3.wan` | 04 · Rede | `Rede · WAN — Serviços e circuitos · N3` |
+| `31bace26-…` | `rede/n3-wan-carriers` | `rede.n3.wan-provedor` | 04 · Rede | `Rede · WAN — Por provedor · N3` |
+| `n3-agencias` | `rede/n3-agencias` | `rede.n3.agencias` | 04 · Rede | `Rede · Agências — Mapa de estado · N3` |
+| `n4-agencia-detalhe` | `rede/n4-agencia-detalhe` | `rede.n4.agencia` | 04 · Rede | `Rede · Agência — Diagnóstico · N4` |
+| `n4-wan-device` | `rede/n4-wan-device` | `rede.n4.wan-device` | 04 · Rede | `Rede · WAN · Dispositivo — Interfaces · N4` |
+| `c0d81130-…` | `rede/n4-wan-provedor` | `rede.n4.wan-provedor` | 04 · Rede | `Rede · WAN · Provedor — SLA e circuitos · N4` |
+
+> **Agências = sub-domínio de Rede.** Os dashboards de Agências vivem na pasta
+> `04 · Rede` e usam UIDs `rede.n3.agencias` / `rede.n4.agencia`. A pasta
+> `09 · Agências` fica vazia e vai para arquivo.
 
 > Nota: `8f6a94be` mantém o título legado "N2 - Servidores Físicos (ESXi)" no
 > Grafana mas o disco já o reclassificou como `n3-esxi` — a migração corrige o
