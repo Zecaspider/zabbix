@@ -29,7 +29,8 @@
           }
         ]
       },
-      "decimals": 1
+      "decimals": 1,
+      "noValue": "—"
     },
     "overrides": []
   },

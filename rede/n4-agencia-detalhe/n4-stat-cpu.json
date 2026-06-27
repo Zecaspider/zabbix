@@ -29,7 +29,8 @@
           }
         ]
       },
-      "decimals": 0
+      "decimals": 0,
+      "noValue": "Sem SNMP"
     },
     "overrides": []
   },

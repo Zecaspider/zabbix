@@ -57,6 +57,12 @@
 - **Agências sem router (ponto-a-ponto):** algumas agências ligam ponto-a-ponto a outra
   agência e **não têm router próprio** → não estão em `HG_AGENCIAS_ROUTERS` → ficam
   **invisíveis** neste fluxo. Mapear pela sub-interface do router-pai.
+- **Routers com SNMP incompleto (Z.14):** 13/221 routers de agência respondem a ICMP mas
+  **não têm interfaces/CPU/memória monitorizadas** (descobertos, sem templates SNMP). O
+  N4 distingue isto: os stats de SNMP (CPU/Memória/Uptime) mostram **"Sem SNMP"**
+  (`fieldConfig.noValue`) em vez de "No data"; Latência/Loss (ICMP) mostram "—". A tabela
+  LINKS WAN e o Histórico ficam "No data" (estado vazio de tabela/timeline não é
+  configurável). É **dado em falta no Zabbix**, não bug — acção Z.14 no cronograma.
 - **Headline de 3 estados (UP/LENTO/DOWN):** hoje o ESTADO é binário (ICMP UP/DOWN); o
   "LENTO" lê-se das stats de latência/loss. Estado calculado de 3 níveis é melhoria futura.
 

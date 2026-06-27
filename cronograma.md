@@ -204,6 +204,7 @@
 | Z.10 | P1 | Script `unity_get_state.py` da Dell EMC Unity (11834) sem dados há >1h | ☐ | trigger `No data from storage for 1 hours` activo + `Exist unsupported items` — verificar credenciais API Unity e acessibilidade do host |
 | Z.12 | P2 | Ruído de alertas Rede: 220× "Link down" (P3) em portas de acesso desligadas (g29) + ~204 "Ethernet changed to lower speed" (P1) | ☐ | Auditado 2026-06-18 (`rede-topologia.md` §9). Inflaciona KPI "Alertas activos" do N2. Baixar severidade/suprimir em portas de acesso down; rever lower-speed/half-duplex |
 | Z.13 | P1 | IP SLA 65 (ITA) no DC1-RTE-WAN-INT está NOT OK (sense=4) — link Internet ITA degradado a nível de serviço apesar de if-UP | ☐ | Detectado na auditoria; é incidente real de rede, não config dashboard — encaminhar para equipa de redes |
+| Z.14 | P1 | **13 routers de agência com SNMP incompleto** — respondem a ICMP mas sem interfaces/CPU/memória monitorizadas (ponto cego no troubleshoot WAN) | ☐ | Auditoria 2026-06-27: 221 routers no g24, 208 com `net.if.status`, **13 sem**: `172.22.1.{132,160,203,213,240,38}` (ainda com hostname=IP), `RTADMHUMPATA00`, `RTAIAAN`, `RTFAASU00.bpc.intranet`, `RTKIKOLO02`, `RTPOSTO_IRI_00`, `RTSICA00`, `RT_SME_VIANA`. Todos no grupo "Discovered hosts" → aplicar templates SNMP + corrigir credenciais/walk + renomear os 5 com IP. O N4 mostra "Sem SNMP" nos painéis afectados (dashboard correcto; é dado em falta no Zabbix) |
 
 ---
 
