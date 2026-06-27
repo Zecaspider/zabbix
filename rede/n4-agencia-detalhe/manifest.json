@@ -151,16 +151,6 @@
       "units": [
         "bps"
       ]
-    },
-    {
-      "title": "WAN — Estado das Interfaces",
-      "type": "state-timeline",
-      "items": [
-        "/Interface.*(WAN|DMVPN|TUNEL|TUNNEL).*: Operational status/"
-      ],
-      "refIds": [
-        "E"
-      ]
     }
   ]
 }
