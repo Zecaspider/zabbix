@@ -1,5 +1,5 @@
 {
-  "dashboardUid": "visao-geral-v5-rebuild",
+  "dashboardUid": "n1-visao-geral-noc",
   "dashboardTitle": "N1 · Visão Geral — Estado global",
   "folderUid": "bfpm0sdaos074d",
   "datasource": "3_KgG43nz",
@@ -13,7 +13,7 @@
     },
     {
       "file": "n1-cards.js",
-      "id": 11,
+      "id": 101,
       "role": "content",
       "title": "",
       "content": "<div id=\"bpc-n1-cards\"></div>"
