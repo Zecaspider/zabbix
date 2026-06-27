@@ -290,6 +290,20 @@ para o utilizador (uma IA não apaga dashboards).
 > ESXi). Confirmar na execução se há workload físico que justifique um painel
 > próprio dentro de VMware ou se é só hardware-host dos hypervisores.
 
+#### DoD da reorganização de pastas (condição de conclusão)
+
+A reorganização de pastas Grafana está **incompleta** enquanto qualquer um dos critérios abaixo não for cumprido. Nenhum domínio conta como "pronto" (§10.1) se os seus dashboards ainda estiverem na pasta `General`.
+
+**Checklist de conclusão:**
+- [ ] Todos os dashboards da tabela de migração acima estão na pasta de domínio correcta (nenhum em `General`)
+- [ ] Todos os títulos seguem a convenção §4.0 (`Domínio · Âmbito — Propósito · Nx`)
+- [ ] Todos os UIDs canónicos (coluna "UID canónico" da tabela) estão atribuídos no Grafana
+- [ ] `test-push-check` e outros dashboards de teste estão apagados ou em `99 · Arquivo`
+- [ ] `CLAUDE.md` constraint "Pastas Grafana" actualizado para reflectir o estado real (sem referência a `General`)
+- [ ] `GET /api/search?folderIds=<General>` devolve 0 dashboards de produção
+
+**Regra de execução:** esta reorganização é uma **sessão dedicada** — não intercalar com construção de painéis. Requer confirmação explícita de push antes de mover qualquer dashboard. Ao concluir, actualizar este checklist e o constraint do `CLAUDE.md`.
+
 **Legado (65 dashboards das pastas `00`–`08` numeradas + `99 - Arquivo` +
 `99 - Arquivo v5 legado`):** consolidar **tudo** numa única pasta `99 ·
 Arquivo`. Destino final (apagar/manter) decide-se quando o v5 estiver

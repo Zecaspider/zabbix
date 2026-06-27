@@ -80,6 +80,9 @@ var CSS = '<style>' +
   '.ag-link { margin-top:12px; }' +
   '.ag-link a { color:#58A6FF; font-size:11px; text-decoration:none; }' +
   '.ag-link a:hover { text-decoration:underline; }' +
+  '.ag-btn { display:inline-flex; align-items:center; gap:6px; background:#1C2128; border:1px solid #388BFD;' +
+    ' border-radius:4px; padding:5px 12px; color:#58A6FF; font-size:12px; text-decoration:none; cursor:pointer; }' +
+  '.ag-btn:hover { background:#2D333B; }' +
   '</style>'
 
 function buildUrl(host, group) {
@@ -117,9 +120,13 @@ function render(host, group, tags, icmpItems) {
     return '<span class="ag-isp-pill">' + s.trim() + '</span>'
   }).join('')
 
+  var wanUrl = buildUrl(host, group)
   var html = CSS + '<div class="ag-ficha">'
-  html += '<div class="ag-name">' + name + '</div>'
-  html += '<div class="ag-host">' + host + ' &nbsp;·&nbsp; ' + tipoUN + '</div>'
+  html += '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">'
+  html += '<div><div class="ag-name">' + name + '</div>'
+  html += '<div class="ag-host">' + host + ' &nbsp;·&nbsp; ' + tipoUN + '</div></div>'
+  html += '<a class="ag-btn" href="' + wanUrl + '" target="_blank">&#x2197; Interfaces WAN · N4</a>'
+  html += '</div>'
 
   html += '<div class="ag-row">'
   html += '<div class="ag-block"><div class="ag-label">Província</div><div class="ag-val">' + provincia + '</div></div>'
@@ -140,7 +147,7 @@ function render(host, group, tags, icmpItems) {
   html += '<div class="ag-kpi"><div class="ag-kpi-val">' + fmtPct(lossVal) + '</div><div class="ag-kpi-label">Packet Loss</div></div>'
   html += '</div>'
 
-  html += '<div class="ag-link"><a href="' + buildUrl(host, group) + '" target="_blank">→ Ver todas as interfaces no N4 · WAN Device</a></div>'
+  html += '<div class="ag-link"><a href="' + wanUrl + '" target="_blank">→ Ver todas as interfaces · N4 WAN Device</a></div>'
   html += '</div>'
 
   el.innerHTML = html
