@@ -152,9 +152,9 @@
 | 9.0 | Bugs do fluxo (B-01/B-02 N2, B-03 N4, T-01 N1, T-03) | ☑ | 2026-06-27 | NET_THR + apiUrl Network (N2); âncora de rede no N4 (B-03); N1 liga ao N3 (T-01); drill por var-host (T-03). Detalhe em engenharia §12.0. Commits `3dcc616` |
 | 9.1 | N3 Agências — geomap + tabela de alertas (nativo) | ☑ | 2026-06-27 | UID `n3-agencias`; geomap + tabela → drill N4 (dataLink) |
 | 9.2 | **N4 Agência — reconstruído (triagem NOC)** | ☑ | 2026-06-27 | UID `n4-agencia-detalhe`. Dropdown por **nome** (MySQL); ESTADO (disponib+ficha nativa) · PORQUÊ (CPU/RAM/uptime/lat/loss) · LINKS WAN (estado colorido + histórico timeline) · PROBLEMAS (painel **nativo** Zabbix) · TENDÊNCIA · botão N5. Item filtrado por **nome**. Commits `9d98685`/`a833c5a`/`996d566` |
-| 9.3 | **N5 Agência — Interfaces** (exclusivo, `n5-agencia-interfaces`) | ☐ | | só as ifaces daquele router: bits rx/tx, packet loss/discards, errors, op-status. Botão do N4 já aponta (404 até existir) |
-| 9.4 | Refinamentos: provider/tipo da interface (T-06) · agências sem router (T-07) | ☐ | | pós-N5 |
-| 9.5 | Navegação ponta-a-ponta + commit final | ◐ | 2026-06-27 | N1→N4 validado; falta N5 + push git (repo sem remote configurado) |
+| 9.3 | **N5 Agência — Interfaces** (exclusivo, `n5-agencia-interfaces`) | ☑ | 2026-06-27 | Criado. Header + back-link N4; Estado&flaps (state-timeline todas as ifaces); Tráfego rx/tx; Erros in/out; Descartes in/out. Dropdowns Agência(nome) + Interface(All+filtro). Item por **nome**. Utilização % fora (speed=0 nos tunnels → T-08). Snapshot guardado. Validado RTUIGE00 |
+| 9.4 | Refinamentos: provider/tipo da interface (T-06) · agências sem router (T-07) · utilização % quando speed populado (T-08) | ☐ | | pós-N5 |
+| 9.5 | Navegação ponta-a-ponta N1→N5 + commit final | ☑ | 2026-06-27 | Fluxo N1→N2→N3→N4→N5 validado no browser; commits locais (repo sem remote → push git pendente) |
 
 ## Fase 10 · N1 · Portal NOC (porta de entrada — spec em engenharia §4.2)
 | # | Tarefa | Estado | Data | Nota |

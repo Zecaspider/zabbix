@@ -1,0 +1,66 @@
+{
+  "dashboardUid": "n5-agencia-interfaces",
+  "dashboardTitle": "N5 · Rede · Agência — Interfaces",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "drilldownFrom": "n4-agencia-detalhe",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_ROUTERS"
+    },
+    "host": {
+      "filter": "DC1-RTE-WAN-INT"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "variables": [
+    {
+      "name": "group",
+      "type": "textbox",
+      "default": "HG_AGENCIAS_ROUTERS",
+      "hide": true
+    },
+    {
+      "name": "host",
+      "type": "query (mysql)",
+      "note": "dropdown por nome"
+    },
+    {
+      "name": "iface",
+      "type": "query (zabbix)",
+      "note": "todas as interfaces do router; regex extrai token; All=.*"
+    }
+  ],
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 1,
+      "role": "utils",
+      "title": "Header",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    }
+  ],
+  "nativePanels": [
+    {
+      "title": "Estado & flaps"
+    },
+    {
+      "title": "Tráfego recebido"
+    },
+    {
+      "title": "Tráfego enviado"
+    },
+    {
+      "title": "Erros (entrada/saída)"
+    },
+    {
+      "title": "Descartes (entrada/saída)"
+    }
+  ]
+}

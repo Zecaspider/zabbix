@@ -11,7 +11,7 @@
 | N2 | `ec590abd-…-2b998aa80556` | clica card **Agências** | segmentos + alertas |
 | N3 | `n3-agencias` | clica **tooltip do geomap** ou **tabela** | mapa de estado das agências |
 | **N4** | `n4-agencia-detalhe` | dropdown por **nome** da agência | detalhe + diagnóstico (ver abaixo) |
-| **N5** | `n5-agencia-interfaces` *(pendente)* | botão/linha do N4 | só as interfaces daquele router |
+| **N5** | `n5-agencia-interfaces` | botão do N4 (`var-host`) | só as interfaces daquele router (ver §N5) |
 
 ## N4 — estrutura (ordem de triagem)
 
@@ -34,6 +34,22 @@
 - Dados live: Zabbix Network `ffo8sp8zllog0e` (filtro de item **por nome**, nunca por chave).
 - Metadados (ficha, dropdown): MySQL Network `cfo3cgypdrdvkf` (tabela `host_tag`).
 - Âncora do header (utils): host de rede sempre UP `DC1-RTE-WAN-INT` (mesmo datasource).
+
+## N5 — Interfaces da Agência (`n5-agencia-interfaces`)
+
+Diagnóstico profundo das interfaces do router seleccionado (exclusivo das agências).
+Responde à pergunta *"o N4 disse que o link está mau — porquê?"*. Tudo nativo.
+
+- **Variáveis:** `group` (textbox oculto), `host` (dropdown por nome, MySQL — vem do N4),
+  `iface` (dropdown query Zabbix sobre `Operational status`, regex `/Interface (.+?)\(/`
+  extrai o token; `All`=`.*`; mostra **todas** as interfaces do router).
+- **Painéis:** back-link "← Voltar ao N4" · **Estado & flaps** (state-timeline UP/DOWN por
+  interface) · **Tráfego recebido/enviado** (por interface) · **Erros** (in/out) ·
+  **Descartes** (in/out). Filtro de item `/Interface ${iface}.*: <métrica>/`.
+- **Utilização % fora (dívida):** `net.if.speed` = **0** nas interfaces de tunnel/DMVPN
+  → % de utilização inútil; só físicas têm speed real. Reactivar quando o speed estiver
+  populado (T-08).
+- Snapshot: `rede/n5-agencia-interfaces/dashboard-completo.json` (7 painéis).
 
 ## Decisões de engenharia
 

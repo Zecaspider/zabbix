@@ -772,6 +772,7 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 | T-05 | N1/N3 | Links BT vs Grafana data links — testar no browser real | Média |
 | T-06 | N4/N5 | Provider/Tipo/nº de links derivados das **tags** manuais; derivar do **nome real da interface** (verdade viva SNMP) e sinalizar divergências | Média |
 | T-07 | Agências | Agências **ponto-a-ponto sem router próprio** ficam invisíveis (não estão em `HG_AGENCIAS_ROUTERS`) — mapear pela sub-interface do router-pai | Alta (pós-N5) |
+| T-08 | N5 Agência | Bloco **Utilização %** fora — `net.if.speed` = 0 nas interfaces tunnel/DMVPN; reactivar quando o speed estiver populado no Zabbix | Baixa |
 
 ### 12.3 Estado do fluxo Agências (2026-06-27, pós-reconstrução)
 
@@ -783,7 +784,7 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 | N2 Rede | `ec590abd` | ✅ 315 disp., 649 alertas reais (NET_THR + apiUrl Network) |
 | N3 Agências | `n3-agencias` | ✅ geomap + tabela → N4 |
 | **N4 Agência** | `n4-agencia-detalhe` | ✅ **reconstruído** — triagem NOC (ESTADO/PORQUÊ/LINKS WAN/PROBLEMAS nativos/TENDÊNCIA), dropdown por nome, ficha nativa. Detalhe em `fluxo-agencias-n4-n5.md` |
-| **N5 Agência Interfaces** | `n5-agencia-interfaces` | ☐ pendente |
+| **N5 Agência Interfaces** | `n5-agencia-interfaces` | ✅ **criado** — Estado&flaps + Tráfego + Erros + Descartes (todas as ifaces); dropdown Agência+Interface; back-link N4. Utilização % fora (speed=0 → T-08) |
 
 ## 13. Roadmap e checklist
 
