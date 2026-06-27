@@ -62,7 +62,7 @@ const CFG_META = {
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
-  title: 'BPC-Observe',
+  title: 'BPC NOC',
   nocLabel: 'INFRAESTRUTURA VMWARE - DETALHE VCENTER',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
   backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
