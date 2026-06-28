@@ -82,6 +82,32 @@ Responde à pergunta *"o N4 disse que o link está mau — porquê?"*. Tudo nati
 - **Headline de 3 estados (UP/LENTO/DOWN):** hoje o ESTADO é binário (ICMP UP/DOWN); o
   "LENTO" lê-se das stats de latência/loss. Estado calculado de 3 níveis é melhoria futura.
 
+## Validação do fluxo — caso "agência sem sistema" (CUNHINGA, 2026-06-28)
+
+Caso: `RTCUNH00` (CUNHINGA, Bié; providers MStelcom + Unitel) **DOWN há ~12 dias**
+(trigger `Unavailable by ICMP ping`, sev4). Interfaces com `lastclock=0` (nunca recolhidas).
+
+**O drill diz o motivo?**
+- **NOC — o "o quê" + contexto: sim.** N4 mostra DOWN, ficha (2 providers, links conhecidos),
+  CPU/Mem "Sem SNMP", e o trigger distingue o sintoma (*router inteiro inalcançável*, não 1 link).
+- **Engenheiro — causa raiz: NÃO, para agências totalmente DOWN.** Dois motivos:
+  1. **Limite arquitectural:** router inalcançável ⇒ SNMP também cai ⇒ perde-se a visibilidade
+     das interfaces exactamente quando era precisa.
+  2. **Lacuna Z.14:** interfaces nunca recolhidas (`lastclock=0`) ⇒ N5 sem histórico ⇒ não há
+     sequência pré-queda para inferir a causa.
+- **Para agências DEGRADADAS (router UP, 1 link down) o drill DÁ a causa** — o N5 mostra qual
+  interface caiu, quando, erros e de que provider. Accionável.
+
+**Alavancas para chegar à causa de agências DOWN (a implementar):**
+1. **Fechar Z.14** — recolher SNMP das interfaces dos agency routers ⇒ passamos a ter a
+   **sequência pré-queda** (ex.: UNITEL caiu, depois MST, depois ICMP = falha dupla → energia/local).
+2. **Correlação por PROVIDER via hub DMVPN** (`DC1-RTE-WAN-AG`): o hub é monitorizado centralmente
+   e **sobrevive** à queda da agência. Tem estado **por provider** (Tu101 `DMVPN_HUB_UNITEL`,
+   Tu102 ITA, Tu105 `MST_FIBRA`…). Regra: **muitas** agências do mesmo provider DOWN + túnel-hub
+   desse provider down ⇒ **outage do provider/hub** (não das agências); **uma** agência DOWN com
+   túneis-hub UP ⇒ problema **local** dessa agência. **Nota:** o hub **não** tem visibilidade
+   por-agência (sem NHRP/crypto por spoke) — isso seria uma melhoria Zabbix (Z.15).
+
 ## Painéis (manifest)
 
 | id | ficheiro | tipo | papel |

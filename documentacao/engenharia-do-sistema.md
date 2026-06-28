@@ -773,6 +773,7 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 | T-06 | N4/N5 | Provider/Tipo/nº de links derivados das **tags** manuais; derivar do **nome real da interface** (verdade viva SNMP) e sinalizar divergências | Média |
 | T-07 | Agências | Agências **ponto-a-ponto sem router próprio** ficam invisíveis (não estão em `HG_AGENCIAS_ROUTERS`) — mapear pela sub-interface do router-pai | Alta (pós-N5) |
 | T-08 | N5 Agência | Bloco **Utilização %** fora — `net.if.speed` = 0 nas interfaces tunnel/DMVPN; reactivar quando o speed estiver populado no Zabbix | Baixa |
+| T-09 | N4/N5 Agência | Para agências **totalmente DOWN** o drill não chega à causa raiz (SNMP cai com o router). Adicionar **correlação por provider via hub DMVPN** (`DC1-RTE-WAN-AG`, estado por provider Tu101/Tu105…) — distingue outage-de-provider de problema-local. Validado caso CUNHINGA (cronograma 9.6 / Z.15) | Média |
 
 ### 12.3 Estado do fluxo Agências (2026-06-27, pós-reconstrução)
 
