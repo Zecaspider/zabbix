@@ -113,6 +113,13 @@
       "id": 210,
       "role": "content",
       "title": "Histórico (flaps)"
+    },
+    {
+      "file": "l4-provider-context.js",
+      "id": 211,
+      "role": "content",
+      "title": "Operadoras WAN — hub DMVPN",
+      "content": "<div id=\"bpc-provider-ctx\"></div>"
     }
   ],
   "nativePanels": [

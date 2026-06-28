@@ -88,17 +88,29 @@ Responde à pergunta *"o N4 disse que o link está mau — porquê?"*. Tudo nati
      está totalmente DOWN com `lastclock=0` (validado em CUNHINGA). A variável Zabbix dependia
      de dados recentes.
 
-## Riscos conhecidos (analisar depois do N5)
+## Riscos / gaps conhecidos (lado Zabbix) — auditados 2026-06-28
 
-- **Agências sem router (ponto-a-ponto):** algumas agências ligam ponto-a-ponto a outra
-  agência e **não têm router próprio** → não estão em `HG_AGENCIAS_ROUTERS` → ficam
-  **invisíveis** neste fluxo. Mapear pela sub-interface do router-pai.
-- **Routers com SNMP incompleto (Z.14):** 13/221 routers de agência respondem a ICMP mas
-  **não têm interfaces/CPU/memória monitorizadas** (descobertos, sem templates SNMP). O
-  N4 distingue isto: os stats de SNMP (CPU/Memória/Uptime) mostram **"Sem SNMP"**
-  (`fieldConfig.noValue`) em vez de "No data"; Latência/Loss (ICMP) mostram "—". A tabela
-  LINKS WAN e o Histórico ficam "No data" (estado vazio de tabela/timeline não é
-  configurável). É **dado em falta no Zabbix**, não bug — acção Z.14 no cronograma.
+- **Agências/postos sem router próprio (ponto-a-ponto) — T-07 / cron 9.7:** muitas agências,
+  **postos** e **postos móveis** **não têm router próprio** — ligam ponto-a-ponto a outra
+  agência/posto-pai. Não estão em `HG_AGENCIAS_ROUTERS` → **invisíveis** a todo o fluxo
+  (geomap N3, N4, N5). Uma falha do pai derruba N filhas **silenciosamente**. Existe **Excel**
+  do utilizador com o mapa filha↔pai. Plano: (1) ingerir o Excel → mapa filha→router-pai +
+  sub-interface/VLAN; (2) tornar visíveis via a sub-interface do pai (estado herdado); (3) ficha
+  marca "sem router próprio (dependente de X)". Depende de Z.14 (SNMP do pai).
+- **SNMP cego em ~73 agency routers (Z.14) — âmbito corrigido:** dos 221 do g24, **13 sem
+  qualquer item** de interface (só ICMP) + **60 com items mas `lastclock=0`** (nunca recolhidos)
+  = **~73 (33%)**. **Causa-raiz NÃO é falta de template:** os partidos já têm `Cisco IOS by SNMP`
+  + interface SNMPv3 (authPriv SHA/AES, user `snmpv3_noc_bpc`) — **a sessão SNMP é que não fecha**
+  (creds/ACL/`snmp-server` no IOS, ou SNMP desligado). 13 → LLD nunca descobriu; 60 → LLD criou
+  items mas polling falha. O N4 distingue: stats SNMP mostram **"Sem SNMP"** (`fieldConfig.noValue`),
+  ICMP mostra "—", tabela/histórico ficam "No data". Acção e fix em Z.14 (cronograma).
+- **Utilização % (T-08) — reclassificado: é dashboard, não Zabbix.** As interfaces **físicas já
+  têm `ifSpeed`** (`Gi0/0/0.914` = 1 Gbps); só os **túneis** dão `0` (correcto — interface lógica
+  sem largura física). Acção: activar % só quando `speed>0` (WAN físicas), túneis ficam em bps.
+  % no túnel só com largura **contratada** injectada (macro/inventory por agência).
+- **Per-spoke no hub (Z.15):** o hub só tem 1 item agregado + estado por provider; **zero**
+  per-spoke. Fecha o *outage total* (confirma o túnel de cada agência mesmo com o router dela down)
+  via LLD `CISCO-IPSEC-FLOW-MONITOR-MIB` (`cipSecTunnelTable`). Detalhe em Z.15 (cronograma).
 - **Headline de 3 estados (UP/LENTO/DOWN):** hoje o ESTADO é binário (ICMP UP/DOWN); o
   "LENTO" lê-se das stats de latência/loss. Estado calculado de 3 níveis é melhoria futura.
 
@@ -118,15 +130,39 @@ Caso: `RTCUNH00` (CUNHINGA, Bié; providers MStelcom + Unitel) **DOWN há ~12 di
 - **Para agências DEGRADADAS (router UP, 1 link down) o drill DÁ a causa** — o N5 mostra qual
   interface caiu, quando, erros e de que provider. Accionável.
 
-**Alavancas para chegar à causa de agências DOWN (a implementar):**
-1. **Fechar Z.14** — recolher SNMP das interfaces dos agency routers ⇒ passamos a ter a
-   **sequência pré-queda** (ex.: UNITEL caiu, depois MST, depois ICMP = falha dupla → energia/local).
-2. **Correlação por PROVIDER via hub DMVPN** (`DC1-RTE-WAN-AG`): o hub é monitorizado centralmente
-   e **sobrevive** à queda da agência. Tem estado **por provider** (Tu101 `DMVPN_HUB_UNITEL`,
-   Tu102 ITA, Tu105 `MST_FIBRA`…). Regra: **muitas** agências do mesmo provider DOWN + túnel-hub
-   desse provider down ⇒ **outage do provider/hub** (não das agências); **uma** agência DOWN com
-   túneis-hub UP ⇒ problema **local** dessa agência. **Nota:** o hub **não** tem visibilidade
-   por-agência (sem NHRP/crypto por spoke) — isso seria uma melhoria Zabbix (Z.15).
+**Alavancas para chegar à causa de agências DOWN:**
+1. **Fechar Z.14** (a implementar) — recolher SNMP das interfaces dos agency routers ⇒ passamos a ter
+   a **sequência pré-queda** (ex.: UNITEL caiu, depois MST, depois ICMP = falha dupla → energia/local).
+2. **Correlação por PROVIDER via hub DMVPN** (`DC1-RTE-WAN-AG`) — **implementado v1, 2026-06-28**
+   (painel N4 `l4-provider-context.js`, ver §9.6 abaixo).
+
+## 9.6 — Painel "Operadoras WAN · saúde no hub DMVPN" (N4)
+
+Responde, para uma agência DOWN: **"é outage da operadora ou problema local?"**. O hub DMVPN do
+DC (`DC1-RTE-WAN-AG`, hostid 10996) é monitorizado centralmente e **sobrevive** à queda da agência.
+
+**Correcção de engenharia (validada nos dados, 2026-06-28):** a premissa inicial ("túnel-hub DMVPN
+down ⇒ outage") é **fraca** — os túneis `Tu10x` do hub são interfaces **multipoint lógicas**, quase
+sempre UP. O sinal de saúde por operadora é a **combinação**:
+- **Transporte (veredicto):** sub-interface P2P `Po2.x` Operational status = link L2/físico da
+  operadora ao DC. Mapeamento: UNITEL `Po2.914` · ITA `Po2.51` · IPWORLD `Po2.413` · MULTITEL
+  `Po2.173` · MST-Fibra `Po2.1506` · MST-VSAT `Po2.905` · MST-MW `Po2.341`.
+- **Pulso (contexto):** tráfego rx do túnel DMVPN `Tu10x` = spokes da operadora a comunicar
+  (colapso = dropout em massa). Mapeamento canónico por nº de túnel (consistente agência↔hub):
+  `Tu101 UNITEL · Tu102 ITA · Tu103 IPWORLD · Tu104 MULTITEL · Tu105 MST-Fibra · Tu106 MST-VSAT · Tu107 MST-MW`.
+
+**Regra de leitura:** operadora desta agência **saudável no hub** + agência DOWN ⇒ provável problema
+**local**; transporte **DOWN** + várias agências dessa operadora em baixo ⇒ provável **outage da operadora**.
+
+**Implementação:** painel Business Text `l4-provider-context.js` (id 211), `BPC.rpc` ao hub via Network.
+Lê da **configuração**, por isso popula mesmo com a agência DOWN. Validado com CUNHINGA (2026-06-28):
+todas as operadoras UP no hub ⇒ leitura "problema local". **Pré-requisito descoberto e corrigido:** o
+`apiUrl` do `BPC.rpc` no `utils.js` do N4 apontava ao Infra; corrigido para a **Network**
+(`ffo8sp8zllog0e`) — sem isto o hub não é encontrado.
+
+**Honesto (Z.15):** estado **por operadora**, não por-spoke. Não confirma o túnel daquela agência
+específica — isso exigiria NHRP/crypto por spoke no hub (acção Z.15). Destaque das operadoras que a
+agência usa (a partir da config das suas interfaces) fica para v2.
 
 ## Painéis (manifest)
 
@@ -144,6 +180,7 @@ Caso: `RTCUNH00` (CUNHINGA, Bié; providers MStelcom + Unitel) **DOWN há ~12 di
 | 208 | `n4-triggers.json` | zabbix-triggers-panel | Problemas Activos |
 | 3,4,5,6 | *(nativos)* | timeseries / state-timeline | Tendência + flaps |
 | 209 | `n4-n5-button.json` | text (html) | botão drill N5 |
+| 211 | `l4-provider-context.js` | dynamictext (BT) | Operadoras WAN · saúde no hub DMVPN (§9.6) |
 
 > `l4-ag-ficha.js` (Business Text) foi **substituído** pela ficha nativa em tabela
 > (mais legível/robusta) e já não é painel activo; o ficheiro mantém-se no repo.
