@@ -474,29 +474,14 @@
           "value": "$__all"
         },
         "datasource": {
-          "type": "alexanderzobnin-zabbix-datasource",
-          "uid": "ffo8sp8zllog0e"
+          "type": "mysql",
+          "uid": "cfo3cgypdrdvkf"
         },
         "includeAll": true,
         "label": "Interface",
         "name": "iface",
-        "query": {
-          "application": {
-            "filter": ""
-          },
-          "group": {
-            "filter": "$group"
-          },
-          "host": {
-            "filter": "$host"
-          },
-          "item": {
-            "filter": "/Operational status/"
-          },
-          "queryType": "item"
-        },
+        "query": "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(i.name,'Interface ',-1),': Operational status',1) AS __text, SUBSTRING_INDEX(SUBSTRING_INDEX(i.name,'(',1),'Interface ',-1) AS __value FROM items i JOIN hosts h ON i.hostid=h.hostid WHERE h.host='$host' AND i.name LIKE 'Interface %: Operational status' AND i.flags=4 AND i.status=0 ORDER BY __text",
         "refresh": 1,
-        "regex": "/Interface (.+?)\\(/",
         "sort": 1,
         "type": "query"
       }

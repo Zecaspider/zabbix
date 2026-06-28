@@ -33,8 +33,9 @@
     },
     {
       "name": "iface",
-      "type": "query (zabbix)",
-      "note": "todas as interfaces do router; regex extrai token; All=.*"
+      "type": "query (mysql)",
+      "datasource": "cfo3cgypdrdvkf",
+      "note": "todas as interfaces do router; __text=token(alias provider), __value=token; filtra i.flags=4 AND i.status=0 (exclui protótipo LLD); All=.*"
     }
   ],
   "panels": [

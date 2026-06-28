@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-27 (9.x Agências: bugs B-01/B-02/B-03/T-01/T-03 resolvidos; **N4 Agência reconstruído** — triagem NOC, dropdown por nome, ficha+contexto nativos, LINKS WAN estado+histórico, problemas nativos, drill N5; N5 pendente. Doc `fluxo-agencias-n4-n5.md` criada)
+Última actualização: 2026-06-28 (9.4 T-06: dropdown `iface` do N5 passou a **MySQL** com contexto do provider — `__text`=`Gi0/0/0.914(WAN UNITEL)`, `__value`=token; exclui protótipo LLD; popula mesmo com agência DOWN. Validado no browser (Uíge+CUNHINGA), pushed v4. Doc `fluxo-agencias-n4-n5.md` §Decisão iface MySQL)
 
 ---
 
@@ -153,7 +153,7 @@
 | 9.1 | N3 Agências — geomap + tabela de alertas (nativo) | ☑ | 2026-06-27 | UID `n3-agencias`; geomap + tabela → drill N4 (dataLink) |
 | 9.2 | **N4 Agência — reconstruído (triagem NOC)** | ☑ | 2026-06-27 | UID `n4-agencia-detalhe`. Dropdown por **nome** (MySQL); ESTADO (disponib+ficha nativa) · PORQUÊ (CPU/RAM/uptime/lat/loss) · LINKS WAN (estado colorido + histórico timeline) · PROBLEMAS (painel **nativo** Zabbix) · TENDÊNCIA · botão N5. Item filtrado por **nome**. Commits `9d98685`/`a833c5a`/`996d566` |
 | 9.3 | **N5 Agência — Interfaces** (exclusivo, `n5-agencia-interfaces`) | ☑ | 2026-06-27 | Criado. Header + back-link N4; Estado&flaps (state-timeline todas as ifaces); Tráfego rx/tx; Erros in/out; Descartes in/out. Dropdowns Agência(nome) + Interface(All+filtro). Item por **nome**. Utilização % fora (speed=0 nos tunnels → T-08). Snapshot guardado. Validado RTUIGE00 |
-| 9.4 | Refinamentos: provider/tipo da interface (T-06) · agências sem router (T-07) · utilização % quando speed populado (T-08) | ☐ | | pós-N5 |
+| 9.4 | Refinamentos: ~~provider/tipo da interface (T-06)~~ · agências sem router (T-07) · utilização % quando speed populado (T-08) | ◐ | 2026-06-28 | **T-06 ✅**: dropdown `iface` do N5 → MySQL, mostra `<token>(<provider>)` no `__text` e token limpo no `__value`; filtra `flags=4/status=0` (sem protótipo LLD); robusto no caso DOWN (lê config). Validado browser. Falta T-07 (agências sem router) e T-08 (speed=0 nos túneis) |
 | 9.5 | Navegação ponta-a-ponta N1→N5 + commit final | ☑ | 2026-06-27 | Fluxo N1→N2→N3→N4→N5 validado no browser; commits locais (repo sem remote → push git pendente) |
 | 9.6 | **Correlação por provider (hub DMVPN) para causa de agências DOWN** (T-09) | ☐ | | Validação 2026-06-28 (caso CUNHINGA): para agências totalmente DOWN o drill diz "router inalcançável" mas não a causa (SNMP cai com o router + Z.14). Usar estado por-provider do hub `DC1-RTE-WAN-AG` (Tu101 UNITEL, Tu105 MST…) para distinguir outage-de-provider de problema-local. Detalhe em `fluxo-agencias-n4-n5.md` §Validação. Depende parcialmente de Z.14 |
 

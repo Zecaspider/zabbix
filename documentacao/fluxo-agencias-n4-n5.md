@@ -41,8 +41,14 @@ Diagnóstico profundo das interfaces do router seleccionado (exclusivo das agên
 Responde à pergunta *"o N4 disse que o link está mau — porquê?"*. Tudo nativo.
 
 - **Variáveis:** `group` (textbox oculto), `host` (dropdown por nome, MySQL — vem do N4),
-  `iface` (dropdown query Zabbix sobre `Operational status`, regex `/Interface (.+?)\(/`
-  extrai o token; `All`=`.*`; mostra **todas** as interfaces do router).
+  `iface` (dropdown **MySQL**, datasource `cfo3cgypdrdvkf` — coerente com o dropdown `host`).
+  `All`=`.*`; mostra **todas** as interfaces do router. Ver §Decisão iface MySQL abaixo.
+  - `__text` (mostrado) = descritor completo `<token>(<alias>)`, ex. `Gi0/0/0.914(WAN UNITEL)`
+    — traz o **provider/serviço** entre parênteses (alias SNMP da interface).
+  - `__value` (enviado aos painéis) = só o token técnico, ex. `Gi0/0/0.914` — sem parênteses,
+    para não introduzir sintaxe regex no filtro `/Interface ${iface}.*: …/` dos painéis.
+  - SQL parseia o nome do item (`SUBSTRING_INDEX`) e filtra `i.flags=4 AND i.status=0`
+    (interfaces reais descobertas; exclui o **protótipo LLD** `{#IFNAME}` e items desactivados).
 - **Painéis:** back-link "← Voltar ao N4" · **Estado & flaps** (state-timeline UP/DOWN por
   interface) · **Tráfego recebido/enviado** (por interface) · **Erros** (in/out) ·
   **Descartes** (in/out). Filtro de item `/Interface ${iface}.*: <métrica>/`.
@@ -67,6 +73,20 @@ Responde à pergunta *"o N4 disse que o link está mau — porquê?"*. Tudo nati
   **nome** visível do item, não pela chave. Items de agência confirmados: CPU
   `#7: CPU utilization`, Memória `Processor: Free memory`, Uptime `Uptime (network)`,
   ICMP `ICMP ping`/`ICMP loss`/`ICMP response time`, interfaces `Interface …: …`.
+- **Decisão iface MySQL (2026-06-28, validado no browser):** o dropdown `iface` passou de
+  *query Zabbix + regex* para **query MySQL** com `__text`/`__value` explícitos. Porquê (mais
+  robusto e coerente):
+  1. **Mostra o provider** — a versão antiga (`regex /Interface (.+?)\(/`) cortava no `(` e
+     **deitava fora** o alias; o NOC/engenheiro não via de que operadora era o link. Agora
+     `__text` mostra `Gi0/0/0.914(WAN UNITEL)`.
+  2. **Sem dependência de grupos nomeados aninhados** do Grafana (não documentados) — o split
+     display↔valor é feito em SQL (`SUBSTRING_INDEX`), de primeira classe e testável.
+  3. **Coerente com o dropdown `host`**, que já era MySQL no mesmo datasource.
+  4. **Exclui o protótipo LLD** `{#IFNAME}({#IFALIAS})` via `i.flags=4 AND i.status=0` (a API
+     Zabbix filtrava-o de graça; o SQL crú apanhava-o — bug evitado).
+  5. **Robustez no caso DOWN:** lê da **configuração**, por isso popula mesmo quando a agência
+     está totalmente DOWN com `lastclock=0` (validado em CUNHINGA). A variável Zabbix dependia
+     de dados recentes.
 
 ## Riscos conhecidos (analisar depois do N5)
 
