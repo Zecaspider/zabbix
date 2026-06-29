@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-29 (§9.6 v2 ☑ — correlação provider: destaque das operadoras que a agência usa (derivado de Tu10x na config, sobrevive ao DOWN). §9.4 T-08 ☑ — `l5-utilizacao.js` N5. §9.10 + §9.11 ☑ sessão anterior.)
+Última actualização: 2026-06-29 (§9.6 v2 ☑ · §9.4 T-08 ☑ · §9.10 + §9.11 ☑. Fase 4 Edifícios: §4.10 ☑ N4 Edificio ☑ · N5 Edificio ☑ · N6 Switch ☑ — fluxo drill-down completo N3→N4→N5 + N4→N6 implementado e commitado.)
 
 ---
 
@@ -115,7 +115,8 @@
 | 4.7b | N4 DC Switch — ficha técnica por switch | ☑ | 2026-06-19 | UID `7baea796` · back-link "← N3 DC Core" pushed (estava ausente do Grafana) · snapshot gravado |
 | 4.8 | Navegação ponta-a-ponta + layout final + conformance test | ☑ | 2026-06-19 | Teste de conformidade executado em todos os 7 dashboards (`documentacao/teste-conformidade-fase4-rede.md`) · 23 defeitos identificados e aplicados (F-01→F-23, excepto F-11 adiado) · back-links N3→N2 e N4→N3 funcionais · drills N2→N3→N4 operacionais |
 | 4.9 | Snapshots e registos finais | ☑ | 2026-06-19 | `dashboard-completo.json` gravado para os 7 dashboards (n2, n3-dc, n3-edificios, n3-wan, n3-wan-carriers, n4-wan-router, n4-dc-switch) |
-| 4.10 | Drill N4 Edifícios (g28/g29) | ⏸ | | Bloqueado: N4 Edifícios não existe. Implementar quando o dashboard for criado. |
+| 4.10 | Drill N4 Edifícios (g28/g29) | ☑ | 2026-06-29 | N4 Edifício (`n4-edificio-detalhe`) criado: ficha MySQL, ICMP/RTT/Loss, CPU/Mem/Uptime, provider WAN, state-timeline 46 switches, botão N5. N5 Edificio (`n5-edificio-interfaces`) criado: clonado de N5 Agências, variável host por HG_EDIFICIOS_ROUTERS. N6 Switch (`n6-edificio-switch`) criado: ficha MySQL (modelo/piso/zona/IOS), stats SNMP, hw health (Temp Inlet+HotSpot, Fans, PSU), uplinks erros+discards, state-timeline 65 portas access. Commit `1fc9be8`. |
+| 4.11 | N4/N5/N6 Edificio — hw health switches (Temp/Fan/PSU) | ☑ | 2026-06-29 | Auditado: Temp 3 sensores (Inlet=25C/Outlet=32C/HotSpot=41C), Fans 2x status, PSU 1x status, PoE nao recolhido. Todos integrados em N6. Commit `1fc9be8`. |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |

@@ -274,3 +274,80 @@ todas as operadoras como na v1 com nota "operadoras não identificadas".
 
 > `l4-ag-ficha.js` (Business Text) foi **substituído** pela ficha nativa em tabela
 > (mais legível/robusta) e já não é painel activo; o ficheiro mantém-se no repo.
+
+---
+
+# Fluxo de drill-down dos Edifícios (N3 → N6)
+
+> Implementado 2026-06-29. Segue o mesmo padrão das Agências mas para o domínio
+> **Edifícios** (switches de acesso, routers de edifício).
+
+## Percurso
+
+| Nível | Dashboard (UID) | Entrada | Conteúdo |
+|---|---|---|---|
+| N3 | `471f2208-d032-46d4-8d35-6fdfe770c967` | clica no mapa/tabela de edifícios | lista de edifícios + estado ICMP |
+| **N4** | `n4-edificio-detalhe` | dropdown por nome do edifício (router) | detalhe + diagnóstico |
+| **N5** | `n5-edificio-interfaces` | botão do N4 | interfaces do router do edifício |
+| **N6** | `n6-edificio-switch` | state-timeline N4 (dataLink por switch) | detalhe do switch (ficha + SNMP + hw) |
+
+## N4 — estrutura (n4-edificio-detalhe)
+
+Grupo: `HG_EDIFICIOS_ROUTERS`. Variável `host` dropdown MySQL Network (tag `unidade_negocio`).
+
+1. **ESTADO** — ICMP + Ficha MySQL (`n4-ficha-table-ed.json`: unidade_negocio, modelo, IOS, fabricante, funcao).
+2. **PORQUÊ** — Latência · Packet Loss · Uptime · CPU · Memória.
+3. **PROVIDER WAN** — painel `l4-provider-context-ed.js` (contexto operadoras, mesmo padrão do N4 Agências).
+4. **Problemas Activos** — painel nativo Zabbix.
+5. **Botão N5** — `l4-n5-button-ed.js` (id=104): verifica ICMP+SNMP → 3 estados (ok/down/no-snmp).
+6. **Switches — Estado** — state-timeline nativo: grupo `HG_EDIFICIOS_SWITCHES`, ICMP ping, 46 switches, full-width, dataLink para N6.
+
+## N5 — Interfaces do Edifício (n5-edificio-interfaces)
+
+Clonado de `n5-agencia-interfaces`. Adaptações:
+- Grupo: `HG_EDIFICIOS_ROUTERS`
+- Variável `host`: MySQL Network, filtra por `g.name='HG_EDIFICIOS_ROUTERS'`
+- `nocLabel`: `EDIFÍCIOS · NÍVEL 5 · INTERFACES`
+- `backLink`: `← N4 · Edifício` → `/d/n4-edificio-detalhe`
+
+## N6 — Switch Detalhe (n6-edificio-switch)
+
+Diagnóstico profundo de um switch individual. Variável `switch` = host técnico (passado via URL).
+
+### Layout
+
+| Zona | Painel | Dados |
+|---|---|---|
+| Header | utils BT | nocLabel + backLink → N4 |
+| ICMP + Ficha | stat ICMP · table MySQL | modelo, piso, zona, IOS, funcao, fabricante |
+| Sistema | RTT · Loss · CPU · Mem% · Uptime | SNMP nativo |
+| Hardware | Temp Inlet + HotSpot · Fans · PSU | SNMP (ciscoEnvMon) |
+| Uplinks | state-timeline + triggers | estado operacional (UP/DOWN) |
+| Erros | timeseries erros+discards | InErrors · OutErrors · InDiscards · OutDiscards |
+| Tráfego | timeseries rx + tx | Bits received/sent (bps) |
+| Portas access | state-timeline 65 portas | `/.*ACCESS.*Operational status/` — UP=verde/DOWN=vermelho por piso |
+| Tabela | table uplinks | tráfego actual (reduce last) |
+
+### Items SNMP confirmados (auditados em `172.27.27.29`, HG_EDIFICIOS_SWITCHES)
+
+| Métrica | Item name (filtro) | Valor exemplo |
+|---|---|---|
+| CPU | `CPU utilization` | 7% |
+| Memória | `/^Processor: Memory utilization/` | 21% |
+| Uptime | `Uptime (network)` | ~327d |
+| Temp Inlet | `Switch 1 - Inlet Temp Sensor: Temperature` | 25°C |
+| Temp HotSpot | `Switch 1 - HotSpot Temp Sensor: Temperature` | 41°C |
+| Fans | `/Switch.*Fan status/` | 1=OK (2 fans) |
+| PSU | `Switch 1 - Power Supply A: Power supply status` | 1=OK |
+| Uplink Bits rx | `/.*Uplink.*Bits received/` | — |
+| Uplink Bits tx | `/.*Uplink.*Bits sent/` | — |
+| Uplink status | `/.*Uplink.*Operational status/` | — |
+| Uplink errors in | `/.*Uplink.*Inbound packets with error/` | 0 |
+| Uplink errors out | `/.*Uplink.*Outbound packets with error/` | 0 |
+| Uplink discards in | `/.*Uplink.*Inbound packets discard/` | 0 |
+| Uplink discards out | `/.*Uplink.*Outbound packets discard/` | 0 |
+| Portas access status | `/.*ACCESS.*Operational status/` | 47 UP / 18 DOWN de 65 |
+
+PoE: **não recolhido** (template não inclui itens PoE para C9200L-48P).
+
+Mappings status SNMP (ciscoEnvMon): 1=OK/verde · 2=WARN/amarelo · 3=CRIT/vermelho · 4=DOWN/vermelho.
