@@ -141,6 +141,25 @@ Artefactos produzidos:
 - `BPC/audit_gps_g24.csv` — todos os 221 hosts g24 com status GPS antes do push
 - `BPC/hosts_sem_gps_preenchido.csv` — 49 hosts com coordenadas calculadas (fonte por linha)
 
+### Auditoria de qualidade inventário/tags (2026-06-29)
+
+Após o push do Gap A, auditou-se a qualidade de **todos os campos** (GPS vs provincia, tags vs Excel,
+`site_state` vs Excel) para os 221 hosts g24. Resultado: **193/221 sem divergências**. 24 corrigidos
+via API em lote único:
+
+| Categoria | Hosts | Acção |
+|---|---|---|
+| GPS errado | RTMENONG00 (Menongue) | lat=-16.66 → -14.657 (erro 223km; digitação) |
+| Provincia "Luanda" → "Icolo e Bengo" | RTCABL00, RTMUXI00, RTSIZA00, RTZANGO00, RTSIACUACO00, RTCATE00 | reorganização admin. 2011; Excel=fonte de verdade |
+| Provincia "Moxico" → "Moxico Leste" | RTLUAU00, RTCAZB00 | alinhamento com Excel |
+| Tags ausentes | RTCAMB00, RTLUCA00, RTFAASU00, 172.22.1.202 | unidade_negocio + tipo_un populados do Excel |
+
+Divergências residuais aceites:
+- **Cubango/Cuando Cubango** (3 hosts): Excel usa nome truncado; tags Zabbix com nome oficial. Aceite sem correcção.
+- **GPS bbox falso-positivos** (11 hosts: Ganda, Balombo, Chitembo, Lunda Norte/Sul): bounding boxes de validação são aproximados; coordenadas geograficamente correctas.
+
+Artefacto: `BPC/inventory_divergencias.csv` (24 linhas, campos: host, ip, nome_xl, prov_xl, muni_xl, lat, lon, tag_prov, tag_un, site_state, issues).
+
 ## Riscos / gaps conhecidos (lado Zabbix) — auditados 2026-06-28
 
 - **Agências/postos sem router próprio (ponto-a-ponto) — T-07 / cron 9.7:** muitas agências,
