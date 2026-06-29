@@ -88,6 +88,59 @@ Responde à pergunta *"o N4 disse que o link está mau — porquê?"*. Tudo nati
      está totalmente DOWN com `lastclock=0` (validado em CUNHINGA). A variável Zabbix dependia
      de dados recentes.
 
+## Auditoria do universo BPC — gap geomap (2026-06-29)
+
+### Decomposição do gap 172 → realidade
+
+```
+251  Lista Geral BPC (Excel oficial, todas as tipologias)
+ -25  não estão nos "Dados das Agências" (sem IP de gestão atribuído)
+─────
+226  têm IP de gestão (Dados das Agências / mapa_agencias_zabbix.csv)
+  -9  têm IP mas SEM router no Zabbix (candidatos/onboarding)
+─────
+217  estão no Zabbix com router (grupo HG_AGENCIAS_ROUTERS g24)
+ -49  estão no Zabbix mas SEM coordenadas GPS no inventário Zabbix
+─────
+172  apareciam no geomap antes desta sessão
+```
+
+Fora desta cadeia: **45 PAs** (Postos de Atendimento sem código e sem IP — balcões físicos
+dentro de outras instituições: INSS, FAA, MINDEF, etc.) e **13 BIs/BMIs** (dependentes de
+agência-pai, sem router próprio — mapeados em `BPC/mapa_balcoes_dependentes.csv`).
+
+### Resolução do Gap A — GPS (2026-06-29)
+
+Auditoria via API Zabbix Network: 49 hosts sem `location_lat`/`location_lon`.
+Cruzamento com Excels (Dados das Agências, Lista Geral) e CSV `mapa_agencias_zabbix.csv`.
+
+| Resultado | Contagem |
+|---|---|
+| Coordenadas populadas (confirmados) | 45 — por província/município dos Excels |
+| RT_UBM30 (Km 30, Viana/Luanda) | 1 — identificado pelas tags Zabbix |
+| **Total populados** | **46** |
+| IPs anónimos excluídos | 3 — `172.22.1.38` / `172.22.1.203` / `172.22.1.240` |
+
+**Geomap após push: 172 → 218 unidades.**
+
+#### Os 3 IPs anónimos — diagnóstico
+
+| IP | hostid | DOWN desde | Situação |
+|---|---|---|---|
+| 172.22.1.38 | 11000 | 2026-04-25 | `flags=0` (manual), zero tags/inventory, ausente dos Excels, ICMP loss=100% |
+| 172.22.1.203 | 11009 | 2026-06-09 | Idem |
+| 172.22.1.240 | 11010 | 2026-06-09 | Idem |
+
+Perfil: criados manualmente (não por auto-discovery), template `Cisco IOS by SNMP` aplicado
+mas nunca responderam a ICMP. Sem tags, sem inventory, não existem em nenhum Excel BPC.
+Hipótese mais provável: pré-criados para routers ainda não instalados ou routers descomissionados
+cujo host ficou no Zabbix. **Acção:** equipa de rede confirma identidade → dar GPS + nome;
+ou remover de `HG_AGENCIAS_ROUTERS` se obsoletos.
+
+Artefactos produzidos:
+- `BPC/audit_gps_g24.csv` — todos os 221 hosts g24 com status GPS antes do push
+- `BPC/hosts_sem_gps_preenchido.csv` — 49 hosts com coordenadas calculadas (fonte por linha)
+
 ## Riscos / gaps conhecidos (lado Zabbix) — auditados 2026-06-28
 
 - **Agências/postos sem router próprio (ponto-a-ponto) — T-07 / cron 9.7:** muitas agências,
