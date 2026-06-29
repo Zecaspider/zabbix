@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-29 (§9.6 v2 ☑ · §9.4 T-08 ☑ · §9.10 + §9.11 ☑. Fase 4 Edifícios: §4.10 ☑ N4 Edificio ☑ · N5 Edificio ☑ · N6 Switch ☑ — fluxo drill-down completo N3→N4→N5 + N4→N6 implementado e commitado.)
+Última actualização: 2026-06-29 (§9.6 v2 ☑ · §9.4 T-08 ☑ · §9.10 + §9.11 ☑. Fase 4 Edifícios: §4.10 ☑ N4 Edificio ☑ · N5 Edificio ☑ · N6 Switch ☑ — fluxo drill-down completo N3→N4→N5 + N4→N6 implementado e commitado. §4.12 ☑ tabela de switches N4 — dinâmica, condicional, 14px, bordas visíveis.)
 
 ---
 
@@ -117,6 +117,7 @@
 | 4.9 | Snapshots e registos finais | ☑ | 2026-06-19 | `dashboard-completo.json` gravado para os 7 dashboards (n2, n3-dc, n3-edificios, n3-wan, n3-wan-carriers, n4-wan-router, n4-dc-switch) |
 | 4.10 | Drill N4 Edifícios (g28/g29) | ☑ | 2026-06-29 | N4 Edifício (`n4-edificio-detalhe`) criado: ficha MySQL, ICMP/RTT/Loss, CPU/Mem/Uptime, provider WAN, state-timeline 46 switches, botão N5. N5 Edificio (`n5-edificio-interfaces`) criado: clonado de N5 Agências, variável host por HG_EDIFICIOS_ROUTERS. N6 Switch (`n6-edificio-switch`) criado: ficha MySQL (modelo/piso/zona/IOS), stats SNMP, hw health (Temp Inlet+HotSpot, Fans, PSU), uplinks erros+discards, state-timeline 65 portas access. Commit `1fc9be8`. |
 | 4.11 | N4/N5/N6 Edificio — hw health switches (Temp/Fan/PSU) | ☑ | 2026-06-29 | Auditado: Temp 3 sensores (Inlet=25C/Outlet=32C/HotSpot=41C), Fans 2x status, PSU 1x status, PoE nao recolhido. Todos integrados em N6. Commit `1fc9be8`. |
+| 4.12 | N4 Edifício — tabela de switches condicional (BT) | ☑ | 2026-06-29 | `l4-ed-switches.js` (id=103) redesenhado: dinâmico via `router.edificio = switch.local` (sem hardcode Sede); condicional (painel invisível se 0 switches); tabela 14px com bordas visíveis; colunas Andar·Zona·Switch(link N6)·Estado(pill UP/DOWN)·RTT; ordenação numérica por andar. Pushed OK. |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |
