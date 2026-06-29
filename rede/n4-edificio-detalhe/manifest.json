@@ -1,0 +1,124 @@
+{
+  "dashboardUid": "n4-edificio-detalhe",
+  "dashboardTitle": "N4 · Rede · Edifício — Detalhe",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "notes": "Dashboard por edifício (router=edifício). Variáveis passadas pelo N3 via URL.",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_ROUTERS"
+    },
+    "host": {
+      "filter": "DC1-RTE-WAN-INT"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "notes_anchor": "Âncora no core DC (sempre UP) — header não desaparece mesmo se o edifício estiver DOWN.",
+  "drilldownFrom": "n3-edificios",
+  "variables": [
+    {
+      "name": "group",
+      "label": "Host Group",
+      "type": "textbox",
+      "default": "HG_EDIFICIOS_ROUTERS",
+      "hide": true
+    },
+    {
+      "name": "host",
+      "label": "Edifício",
+      "type": "query (mysql)",
+      "datasource": "cfo3cgypdrdvkf",
+      "note": "Dropdown por unidade_negocio (nome do edifício) → valor=hostname. GROUP 28."
+    }
+  ],
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l4-ed-ficha.js",
+      "id": 101,
+      "role": "content",
+      "title": "Ficha do Edifício",
+      "content": "<div id=\"bpc-n4-ed-ficha\"></div>"
+    },
+    {
+      "file": "n4-stat-icmp.json",
+      "id": 200,
+      "role": "content",
+      "title": "Disponibilidade"
+    },
+    {
+      "file": "n4-stat-latency.json",
+      "id": 201,
+      "role": "content",
+      "title": "Latência ICMP"
+    },
+    {
+      "file": "n4-stat-loss.json",
+      "id": 202,
+      "role": "content",
+      "title": "Packet Loss"
+    },
+    {
+      "file": "n4-stat-cpu.json",
+      "id": 203,
+      "role": "content",
+      "title": "CPU"
+    },
+    {
+      "file": "n4-stat-mem.json",
+      "id": 204,
+      "role": "content",
+      "title": "Memória livre"
+    },
+    {
+      "file": "n4-stat-uptime.json",
+      "id": 205,
+      "role": "content",
+      "title": "Uptime"
+    },
+    {
+      "file": "n4-table-ifaces.json",
+      "id": 206,
+      "role": "content",
+      "title": "Links WAN — Estado"
+    },
+    {
+      "file": "n4-triggers.json",
+      "id": 207,
+      "role": "content",
+      "title": "Problemas Activos"
+    },
+    {
+      "file": "n4-timeline-ifaces.json",
+      "id": 208,
+      "role": "content",
+      "title": "Histórico (flaps)"
+    },
+    {
+      "file": "l4-provider-context-ed.js",
+      "id": 102,
+      "role": "content",
+      "title": "Operadoras WAN",
+      "content": "<div id=\"bpc-provider-ctx-ed\"></div>"
+    },
+    {
+      "file": "l4-ed-switches.js",
+      "id": 103,
+      "role": "content",
+      "title": "Switches (Sede)",
+      "content": "<div id=\"bpc-ed-switches\"></div>"
+    }
+  ]
+}
