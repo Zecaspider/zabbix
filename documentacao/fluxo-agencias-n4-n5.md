@@ -233,8 +233,26 @@ todas as operadoras UP no hub ⇒ leitura "problema local". **Pré-requisito des
 (`ffo8sp8zllog0e`) — sem isto o hub não é encontrado.
 
 **Honesto (Z.15):** estado **por operadora**, não por-spoke. Não confirma o túnel daquela agência
-específica — isso exigiria NHRP/crypto por spoke no hub (acção Z.15). Destaque das operadoras que a
-agência usa (a partir da config das suas interfaces) fica para v2.
+específica — isso exigiria NHRP/crypto por spoke no hub (acção Z.15).
+
+### v2 — Destaque por agência (2026-06-29)
+
+**Problema da v1:** mostrava as 7 operadoras com o mesmo peso, independentemente das que a agência usa.
+
+**Solução:** ao carregar, ler os itens `Interface Tu10x` da **config** do router da agência (filtro
+`status=0` — sobrevive ao DOWN, itens existem com `lastclock=0`). Extrair os números de túnel
+presentes. Cruzar com o catálogo `CFG.providers` pelo campo `.tu`.
+
+**Render diferenciado:**
+- **Operadoras que a agência usa** → card completo (Transporte + Pulso + cor de saúde)
+- **Outras operadoras** → pills compactos muted (nome + UP/DOWN), sem detalhe
+
+**Fallback:** se nenhum item Tu10x for encontrado (router sem SNMP nunca recolhido), mostrar
+todas as operadoras como na v1 com nota "operadoras não identificadas".
+
+**Validação (API, 2026-06-29):**
+- CUNHINGA (DOWN, `lastclock=0`): Tu101+Tu107 na config → UNITEL+MST·MW em destaque, ambas UP → leitura "problema local"
+- RTUIGE00 (UP): Tu101 → UNITEL em destaque; 6 outras em pills
 
 ## Painéis (manifest)
 
