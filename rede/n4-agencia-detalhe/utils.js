@@ -615,6 +615,37 @@ const CFG_THRESHOLDS = {
     window._bpc_clock_interval = setInterval(renderClock, 1000);
 
     if (window.BPC?.log) BPC.log('Header renderizado (' + CFG_META.version + ')');
+
+    // Resolve o nome da agência (unidade_negocio) via Zabbix e actualiza header + título
+    (function resolveAgencyLabel() {
+      var hostParam = new URLSearchParams(window.location.search).get('var-host');
+      if (!hostParam) return;
+      var proxy = CFG_META.apiUrl;
+      fetch(proxy, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          jsonrpc: '2.0', id: 1,
+          method: 'host.get',
+          params: { filter: { host: [hostParam] }, output: ['host'], selectTags: 'extend', limit: 1 }
+        })
+      })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        var hosts = (d.result || []);
+        if (!hosts.length) return;
+        var tags = hosts[0].tags || [];
+        var agName = '';
+        for (var i = 0; i < tags.length; i++) {
+          if (tags[i].tag === 'unidade_negocio') { agName = tags[i].value; break; }
+        }
+        if (!agName) agName = hostParam;
+        var em = el.querySelector('.bpc-noc-title em');
+        if (em) em.textContent = CFG_HEADER.nocLabel + ' · ' + agName;
+        document.title = 'Agências · N4 · ' + agName + ' — BPC NOC';
+      })
+      .catch(function () {});
+    })();
   }
 
 

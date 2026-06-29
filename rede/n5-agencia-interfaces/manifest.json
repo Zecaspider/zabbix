@@ -45,6 +45,13 @@
       "role": "utils",
       "title": "Header",
       "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l5-utilizacao.js",
+      "id": 101,
+      "role": "content",
+      "title": "Utilização WAN",
+      "content": "<div id=\"bpc-l5-uti\" style=\"height:100%\"></div>"
     }
   ],
   "nativePanels": [
