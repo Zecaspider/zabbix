@@ -1,0 +1,36 @@
+{
+  "type": "stat",
+  "title": "Uptime",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "fieldConfig": {
+    "defaults": {
+      "color": { "mode": "thresholds" },
+      "unit": "dtdhms",
+      "thresholds": { "mode": "absolute", "steps": [
+        { "color": "red",    "value": null },
+        { "color": "yellow", "value": 3600 },
+        { "color": "green",  "value": 86400 }
+      ]}
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+    "orientation": "auto", "textMode": "value", "colorMode": "background",
+    "graphMode": "none", "justifyMode": "auto"
+  },
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "${group}" },
+      "host": { "filter": "${switch}" },
+      "item": { "filter": "Uptime (network)" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    }
+  ]
+}

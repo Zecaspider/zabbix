@@ -63,9 +63,9 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC NOC',
-  nocLabel: 'REDE - EDIFÍCIOS - NÍVEL 3',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
+  nocLabel: 'EDIFÍCIOS · NÍVEL 5 · INTERFACES',   // fallback estático; substituído dinamicamente em renderHeader
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
-  backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
+  backLink: { url: '/d/n4-edificio-detalhe', label: '&#8592; N4 · Edifício' },
 };
 
 
@@ -120,8 +120,8 @@ const CFG_SIZES = {
     borderTopW: '2px',
   },
   title: {
-    size: '17px',
-    letterSpacing: '0.10em',
+    size: '15px',
+    letterSpacing: '0.06em',
   },
   subtitle: {
     size: '8px',
@@ -563,9 +563,23 @@ const CFG_THRESHOLDS = {
   //    ├── .bpc-noc-center  (título + subtítulo)
   //    └── .bpc-noc-right   (relógio + data)
 
+  function buildNocLabel() {
+    try {
+      const tSrv = context.grafana && context.grafana.templateSrv;
+      if (!tSrv) return CFG_HEADER.nocLabel;
+      const hv = tSrv.getVariables().find(function(v) { return v.name === 'host'; });
+      const router = (hv && hv.current && hv.current.value) || '';
+      const agName = (hv && hv.current && hv.current.text) || '';
+      if (!router || router === 'All' || router === '$__all') return 'AGÊNCIAS · NÍVEL 5 · INTERFACES';
+      return 'AGÊNCIAS · NÍVEL 5 · INTERFACES · ' + router
+        + (agName && agName !== router ? ' · ' + agName : '');
+    } catch(e) { return CFG_HEADER.nocLabel; }
+  }
+
   function renderHeader(el) {
     const C = CFG_HEADER;
     const Z = CFG_SIZES;
+    C.nocLabel = buildNocLabel();
 
     // Logótipo: tenta carregar a imagem; se falhar, mostra fallback textual
     const logoHTML = C.logoUrl
@@ -611,6 +625,14 @@ const CFG_THRESHOLDS = {
     if (window._bpc_clock_interval) clearInterval(window._bpc_clock_interval);
     renderClock();
     window._bpc_clock_interval = setInterval(renderClock, 1000);
+
+    // Actualiza nocLabel quando variável $host muda (utils não re-renderiza em mudança de var)
+    if (window._bpc_noclabel_interval) clearInterval(window._bpc_noclabel_interval);
+    window._bpc_noclabel_interval = setInterval(function() {
+      const label = buildNocLabel();
+      const emEl = document.querySelector('#bpc-header-root .bpc-noc-title em');
+      if (emEl && emEl.textContent !== label) emEl.textContent = label;
+    }, 1000);
 
     if (window.BPC?.log) BPC.log('Header renderizado (' + CFG_META.version + ')');
   }

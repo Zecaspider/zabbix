@@ -129,7 +129,7 @@ def push_panels(domain_level, only_file=None):
             print(f'  SKIP {fname} - ficheiro nao encontrado')
             continue
 
-        code = js_path.read_text(encoding='utf-8')
+        code = js_path.read_text(encoding='utf-8-sig')
         panel_id = entry.get('id')
         role = entry.get('role', 'content')
 

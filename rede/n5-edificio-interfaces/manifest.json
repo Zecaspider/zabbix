@@ -1,0 +1,23 @@
+{
+  "dashboardUid": "n5-edificio-interfaces",
+  "dashboardTitle": "N5 · Rede · Edifício — Interfaces",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "drilldownFrom": "n4-edificio-detalhe",
+  "anchor": {
+    "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+    "group": { "filter": "HG_DC_ROUTERS" },
+    "host": { "filter": "DC1-RTE-WAN-INT" },
+    "item": { "filter": "ICMP ping" }
+  },
+  "variables": [
+    { "name": "group", "type": "textbox", "default": "HG_EDIFICIOS_ROUTERS", "hide": true },
+    { "name": "host", "type": "query (mysql)", "note": "dropdown por unidade_negocio — edificios" },
+    { "name": "iface", "type": "query (mysql)", "datasource": "cfo3cgypdrdvkf",
+      "note": "interfaces do router seleccionado; All=.* exclui protótipos LLD" }
+  ],
+  "panels": [
+    { "file": "utils.js", "id": 1, "role": "utils", "title": "Header", "content": "<div id=\"bpc-header-root\"></div>" },
+    { "file": "l5-utilizacao.js", "id": 101, "role": "content", "title": "Utilização WAN %", "content": "<div id=\"bpc-l5-uti\" style=\"height:100%\"></div>" }
+  ]
+}

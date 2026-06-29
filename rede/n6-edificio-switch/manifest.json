@@ -1,0 +1,50 @@
+{
+  "dashboardUid": "n6-edificio-switch",
+  "dashboardTitle": "N6 · Rede · Edifício · Switch — Detalhe",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "drilldownFrom": "n4-edificio-detalhe (state-timeline → link por switch)",
+  "anchor": {
+    "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+    "group": { "filter": "HG_DC_ROUTERS" },
+    "host": { "filter": "DC1-RTE-WAN-INT" },
+    "item": { "filter": "ICMP ping" }
+  },
+  "variables": [
+    { "name": "group", "type": "textbox", "default": "HG_EDIFICIOS_SWITCHES", "hide": true },
+    { "name": "switch", "type": "textbox", "label": "Switch", "hide": false,
+      "note": "host tecnico do switch. Passado via URL ?var-switch=..." }
+  ],
+  "layout": [
+    "y=0  h=3:  Header (utils BT)",
+    "y=3  h=5:  ICMP(w=4) | Ficha MySQL(w=20)",
+    "y=8  h=4:  RTT | Loss | CPU | Mem% | Uptime",
+    "y=12 h=3:  Temp Inlet | Temp HotSpot | Fans | PSU",
+    "y=15 h=9:  Uplinks estado(w=14) | Triggers(w=10)",
+    "y=24 h=7:  Erros+Discards uplinks timeseries (w=24)",
+    "y=31 h=7:  Traffic rx(w=12) | tx(w=12)",
+    "y=38 h=15: Portas access state-timeline (w=24)",
+    "y=53 h=8:  Uplinks tabela trafego (w=24)"
+  ],
+  "panels": [
+    { "file": "utils.js",                       "id": 100, "role": "utils",   "title": "",                                  "content": "<div id=\"bpc-header-root\"></div>" },
+    { "file": "n6-stat-icmp.json",               "id": 201, "role": "content", "title": "Disponibilidade ICMP" },
+    { "file": "n6-ficha-table-sw.json",          "id": 101, "role": "content", "title": "Ficha Técnica do Switch" },
+    { "file": "n6-stat-rtt.json",                "id": 202, "role": "content", "title": "Latência RTT" },
+    { "file": "n6-stat-loss.json",               "id": 203, "role": "content", "title": "Packet Loss" },
+    { "file": "n6-stat-cpu.json",                "id": 209, "role": "content", "title": "CPU" },
+    { "file": "n6-stat-mem.json",                "id": 210, "role": "content", "title": "Memória %" },
+    { "file": "n6-stat-uptime.json",             "id": 211, "role": "content", "title": "Uptime" },
+    { "file": "n6-stat-temp-inlet.json",         "id": 212, "role": "content", "title": "Temp Inlet (C)",    "note": "gerado inline em n6_build.py" },
+    { "file": "n6-stat-temp-hotspot.json",       "id": 213, "role": "content", "title": "Temp HotSpot (C)", "note": "gerado inline" },
+    { "file": "n6-stat-fans.json",               "id": 214, "role": "content", "title": "Fans",              "note": "gerado inline" },
+    { "file": "n6-stat-psu.json",                "id": 215, "role": "content", "title": "PSU",               "note": "gerado inline" },
+    { "file": "n6-state-timeline-uplinks.json",  "id": 206, "role": "content", "title": "Uplinks — Estado Operacional" },
+    { "file": "n6-triggers.json",                "id": 204, "role": "content", "title": "Problemas Activos" },
+    { "file": "n6-erros-discards-uplinks.json",  "id": 216, "role": "content", "title": "Uplinks — Erros e Descartes (pps)", "note": "gerado inline" },
+    { "file": "n6-timeseries-uplinks-rx.json",   "id": 207, "role": "content", "title": "Uplinks — Tráfego Recebido (bps)" },
+    { "file": "n6-timeseries-uplinks-tx.json",   "id": 208, "role": "content", "title": "Uplinks — Tráfego Enviado (bps)" },
+    { "file": "n6-state-timeline-ports.json",    "id": 217, "role": "content", "title": "Portas Access — Estado Operacional", "note": "gerado inline" },
+    { "file": "n6-table-uplinks.json",           "id": 205, "role": "content", "title": "Uplinks — Tráfego Actual" }
+  ]
+}
