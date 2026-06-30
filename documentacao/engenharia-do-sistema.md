@@ -242,7 +242,7 @@ Exemplos: `02-n3-rede-agencias/`, `09-n4-rede-edificio/`, `11-n6-rede-edificio-s
 3. **O número de ordem dentro do domínio** (`01-`, `02-`, …) reflecte a sequência
    de drill-down natural dentro desse domínio (N2 → N3 → N4 → N5 → N6), agrupado
    por sub-fluxo (Agências, DC, Edifícios, WAN, etc.).
-4. **O UID não tem número** — usa só `dominio.nivel.funcao` (ver §4.0). O número
+4. **O UID não tem número** — usa só `dominio-nivel-funcao` (ver §4.0). O número
    é separado do UID para que reordenações futuras de domínios não invalide links.
 5. Subpastas vazias (ainda por construir) levam um `.gitkeep`.
 
@@ -843,8 +843,8 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 | ID | Nível | Descrição | Prioridade |
 |---|---|---|---|
 | T-02 | N1 | Painel utils com título "Header + Shared" visível (no N4 já corrigido; rever N1/outros) | Média |
-| T-04 | Todos | **Migração de UIDs canónicos**: dashboards ainda com UUID/slug em vez de `dominio.nivel.funcao`. Mapa completo para domínio Rede em §4.0. Requer sessão dedicada: substituição global nos `.js` + re-push + validação de cada drill-down. Fazer em conjunto com T-05. | Média |
-| T-05 | Todos | **Migração de pastas locais**: renomear directorias `rede/` → `04-rede/`, subpastas `n3-edificios/` → `08-n3-rede-edificios/`, etc. (ver §4.1). Fazer com `git mv`. Mapa completo para domínio Rede em §4.1. Requer mesma sessão que T-04 para manter coerência local↔Grafana. | Média |
+| T-04 | Todos | ✅ **UIDs canónicos migrados** (domínio Rede, 2026-07-01): 15 dashboards renomeados no Grafana para formato `dominio-nivel-funcao`. Nota: Grafana 12 não aceita '.' em UIDs — separador é '-'. Manifests, .js e dashboard-completo.json actualizados localmente. Drill-downs N1→N6 funcionais. | CONCLUÍDO |
+| T-05 | Todos | ✅ **Pastas locais renomeadas** (domínio Rede + todos os domínios, 2026-07-01): pastas top-level 00-visao-geral…09-agencias; sub-pastas 04-rede 01-n2-rede…16-n4-rede-wan-router. Commits 2f74d5e + d6ea207. | CONCLUÍDO |
 | T-05b | N1/N3 | Links BT vs Grafana data links — testar no browser real | Média |
 | T-06 | N4/N5 | Provider/Tipo/nº de links derivados das **tags** manuais; derivar do **nome real da interface** (verdade viva SNMP) e sinalizar divergências | Média |
 | T-07 | Agências | Agências **ponto-a-ponto sem router próprio** ficam invisíveis (não estão em `HG_AGENCIAS_ROUTERS`) — mapear pela sub-interface do router-pai | Alta (pós-N5) |

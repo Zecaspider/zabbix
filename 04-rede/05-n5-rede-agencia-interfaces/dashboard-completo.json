@@ -64,7 +64,7 @@
       },
       "id": 100,
       "options": {
-        "content": "<a href=\"/d/rede.n4.agencia/?var-host=${host}&var-group=${group}\" style=\"color:#58A6FF;text-decoration:none;font-size:13px\">&larr; Voltar ao N4 · Agência</a>",
+        "content": "<a href=\"/d/rede-n4-agencia/?var-host=${host}&var-group=${group}\" style=\"color:#58A6FF;text-decoration:none;font-size:13px\">&larr; Voltar ao N4 · Agência</a>",
         "mode": "html"
       },
       "title": "",
@@ -493,6 +493,6 @@
   },
   "timezone": "browser",
   "title": "N5 · Rede · Agência — Interfaces",
-  "uid": "rede.n5.agencia-interfaces",
+  "uid": "rede-n5-agencia-interfaces",
   "version": 1
 }

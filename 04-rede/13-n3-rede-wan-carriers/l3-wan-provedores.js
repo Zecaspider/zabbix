@@ -22,7 +22,7 @@ var CFG_PROV = {
   refreshMs:  60000,
   maxAgeSec:  600,
 
-  n4DashUid: 'rede.n4.wan-provedor',
+  n4DashUid: 'rede-n4-wan-provedor',
 
   wanHostIds:   ['10838', '10839', '10840', '10996', '11001'],
   wanIntHostId: '10838',

@@ -1,5 +1,5 @@
 {
-  "dashboardUid": "rede.n4.agencia",
+  "dashboardUid": "rede-n4-agencia",
   "dashboardTitle": "N4 · Agência — Detalhe",
   "folderUid": "bfpm0sdxiclxcf",
   "datasource": "ffo8sp8zllog0e",
@@ -20,10 +20,10 @@
     }
   },
   "notes_anchor": "Âncora na REDE (host core sempre UP), não no router da agência — senão o header (utils) some quando a agência está DOWN. Datasource da âncora == datasource do painel (Network) para evitar mismatch (B-03).",
-  "drilldownFrom": "rede.n3.agencias",
-  "drilldownUrl": "/d/rede.n4.agencia?var-group=HG_AGENCIAS_ROUTERS&var-host=<HOSTNAME>",
+  "drilldownFrom": "rede-n3-agencias",
+  "drilldownUrl": "/d/rede-n4-agencia?var-group=HG_AGENCIAS_ROUTERS&var-host=<HOSTNAME>",
   "drilldownTo": {
-    "rede.n4.wan-dispositivo": "/d/rede.n4.wan-dispositivo?var-group=${group}&var-host=${host}&var-iface=Gi0%2F1"
+    "rede-n4-wan-dispositivo": "/d/rede-n4-wan-dispositivo?var-group=${group}&var-host=${host}&var-iface=Gi0%2F1"
   },
   "variables": [
     {

@@ -25,7 +25,7 @@ var CFG_P4 = {
   maxAgeSec:    600,
 
   // UID do N3 · WAN — Provedores (back-link)
-  n3DashUid: 'rede.n3.wan-carriers',
+  n3DashUid: 'rede-n3-wan-carriers',
 
   // Routers WAN (grupo 27)
   wanHostIds:   ['10838', '10839', '10840', '10996', '11001'],

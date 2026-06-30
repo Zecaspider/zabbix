@@ -14,7 +14,7 @@ var CFG_ALT = {
   elementId: 'bpc-wan-alertas',
   refreshMs:  60000,
   maxRows:    25,
-  n4RouterUid: 'rede.n4.wan-router',
+  n4RouterUid: 'rede-n4-wan-router',
 
   wanHosts: [
     { hostid: '10838', name: 'WAN-INT'  },

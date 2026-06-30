@@ -19,7 +19,7 @@ var CFG_TRG = {
   elementId: 'bpc-wan-triggers',
   refreshMs:  60000,
   maxRows:    20,
-  n4DashUid:  'rede.n4.wan-router',
+  n4DashUid:  'rede-n4-wan-router',
 
   // 5 routers WAN (grupo 27) + hostids para link drill N4
   wanHosts: [

@@ -4,7 +4,7 @@
 const CFG_BTN = {
   elementId: 'bpc-n5-btn',
   proxy:     'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
-  n5Uid:     'rede.n5.edificio-interfaces',
+  n5Uid:     'rede-n5-edificio-interfaces',
   refreshMs: 60000,
 }
 

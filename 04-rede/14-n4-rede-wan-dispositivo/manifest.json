@@ -1,10 +1,10 @@
 {
-  "dashboardUid": "rede.n4.wan-dispositivo",
+  "dashboardUid": "rede-n4-wan-dispositivo",
   "dashboardTitle": "N4 - WAN Device",
   "folderUid": "bfpm0sdxiclxcf",
   "datasource": "ffo8sp8zllog0e",
   "notes": "Dashboard parametrizado para qualquer router WAN. Variáveis passadas pelo N3 via URL.",
-  "drilldownUrl": "/d/rede.n4.wan-dispositivo?var-group=<GROUP>&var-host=<HOSTNAME>&var-iface=.*",
+  "drilldownUrl": "/d/rede-n4-wan-dispositivo?var-group=<GROUP>&var-host=<HOSTNAME>&var-iface=.*",
   "variables": [
     {
       "name": "group", "label": "Host Group", "type": "textbox",

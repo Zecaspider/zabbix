@@ -198,7 +198,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "N3 · WAN — Carriers",
-  "uid": "rede.n3.wan-carriers",
+  "uid": "rede-n3-wan-carriers",
   "version": 8,
   "weekStart": ""
 }

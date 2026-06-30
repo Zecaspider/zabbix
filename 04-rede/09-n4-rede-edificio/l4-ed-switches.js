@@ -6,7 +6,7 @@
 var CFG_EDS = {
   elementId: 'bpc-ed-switches',
   groupId: '29',
-  n6DashUid: 'rede.n6.edificio-switch',
+  n6DashUid: 'rede-n6-edificio-switch',
   refreshMs: 60000,
 }
 

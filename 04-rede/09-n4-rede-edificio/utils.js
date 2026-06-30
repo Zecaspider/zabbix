@@ -67,7 +67,7 @@ const CFG_HEADER = {
   title: 'BPC NOC',
   nocLabel: 'EDIFÍCIOS - NÍVEL 4',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
-  backLink: { url: '/d/rede.n3.edificios', label: '&#8592; N3 · Edifícios' },                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
+  backLink: { url: '/d/rede-n3-edificios', label: '&#8592; N3 · Edifícios' },                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
 };
 
 

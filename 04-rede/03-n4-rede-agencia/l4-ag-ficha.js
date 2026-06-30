@@ -86,7 +86,7 @@ var CSS = '<style>' +
   '</style>'
 
 function buildUrl(host, group) {
-  var base = '/d/rede.n4.wan-dispositivo'
+  var base = '/d/rede-n4-wan-dispositivo'
   return base + '?var-group=' + encodeURIComponent(group) +
     '&var-host=' + encodeURIComponent(host) +
     '&var-iface=Gi0%2F1&from=now-3h&to=now'

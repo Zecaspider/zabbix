@@ -65,7 +65,7 @@ const CFG_HEADER = {
   title: 'BPC NOC',
   nocLabel: 'REDE · EDIFÍCIOS — NÍVEL 6 · SWITCH',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
-  backLink: { url: '/d/rede.n4.edificio', label: '← N4 Edifício' },
+  backLink: { url: '/d/rede-n4-edificio', label: '← N4 Edifício' },
 };
 
 

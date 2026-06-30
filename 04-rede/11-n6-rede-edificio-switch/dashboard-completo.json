@@ -1681,6 +1681,6 @@
   },
   "timezone": "browser",
   "title": "N6 - Rede - Edificio - Switch - Detalhe",
-  "uid": "rede.n6.edificio-switch",
+  "uid": "rede-n6-edificio-switch",
   "version": 7
 }

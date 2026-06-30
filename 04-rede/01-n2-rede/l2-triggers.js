@@ -38,9 +38,9 @@ function trgEsc(s) {
 
 function trgN4Link(hostname, groupIds) {
   if (groupIds.indexOf('26') >= 0)
-    return '/d/rede.n4.dc-switch/n4-rede-dc-switch?var-switchName=' + encodeURIComponent(hostname)
+    return '/d/rede-n4-dc-switch/n4-rede-dc-switch?var-switchName=' + encodeURIComponent(hostname)
   if (groupIds.indexOf('27') >= 0)
-    return '/d/rede.n4.wan-router/n4-rede-wan-router?var-routerName=' + encodeURIComponent(hostname)
+    return '/d/rede-n4-wan-router/n4-rede-wan-router?var-routerName=' + encodeURIComponent(hostname)
   return null // g28/g29 edifícios: N4 não existe ainda
 }
 

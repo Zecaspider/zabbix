@@ -26,16 +26,16 @@ const CFG_SEG = {
   segmentos: [
     { key: 'wan',  label: 'WAN',       icon: '🌐', groupIds: ['27'],
       desc: 'Internet · EMIS · Agências · Parceiros · Azure/Gov',
-      dashUid: 'rede.n3.wan', dashSlug: 'n3-c2b7-wan' },
+      dashUid: 'rede-n3-wan', dashSlug: 'n3-c2b7-wan' },
     { key: 'dc',   label: 'DC Fabric', icon: '🖥',  groupIds: ['26', '22'],
       desc: '7 switches Spine-Leaf + 1 OOB (DC1)',
-      dashUid: 'rede.n3.dc', dashSlug: 'n3-c2b7-rede-dc-fabric' },
+      dashUid: 'rede-n3-dc', dashSlug: 'n3-c2b7-rede-dc-fabric' },
     { key: 'edif', label: 'Edifícios', icon: '🏢', groupIds: ['28', '29'],
       desc: '9 routers + 46 switches · 4 edifícios BPC',
-      dashUid: 'rede.n3.edificios', dashSlug: 'n3-rede-edificios' },
+      dashUid: 'rede-n3-edificios', dashSlug: 'n3-rede-edificios' },
     { key: 'ag',   label: 'Agências',  icon: '🏦', groupIds: ['24', '25'],
       desc: '220 routers + 27 switches · 220 agências',
-      dashUid: 'rede.n3.agencias', dashSlug: 'n3-c2b7-agencias' },
+      dashUid: 'rede-n3-agencias', dashSlug: 'n3-c2b7-agencias' },
   ],
 }
 

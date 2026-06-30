@@ -5,6 +5,6 @@
   "transparent": true,
   "options": {
     "mode": "html",
-    "content": "<div style=\"display:flex;justify-content:center;align-items:center;height:100%\"><a href=\"/d/rede.n5.agencia-interfaces/?var-host=${host}&var-group=${group}\" style=\"display:inline-flex;gap:10px;align-items:center;background:#10243e;border:1px solid #388BFD;border-radius:8px;padding:12px 28px;color:#58A6FF;font-size:15px;font-weight:600;text-decoration:none\">&#x2913; N5 · Interfaces da Agência — diagnóstico profundo &rarr;</a></div>"
+    "content": "<div style=\"display:flex;justify-content:center;align-items:center;height:100%\"><a href=\"/d/rede-n5-agencia-interfaces/?var-host=${host}&var-group=${group}\" style=\"display:inline-flex;gap:10px;align-items:center;background:#10243e;border:1px solid #388BFD;border-radius:8px;padding:12px 28px;color:#58A6FF;font-size:15px;font-weight:600;text-decoration:none\">&#x2913; N5 · Interfaces da Agência — diagnóstico profundo &rarr;</a></div>"
   }
 }

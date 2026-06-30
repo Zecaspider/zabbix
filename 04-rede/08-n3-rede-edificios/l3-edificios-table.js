@@ -7,7 +7,7 @@ const CFG_N3ED = {
   elementId: 'bpc-n3ed-table',
   refreshMs:  60000,
   groupId:   '28',
-  n4Uid:     'rede.n4.edificio',
+  n4Uid:     'rede-n4-edificio',
   thresholds: {
     lossPct: { warn: 1,  crit: 5  },
     rttMs:   { warn: 5,  crit: 50 },

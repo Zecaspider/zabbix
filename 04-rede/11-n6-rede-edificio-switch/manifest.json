@@ -1,9 +1,9 @@
 {
-  "dashboardUid": "rede.n6.edificio-switch",
+  "dashboardUid": "rede-n6-edificio-switch",
   "dashboardTitle": "N6 · Rede · Edifício — Switch — Detalhe",
   "folderUid": "bfpm0sdxiclxcf",
   "datasource": "ffo8sp8zllog0e",
-  "drilldownFrom": "rede.n4.edificio",
+  "drilldownFrom": "rede-n4-edificio",
   "notes": "Dashboard pre-existente com paineis nativos completos. BT utils (id=100) ja incluido. Drill recebido via var-switch=<hostname> e var-group=HG_EDIFICIOS_SWITCHES.",
   "variables": [
     { "name": "group",  "label": "Host Group", "type": "textbox", "default": "HG_EDIFICIOS_SWITCHES" },

@@ -1,9 +1,9 @@
 {
-  "dashboardUid": "rede.n5.agencia-interfaces",
+  "dashboardUid": "rede-n5-agencia-interfaces",
   "dashboardTitle": "N5 · Rede · Agência — Interfaces",
   "folderUid": "bfpm0sdxiclxcf",
   "datasource": "ffo8sp8zllog0e",
-  "drilldownFrom": "rede.n4.agencia",
+  "drilldownFrom": "rede-n4-agencia",
   "anchor": {
     "datasource": {
       "type": "alexanderzobnin-zabbix-datasource",

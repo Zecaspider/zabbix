@@ -55,7 +55,7 @@ var CFG = {
       sublabel: 'DC · Edifícios · WAN',
       groupids: ['26', '27', '28', '29'],
       datasource: 'network',
-      dashUid: 'rede.n2.segmentos',
+      dashUid: 'rede-n2-segmentos',
       dashSlug: 'n2-rede',
     },
     {
@@ -101,8 +101,8 @@ var CFG = {
       groupids: ['24', '25'],
       datasource: 'network',
       // Agências é sub-domínio de Rede — salta directo para o N3 (sem N2 próprio)
-      dashUid: 'rede.n3.agencias',
-      dashSlug: 'rede.n3.agencias',
+      dashUid: 'rede-n3-agencias',
+      dashSlug: 'rede-n3-agencias',
       linkLabel: 'Ver detalhe (N3) →',
     },
   ],
