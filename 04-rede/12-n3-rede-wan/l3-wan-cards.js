@@ -22,17 +22,17 @@ var CFG_WCARDS = {
   maxAgeSec:  600,
 
   // N4 Device dashboard (preenchido quando existir)
-  n4DashUid:  null,
+  n4DashUid:  'rede-n4-wan-dispositivo',
+  n4Group:    'HG_DC_ROUTERS',
 
   hosts: [
     {
-      hostid: '10838',
-      label:  'INTERNET',
-      name:   'WAN-INT',
-      desc:   'ISR4451 · ITA · AT · MSTELCOM',
-      icon:   '🌐',
-      // BGP peers = interfaces nomeadas "BGP_PEER_*" via net.if.status
-      // IP SLA = rttMonCtrlAdminSense
+      hostid:   '10838',
+      label:    'INTERNET',
+      name:     'WAN-INT',
+      hostname: 'DC1-RTE-WAN-INT',   // nome real no Zabbix Network
+      desc:     'ISR4451 · ITA · AT · MSTELCOM',
+      icon:     '🌐',
       hasIpSla: true,
       sections: [
         { label: 'BGP Peers',    ifRe: /BGP_PEER/i,      excludeRe: null },
@@ -40,22 +40,24 @@ var CFG_WCARDS = {
       ],
     },
     {
-      hostid: '10839',
-      label:  'EMIS',
-      name:   'WAN-EMIS',
-      desc:   'ISR4451 · ATELECOM · MSTELECOM · UNITEL',
-      icon:   '🏦',
+      hostid:   '10839',
+      label:    'EMIS',
+      name:     'WAN-EMIS',
+      hostname: 'DC1-RTE-WAN-EMIS',
+      desc:     'ISR4451 · ATELECOM · MSTELECOM · UNITEL',
+      icon:     '🏦',
       hasIpSla: false,
       sections: [
         { label: 'Circuitos',    ifRe: /^Po/i,            excludeRe: null },
       ],
     },
     {
-      hostid: '10996',
-      label:  'AGÊNCIAS',
-      name:   'WAN-AG',
-      desc:   'C8500L · DMVPN hub · Azure ER',
-      icon:   '🏢',
+      hostid:   '10996',
+      label:    'AGÊNCIAS',
+      name:     'WAN-AG',
+      hostname: 'DC1-RTE-WAN-AG',
+      desc:     'C8500L · DMVPN hub · Azure ER',
+      icon:     '🏢',
       hasIpSla: false,
       sections: [
         { label: 'DMVPN carriers', ifRe: /^Tu1\d\d$/i,       excludeRe: null },
@@ -64,11 +66,12 @@ var CFG_WCARDS = {
       ],
     },
     {
-      hostid: '11001',
-      label:  'PARCEIROS',
-      name:   'PARC',
-      desc:   'ISR4451 · BNA · MINFIN · INSS · Connectis · Voz',
-      icon:   '🤝',
+      hostid:   '11001',
+      label:    'PARCEIROS',
+      name:     'PARC',
+      hostname: 'DC1-RTE-PARC',
+      desc:     'ISR4451 · BNA · MINFIN · INSS · Connectis · Voz',
+      icon:     '🤝',
       hasIpSla: false,
       sections: [
         { label: 'Sub-interfaces',     ifRe: /^Po/i,            excludeRe: null },
@@ -76,11 +79,12 @@ var CFG_WCARDS = {
       ],
     },
     {
-      hostid: '10840',
-      label:  'AZURE/GOV',
-      name:   'GTW01',
-      desc:   'C8200 · ExpressRoute · MINFIN · BODIVA',
-      icon:   '☁',
+      hostid:   '10840',
+      label:    'AZURE/GOV',
+      name:     'GTW01',
+      hostname: 'DC1-RTE-GTW01',
+      desc:     'C8200 · ExpressRoute · MINFIN · BODIVA',
+      icon:     '☁',
       hasIpSla: false,
       sections: [
         { label: 'Sub-interfaces', ifRe: /^Gi0\/0\/1/i,   excludeRe: null },
@@ -274,7 +278,7 @@ function wcRenderCard(host) {
 
   // Drill-down → N4
   var n4Href = CFG_WCARDS.n4DashUid
-    ? '/d/' + CFG_WCARDS.n4DashUid + '/n4-rede-device?var-hostid=' + host.cfg.hostid
+    ? '/d/' + CFG_WCARDS.n4DashUid + '?var-group=' + encodeURIComponent(CFG_WCARDS.n4Group) + '&var-host=' + encodeURIComponent(host.cfg.hostname)
     : null
 
   var footer = n4Href
