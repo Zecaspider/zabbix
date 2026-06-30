@@ -19,7 +19,7 @@
     },
     {
       "file": "l3-wan-kpi.js",
-      "id": null,
+      "id": 105,
       "role": "content",
       "title": "KPI Strip WAN",
       "content": "<div id=\"bpc-n3wan-kpi\"></div>"
