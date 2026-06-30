@@ -147,7 +147,7 @@ def push_panels(domain_level, only_file=None):
             p['datasource'] = ds_obj          # corrigir datasource do painel
             p['transparent'] = True           # NOC: fundo transparente
             p['title'] = ''                   # NOC: sem título (utils e conteúdo)
-            print(f'  UPDATE {fname} -> painel id={panel_id} ({entry.get("title","")})')
+            print(f'  UPDATE {fname} -> painel id={panel_id} ({entry.get("title","").encode("ascii","replace").decode()})')
         else:
             # Criar painel novo (gridPos provisorio)
             y = next_y(panels)

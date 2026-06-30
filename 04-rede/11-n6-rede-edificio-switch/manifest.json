@@ -3,6 +3,15 @@
   "dashboardTitle": "N6 · Rede · Edifício — Switch — Detalhe",
   "folderUid": "bfpm0sdxiclxcf",
   "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+    "group": { "filter": "HG_DC_ROUTERS" },
+    "host": { "filter": "DC1-RTE-WAN-INT" },
+    "item": { "filter": "ICMP ping" },
+    "queryType": "0",
+    "refId": "A",
+    "resultFormat": "time_series"
+  },
   "drilldownFrom": "rede-n4-edificio",
   "notes": "Dashboard pre-existente com paineis nativos completos. BT utils (id=100) ja incluido. Drill recebido via var-switch=<hostname> e var-group=HG_EDIFICIOS_SWITCHES.",
   "variables": [
@@ -10,7 +19,7 @@
     { "name": "switch", "label": "Switch",     "type": "textbox", "note": "Passado pelo N4 via URL" }
   ],
   "panels": [
-    { "file": "utils.js",            "id": 100, "role": "utils",   "title": "" },
+    { "file": "utils.js",            "id": 100, "role": "utils",   "title": "", "content": "<div id=\"bpc-header-root\"></div>" },
     { "file": "(nativo)",            "id": 101, "role": "content", "title": "Ficha Tecnica do Switch" },
     { "file": "(nativo)",            "id": 201, "role": "content", "title": "Disponibilidade ICMP" },
     { "file": "(nativo)",            "id": 202, "role": "content", "title": "Latencia RTT" },
