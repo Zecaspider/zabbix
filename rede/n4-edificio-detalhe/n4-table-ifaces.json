@@ -67,6 +67,19 @@
     },
     "overrides": [
       {
+        "matcher": { "id": "byName", "options": "Interface" },
+        "properties": [{
+          "id": "mappings",
+          "value": [{
+            "type": "regex",
+            "options": {
+              "pattern": "^Interface (.*): Operational status$",
+              "result": { "text": "$1" }
+            }
+          }]
+        }]
+      },
+      {
         "matcher": {
           "id": "byRegexp",
           "options": "Estado|Last.*"

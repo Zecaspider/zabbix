@@ -8,7 +8,7 @@
       "datasource": { "type": "mysql", "uid": "cfo3cgypdrdvkf" },
       "format": "table",
       "rawQuery": true,
-      "rawSql": "SELECT MAX(CASE WHEN ht.tag='modelo' THEN ht.value END) AS 'Modelo', MAX(CASE WHEN ht.tag='andar' THEN ht.value END) AS 'Piso', MAX(CASE WHEN ht.tag='zona' THEN ht.value END) AS 'Zona', MAX(CASE WHEN ht.tag='os_version' THEN ht.value END) AS 'IOS Version', MAX(CASE WHEN ht.tag='funcao' THEN ht.value END) AS 'Função', MAX(CASE WHEN ht.tag='fabricante' THEN ht.value END) AS 'Fabricante' FROM host_tag ht JOIN hosts h ON ht.hostid=h.hostid WHERE h.host='${switch}'",
+      "rawSql": "SELECT MAX(CASE WHEN ht.tag='modelo' THEN ht.value END) AS 'Modelo', MAX(CASE WHEN ht.tag='andar' THEN ht.value END) AS 'Piso', MAX(CASE WHEN ht.tag='zona' THEN ht.value END) AS 'Zona', MAX(CASE WHEN ht.tag='os_version' THEN ht.value END) AS 'IOS Version', MAX(CASE WHEN ht.tag='funcao' THEN ht.value END) AS 'Função', MAX(CASE WHEN ht.tag='fabricante' THEN ht.value END) AS 'Fabricante' FROM host_tag ht JOIN hosts h ON ht.hostid=h.hostid WHERE h.name='${switch}'",
       "refId": "A"
     }
   ],

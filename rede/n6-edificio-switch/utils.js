@@ -47,7 +47,8 @@
 
 const CFG_META = {
   version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
-  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',
+  // DASHBOARD DE REDE → switches monitorados pelo Zabbix NETWORK (ffo8sp8zllog0e)
+  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
 };
 
 
