@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-29 (Fase 4 Edifícios completa: §4.5 ☑ N3 drill funcional · §4.12 ☑ tabela switches N4 dinâmica/condicional/14px · §4.13 ☑ auditoria fluxo N3→N4→N5→N6 validada por código + API. Fluxo Edifícios end-to-end OK.)
+Última actualização: 2026-06-30 (Fase 4 parcial: Agências ☑ completas. Edifícios validados end-to-end. §4.5 ☑ · §4.12 ☑ · §4.13 ☑. Bugs B-04 uptime N3 + B-05 switches N4 resolvidos.)
 
 ---
 
@@ -118,7 +118,7 @@
 | 4.10 | Drill N4 Edifícios (g28/g29) | ☑ | 2026-06-29 | N4 Edifício (`n4-edificio-detalhe`) criado: ficha MySQL, ICMP/RTT/Loss, CPU/Mem/Uptime, provider WAN, state-timeline 46 switches, botão N5. N5 Edificio (`n5-edificio-interfaces`) criado: clonado de N5 Agências, variável host por HG_EDIFICIOS_ROUTERS. N6 Switch (`n6-edificio-switch`) criado: ficha MySQL (modelo/piso/zona/IOS), stats SNMP, hw health (Temp Inlet+HotSpot, Fans, PSU), uplinks erros+discards, state-timeline 65 portas access. Commit `1fc9be8`. |
 | 4.11 | N4/N5/N6 Edificio — hw health switches (Temp/Fan/PSU) | ☑ | 2026-06-29 | Auditado: Temp 3 sensores (Inlet=25C/Outlet=32C/HotSpot=41C), Fans 2x status, PSU 1x status, PoE nao recolhido. Todos integrados em N6. Commit `1fc9be8`. |
 | 4.12 | N4 Edifício — tabela de switches condicional (BT) | ☑ | 2026-06-29 | `l4-ed-switches.js` (id=103) redesenhado: dinâmico via `router.edificio = switch.local` (sem hardcode Sede); condicional (painel invisível se 0 switches); tabela 14px com bordas visíveis; colunas Andar·Zona·Switch(link N6)·Estado(pill UP/DOWN)·RTT; ordenação numérica por andar. Pushed OK. |
-| 4.13 | Auditoria fluxo N3→N4→N5→N6 Edifícios | ☑ | 2026-06-29 | Todos os drills e back-links validados por código + API Grafana: N3→N4 (`n4-edificio-detalhe`) ✓ · N4→N5 (`n5-edificio-interfaces`) ✓ · N4→N6 via tabela switches (`n6-edificio-switch`) ✓ · N5→N4 back-link ✓ · N6→N4 back-link ✓. Dado MySQL confirmado: 46 switches no edifício Sede (tag `local=sede`). Ficheiro obsoleto `n4-switches-table.json` removido. |
+| 4.13 | Validação end-to-end fluxo Edifícios N1→N6 | ☑ | 2026-06-30 | Drill N1→N6 completo confirmado no browser. Bugs: B-04 uptime N3 (item key → name search) e B-05 switches N4 (panel type state-timeline → marcusolsson-dynamictext-panel + layout y=52→y=22) resolvidos e verificados. |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |

@@ -91,8 +91,8 @@ async function n3edFetchGroup(rpc, groupId, withCpu) {
       output:  ['hostid', 'key_', 'lastvalue'],
     }),
     rpc('item.get', {
-      hostids: hostIds, filter: { key_: 'system.uptime', status: 0 },
-      output:  ['hostid', 'lastvalue'],
+      hostids: hostIds, search: { name: 'Uptime (network)' }, filter: { status: 0 },
+      output:  ['hostid', 'key_', 'lastvalue'],
     }),
   ]
   if (withCpu) {
