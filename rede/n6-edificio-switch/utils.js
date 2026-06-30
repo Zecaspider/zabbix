@@ -47,8 +47,7 @@
 
 const CFG_META = {
   version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)
-  // DASHBOARD DE REDE → switches monitorados pelo Zabbix NETWORK (ffo8sp8zllog0e)
-  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
+  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',
 };
 
 
@@ -64,9 +63,9 @@ const CFG_META = {
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
   title: 'BPC NOC',
-  nocLabel: 'EDIFÍCIOS · NÍVEL 6 · SWITCH',
+  nocLabel: 'REDE · EDIFÍCIOS — NÍVEL 6 · SWITCH',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
-  backLink: { url: '/d/n4-edificio-detalhe', label: '&#8592; N4 · Edifício' },
+  backLink: { url: '/d/n4-edificio-detalhe', label: '← N4 Edifício' },
 };
 
 

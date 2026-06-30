@@ -1,15 +1,13 @@
-// ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  N3 · Rede · Edifícios — Tabela + Estado NOC             v2.0          ║
-// ║                                                                          ║
-// ║  Routers: ICMP · RTT · Perda · CPU · Uptime → drill N4-Edifício        ║
-// ║  Switches: por andar (Sede) com filtro                                   ║
-// ╚══════════════════════════════════════════════════════════════════════════╝
+// N3 · Rede · Edifícios — Cards 3×3
+// l3-edificios-table.js  v3.0
+// 9 routers de edifício → grid de cards; ordem: DOWN → Degradado → OK.
+// Drill → N4 Edifício via URL var-host=<hostname>.
 
 const CFG_N3ED = {
   elementId: 'bpc-n3ed-table',
   refreshMs:  60000,
-  grupos: { rt: '28', sw: '29' },
-  n4Uid: 'n4-edificio-detalhe',
+  groupId:   '28',
+  n4Uid:     'n4-edificio-detalhe',
   thresholds: {
     lossPct: { warn: 1,  crit: 5  },
     rttMs:   { warn: 5,  crit: 50 },
@@ -17,13 +15,8 @@ const CFG_N3ED = {
   },
 }
 
-var _n3edTab      = 'rt'
-var _n3edSwFilter = 'all'
-var _n3edRtRows   = []
-var _n3edSwRows   = []
 
-
-// ── helpers ──────────────────────────────────────────────────────────────────
+// ── helpers ───────────────────────────────────────────────────────────────────
 
 function n3edEsc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -39,253 +32,192 @@ function n3edFmtUptime(secs) {
   return d > 0 ? d + 'd ' + h + 'h' : h + 'h'
 }
 
-function n3edStatusDot(up, lossPct, rttMs) {
-  var T = window.BPC.THEME
-  if (up === false || up === null) return '<span style="color:' + T.colorCrit + '">●</span> Down'
-  var T2 = CFG_N3ED.thresholds
-  if (lossPct > T2.lossPct.crit || rttMs > T2.rttMs.crit) return '<span style="color:' + T.colorCrit + '">●</span> Crítico'
-  if (lossPct > T2.lossPct.warn || rttMs > T2.rttMs.warn) return '<span style="color:' + T.colorWarn + '">●</span> Degradado'
-  return '<span style="color:' + T.colorOk + '">●</span> OK'
-}
-
-function n3edStateCls(val, warn, crit) {
-  var n = parseFloat(val)
-  if (isNaN(n)) return 'bpc-mute'
-  return n >= crit ? 'bpc-crit' : n >= warn ? 'bpc-warn' : 'bpc-ok'
+function n3edStatus(up, lossPct, rttMs) {
+  if (up === false || up === null) return 'down'
+  var T = CFG_N3ED.thresholds
+  if (lossPct > T.lossPct.crit || rttMs > T.rttMs.crit) return 'crit'
+  if (lossPct > T.lossPct.warn || rttMs > T.rttMs.warn) return 'warn'
+  return 'ok'
 }
 
 function n3edSortRows(rows) {
+  var order = { down: 0, crit: 1, warn: 2, ok: 3 }
   return rows.slice().sort(function (a, b) {
-    var order = function (r) {
-      if (r.up === false || r.up === null) return 0
-      if (r.lossPct > CFG_N3ED.thresholds.lossPct.warn || r.rttMs > CFG_N3ED.thresholds.rttMs.warn) return 1
-      return 2
-    }
-    var sa = order(a), sb = order(b)
+    var sa = order[n3edStatus(a.up, a.lossPct, a.rttMs)]
+    var sb = order[n3edStatus(b.up, b.lossPct, b.rttMs)]
     if (sa !== sb) return sa - sb
-    return (a.label || a.andar || '').localeCompare(b.label || b.andar || '')
+    return (a.label || '').localeCompare(b.label || '')
   })
 }
 
 function n3edDrillUrl(hostname) {
-  return '/d/' + CFG_N3ED.n4Uid +
-    '?var-group=HG_EDIFICIOS_ROUTERS&var-host=' + encodeURIComponent(hostname)
+  return '/d/' + CFG_N3ED.n4Uid + '?var-group=HG_EDIFICIOS_ROUTERS&var-host=' + encodeURIComponent(hostname)
+}
+
+function n3edValColor(val, warn, crit, inverse) {
+  var n = parseFloat(val)
+  if (isNaN(n)) return 'color:#64748B'
+  if (inverse) {
+    if (n <= warn) return 'color:#22C55E'
+    if (n <= crit) return 'color:#D29922'
+    return 'color:#F85149'
+  }
+  if (n >= crit) return 'color:#F85149'
+  if (n >= warn) return 'color:#D29922'
+  return 'color:#22C55E'
 }
 
 
 // ── fetch ─────────────────────────────────────────────────────────────────────
 
-async function n3edFetchGroup(rpc, groupId, withCpu) {
-  var hosts = await rpc('host.get', {
-    groupids:   [groupId],
+function n3edFetch(rpc) {
+  return rpc('host.get', {
+    groupids:   [CFG_N3ED.groupId],
     output:     ['hostid', 'name'],
     selectTags: ['tag', 'value'],
-  })
-  if (!hosts.length) return []
+  }).then(function (hosts) {
+    if (!hosts.length) return []
+    var ids = hosts.map(function (h) { return h.hostid })
 
-  var hostIds = hosts.map(function (h) { return h.hostid })
+    return Promise.all([
+      rpc('item.get', {
+        hostids: ids,
+        search:  { key_: 'icmpping' },
+        filter:  { status: 0 },
+        output:  ['hostid', 'key_', 'lastvalue'],
+      }),
+      rpc('item.get', {
+        hostids: ids,
+        search:  { name: 'uptime' },
+        searchWildcardsEnabled: true,
+        filter:  { status: 0 },
+        output:  ['hostid', 'lastvalue'],
+        limit:   hosts.length,
+      }),
+      rpc('item.get', {
+        hostids: ids,
+        search:  { key_: 'system.cpu.util' },
+        filter:  { status: 0 },
+        output:  ['hostid', 'lastvalue'],
+        limit:   hosts.length,
+      }),
+    ]).then(function (r) {
+      var icmpItems = r[0], uptItems = r[1], cpuItems = r[2]
 
-  var queries = [
-    rpc('item.get', {
-      hostids: hostIds, search: { key_: 'icmpping' }, filter: { status: 0 },
-      output:  ['hostid', 'key_', 'lastvalue'],
-    }),
-    rpc('item.get', {
-      hostids: hostIds, search: { name: 'Uptime (network)' }, filter: { status: 0 },
-      output:  ['hostid', 'key_', 'lastvalue'],
-    }),
-  ]
-  if (withCpu) {
-    queries.push(rpc('item.get', {
-      hostids: hostIds, search: { key_: 'system.cpu.util' }, filter: { status: 0 },
-      output:  ['hostid', 'key_', 'lastvalue'], limit: hostIds.length,
-    }))
-  }
+      var icmpMap = {}, rttMap = {}, lossMap = {}, uptMap = {}, cpuMap = {}
+      icmpItems.forEach(function (i) {
+        if (i.key_ === 'icmpping')     icmpMap[i.hostid] = i.lastvalue === '1'
+        if (i.key_ === 'icmppingsec')  rttMap[i.hostid]  = parseFloat(i.lastvalue) * 1000
+        if (i.key_ === 'icmppingloss') lossMap[i.hostid] = parseFloat(i.lastvalue)
+      })
+      uptItems.forEach(function (i) { if (!uptMap[i.hostid]) uptMap[i.hostid] = i.lastvalue })
+      cpuItems.forEach(function (i) { if (!cpuMap[i.hostid]) cpuMap[i.hostid] = parseFloat(i.lastvalue) })
 
-  var results = await Promise.all(queries)
-  var icmpItems = results[0], uptItems = results[1], cpuItems = results[2]
-
-  var icmp   = {}, uptMap = {}, cpuMap = {}
-
-  icmpItems.forEach(function (i) {
-    if (!icmp[i.hostid]) icmp[i.hostid] = { up: null, rtt: 0, loss: 0 }
-    var h = icmp[i.hostid]
-    if (i.key_ === 'icmpping')     h.up   = i.lastvalue === '1'
-    if (i.key_ === 'icmppingsec')  h.rtt  = parseFloat(i.lastvalue) * 1000
-    if (i.key_ === 'icmppingloss') h.loss = parseFloat(i.lastvalue)
-  })
-  uptItems.forEach(function (i) { uptMap[i.hostid] = i.lastvalue })
-  if (cpuItems) cpuItems.forEach(function (i) {
-    if (!cpuMap[i.hostid]) cpuMap[i.hostid] = parseFloat(i.lastvalue)
-  })
-
-  return hosts.map(function (h) {
-    var tagMap = {}
-    ;(h.tags || []).forEach(function (t) { tagMap[t.tag] = t.value })
-    var ic = icmp[h.hostid] || { up: null, rtt: 0, loss: 0 }
-    return {
-      hostid:   h.hostid,
-      name:     h.name,
-      label:    tagMap['unidade_negocio'] || tagMap['edificio'] || h.name,
-      edificio: tagMap['edificio'] || '—',
-      andar:    tagMap['andar'] || '—',
-      zona:     tagMap['zona'] || '',
-      up:       ic.up,
-      rttMs:    ic.rtt,
-      lossPct:  ic.loss,
-      cpuPct:   cpuMap[h.hostid] != null ? cpuMap[h.hostid] : null,
-      uptime:   uptMap[h.hostid] || null,
-    }
+      return hosts.map(function (h) {
+        var tags = {}
+        ;(h.tags || []).forEach(function (t) { tags[t.tag] = t.value })
+        return {
+          hostid:   h.hostid,
+          name:     h.name,
+          label:    tags['unidade_negocio'] || tags['edificio'] || h.name,
+          modelo:   tags['modelo'] || '',
+          up:       icmpMap[h.hostid] != null ? icmpMap[h.hostid] : null,
+          rttMs:    rttMap[h.hostid]  != null ? rttMap[h.hostid]  : null,
+          lossPct:  lossMap[h.hostid] != null ? lossMap[h.hostid] : null,
+          cpuPct:   cpuMap[h.hostid]  != null ? cpuMap[h.hostid]  : null,
+          uptime:   uptMap[h.hostid]  || null,
+        }
+      })
+    })
   })
 }
 
 
 // ── render ────────────────────────────────────────────────────────────────────
 
-function n3edBuildRtRows(rows) {
-  var T = CFG_N3ED.thresholds
-  return rows.map(function (r) {
-    var lossStr = r.lossPct != null ? r.lossPct.toFixed(1) + '%' : '—'
-    var rttStr  = r.rttMs   != null ? r.rttMs.toFixed(1)   + ' ms' : '—'
-    var lossCls = n3edStateCls(r.lossPct, T.lossPct.warn, T.lossPct.crit)
-    var rttCls  = n3edStateCls(r.rttMs,   T.rttMs.warn,   T.rttMs.crit)
-    var cpuCls  = n3edStateCls(r.cpuPct,  T.cpuPct.warn,  T.cpuPct.crit)
-    var drillUrl = n3edDrillUrl(r.name)
+function n3edBuildCard(r) {
+  var status   = n3edStatus(r.up, r.lossPct, r.rttMs)
+  var drillUrl = n3edDrillUrl(r.name)
+  var T        = CFG_N3ED.thresholds
 
-    return '<tr style="border-bottom:1px solid rgba(255,255,255,0.04);cursor:pointer" onclick="location.href=\'' + drillUrl + '\'">' +
-      '<td style="padding:6px 10px;font-weight:700;color:#E6EDF3;font-size:.97rem">' +
-        '<a href="' + n3edEsc(drillUrl) + '" style="color:#E6EDF3;text-decoration:none" onclick="event.stopPropagation()">' +
-          n3edEsc(r.label) +
-        '</a>' +
-      '</td>' +
-      '<td style="padding:6px 10px;color:#64748B;font-size:.82rem;font-family:monospace">' + n3edEsc(r.name) + '</td>' +
-      '<td style="padding:6px 10px;font-size:.93rem">' + n3edStatusDot(r.up, r.lossPct, r.rttMs) + '</td>' +
-      '<td style="padding:6px 10px;text-align:right;font-size:.97rem" class="' + rttCls  + '">' + n3edEsc(rttStr)  + '</td>' +
-      '<td style="padding:6px 10px;text-align:right;font-size:.97rem" class="' + lossCls + '">' + n3edEsc(lossStr) + '</td>' +
-      '<td style="padding:6px 10px;text-align:right;font-size:.97rem" class="' + cpuCls  + '">' + (r.cpuPct != null ? r.cpuPct.toFixed(0) + '%' : '<span class="bpc-mute">—</span>') + '</td>' +
-      '<td style="padding:6px 10px;text-align:right;font-size:.87rem;color:var(--bpc-mute)">' + n3edEsc(n3edFmtUptime(r.uptime)) + '</td>' +
-      '<td style="padding:6px 10px;text-align:center">' +
-        '<a href="' + n3edEsc(drillUrl) + '" style="font-size:.72rem;color:var(--bpc-cyan);white-space:nowrap" onclick="event.stopPropagation()">N4 →</a>' +
-      '</td>' +
-      '</tr>'
-  }).join('')
-}
+  var accentColor = status === 'down' || status === 'crit' ? '#F85149'
+                  : status === 'warn' ? '#D29922'
+                  : '#22C55E'
+  var bgColor = status === 'down' || status === 'crit'
+    ? 'rgba(239,68,68,0.06)'
+    : status === 'warn'
+    ? 'rgba(210,153,34,0.06)'
+    : 'rgba(255,255,255,0.03)'
 
-function n3edBuildSwRows(rows) {
-  var T = CFG_N3ED.thresholds
-  return rows.map(function (r) {
-    var lossStr = r.lossPct != null ? r.lossPct.toFixed(1) + '%' : '—'
-    var rttStr  = r.rttMs   != null ? r.rttMs.toFixed(1)   + ' ms' : '—'
-    var lossCls = n3edStateCls(r.lossPct, T.lossPct.warn, T.lossPct.crit)
-    var rttCls  = n3edStateCls(r.rttMs,   T.rttMs.warn,   T.rttMs.crit)
-    var displayAndar = r.andar !== '—' ? r.andar : '—'
-    var displayZona  = r.zona || ''
+  var pillHtml = status === 'down'
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● Down</span>'
+    : status === 'crit'
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● Crítico</span>'
+    : status === 'warn'
+    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● Degradado</span>'
+    : '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● OK</span>'
 
-    return '<tr style="border-bottom:1px solid rgba(255,255,255,0.04)">' +
-      '<td style="padding:6px 10px;font-weight:600;color:#a0b0c8;font-size:.97rem">' + n3edEsc(displayAndar) + '</td>' +
-      '<td style="padding:6px 10px;color:#64748B;font-size:.82rem">' + n3edEsc(displayZona) + '</td>' +
-      '<td style="padding:6px 10px;color:#E6EDF3;font-size:.87rem;font-family:monospace">' + n3edEsc(r.name) + '</td>' +
-      '<td style="padding:6px 10px;font-size:.93rem">' + n3edStatusDot(r.up, r.lossPct, r.rttMs) + '</td>' +
-      '<td style="padding:6px 10px;text-align:right;font-size:.97rem" class="' + rttCls  + '">' + n3edEsc(rttStr)  + '</td>' +
-      '<td style="padding:6px 10px;text-align:right;font-size:.97rem" class="' + lossCls + '">' + n3edEsc(lossStr) + '</td>' +
-      '<td style="padding:6px 10px;text-align:right;font-size:.87rem;color:var(--bpc-mute)">' + n3edEsc(n3edFmtUptime(r.uptime)) + '</td>' +
-      '</tr>'
-  }).join('')
-}
+  var rttStr  = r.rttMs  != null ? r.rttMs.toFixed(1) + ' ms' : '—'
+  var lossStr = r.lossPct != null ? r.lossPct.toFixed(1) + '%' : '—'
+  var cpuStr  = r.cpuPct  != null ? r.cpuPct.toFixed(0) + '%' : '—'
+  var uptStr  = n3edFmtUptime(r.uptime)
 
-function n3edBuildSwFilterBar(rows) {
-  var andares = []
-  rows.forEach(function (r) {
-    if (r.andar !== '—' && andares.indexOf(r.andar) === -1) andares.push(r.andar)
-  })
-  andares.sort()
+  var rttStyle  = 'font-size:12px;font-family:monospace;' + n3edValColor(r.rttMs,  T.rttMs.warn,   T.rttMs.crit,   false)
+  var lossStyle = 'font-size:12px;font-family:monospace;' + n3edValColor(r.lossPct,T.lossPct.warn, T.lossPct.crit, false)
+  var cpuStyle  = 'font-size:12px;font-family:monospace;' + n3edValColor(r.cpuPct, T.cpuPct.warn,  T.cpuPct.crit,  false)
 
-  var btnBase = 'padding:3px 12px;border-radius:12px;border:1px solid;cursor:pointer;font-size:.87rem;transition:all .15s'
-  var btn = function (val, label, count) {
-    var active = _n3edSwFilter === val
-    return '<button class="n3ed-sw-btn" data-val="' + n3edEsc(val) + '" style="' + btnBase +
-      ';background:' + (active ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.04)') +
-      ';color:'      + (active ? '#E6EDF3' : 'var(--bpc-mute)') +
-      ';border-color:' + (active ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)') + '">' +
-      n3edEsc(label) + ' <span style="opacity:.6">' + count + '</span></button>'
+  function kv(label, val, style) {
+    return '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:5px">' +
+      '<span style="font-size:11px;color:#64748B">' + label + '</span>' +
+      '<span style="' + style + '">' + n3edEsc(val) + '</span>' +
+    '</div>'
   }
 
-  return '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">' +
-    btn('all', 'Todos', rows.length) + ' ' +
-    andares.map(function (a) {
-      return btn(a, a, rows.filter(function (r) { return r.andar === a }).length)
-    }).join(' ') +
-    '</div>'
+  return '<a href="' + n3edEsc(drillUrl) + '" style="text-decoration:none;display:block">' +
+    '<div style="background:' + bgColor + ';border:1px solid rgba(255,255,255,0.08);border-left:3px solid ' + accentColor + ';border-radius:6px;padding:12px 14px;cursor:pointer;transition:background .15s" ' +
+      'onmouseover="this.style.background=\'rgba(255,255,255,0.06)\'" ' +
+      'onmouseout="this.style.background=\'' + bgColor + '\'">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">' +
+        '<span style="font-size:13px;font-weight:600;color:#E6EDF3;line-height:1.3">' + n3edEsc(r.label) + '</span>' +
+        pillHtml +
+      '</div>' +
+      '<div style="font-size:10px;color:#4A5568;font-family:monospace;margin-bottom:8px">' + n3edEsc(r.name) + '</div>' +
+      kv('RTT',    rttStr,  rttStyle) +
+      kv('Perda',  lossStr, lossStyle) +
+      kv('CPU',    cpuStr,  cpuStyle) +
+      kv('Uptime', uptStr,  'font-size:12px;color:#64748B') +
+      '<div style="margin-top:10px;text-align:right">' +
+        '<span style="font-size:11px;color:#58A6FF;border:1px solid rgba(88,166,255,0.25);border-radius:4px;padding:3px 8px">N4 →</span>' +
+      '</div>' +
+    '</div>' +
+  '</a>'
 }
 
-function n3edRenderContent(el) {
-  var tabBtnBase = 'padding:8px 20px;border:none;border-bottom:2px solid;cursor:pointer;font-size:.97rem;font-weight:600;background:transparent;transition:all .15s'
+function n3edRenderCards(el, rows) {
+  var sorted = n3edSortRows(rows)
+  var nDown  = sorted.filter(function (r) { return r.up === false || r.up === null }).length
+  var nWarn  = sorted.filter(function (r) { var s = n3edStatus(r.up, r.lossPct, r.rttMs); return s === 'warn' || s === 'crit' }).length
 
-  var tabRtStyle = tabBtnBase + ';color:' + (_n3edTab === 'rt' ? '#E6EDF3' : 'var(--bpc-mute)') +
-    ';border-color:' + (_n3edTab === 'rt' ? 'var(--bpc-info)' : 'transparent')
-  var tabSwStyle = tabBtnBase + ';color:' + (_n3edTab === 'sw' ? '#E6EDF3' : 'var(--bpc-mute)') +
-    ';border-color:' + (_n3edTab === 'sw' ? 'var(--bpc-info)' : 'transparent')
-
-  var bodyHtml = ''
-
-  if (_n3edTab === 'rt') {
-    var sorted = n3edSortRows(_n3edRtRows)
-    var down   = sorted.filter(function (r) { return r.up === false || r.up === null }).length
-    var downBadge = down > 0 ? ' · <span class="bpc-crit">' + down + ' down</span>' : ''
-    bodyHtml = '<div style="margin-bottom:8px;font-size:.87rem;color:var(--bpc-mute)">' + sorted.length + ' routers' + downBadge + '</div>' +
-      '<table style="width:100%;border-collapse:collapse">' +
-        '<thead><tr style="font-size:.78rem;color:var(--bpc-mute);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.08)">' +
-          '<th style="padding:5px 10px;text-align:left">Edifício</th>' +
-          '<th style="padding:5px 10px;text-align:left">Host</th>' +
-          '<th style="padding:5px 10px;text-align:left">Estado</th>' +
-          '<th style="padding:5px 10px;text-align:right">RTT</th>' +
-          '<th style="padding:5px 10px;text-align:right">Perda</th>' +
-          '<th style="padding:5px 10px;text-align:right">CPU</th>' +
-          '<th style="padding:5px 10px;text-align:right">Uptime</th>' +
-          '<th style="padding:5px 10px;text-align:center"></th>' +
-        '</tr></thead>' +
-        '<tbody>' + n3edBuildRtRows(sorted) + '</tbody>' +
-      '</table>'
-  } else {
-    var filtered = _n3edSwFilter === 'all'
-      ? _n3edSwRows
-      : _n3edSwRows.filter(function (r) { return r.andar === _n3edSwFilter })
-    var sortedSw = n3edSortRows(filtered)
-    var downSw   = sortedSw.filter(function (r) { return r.up === false || r.up === null }).length
-    var downSwBadge = downSw > 0 ? ' · <span class="bpc-crit">' + downSw + ' down</span>' : ''
-    bodyHtml = n3edBuildSwFilterBar(_n3edSwRows) +
-      '<div style="margin-bottom:8px;font-size:.87rem;color:var(--bpc-mute)">' + sortedSw.length + ' switches (Sede BPC)' + downSwBadge + '</div>' +
-      '<table style="width:100%;border-collapse:collapse">' +
-        '<thead><tr style="font-size:.78rem;color:var(--bpc-mute);text-transform:uppercase;border-bottom:1px solid rgba(255,255,255,0.08)">' +
-          '<th style="padding:5px 10px;text-align:left">Andar</th>' +
-          '<th style="padding:5px 10px;text-align:left">Zona</th>' +
-          '<th style="padding:5px 10px;text-align:left">Host</th>' +
-          '<th style="padding:5px 10px;text-align:left">Estado</th>' +
-          '<th style="padding:5px 10px;text-align:right">RTT</th>' +
-          '<th style="padding:5px 10px;text-align:right">Perda</th>' +
-          '<th style="padding:5px 10px;text-align:right">Uptime</th>' +
-        '</tr></thead>' +
-        '<tbody>' + n3edBuildSwRows(sortedSw) + '</tbody>' +
-      '</table>'
+  var badgeHtml = nDown > 0
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">' + nDown + ' down</span> '
+    : ''
+  badgeHtml += nWarn > 0
+    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">' + nWarn + ' degradado</span>'
+    : ''
+  if (!badgeHtml) {
+    badgeHtml = '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">Todos OK</span>'
   }
 
   el.innerHTML =
     '<div class="bpc" style="font-family:\'Inter\',\'Segoe UI\',sans-serif">' +
-      // Tabs
-      '<div style="display:flex;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:16px">' +
-        '<button class="n3ed-tab" data-tab="rt" style="' + tabRtStyle + '">Routers <span style="opacity:.6;font-size:.82rem">' + _n3edRtRows.length + '</span></button>' +
-        '<button class="n3ed-tab" data-tab="sw" style="' + tabSwStyle + '">Switches <span style="opacity:.6;font-size:.82rem">' + _n3edSwRows.length + '</span></button>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
+        '<span style="font-size:12px;color:#64748B">' + sorted.length + ' edifícios</span>' +
+        '<div style="display:flex;gap:6px">' + badgeHtml + '</div>' +
       '</div>' +
-      // Body
-      '<div class="bpc bpc-card" style="padding:14px 16px">' + bodyHtml + '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">' +
+        sorted.map(n3edBuildCard).join('') +
+      '</div>' +
     '</div>'
-
-  el.querySelectorAll('.n3ed-tab').forEach(function (btn) {
-    btn.addEventListener('click', function () { _n3edTab = btn.dataset.tab; n3edRenderContent(el) })
-  })
-  el.querySelectorAll('.n3ed-sw-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () { _n3edSwFilter = btn.dataset.val; n3edRenderContent(el) })
-  })
 }
 
 function n3edRenderError(el, msg) {
@@ -301,16 +233,9 @@ function n3edLoad(rpc) {
   if (!el) return
   el.innerHTML = window.BPC.utils.buildSkeleton()
 
-  Promise.all([
-    n3edFetchGroup(rpc, CFG_N3ED.grupos.rt, true),
-    n3edFetchGroup(rpc, CFG_N3ED.grupos.sw, false),
-  ])
-  .then(function (results) {
-    _n3edRtRows = results[0]
-    _n3edSwRows = results[1]
-    n3edRenderContent(el)
-  })
-  .catch(function (err) { n3edRenderError(el, err.message || String(err)) })
+  n3edFetch(rpc)
+    .then(function (rows) { n3edRenderCards(el, rows) })
+    .catch(function (err) { n3edRenderError(el, err.message || String(err)) })
 
   BPC.utils.startRefresh(el, function () { n3edLoad(rpc) }, CFG_N3ED.refreshMs)
 }

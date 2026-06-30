@@ -146,8 +146,7 @@ def push_panels(domain_level, only_file=None):
             p['targets'] = [dict(anchor)]
             p['datasource'] = ds_obj          # corrigir datasource do painel
             p['transparent'] = True           # NOC: fundo transparente
-            if is_content:
-                p['title'] = ''               # NOC: sem título nos painéis de conteúdo
+            p['title'] = ''                   # NOC: sem título (utils e conteúdo)
             print(f'  UPDATE {fname} -> painel id={panel_id} ({entry.get("title","")})')
         else:
             # Criar painel novo (gridPos provisorio)
@@ -156,7 +155,7 @@ def push_panels(domain_level, only_file=None):
             new_panel = {
                 'id': new_id,
                 'type': 'marcusolsson-dynamictext-panel',
-                'title': '' if is_content else entry.get('title', fname),
+                'title': '',
                 'gridPos': {'x': 0, 'y': y, 'w': 24, 'h': 8},
                 'options': {
                     'afterRender': code,

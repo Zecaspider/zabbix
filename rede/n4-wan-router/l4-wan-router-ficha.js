@@ -173,7 +173,7 @@ function r4Fetch(rpc, hostId, rtr){
     rpc('item.get',{ hostids:[hostId], filter:{status:0}, search:{key_:'net.if.out'},   output:['name','key_','lastvalue','lastclock'] }),
     rpc('item.get',{ hostids:[hostId], filter:{status:0}, search:{key_:'system.cpu.util'}, output:['name','key_','lastvalue','lastclock'], limit:3 }),
     rpc('item.get',{ hostids:[hostId], filter:{status:0}, search:{key_:'vm.memory.util'}, output:['name','key_','lastvalue','lastclock'], limit:3 }),
-    rpc('item.get',{ hostids:[hostId], filter:{status:0}, search:{key_:'system.uptime'}, output:['name','key_','lastvalue','lastclock'] }),
+    rpc('item.get',{ hostids:[hostId], search:{name:'uptime'}, searchWildcardsEnabled:true, output:['name','key_','lastvalue','lastclock'], limit:1 }),
     rpc('item.get',{ hostids:[hostId], filter:{status:0}, search:{key_:'icmpping'},      output:['name','key_','lastvalue','lastclock'] }),
     rpc('trigger.get',{ hostids:[hostId], filter:{value:1}, output:['description','priority','lastchange'], sortfield:'priority', sortorder:'DESC', limit:20 }),
     rpc('event.get',{ hostids:[hostId], time_from:now-CFG_R4.flapWindowSec, output:['name','clock','value','severity'], source:'0', sortfield:'clock', sortorder:'DESC', limit:30 }),

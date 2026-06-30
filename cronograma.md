@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-30 (Teste N1→N6 fluxo Rede completo. Bugs B-09/B-10 resolvidos — dashUids N2 + apiUrl NETWORK nos 7 utils de Rede. N4 DC Switch + N4 WAN Router movidos para 04·Rede. §4.14 adicionado. Issues pendentes catalogados.)
+Última actualização: 2026-07-01 (§4.15: N3 Edifícios refeito em cards 3×3. N4 switches tabela alargada + drill N6. Bugs B-11/B-12 resolvidos. 3 painéis órfãos N4 removidos.)
 
 ---
 
@@ -121,6 +121,7 @@
 | 4.13 | Validação end-to-end fluxo Edifícios N1→N6 | ☑ | 2026-06-30 | Drill N1→N6 completo confirmado no browser. Bugs resolvidos: B-04 uptime N3 (item key → name search); B-05 switches N4 (panel type state-timeline → BT); B-06 nomes interface N4 (value mapping regex); B-07 N6 CPU+Ficha (datasource INFRA→NETWORK, filtro `/CPU utilization/`, query `h.name=`); B-08 N5 filtro interface (regex `.*` → `[^.]*` para isolar subinterfaces). Commits `7e4da51`, `af88c83`, `c55d6c3`. |
 
 | 4.14 | Teste N1→N6 fluxo Rede + correções B-09/B-10 | ☑ | 2026-06-30 | Drill N1→N2 Rede→N3 WAN/DC/Edifícios→N4→N5/N6 executado no browser. **B-09**: dashUids null em N2 para DC Fabric e Edifícios (l2-segmentos.js). **B-10**: apiUrl apontava INFRA em vez de NETWORK em 7 utils de Rede (n3-dc, n3-wan, n3-wan-carriers, n4-dc-switch, n4-wan-router, n4-wan-ag, n4-wan-provedor) — causava "0 dispositivos" em todos os dashboards de Rede. N4 DC Switch + N4 WAN Router estavam em pasta General (sem permissão de serviço) → movidos para 04·Rede via API. Commit c7b703b. Issues pendentes: B-11 título "Header + Shared" visível nos utils N4; B-12 uptime WAN Router; N3-DC-01 matriz underlay vermelha (a confirmar com equipa de rede); N3-SW-01/N4-EDIF-02 drill N4→N6 em switches Edifícios. |
+| 4.15 | N3 Edifícios cards 3×3 + N4 switches melhorado + B-11/B-12 | ☑ | 2026-07-01 | **N3**: `l3-edificios-table.js` reescrito — grid 3×3 (9 cards), sort DOWN→Degradado→OK, borda colorida por estado, RTT/Perda/CPU/Uptime por card, drill N4. Switches da tabela separados (ficam no N4, não no N3). **N4 switches**: colunas alargadas (Modelo, Perda, Uptime) + botão "N6 →" explícito; fetch icmpping/sec/loss numa só query; modelo vem das tags Zabbix (`C9200L-48P-4G`). Auditoria Zabbix confirmou: 9 routers de edifício (g28), 46 switches só na Sede (g29, tag `local=sede`), outros 8 edifícios sem switches monitorizados. **N6**: dashboard pre-existente `n6-edificio-switch` já completo (15 painéis nativos incl. state-timeline portas P0-P20, hw health). **B-11**: `push_panel.py` corrigido — todos os painéis (utils + conteúdo) ficam com `title: ''`. **B-12**: uptime WAN Router — query mudada de `filter:{key_:'system.uptime'}` para `search:{name:'uptime'},searchWildcardsEnabled:true` (compatível com Cisco IOS SNMP). **Limpeza**: 3 painéis órfãos removidos do N4 Edifício (ids 3/4/5 — timeseries WAN vestígios do clone N4 Agências). Issues ainda pendentes: N3-DC-01 matriz underlay vermelha (a confirmar com rede); B-12 uptime WAN Router a validar no browser. |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |

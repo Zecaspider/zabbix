@@ -27,8 +27,31 @@ function start(rpc) {
   }
 
   function fmtRtt(sec) {
-    if (!sec || isNaN(sec)) return '—'
-    return (parseFloat(sec) * 1000).toFixed(1) + ' ms'
+    var n = parseFloat(sec)
+    if (!n || isNaN(n)) return '—'
+    return (n * 1000).toFixed(1) + ' ms'
+  }
+
+  function fmtLoss(v) {
+    var n = parseFloat(v)
+    if (isNaN(n)) return '—'
+    return n.toFixed(1) + '%'
+  }
+
+  function fmtUptime(secs) {
+    secs = parseInt(secs, 10)
+    if (!secs || isNaN(secs)) return '—'
+    var d = Math.floor(secs / 86400)
+    var h = Math.floor((secs % 86400) / 3600)
+    return d > 0 ? d + 'd ' + h + 'h' : h + 'h'
+  }
+
+  function lossColor(v) {
+    var n = parseFloat(v)
+    if (isNaN(n)) return 'color:rgba(255,255,255,0.3)'
+    if (n >= 5)  return 'color:#f87171'
+    if (n >= 1)  return 'color:#D29922'
+    return 'color:#4ade80'
   }
 
   function load() {
@@ -80,35 +103,52 @@ function start(rpc) {
         Promise.resolve(hosts),
         rpc('item.get', {
           hostids: hostIds,
-          filter: { key_: 'icmpping', status: 0 },
-          output: ['hostid', 'lastvalue'],
+          search: { key_: 'icmpping' },
+          filter: { status: 0 },
+          output: ['hostid', 'key_', 'lastvalue'],
         }),
         rpc('item.get', {
           hostids: hostIds,
-          filter: { key_: 'icmppingsec', status: 0 },
+          search: { name: 'uptime' },
+          searchWildcardsEnabled: true,
+          filter: { status: 0 },
           output: ['hostid', 'lastvalue'],
+          limit: hostIds.length,
         }),
       ])
     })
     .then(function (res) {
       if (!res) return
-      var hosts = res[0], pingItems = res[1], rttItems = res[2]
+      var hosts = res[0], icmpItems = res[1], uptItems = res[2]
 
-      var pingMap = {}, rttMap = {}
-      pingItems.forEach(function (i) { pingMap[i.hostid] = i.lastvalue })
-      rttItems.forEach(function (i)  { rttMap[i.hostid]  = i.lastvalue })
+      var pingMap = {}, rttMap = {}, lossMap = {}, uptMap = {}
+      icmpItems.forEach(function (i) {
+        if (i.key_ === 'icmpping')     pingMap[i.hostid] = i.lastvalue
+        if (i.key_ === 'icmppingsec')  rttMap[i.hostid]  = i.lastvalue
+        if (i.key_ === 'icmppingloss') lossMap[i.hostid] = i.lastvalue
+      })
+      uptItems.forEach(function (i) { if (!uptMap[i.hostid]) uptMap[i.hostid] = i.lastvalue })
 
       // Agrupar por andar, ordenar dentro de cada andar por zona+nome
       var byFloor = {}
       hosts.forEach(function (h) {
         var tags = {}
         ;(h.tags || []).forEach(function (t) { tags[t.tag] = t.value })
-        var floor = tags.andar || '—'
-        var zone  = tags.zona  || '—'
-        var up    = pingMap[h.hostid] === '1'
-        var rtt   = rttMap[h.hostid]
+        var floor  = tags.andar  || '—'
+        var zone   = tags.zona   || '—'
+        var modelo = tags.modelo || '—'
+        var up     = pingMap[h.hostid] === '1'
         if (!byFloor[floor]) byFloor[floor] = []
-        byFloor[floor].push({ name: h.name, floor: floor, zone: zone, up: up, rtt: rtt })
+        byFloor[floor].push({
+          name:   h.name,
+          floor:  floor,
+          zone:   zone,
+          modelo: modelo,
+          up:     up,
+          rtt:    rttMap[h.hostid],
+          loss:   lossMap[h.hostid],
+          uptime: uptMap[h.hostid],
+        })
       })
 
       // Ordenar andares numericamente (P0, P1, … P20)
@@ -128,7 +168,7 @@ function start(rpc) {
 
       var BORDER   = '1px solid rgba(255,255,255,0.18)'
       var BORDER_H = '2px solid rgba(255,255,255,0.30)'
-      var TH_STYLE = 'padding:10px 12px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--bpc-mute);border-bottom:' + BORDER_H + ';border-right:' + BORDER
+      var TH_STYLE = 'padding:10px 12px;text-align:left;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--bpc-mute);border-bottom:' + BORDER_H + ';border-right:' + BORDER
       var TD_BASE  = 'padding:10px 12px;font-size:14px;border-bottom:' + BORDER + ';border-right:' + BORDER
 
       var html = '<div class="bpc" style="display:flex;flex-direction:column;gap:12px">'
@@ -144,32 +184,40 @@ function start(rpc) {
       // Tabela
       html += '<table style="width:100%;border-collapse:collapse;border:' + BORDER + '">' +
         '<thead><tr style="background:rgba(255,255,255,0.04)">' +
-          '<th style="' + TH_STYLE + ';width:70px">Andar</th>' +
-          '<th style="' + TH_STYLE + ';width:110px">Zona</th>' +
+          '<th style="' + TH_STYLE + ';width:62px">Andar</th>' +
+          '<th style="' + TH_STYLE + ';width:80px">Zona</th>' +
+          '<th style="' + TH_STYLE + ';width:100px">Modelo</th>' +
           '<th style="' + TH_STYLE + '">Switch</th>' +
-          '<th style="' + TH_STYLE + ';width:90px;text-align:center">Estado</th>' +
-          '<th style="' + TH_STYLE + ';width:90px;text-align:right;border-right:none">RTT</th>' +
+          '<th style="' + TH_STYLE + ';width:80px;text-align:center">Estado</th>' +
+          '<th style="' + TH_STYLE + ';width:78px;text-align:right">RTT</th>' +
+          '<th style="' + TH_STYLE + ';width:68px;text-align:right">Perda</th>' +
+          '<th style="' + TH_STYLE + ';width:78px;text-align:right">Uptime</th>' +
+          '<th style="' + TH_STYLE + ';width:54px;text-align:center;border-right:none">N6</th>' +
         '</tr></thead><tbody>'
 
       floors.forEach(function (floor) {
         var rows = byFloor[floor]
         rows.forEach(function (r, idx) {
           var estado = r.up
-            ? '<span style="display:inline-block;min-width:54px;text-align:center;background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.35);border-radius:4px;padding:2px 8px;font-size:13px;font-weight:600">UP</span>'
-            : '<span style="display:inline-block;min-width:54px;text-align:center;background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:4px;padding:2px 8px;font-size:13px;font-weight:600">DOWN</span>'
-          var rowBg = r.up ? '' : 'background:rgba(239,68,68,0.05);'
+            ? '<span style="display:inline-block;min-width:48px;text-align:center;background:rgba(34,197,94,0.15);color:#4ade80;border:1px solid rgba(34,197,94,0.35);border-radius:4px;padding:2px 7px;font-size:12px;font-weight:600">UP</span>'
+            : '<span style="display:inline-block;min-width:48px;text-align:center;background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:4px;padding:2px 7px;font-size:12px;font-weight:600">DOWN</span>'
+          var rowBg    = r.up ? '' : 'background:rgba(239,68,68,0.05);'
           var drillHref = n6Url(r.name)
 
           html += '<tr style="' + rowBg + '">' +
             (idx === 0
               ? '<td rowspan="' + rows.length + '" style="' + TD_BASE + ';font-weight:700;font-size:14px;color:#A0B0C8;vertical-align:middle;text-align:center;background:rgba(255,255,255,0.03)">' + floor + '</td>'
               : '') +
-            '<td style="' + TD_BASE + ';color:var(--bpc-mute)">' + r.zone + '</td>' +
-            '<td style="' + TD_BASE + '">' +
-              '<a href="' + drillHref + '" style="color:#CDD9E5;text-decoration:none;font-family:monospace" title="Ver N6 — ' + r.name + '">' + r.name + '</a>' +
-            '</td>' +
+            '<td style="' + TD_BASE + ';color:var(--bpc-mute);font-size:14px">' + r.zone + '</td>' +
+            '<td style="' + TD_BASE + ';color:#64748B;font-size:13px;font-family:monospace">' + r.modelo + '</td>' +
+            '<td style="' + TD_BASE + ';font-family:monospace;font-size:13px;color:#CDD9E5">' + r.name + '</td>' +
             '<td style="' + TD_BASE + ';text-align:center">' + estado + '</td>' +
-            '<td style="' + TD_BASE + ';text-align:right;color:var(--bpc-mute);border-right:none">' + fmtRtt(r.rtt) + '</td>' +
+            '<td style="' + TD_BASE + ';text-align:right;color:var(--bpc-mute);font-size:14px">' + fmtRtt(r.rtt) + '</td>' +
+            '<td style="' + TD_BASE + ';text-align:right;font-size:14px;' + lossColor(r.loss) + '">' + fmtLoss(r.loss) + '</td>' +
+            '<td style="' + TD_BASE + ';text-align:right;color:#64748B;font-size:13px">' + fmtUptime(r.uptime) + '</td>' +
+            '<td style="' + TD_BASE + ';text-align:center;border-right:none">' +
+              '<a href="' + drillHref + '" style="font-size:13px;color:#58A6FF;border:1px solid rgba(88,166,255,0.3);border-radius:4px;padding:3px 10px;text-decoration:none;white-space:nowrap">N6 →</a>' +
+            '</td>' +
           '</tr>'
         })
       })
