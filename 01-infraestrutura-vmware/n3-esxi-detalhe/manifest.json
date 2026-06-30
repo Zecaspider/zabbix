@@ -1,0 +1,60 @@
+{
+  "dashboardUid": "b55d5481-9f82-4371-a7ca-e83ceb3064cc",
+  "dashboardTitle": "N3 · ESXi Detalhe",
+  "folderUid": "bfpm0sdhhi22od",
+  "datasource": "3_KgG43nz",
+  "groupIdAncora": "603",
+  "status": "em-construcao",
+  "anchor": {
+    "group": {
+      "filter": "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+    },
+    "host": {
+      "filter": "$hostid"
+    },
+    "item": {
+      "filter": "CPU usage in percent"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared N3",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-header.js",
+      "id": 101,
+      "role": "content",
+      "title": "Header do Host ESXi",
+      "content": "<div id=\"bpc-sf-l3-header\"></div>"
+    },
+    {
+      "file": "l3-cpu-series.json",
+      "id": 200,
+      "role": "native",
+      "title": "CPU Usage"
+    },
+    {
+      "file": "l3-ram-series.json",
+      "id": 201,
+      "role": "native",
+      "title": "RAM Usage"
+    },
+    {
+      "file": "l3-net-series.json",
+      "id": 202,
+      "role": "native",
+      "title": "Network Traffic"
+    },
+    {
+      "file": "l3-eventos.js",
+      "id": 102,
+      "role": "content",
+      "title": "Tabela de Eventos",
+      "content": "<div id=\"bpc-sf-l3-eventos\"></div>"
+    }
+  ]
+}

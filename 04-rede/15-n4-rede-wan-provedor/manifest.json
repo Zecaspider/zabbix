@@ -1,0 +1,50 @@
+{
+  "dashboardUid": "rede.n4.wan-provedor",
+  "dashboardTitle": "N4 · WAN — Provedor",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    },
+    "queryType": "0",
+    "resultFormat": "time_series"
+  },
+  "variable": {
+    "name": "provider",
+    "label": "Provedor",
+    "type": "custom",
+    "query": "Unitel : unitel,MST / Mstelecom : mst,AT / Angola Telecom : at,ITA : ita,Multitel : multitel,IPWORLD : ipworld,Connectis : connectis,Azure : azure",
+    "current": {
+      "text": "Unitel",
+      "value": "unitel"
+    },
+    "note": "Valor = chave do provedor (CFG_P4.provedores). Lido por l4-wan-provedor.js via window.location.search."
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l4-wan-provedor.js",
+      "id": 101,
+      "role": "content",
+      "title": "WAN — Detalhe Provedor",
+      "content": "<div id=\"bpc-n4-wan-provedor\"></div>"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "dashboardUid": "rede.n2.segmentos",
+  "dashboardTitle": "N2 · Rede",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "groupIds": ["22", "24", "25", "26", "27", "28", "29"],
+  "anchor": {
+    "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},
+    "group": {"filter": "HG_DC_ROUTERS"},
+    "host": {"filter": "DC1-RTE-WAN-INT"},
+    "item": {"filter": "ICMP ping"}
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l2-kpi.js",
+      "id": 101,
+      "role": "content",
+      "title": "KPI Strip",
+      "content": "<div id=\"bpc-net-kpi\"></div>"
+    },
+    {
+      "file": "l2-segmentos.js",
+      "id": 103,
+      "role": "content",
+      "title": "Segmentos",
+      "content": "<div id=\"bpc-net-seg\"></div>"
+    }
+  ]
+}

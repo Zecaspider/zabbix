@@ -1,0 +1,35 @@
+{
+  "dashboardUid": "rede.n3.dc",
+  "dashboardTitle": "N3 · DC — Fabric",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},
+    "group": {"filter": "HG_DC_SWITCHES"},
+    "host": {"filter": "DC1-SPINE-11"},
+    "item": {"filter": "ICMP ping"}
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-dc-kpi.js",
+      "id": null,
+      "role": "content",
+      "title": "KPI Strip DC",
+      "content": "<div id=\"bpc-n3dc-kpi\"></div>"
+    },
+    {
+      "file": "l3-dc-fabric.js",
+      "id": null,
+      "role": "content",
+      "title": "4 Blocos Fabric",
+      "content": "<div id=\"bpc-n3dc-fabric\"></div>"
+    }
+  ]
+}

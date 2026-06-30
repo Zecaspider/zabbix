@@ -1,0 +1,10 @@
+{
+  "dashboardUid": "0812353b-3da2-4b65-a884-862633c7d70a",
+  "dashboardTitle": "n3-sv-versao-b-nativo",
+  "panels": [
+    { "file": "l3-vm-header.js",     "id": 100, "role": "content", "title": "",                 "content": "<div id=\"bt-vm-header\"></div>" },
+    { "file": "l3-servicos.js",      "id": 112, "role": "content", "title": "Servicos",          "content": "<div id=\"bt-kpi-servicos\"></div>" },
+    { "file": "l3-triggers.js",      "id": 113, "role": "content", "title": "Triggers",          "content": "<div id=\"bt-kpi-triggers\"></div>" },
+    { "file": "l3-ficha-servidor.js","id": 114, "role": "content", "title": "Ficha do Servidor", "content": "<div id=\"bt-ficha-servidor\"></div>" }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "dashboardUid": "rede.n3.wan-carriers",
+  "dashboardTitle": "N3 · WAN — Provedores",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    },
+    "queryType": "0",
+    "resultFormat": "time_series"
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-wan-provedores.js",
+      "id": 102,
+      "role": "content",
+      "title": "WAN — Provedores",
+      "content": "<div id=\"bpc-wan-provedores\"></div>"
+    },
+    {
+      "file": "l3-wan-alertas.js",
+      "id": 101,
+      "role": "content",
+      "title": "WAN — Alertas Activos",
+      "content": "<div id=\"bpc-wan-alertas\"></div>"
+    }
+  ]
+}

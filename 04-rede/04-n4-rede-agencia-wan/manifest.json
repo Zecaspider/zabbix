@@ -1,0 +1,73 @@
+{
+  "dashboardUid": "rede.n4.agencia-wan",
+  "dashboardTitle": "N4 · WAN-AG · Interfaces",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_ROUTERS"
+    },
+    "host": {
+      "filter": "DC1-RTE-WAN-AG"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    },
+    "queryType": "0",
+    "resultFormat": "time_series"
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l4-wan-ag-interfaces.js",
+      "id": 101,
+      "role": "content",
+      "title": "",
+      "content": "<div id=\"bpc-n4-wan-ag-ifaces\"></div>"
+    }
+  ],
+  "nativePanels": [
+    {
+      "_note": "Time series — Uplinks físicos Te0/1/2 + Te0/1/3 — Bits In/Out",
+      "group": "HG_DC_ROUTERS",
+      "host": "DC1-RTE-WAN-AG",
+      "items": [
+        "/Interface Te0\\/1\\/(2|3).*: Bits (received|sent)/"
+      ]
+    },
+    {
+      "_note": "Time series — Sub-interfaces WAN (Po2.x) — Bits In/Out — 1 painel por ISP",
+      "group": "HG_DC_ROUTERS",
+      "host": "DC1-RTE-WAN-AG",
+      "items": [
+        "/Interface Po2\\.(914|51|413|930|173|341|904|905|1506|2931|2932).*: Bits (received|sent)/"
+      ]
+    },
+    {
+      "_note": "Time series — Túneis DMVPN DC (Tu101-107) — Bits In/Out",
+      "group": "HG_DC_ROUTERS",
+      "host": "DC1-RTE-WAN-AG",
+      "items": [
+        "/Interface Tu10[1-7].*: Bits (received|sent)/"
+      ]
+    },
+    {
+      "_note": "Time series — Túneis DMVPN Edifícios (Tu201-208) — Bits In/Out",
+      "group": "HG_DC_ROUTERS",
+      "host": "DC1-RTE-WAN-AG",
+      "items": [
+        "/Interface Tu20[1-8].*: Bits (received|sent)/"
+      ]
+    }
+  ]
+}

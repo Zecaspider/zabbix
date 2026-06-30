@@ -1,0 +1,72 @@
+{
+  "type": "stat",
+  "title": "Uptime",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "ffo8sp8zllog0e"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "unit": "s",
+      "mappings": [],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "yellow",
+            "value": 0
+          }
+        ]
+      },
+      "decimals": 0,
+      "noValue": "Sem SNMP"
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": {
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+    },
+    "orientation": "auto",
+    "textMode": "value",
+    "colorMode": "value",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "targets": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "${group}"
+      },
+      "host": {
+        "filter": "${host}"
+      },
+      "item": {
+        "filter": "/Uptime \\(network\\)/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    }
+  ],
+  "transparent": true
+}

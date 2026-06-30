@@ -1,0 +1,46 @@
+{
+  "dashboardUid": "rede.n4.wan-dispositivo",
+  "dashboardTitle": "N4 - WAN Device",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "notes": "Dashboard parametrizado para qualquer router WAN. Variáveis passadas pelo N3 via URL.",
+  "drilldownUrl": "/d/rede.n4.wan-dispositivo?var-group=<GROUP>&var-host=<HOSTNAME>&var-iface=.*",
+  "variables": [
+    {
+      "name": "group", "label": "Host Group", "type": "textbox",
+      "default": "HG_DC_ROUTERS", "hide": true,
+      "note": "Passado pelo N3 via URL. Oculto no dashboard."
+    },
+    {
+      "name": "host", "label": "Host", "type": "textbox",
+      "default": "",
+      "note": "Nome do host Zabbix. Passado pelo N3 via URL."
+    },
+    {
+      "name": "iface", "label": "Interfaces", "type": "custom",
+      "default": ".*",
+      "options": [
+        {"text": "All",             "value": ".*"},
+        {"text": "Uplinks",         "value": "Te0"},
+        {"text": "WAN Circuits",    "value": "Po2"},
+        {"text": "DMVPN DC",        "value": "Tu1"},
+        {"text": "DMVPN Edificios", "value": "Tu2"}
+      ]
+    }
+  ],
+  "panels": [
+    {"id": 1, "role": "text",    "title": "Host title", "type": "text"},
+    {"id": 2, "role": "content", "title": "Bits Received",              "type": "timeseries", "refId": "A", "unit": "bps"},
+    {"id": 3, "role": "content", "title": "Bits Sent",                  "type": "timeseries", "refId": "B", "unit": "bps"},
+    {"id": 4, "role": "content", "title": "Packet Errors In/Out",       "type": "timeseries", "refId": "C+D", "unit": "pps"},
+    {"id": 5, "role": "content", "title": "Packet Discards In/Out",     "type": "timeseries", "refId": "E+F", "unit": "pps"},
+    {"id": 6, "role": "content", "title": "Interface Operational Status","type": "state-timeline", "refId": "G"},
+    {"id": 7, "role": "content", "title": "ICMP Latency & Availability","type": "timeseries", "refId": "H+I", "unit": "ms"},
+    {"id": 8, "role": "content", "title": "Triggers Activos",           "type": "alertlist"}
+  ],
+  "validated": {
+    "date": "2026-06-26",
+    "method": "ds/query directo com group=HG_DC_ROUTERS, host=DC1-RTE-WAN-AG, iface=Te0",
+    "result": "9/9 targets OK — Bits recv/sent: 4 series × 10741pts; Errors/Discards: 4 series × 58pts; ICMP: 1 serie × 10741pts"
+  }
+}

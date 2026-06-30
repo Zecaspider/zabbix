@@ -1,0 +1,38 @@
+{
+  "dashboardUid": "rede.n3.edificios",
+  "dashboardTitle": "N3 · Edifícios",
+  "folderUid": "bfpm0sdxiclxcf",
+  "datasource": "ffo8sp8zllog0e",
+  "drilldownFrom": "n2-rede",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_ROUTERS"
+    },
+    "host": {
+      "filter": "DC1-RTE-WAN-INT"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-edificios-table.js",
+      "id": 101,
+      "role": "content",
+      "title": "Edifícios — Tabela",
+      "content": "<div id=\"bpc-n3ed-table\"></div>"
+    }
+  ]
+}

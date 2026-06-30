@@ -1,0 +1,1686 @@
+{
+  "id": 31390809202688,
+  "panels": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 100,
+      "options": {
+        "afterRender": "",
+        "content": "<div id=\"bpc-header-root\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "HG_DC_ROUTERS"
+          },
+          "host": {
+            "filter": "DC1-RTE-WAN-INT"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "noValue": "Sem SNMP",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 3
+      },
+      "id": 201,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Disponibilidade ICMP",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "cfo3cgypdrdvkf"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 20,
+        "x": 4,
+        "y": 3
+      },
+      "id": 101,
+      "options": {
+        "cellHeight": "lg",
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "cfo3cgypdrdvkf"
+          },
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT MAX(CASE WHEN ht.tag='modelo' THEN ht.value END) AS 'Modelo', MAX(CASE WHEN ht.tag='andar' THEN ht.value END) AS 'Piso', MAX(CASE WHEN ht.tag='zona' THEN ht.value END) AS 'Zona', MAX(CASE WHEN ht.tag='os_version' THEN ht.value END) AS 'IOS Version', MAX(CASE WHEN ht.tag='funcao' THEN ht.value END) AS 'Função', MAX(CASE WHEN ht.tag='fabricante' THEN ht.value END) AS 'Fabricante' FROM host_tag ht JOIN hosts h ON ht.hostid=h.hostid WHERE h.host='${switch}'",
+          "refId": "A"
+        }
+      ],
+      "title": "Ficha Técnica do Switch",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "—",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 8
+      },
+      "id": 202,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "ICMP response time"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Latência RTT",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "noValue": "—",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 8
+      },
+      "id": 203,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "ICMP loss"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Packet Loss",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 8
+      },
+      "id": 209,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "CPU utilization"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "CPU",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 8
+      },
+      "id": 210,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/^Processor: Memory utilization/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Memoria %",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 3600
+              },
+              {
+                "color": "green",
+                "value": 86400
+              }
+            ]
+          },
+          "unit": "dtdhms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 8,
+        "x": 16,
+        "y": 8
+      },
+      "id": 211,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "Uptime (network)"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Uptime",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 35
+              },
+              {
+                "color": "red",
+                "value": 45
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 12
+      },
+      "id": 212,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "Switch 1 - Inlet Temp Sensor: Temperature"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Temp Inlet (C)",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 55
+              },
+              {
+                "color": "red",
+                "value": 70
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 12
+      },
+      "id": 213,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "Switch 1 - HotSpot Temp Sensor: Temperature"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Temp HotSpot (C)",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "text": "OK"
+                },
+                "2": {
+                  "color": "yellow",
+                  "text": "WARN"
+                },
+                "3": {
+                  "color": "red",
+                  "text": "CRIT"
+                },
+                "4": {
+                  "color": "red",
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              },
+              {
+                "color": "yellow",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 8,
+        "y": 12
+      },
+      "id": 214,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/Switch.*Fan status/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Fans",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "text": "OK"
+                },
+                "2": {
+                  "color": "yellow",
+                  "text": "WARN"
+                },
+                "3": {
+                  "color": "red",
+                  "text": "CRIT"
+                },
+                "4": {
+                  "color": "red",
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              },
+              {
+                "color": "yellow",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 12,
+        "y": 12
+      },
+      "id": 215,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "textMode": "value"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "Switch 1 - Power Supply A: Power supply status"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "PSU",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 90,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "text": "UP"
+                },
+                "2": {
+                  "color": "red",
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 14,
+        "x": 0,
+        "y": 15
+      },
+      "id": 206,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.7,
+        "showValue": "never"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Operational status/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Uplinks - Estado Operacional",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 10,
+        "x": 14,
+        "y": 15
+      },
+      "id": 204,
+      "options": {
+        "datasource": "ffo8sp8zllog0e",
+        "highlightBackground": false,
+        "highlightNewEvents": false,
+        "highlightNewerThan": "1h",
+        "limit": 100,
+        "problemTimeline": false,
+        "showDescription": true,
+        "showTriggers": "all problems",
+        "sortProblems": "lastchange",
+        "targets": [
+          {
+            "group": {
+              "filter": "${group}"
+            },
+            "host": {
+              "filter": "${switch}"
+            },
+            "options": {
+              "acknowledged": 2,
+              "hostsInMaintenance": false,
+              "minSeverity": 2
+            },
+            "tags": {
+              "filter": ""
+            },
+            "trigger": {
+              "filter": ""
+            }
+          }
+        ]
+      },
+      "title": "Problemas Activos",
+      "transparent": true,
+      "type": "alexanderzobnin-zabbix-triggers-panel"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 10,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 216,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Inbound packets with error/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Outbound packets with error/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "B",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Inbound packets discard/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "C",
+          "resultFormat": "time_series"
+        },
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Outbound packets discard/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "D",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Uplinks - Erros e Descartes (pps)",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 15,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "id": 207,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Bits received/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Uplinks — Tráfego Recebido (bps)",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "fillOpacity": 15,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 208,
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Bits sent/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Uplinks — Tráfego Enviado (bps)",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "fillOpacity": 90,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "1": {
+                  "color": "green",
+                  "text": "UP"
+                },
+                "2": {
+                  "color": "dark-red",
+                  "text": "DOWN"
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 15,
+        "w": 24,
+        "x": 0,
+        "y": 38
+      },
+      "id": 217,
+      "options": {
+        "alignValue": "center",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": true,
+        "rowHeight": 0.7,
+        "showValue": "never"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*ACCESS.*Operational status/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Portas Access - Estado Operacional (todos os pisos)",
+      "transparent": true,
+      "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Last"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Bits rx (atual)"
+              },
+              {
+                "id": "unit",
+                "value": "bps"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "text",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 1
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 10000000
+                    },
+                    {
+                      "color": "red",
+                      "value": 900000000
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Interface (Uplink)"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 53
+      },
+      "id": 205,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "show": false
+        },
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "functions": [],
+          "group": {
+            "filter": "${group}"
+          },
+          "host": {
+            "filter": "${switch}"
+          },
+          "item": {
+            "filter": "/.*Uplink.*Bits received/"
+          },
+          "options": {
+            "showDisabledItems": false
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "Uplinks - Trafego Actual",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {
+            "reducers": [
+              "lastNotNull"
+            ]
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Field": true
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": [
+    "bpc",
+    "rede",
+    "n6",
+    "switch",
+    "edificio"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "HG_EDIFICIOS_SWITCHES",
+          "value": "HG_EDIFICIOS_SWITCHES"
+        },
+        "hide": 2,
+        "label": "Host Group",
+        "name": "group",
+        "query": "HG_EDIFICIOS_SWITCHES",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "label": "Switch",
+        "name": "switch",
+        "query": "",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "N6 - Rede - Edificio - Switch - Detalhe",
+  "uid": "rede.n6.edificio-switch",
+  "version": 7
+}
