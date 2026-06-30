@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-07-01 (§4.15: N3 Edifícios refeito em cards 3×3. N4 switches tabela alargada + drill N6. Bugs B-11/B-12 resolvidos. 3 painéis órfãos N4 removidos.)
+Última actualização: 2026-07-01 (§4.15 N3/N4 Edifícios. §12.x naming convention: contrato de UIDs confirmado (`dominio.nivel.funcao` sem número), mapa canónico domínio Rede documentado, convenção de pastas locais com prefixo numérico definida. T-04/T-05 agendados como sessão dedicada.)
 
 ---
 

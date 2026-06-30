@@ -84,7 +84,7 @@ sub-secção; a query âncora aponta para um grupo real e estável (ex.: `26`).
 
 ## 4. Naming canónico
 
-### 4.0 Convenção de títulos e UIDs de dashboards (aprovada 2026-06-27)
+### 4.0 Convenção de títulos, UIDs e estrutura de ficheiros (aprovada 2026-06-27, actualizada 2026-07-01)
 
 **Título do dashboard:**
 ```
@@ -93,7 +93,7 @@ Nx · Domínio [· Âmbito] — O que vê e faz
 
 | Parte | Regra | Exemplo |
 |---|---|---|
-| `Nx` | prefixo de nível (N1…N4) — força ordenação por nível na lista do Grafana | `N3` |
+| `Nx` | prefixo de nível (N1…N6) — força ordenação por nível na lista do Grafana | `N3` |
 | ` · Domínio [· Âmbito]` | breadcrumb de hierarquia, separado por ` · ` | ` · Rede · WAN` |
 | ` — ` | separador fixo entre hierarquia e propósito | |
 | `O que vê e faz` | conteúdo/propósito em linguagem de operador | `Serviços e circuitos` |
@@ -119,6 +119,9 @@ N4 · Rede · WAN · Dispositivo — Interfaces
 N4 · Rede · WAN · Interface — Tráfego
 N4 · Rede · WAN · Provedor — SLA e circuitos
 N4 · Rede · DC · Switch — Interfaces
+N5 · Rede · Agência — Interfaces
+N5 · Rede · Edifício — Interfaces
+N6 · Rede · Edifício · Switch — Detalhe
 N2 · VMware — Estado geral
 N3 · VMware · ESXi — Hosts e clusters
 N3 · VMware · ESXi — Detalhe do host
@@ -133,12 +136,38 @@ N3 · Servidores · VM — Diagnóstico
 ```
 Exemplos: `rede.n3.agencias`, `rede.n4.agencia`, `vmware.n3.esxi`, `visao-geral.n1.noc`
 
-Regras: minúsculas, hífens como separador interno, ponto como separador de segmento. O UID não muda após criação — é a âncora de todos os links de drill-down.
+Regras:
+- Minúsculas, hífens como separador interno, ponto como separador de segmento.
+- **Sem número de ordenação** — o número existe nas pastas/ficheiros para ordenação visual; o UID é âncora permanente de links, não deve mudar se domínios forem reordenados.
+- O UID não muda após criação — é a âncora de todos os links de drill-down.
+
+**Mapa canónico de UIDs — domínio Rede (aprovado 2026-07-01):**
+
+| # drill | Subpasta local (proposta) | UID canónico | Título canónico |
+|---|---|---|---|
+| 01 | `01-n2-rede/` | `rede.n2.segmentos` | `N2 · Rede — Segmentos e alertas` |
+| 02 | `02-n3-rede-agencias/` | `rede.n3.agencias` | `N3 · Rede · Agências — Mapa de estado` |
+| 03 | `03-n4-rede-agencia/` | `rede.n4.agencia` | `N4 · Rede · Agência — Diagnóstico` |
+| 04 | `04-n4-rede-agencia-wan/` | `rede.n4.agencia-wan` | `N4 · Rede · Agência · WAN — Dispositivo` |
+| 05 | `05-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
+| 06 | `06-n3-rede-dc/` | `rede.n3.dc` | `N3 · Rede · DC Fabric — Estado dos switches` |
+| 07 | `07-n4-rede-dc-switch/` | `rede.n4.dc-switch` | `N4 · Rede · DC · Switch — Interfaces` |
+| 08 | `08-n3-rede-edificios/` | `rede.n3.edificios` | `N3 · Rede · Edifícios BPC — Routers e switches` |
+| 09 | `09-n4-rede-edificio/` | `rede.n4.edificio` | `N4 · Rede · Edifício — Detalhe` |
+| 10 | `10-n5-rede-edificio-interfaces/` | `rede.n5.edificio-interfaces` | `N5 · Rede · Edifício — Interfaces` |
+| 11 | `11-n6-rede-edificio-switch/` | `rede.n6.edificio-switch` | `N6 · Rede · Edifício · Switch — Detalhe` |
+| 12 | `12-n3-rede-wan/` | `rede.n3.wan` | `N3 · Rede · WAN — Serviços e circuitos` |
+| 13 | `13-n3-rede-wan-carriers/` | `rede.n3.wan-carriers` | `N3 · Rede · WAN — Por provedor` |
+| 14 | `14-n4-rede-wan-dispositivo/` | `rede.n4.wan-dispositivo` | `N4 · Rede · WAN · Dispositivo — Interfaces` |
+| 15 | `15-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
+| 16 | `16-n4-rede-wan-router/` | `rede.n4.wan-router` | `N4 · Rede · WAN · Router — Diagnóstico` |
+
+> **Migração pendente (T-04):** os UIDs actuais no Grafana são UUIDs gerados ou slugs parciais. A migração para UIDs canónicos requer sessão dedicada: substituição global nos `.js` + re-push de todos os dashboards + validação de cada link de drill-down. Ver §10.1 issues.
 
 **Ficheiros locais:**
 ```
 Ficheiros:   lowercase-com-hifens.js (sem acentos, sem versão no nome)
-  painel utils:   utils.js (ou *-header-global.js em dashboards herdados)
+  painel utils:   utils.js
   conteúdo N2/N3: l2-*.js / l3-*.js  (prefixo de nível)
 Funções/vars: específicas e grepáveis (< 5 matches no codebase)
 ```
@@ -147,50 +176,96 @@ Git versiona — nunca `-v1`, `-old`, `copy` no nome do ficheiro.
 
 ### 4.1 Hierarquia de directórios local (REPRODUZÍVEL)
 
+> **Actualizado 2026-07-01** — as pastas de domínio passam a ter prefixo numérico
+> espelhando as pastas Grafana (`00-` a `99-`). As subpastas dentro de cada
+> domínio têm prefixo de ordem de drill (`01-`, `02-`, …) seguido de nível e
+> âmbito. O número de ordenação **não** entra no UID — serve apenas para
+> ordenação visual no sistema de ficheiros e no Grafana.
+
 Esta é a regra que traduz a arquitectura lógica (níveis + domínios) para a
 árvore de ficheiros. Uma IA deve poder reproduzir esta estrutura **só a partir
 desta secção**, sem adivinhar.
 
-Raiz de trabalho: `C:\Repositorios\zabbix\bpc-observe\`.
+Raiz de trabalho: `C:\Repositorios\zabbix\sistema-de-observabilidade\`.
 
 ```
-bpc-observe/
-├── CLAUDE.md                       # fluxo de trabalho (esta pasta)
-├── README.md                       # indice da estrutura
+sistema-de-observabilidade/
+├── CLAUDE.md
+├── README.md
 ├── _comum/                         # FONTE DE VERDADE do painel utilitario canonico
-│   └── utils.js                    # template §5.1 (BPC/THEME/SHARED/CHARTS/state) — copiado p/ cada dashboard
-├── documentacao/                   # os 3 docs canonicos (este, blueprint, mapa-host-groups)
-├── visao-geral/                    # o N1 (nivel de topo, sem dominio)
-│   └── n1/                         # 1 subpasta = 1 dashboard Grafana
+│   └── utils.js
+├── documentacao/
+├── 00-visao-geral/                 # espelha pasta Grafana "00 · Visão Geral"
+│   └── 01-n1-visao-geral/          # 1 subpasta = 1 dashboard = 1 manifest.json
 │       ├── manifest.json
 │       └── *.js
-├── <dominio>/                      # 1 pasta por dominio (nome do dominio, SEM prefixo n2-)
-│   ├── CLAUDE.md                   # (opcional) regras especificas do dominio
-│   ├── n2/                         # dashboard N2 do dominio = 1 UID Grafana
-│   │   ├── manifest.json           # liga ficheiro<->painel; tem o dashboardUid do N2
-│   │   ├── dashboard-snapshot.json # (so apos fecho) JSON completo do dashboard
-│   │   └── l2-*.js                 # paineis (utils + conteudo)
-│   └── n3/                         # dashboard N3 de detalhe = OUTRO UID Grafana
-│       ├── manifest.json           # com o dashboardUid do N3
-│       └── l3-*.js
-└── arquivo-referencia/             # material antigo, SO consulta, nunca editar
+├── 01-infraestrutura-vmware/       # espelha "01 · Infraestrutura VMware"
+│   ├── 01-n2-vmware/
+│   ├── 02-n3-vmware-esxi/
+│   └── ...
+├── 04-rede/                        # espelha "04 · Rede"
+│   ├── 01-n2-rede/
+│   ├── 02-n3-rede-agencias/        # sub-fluxo Agências
+│   ├── 03-n4-rede-agencia/
+│   ├── 04-n4-rede-agencia-wan/
+│   ├── 05-n5-rede-agencia-interfaces/
+│   ├── 06-n3-rede-dc/              # sub-fluxo DC
+│   ├── 07-n4-rede-dc-switch/
+│   ├── 08-n3-rede-edificios/       # sub-fluxo Edifícios
+│   ├── 09-n4-rede-edificio/
+│   ├── 10-n5-rede-edificio-interfaces/
+│   ├── 11-n6-rede-edificio-switch/
+│   ├── 12-n3-rede-wan/             # sub-fluxo WAN
+│   ├── 13-n3-rede-wan-carriers/
+│   ├── 14-n4-rede-wan-dispositivo/
+│   ├── 15-n4-rede-wan-provedor/
+│   └── 16-n4-rede-wan-router/
+├── 05-seguranca/
+├── 06-bases-dados/
+├── 07-apis/
+├── 08-servicos-negocio/
+└── 99-arquivo/
 ```
+
+**Convenção de nomes das subpastas:**
+```
+<ordem-drill>-<nivel>-<dominio>[-<subdomain>[-<ambito>]]
+```
+Exemplos: `02-n3-rede-agencias/`, `09-n4-rede-edificio/`, `11-n6-rede-edificio-switch/`
 
 **Regras invioláveis:**
 1. **1 subpasta = 1 dashboard Grafana = 1 manifest.json com 1 dashboardUid.**
-   N2 e N3 são dashboards separados no Grafana, logo `n2/` e `n3/` são
-   subpastas separadas, cada uma com o seu manifesto. Nunca misturar `l2-*` e
-   `l3-*` na mesma pasta.
-2. **A pasta de domínio tem o nome do domínio** (`servidores-virtuais/`), não
-   `n2-servidores-virtuais/`. O nível (`n2`/`n3`) é a subpasta. O prefixo
-   `n1-/n2-/n3-` da §4 aplica-se ao **título/UID do dashboard no Grafana**, não
-   ao nome da pasta de domínio.
-3. Domínios da §3 → uma pasta cada: `servidores-fisicos`, `servidores-virtuais`,
-   `armazenamento`, `seguranca`, `bases-dados`, `apis`, `servicos-negocio`,
-   `rede`, `agencias`. (Datastores **não** tem pasta — vive dentro do N3 de
-   `servidores-virtuais`, conforme blueprint §4.)
-4. Subpastas vazias (ainda por construir) levam um `.gitkeep` para a hierarquia
-   sobreviver no git.
+   Nunca misturar `l2-*` e `l3-*` na mesma pasta.
+2. **A pasta de domínio tem prefixo numérico** espelhando a numeração Grafana
+   (`04-rede/` ↔ `04 · Rede`). O número é apenas para ordenação visual — não
+   entra no UID do dashboard.
+3. **O número de ordem dentro do domínio** (`01-`, `02-`, …) reflecte a sequência
+   de drill-down natural dentro desse domínio (N2 → N3 → N4 → N5 → N6), agrupado
+   por sub-fluxo (Agências, DC, Edifícios, WAN, etc.).
+4. **O UID não tem número** — usa só `dominio.nivel.funcao` (ver §4.0). O número
+   é separado do UID para que reordenações futuras de domínios não invalide links.
+5. Subpastas vazias (ainda por construir) levam um `.gitkeep`.
+
+**Mapa de correspondência domínio local ↔ Grafana:**
+
+| Pasta local | Pasta Grafana | UID Grafana pasta |
+|---|---|---|
+| `00-visao-geral/` | `00 · Visão Geral` | `bfpm0sdaos074d` |
+| `01-infraestrutura-vmware/` | `01 · Infraestrutura VMware` | `bfpm0sdhhi22od` |
+| `02-armazenamento/` | `02 · Armazenamento` | `dfpm0sdnq8x6oe` |
+| `03-servidores-virtuais/` | `03 · Servidores Virtuais` | `cfpm0sdsxjb40c` |
+| `04-rede/` | `04 · Rede` | `bfpm0sdxiclxcf` |
+| `05-seguranca/` | `05 · Segurança` | `afpm0se1lombkb` |
+| `06-bases-dados/` | `06 · Bases de Dados` | `afpm0se5rij28d` |
+| `07-apis/` | `07 · APIs e Serviços` | `bfpm0sedbpgqob` |
+| `08-servicos-negocio/` | `08 · Serviços de Negócio` | `dfpm0sej5gxs0f` |
+| `99-arquivo/` | `99 · Arquivo` | `dfpm0sey9ut4wb` |
+
+> **Migração pendente (T-05):** as pastas locais actuais não têm prefixo numérico
+> (`rede/` em vez de `04-rede/`, subpastas sem número de drill). A migração faz-se
+> com `git mv` + actualização dos `manifest.json` e `push_panel.py` se houver
+> referências a paths. A migração dos UIDs Grafana (T-04) deve ser feita na mesma
+> sessão para manter coerência.
 
 ### 4.2 Hierarquia no Grafana (organização de pastas + Portal N1)
 
@@ -768,8 +843,9 @@ N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-pon
 | ID | Nível | Descrição | Prioridade |
 |---|---|---|---|
 | T-02 | N1 | Painel utils com título "Header + Shared" visível (no N4 já corrigido; rever N1/outros) | Média |
-| T-04 | Todos | UIDs canónicos (C3): dashboards ainda com UUID/slug em vez de `dominio.nivel.funcao` | Baixa |
-| T-05 | N1/N3 | Links BT vs Grafana data links — testar no browser real | Média |
+| T-04 | Todos | **Migração de UIDs canónicos**: dashboards ainda com UUID/slug em vez de `dominio.nivel.funcao`. Mapa completo para domínio Rede em §4.0. Requer sessão dedicada: substituição global nos `.js` + re-push + validação de cada drill-down. Fazer em conjunto com T-05. | Média |
+| T-05 | Todos | **Migração de pastas locais**: renomear directorias `rede/` → `04-rede/`, subpastas `n3-edificios/` → `08-n3-rede-edificios/`, etc. (ver §4.1). Fazer com `git mv`. Mapa completo para domínio Rede em §4.1. Requer mesma sessão que T-04 para manter coerência local↔Grafana. | Média |
+| T-05b | N1/N3 | Links BT vs Grafana data links — testar no browser real | Média |
 | T-06 | N4/N5 | Provider/Tipo/nº de links derivados das **tags** manuais; derivar do **nome real da interface** (verdade viva SNMP) e sinalizar divergências | Média |
 | T-07 | Agências | Agências **ponto-a-ponto sem router próprio** ficam invisíveis (não estão em `HG_AGENCIAS_ROUTERS`) — mapear pela sub-interface do router-pai | Alta (pós-N5) |
 | T-08 | N5 Agência | Bloco **Utilização %** fora — `net.if.speed` = 0 nas interfaces tunnel/DMVPN; reactivar quando o speed estiver populado no Zabbix | Baixa |
