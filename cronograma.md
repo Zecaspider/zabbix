@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-30 (Fase 4 completa. Bugs B-06/B-07/B-08 resolvidos. §4.13 atualizado. N5 filtro interface isolado. N6 datasource+CPU+Ficha corrigidos.)
+Última actualização: 2026-06-30 (Teste N1→N6 fluxo Rede completo. Bugs B-09/B-10 resolvidos — dashUids N2 + apiUrl NETWORK nos 7 utils de Rede. N4 DC Switch + N4 WAN Router movidos para 04·Rede. §4.14 adicionado. Issues pendentes catalogados.)
 
 ---
 
@@ -119,6 +119,8 @@
 | 4.11 | N4/N5/N6 Edificio — hw health switches (Temp/Fan/PSU) | ☑ | 2026-06-29 | Auditado: Temp 3 sensores (Inlet=25C/Outlet=32C/HotSpot=41C), Fans 2x status, PSU 1x status, PoE nao recolhido. Todos integrados em N6. Commit `1fc9be8`. |
 | 4.12 | N4 Edifício — tabela de switches condicional (BT) | ☑ | 2026-06-29 | `l4-ed-switches.js` (id=103) redesenhado: dinâmico via `router.edificio = switch.local` (sem hardcode Sede); condicional (painel invisível se 0 switches); tabela 14px com bordas visíveis; colunas Andar·Zona·Switch(link N6)·Estado(pill UP/DOWN)·RTT; ordenação numérica por andar. Pushed OK. |
 | 4.13 | Validação end-to-end fluxo Edifícios N1→N6 | ☑ | 2026-06-30 | Drill N1→N6 completo confirmado no browser. Bugs resolvidos: B-04 uptime N3 (item key → name search); B-05 switches N4 (panel type state-timeline → BT); B-06 nomes interface N4 (value mapping regex); B-07 N6 CPU+Ficha (datasource INFRA→NETWORK, filtro `/CPU utilization/`, query `h.name=`); B-08 N5 filtro interface (regex `.*` → `[^.]*` para isolar subinterfaces). Commits `7e4da51`, `af88c83`, `c55d6c3`. |
+
+| 4.14 | Teste N1→N6 fluxo Rede + correções B-09/B-10 | ☑ | 2026-06-30 | Drill N1→N2 Rede→N3 WAN/DC/Edifícios→N4→N5/N6 executado no browser. **B-09**: dashUids null em N2 para DC Fabric e Edifícios (l2-segmentos.js). **B-10**: apiUrl apontava INFRA em vez de NETWORK em 7 utils de Rede (n3-dc, n3-wan, n3-wan-carriers, n4-dc-switch, n4-wan-router, n4-wan-ag, n4-wan-provedor) — causava "0 dispositivos" em todos os dashboards de Rede. N4 DC Switch + N4 WAN Router estavam em pasta General (sem permissão de serviço) → movidos para 04·Rede via API. Commit c7b703b. Issues pendentes: B-11 título "Header + Shared" visível nos utils N4; B-12 uptime WAN Router; N3-DC-01 matriz underlay vermelha (a confirmar com equipa de rede); N3-SW-01/N4-EDIF-02 drill N4→N6 em switches Edifícios. |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |
