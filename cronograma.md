@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-06-29 (§9.6 v2 ☑ · §9.4 T-08 ☑ · §9.10 + §9.11 ☑. Fase 4 Edifícios: §4.10 ☑ N4 Edificio ☑ · N5 Edificio ☑ · N6 Switch ☑ — fluxo drill-down completo N3→N4→N5 + N4→N6 implementado e commitado. §4.12 ☑ tabela de switches N4 — dinâmica, condicional, 14px, bordas visíveis.)
+Última actualização: 2026-06-29 (Fase 4 Edifícios completa: §4.5 ☑ N3 drill funcional · §4.12 ☑ tabela switches N4 dinâmica/condicional/14px · §4.13 ☑ auditoria fluxo N3→N4→N5→N6 validada por código + API. Fluxo Edifícios end-to-end OK.)
 
 ---
 
@@ -109,7 +109,7 @@
 | 4.2 | Fundação — consolidar `utils.js` rede | ☑ | 2026-06-18 | 4 cópias (n3-wan, n3-wan-carriers, n4-wan-router, n4-dc-switch) com nocLabel próprio. Pushed e testado |
 | 4.3 | N2 · Rede refactor — l2-kpi + l2-segmentos + l2-triggers | ☑ | 2026-06-19 | Título corrigido "N2 · Rede" (era "N2 · Segmentos") · drills N4 por grupo (g26→DC Switch / g27→WAN Router) em l2-triggers · dead code "N3 em construção" removido de l2-segmentos · layout compactado (buraco 18 linhas eliminado) |
 | 4.4 | N3 DC Core — fabric + table + WAN links | ☑ | 2026-06-19 | UID `a75e2ba6` · 4 painéis · l3-dc-table re-pushed com drills N4 (estavam ausentes do Grafana) · layout compactado (buraco 8 linhas utils↔fabric) · snapshot gravado |
-| 4.5 | N3 Edifícios | ◐ | 2026-06-19 | UID `471f2208` · conformado: CPU threshold corrigido (60/85), manifest id corrigido · drill N4 **adiado** (N4 Edifícios não existe ainda) · snapshot gravado |
+| 4.5 | N3 Edifícios | ☑ | 2026-06-29 | UID `471f2208-d032-46d4-8d35-6fdfe770c967` · drill N4 funcional (n4-edificio-detalhe) · snapshot gravado. Nota: UID curto `471f2208` não resolve sozinho — usar UID completo em links externos. |
 | 4.6 | N3 WAN — negócio + cards + triggers + carriers | ☑ | 2026-06-19 | UID `1702465e` (n3-wan) reestruturado: duplicados eliminados (5 painéis→7 canonical), n4DashUid preenchido em l3-wan-triggers, layout novo · UID `31bace26` (n3-wan-carriers) h=48→28 · snapshots gravados |
 | 4.7a | N4 WAN Router — ficha técnica por router | ☑ | 2026-06-19 | UID `8ddc4833` · back-link "← N3 WAN" pushed (estava ausente do Grafana) · snapshot gravado |
 | 4.7b | N4 DC Switch — ficha técnica por switch | ☑ | 2026-06-19 | UID `7baea796` · back-link "← N3 DC Core" pushed (estava ausente do Grafana) · snapshot gravado |
@@ -118,6 +118,7 @@
 | 4.10 | Drill N4 Edifícios (g28/g29) | ☑ | 2026-06-29 | N4 Edifício (`n4-edificio-detalhe`) criado: ficha MySQL, ICMP/RTT/Loss, CPU/Mem/Uptime, provider WAN, state-timeline 46 switches, botão N5. N5 Edificio (`n5-edificio-interfaces`) criado: clonado de N5 Agências, variável host por HG_EDIFICIOS_ROUTERS. N6 Switch (`n6-edificio-switch`) criado: ficha MySQL (modelo/piso/zona/IOS), stats SNMP, hw health (Temp Inlet+HotSpot, Fans, PSU), uplinks erros+discards, state-timeline 65 portas access. Commit `1fc9be8`. |
 | 4.11 | N4/N5/N6 Edificio — hw health switches (Temp/Fan/PSU) | ☑ | 2026-06-29 | Auditado: Temp 3 sensores (Inlet=25C/Outlet=32C/HotSpot=41C), Fans 2x status, PSU 1x status, PoE nao recolhido. Todos integrados em N6. Commit `1fc9be8`. |
 | 4.12 | N4 Edifício — tabela de switches condicional (BT) | ☑ | 2026-06-29 | `l4-ed-switches.js` (id=103) redesenhado: dinâmico via `router.edificio = switch.local` (sem hardcode Sede); condicional (painel invisível se 0 switches); tabela 14px com bordas visíveis; colunas Andar·Zona·Switch(link N6)·Estado(pill UP/DOWN)·RTT; ordenação numérica por andar. Pushed OK. |
+| 4.13 | Auditoria fluxo N3→N4→N5→N6 Edifícios | ☑ | 2026-06-29 | Todos os drills e back-links validados por código + API Grafana: N3→N4 (`n4-edificio-detalhe`) ✓ · N4→N5 (`n5-edificio-interfaces`) ✓ · N4→N6 via tabela switches (`n6-edificio-switch`) ✓ · N5→N4 back-link ✓ · N6→N4 back-link ✓. Dado MySQL confirmado: 46 switches no edifício Sede (tag `local=sede`). Ficheiro obsoleto `n4-switches-table.json` removido. |
 
 ## Fase 5 · Segurança (anchor 656, Infra)
 | # | Tarefa | Estado | Data | Nota |
