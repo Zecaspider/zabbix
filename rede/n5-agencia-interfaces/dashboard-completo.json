@@ -145,7 +145,7 @@
             "filter": "${host}"
           },
           "item": {
-            "filter": "/Interface ${iface}.*: Operational status/"
+            "filter": "/Interface ${iface}[^.]*: Operational status/"
           },
           "queryType": "0",
           "refId": "A",
@@ -204,7 +204,7 @@
             "filter": "${host}"
           },
           "item": {
-            "filter": "/Interface ${iface}.*: Bits received/"
+            "filter": "/Interface ${iface}[^.]*: Bits received/"
           },
           "queryType": "0",
           "refId": "A",
@@ -263,7 +263,7 @@
             "filter": "${host}"
           },
           "item": {
-            "filter": "/Interface ${iface}.*: Bits sent/"
+            "filter": "/Interface ${iface}[^.]*: Bits sent/"
           },
           "queryType": "0",
           "refId": "A",
@@ -322,7 +322,7 @@
             "filter": "${host}"
           },
           "item": {
-            "filter": "/Interface ${iface}.*: Inbound packets with errors/"
+            "filter": "/Interface ${iface}[^.]*: Inbound packets with errors/"
           },
           "queryType": "0",
           "refId": "A",
@@ -341,7 +341,7 @@
             "filter": "${host}"
           },
           "item": {
-            "filter": "/Interface ${iface}.*: Outbound packets with errors/"
+            "filter": "/Interface ${iface}[^.]*: Outbound packets with errors/"
           },
           "queryType": "0",
           "refId": "B",
@@ -400,7 +400,7 @@
             "filter": "${host}"
           },
           "item": {
-            "filter": "/Interface ${iface}.*: Inbound packets discarded/"
+            "filter": "/Interface ${iface}[^.]*: Inbound packets discarded/"
           },
           "queryType": "0",
           "refId": "A",
@@ -419,7 +419,7 @@
             "filter": "${host}"
           },
           "item": {
-            "filter": "/Interface ${iface}.*: Outbound packets discarded/"
+            "filter": "/Interface ${iface}[^.]*: Outbound packets discarded/"
           },
           "queryType": "0",
           "refId": "B",
