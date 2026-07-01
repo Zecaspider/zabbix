@@ -101,7 +101,7 @@
             "filter": "/^$routerName$/"
           },
           "item": {
-            "filter": "/net\\.if\\.in/"
+            "filter": "/Bits received/"
           },
           "options": {
             "showDisabledItems": false
@@ -122,7 +122,7 @@
             "filter": "/^$routerName$/"
           },
           "item": {
-            "filter": "/net\\.if\\.out/"
+            "filter": "/Bits sent/"
           },
           "options": {
             "showDisabledItems": false
@@ -171,7 +171,7 @@
             "filter": "/^$routerName$/"
           },
           "item": {
-            "filter": "/system\\.cpu\\.util/"
+            "filter": "/CPU utilization/"
           },
           "options": {
             "showDisabledItems": false
@@ -192,7 +192,7 @@
             "filter": "/^$routerName$/"
           },
           "item": {
-            "filter": "/vm\\.memory\\.util/"
+            "filter": "/Processor: Memory utilization/"
           },
           "options": {
             "showDisabledItems": false
@@ -258,7 +258,7 @@
             "filter": "/^$routerName$/"
           },
           "item": {
-            "filter": "/rttMonCtrlAdminCompletionTime/"
+            "filter": "/completion time/"
           },
           "options": {
             "showDisabledItems": false
