@@ -1,7 +1,7 @@
 {
   "dashboardUid": "rede-n3-wan",
   "dashboardTitle": "N3 · WAN — Serviços",
-  "folderUid": "bfpm0sdxiclxcf",
+  "folderUid": "rede-seg-bordadc",
   "datasource": "ffo8sp8zllog0e",
   "anchor": {
     "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},

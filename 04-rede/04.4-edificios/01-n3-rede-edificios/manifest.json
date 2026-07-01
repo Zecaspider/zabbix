@@ -1,7 +1,7 @@
 {
   "dashboardUid": "rede-n3-edificios",
   "dashboardTitle": "N3 · Edifícios",
-  "folderUid": "bfpm0sdxiclxcf",
+  "folderUid": "rede-seg-edificios",
   "datasource": "ffo8sp8zllog0e",
   "drilldownFrom": "n2-rede",
   "anchor": {

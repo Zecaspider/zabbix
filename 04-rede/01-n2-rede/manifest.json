@@ -31,6 +31,13 @@
       "role": "content",
       "title": "Segmentos",
       "content": "<div id=\"bpc-net-seg\"></div>"
+    },
+    {
+      "file": "l2-triggers.js",
+      "id": 104,
+      "role": "content",
+      "title": "Triggers Activos",
+      "content": "<div id=\"bpc-net-trg\"></div>"
     }
   ]
 }

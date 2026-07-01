@@ -1,7 +1,7 @@
 {
   "dashboardUid": "rede-n4-dc-switch",
   "dashboardTitle": "N4 · DC Switch",
-  "folderUid": "bfpm0sdxiclxcf",
+  "folderUid": "rede-seg-dcfabric",
   "datasource": "ffo8sp8zllog0e",
   "anchor": {
     "datasource": {

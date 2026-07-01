@@ -1,7 +1,7 @@
 {
   "dashboardUid": "rede-n4-edificio",
   "dashboardTitle": "N4 · Rede · Edifício — Detalhe",
-  "folderUid": "bfpm0sdxiclxcf",
+  "folderUid": "rede-seg-edificios",
   "datasource": "ffo8sp8zllog0e",
   "notes": "Dashboard por edifício (router = edifício). Variáveis passadas pelo N3 via URL. Clone do N4 Agências (2026-06-29).",
   "anchor": {

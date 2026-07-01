@@ -1,7 +1,7 @@
 {
   "dashboardUid": "rede-n4-agencia",
   "dashboardTitle": "N4 · Agência — Detalhe",
-  "folderUid": "bfpm0sdxiclxcf",
+  "folderUid": "rede-seg-agencias",
   "datasource": "ffo8sp8zllog0e",
   "notes": "Dashboard por agência (router = agência). Variáveis passadas pelo N3 via URL.",
   "anchor": {

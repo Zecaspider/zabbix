@@ -141,28 +141,50 @@ Regras:
 - **Sem número de ordenação** — o número existe nas pastas/ficheiros para ordenação visual; o UID é âncora permanente de links, não deve mudar se domínios forem reordenados.
 - O UID não muda após criação — é a âncora de todos os links de drill-down.
 
+**Segmentos do domínio Rede (revisão 2026-07-01):** dentro de "04 · Rede" existem
+**4 segmentos** — cada um um domínio de falha/gestão operacional distinto, com a
+sua própria árvore N3→N6 e a sua própria subpasta no Grafana e no disco. O termo
+correcto é **"segmento"** (já usado no código, `CFG_SEG`), não "subdomínio" —
+os 4 não estão no mesmo eixo de classificação (DC Fabric/Borda DC são por
+função; Edifícios/Agências são por tipo de localização), mas cada um é um
+segmento de rede válido para efeitos de navegação e monitorização.
+
+| Segmento | Pasta Grafana | UID pasta | Dispositivos reais |
+|---|---|---|---|
+| Agências | `04.1 · Agências` | `rede-seg-agencias` | 220 routers + 27 switches (g24+g25) |
+| Borda DC (5 routers de borda do DC — ver "Fluxo Borda DC" no CLAUDE.md) | `04.2 · Borda DC` | `rede-seg-bordadc` | 5 routers (`HG_DC_ROUTERS`, g27) |
+| DC Fabric | `04.3 · DC Fabric` | `rede-seg-dcfabric` | 7 switches Spine-Leaf (g26) + 1 OOB (g22) |
+| Edifícios | `04.4 · Edifícios` | `rede-seg-edificios` | 9 routers (g28) + 46 switches (g29) |
+
+O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente em
+"04 · Rede" (wallboard que agrega os 4).
+
 **Mapa canónico de UIDs — domínio Rede (aprovado 2026-07-01):**
 
-| # drill | Subpasta local (proposta) | UID canónico | Título canónico |
-|---|---|---|---|
-| 01 | `01-n2-rede/` | `rede.n2.segmentos` | `N2 · Rede — Segmentos e alertas` |
-| 02 | `02-n3-rede-agencias/` | `rede.n3.agencias` | `N3 · Rede · Agências — Mapa de estado` |
-| 03 | `03-n4-rede-agencia/` | `rede.n4.agencia` | `N4 · Rede · Agência — Diagnóstico` |
-| 04 | `04-n4-rede-agencia-wan/` | `rede.n4.agencia-wan` | `N4 · Rede · Agência · WAN — Dispositivo` |
-| 05 | `05-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
-| 06 | `06-n3-rede-dc/` | `rede.n3.dc` | `N3 · Rede · DC Fabric — Estado dos switches` |
-| 07 | `07-n4-rede-dc-switch/` | `rede.n4.dc-switch` | `N4 · Rede · DC · Switch — Interfaces` |
-| 08 | `08-n3-rede-edificios/` | `rede.n3.edificios` | `N3 · Rede · Edifícios BPC — Routers e switches` |
-| 09 | `09-n4-rede-edificio/` | `rede.n4.edificio` | `N4 · Rede · Edifício — Detalhe` |
-| 10 | `10-n5-rede-edificio-interfaces/` | `rede.n5.edificio-interfaces` | `N5 · Rede · Edifício — Interfaces` |
-| 11 | `11-n6-rede-edificio-switch/` | `rede.n6.edificio-switch` | `N6 · Rede · Edifício · Switch — Detalhe` |
-| 12 | `12-n3-rede-wan/` | `rede.n3.wan` | `N3 · Rede · WAN — Serviços e circuitos` |
-| 13 | `13-n3-rede-wan-carriers/` | `rede.n3.wan-carriers` | `N3 · Rede · WAN — Por provedor` |
-| 14 | `14-n4-rede-wan-dispositivo/` | `rede.n4.wan-dispositivo` | `N4 · Rede · WAN · Dispositivo — Interfaces` |
-| 15 | `15-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
-| 16 | `16-n4-rede-wan-router/` | `rede.n4.wan-router` | `N4 · Rede · WAN · Router — Diagnóstico` |
+| Segmento | # drill | Subpasta local | UID canónico | Título canónico |
+|---|---|---|---|---|
+| — | 01 | `01-n2-rede/` | `rede.n2.segmentos` | `N2 · Rede — Segmentos e alertas` |
+| Agências | 01 | `04.1-agencias/01-n3-rede-agencias/` | `rede.n3.agencias` | `N3 · Rede · Agências — Mapa de estado` |
+| Agências | 02 | `04.1-agencias/02-n4-rede-agencia/` | `rede.n4.agencia` | `N4 · Rede · Agência — Diagnóstico` |
+| Agências | 03 | `04.1-agencias/03-n4-rede-agencia-wan/` | `rede.n4.agencia-wan` | `N4 · Rede · Agência · WAN — Dispositivo` |
+| Agências | 04 | `04.1-agencias/04-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
+| DC Fabric | 01 | `04.3-dc-fabric/01-n3-rede-dc/` | `rede.n3.dc` | `N3 · Rede · DC Fabric — Estado dos switches` |
+| DC Fabric | 02 | `04.3-dc-fabric/02-n4-rede-dc-switch/` | `rede.n4.dc-switch` | `N4 · Rede · DC · Switch — Interfaces` |
+| Edifícios | 01 | `04.4-edificios/01-n3-rede-edificios/` | `rede.n3.edificios` | `N3 · Rede · Edifícios BPC — Routers e switches` |
+| Edifícios | 02 | `04.4-edificios/02-n4-rede-edificio/` | `rede.n4.edificio` | `N4 · Rede · Edifício — Detalhe` |
+| Edifícios | 03 | `04.4-edificios/03-n5-rede-edificio-interfaces/` | `rede.n5.edificio-interfaces` | `N5 · Rede · Edifício — Interfaces` |
+| Edifícios | 04 | `04.4-edificios/04-n6-rede-edificio-switch/` | `rede.n6.edificio-switch` | `N6 · Rede · Edifício · Switch — Detalhe` |
+| Borda DC | 01 | `04.2-borda-dc/01-n3-rede-wan/` | `rede.n3.wan` | `N3 · Rede · WAN — Serviços e circuitos` |
+| Borda DC | 02 | `04.2-borda-dc/02-n3-rede-wan-carriers/` | `rede.n3.wan-carriers` | `N3 · Rede · WAN — Por provedor` |
+| Borda DC | 03 | `04.2-borda-dc/03-n4-rede-wan-dispositivo/` | `rede.n4.wan-dispositivo` | `N4 · Rede · WAN · Dispositivo — Interfaces` |
+| Borda DC | 04 | `04.2-borda-dc/04-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
+| Borda DC | 05 | `04.2-borda-dc/05-n4-rede-wan-router/` | `rede.n4.wan-router` (canónico do fluxo Borda DC) | `N4 · Rede · WAN · Router — Diagnóstico` |
 
-> **Migração pendente (T-04):** os UIDs actuais no Grafana são UUIDs gerados ou slugs parciais. A migração para UIDs canónicos requer sessão dedicada: substituição global nos `.js` + re-push de todos os dashboards + validação de cada link de drill-down. Ver §10.1 issues.
+> Os UIDs de dashboard (`rede.n3.agencias` etc.) são a proposta de nomenclatura
+> canónica (T-04, ainda não migrada — os UIDs reais no Grafana continuam
+> `rede-n3-agencias`, `rede-n4-wan-router`, etc., slugs sem pontos). A
+> reorganização em pastas de segmento (2026-07-01) já foi aplicada aos UIDs
+> reais — só a normalização `dominio.nivel.funcao` fica pendente.
 
 **Ficheiros locais:**
 ```
@@ -204,22 +226,26 @@ sistema-de-observabilidade/
 │   ├── 02-n3-vmware-esxi/
 │   └── ...
 ├── 04-rede/                        # espelha "04 · Rede"
-│   ├── 01-n2-rede/
-│   ├── 02-n3-rede-agencias/        # sub-fluxo Agências
-│   ├── 03-n4-rede-agencia/
-│   ├── 04-n4-rede-agencia-wan/
-│   ├── 05-n5-rede-agencia-interfaces/
-│   ├── 06-n3-rede-dc/              # sub-fluxo DC
-│   ├── 07-n4-rede-dc-switch/
-│   ├── 08-n3-rede-edificios/       # sub-fluxo Edifícios
-│   ├── 09-n4-rede-edificio/
-│   ├── 10-n5-rede-edificio-interfaces/
-│   ├── 11-n6-rede-edificio-switch/
-│   ├── 12-n3-rede-wan/             # sub-fluxo WAN
-│   ├── 13-n3-rede-wan-carriers/
-│   ├── 14-n4-rede-wan-dispositivo/
-│   ├── 15-n4-rede-wan-provedor/
-│   └── 16-n4-rede-wan-router/
+│   ├── 01-n2-rede/                 # N2 — não pertence a nenhum segmento
+│   ├── 04.1-agencias/              # segmento Agências ↔ pasta Grafana "04.1 · Agências"
+│   │   ├── 01-n3-rede-agencias/
+│   │   ├── 02-n4-rede-agencia/
+│   │   ├── 03-n4-rede-agencia-wan/
+│   │   └── 04-n5-rede-agencia-interfaces/
+│   ├── 04.2-borda-dc/              # segmento Borda DC ↔ pasta Grafana "04.2 · Borda DC"
+│   │   ├── 01-n3-rede-wan/
+│   │   ├── 02-n3-rede-wan-carriers/
+│   │   ├── 03-n4-rede-wan-dispositivo/
+│   │   ├── 04-n4-rede-wan-provedor/
+│   │   └── 05-n4-rede-wan-router/
+│   ├── 04.3-dc-fabric/             # segmento DC Fabric ↔ pasta Grafana "04.3 · DC Fabric"
+│   │   ├── 01-n3-rede-dc/
+│   │   └── 02-n4-rede-dc-switch/
+│   └── 04.4-edificios/             # segmento Edifícios ↔ pasta Grafana "04.4 · Edifícios"
+│       ├── 01-n3-rede-edificios/
+│       ├── 02-n4-rede-edificio/
+│       ├── 03-n5-rede-edificio-interfaces/
+│       └── 04-n6-rede-edificio-switch/
 ├── 05-seguranca/
 ├── 06-bases-dados/
 ├── 07-apis/
@@ -231,7 +257,19 @@ sistema-de-observabilidade/
 ```
 <ordem-drill>-<nivel>-<dominio>[-<subdomain>[-<ambito>]]
 ```
-Exemplos: `02-n3-rede-agencias/`, `09-n4-rede-edificio/`, `11-n6-rede-edificio-switch/`
+Exemplos: `01-n3-rede-agencias/`, `02-n4-rede-edificio/`, `04-n6-rede-edificio-switch/`
+
+**Convenção de nomes das pastas de segmento** (quando um domínio tem múltiplos
+segmentos paralelos — cada um com a sua árvore N3→N6 própria, como acontece em
+Rede):
+```
+<NN>.<M>-<segmento>/         ex.: 04.1-agencias/, 04.2-borda-dc/
+```
+onde `NN` é o número do domínio (`04` = Rede) e `M` é a ordem do segmento
+dentro do domínio (não a ordem de drill — os 4 segmentos de Rede são paralelos,
+não sequenciais). Dentro de cada pasta de segmento, a numeração das subpastas
+(`01-`, `02-`, …) **reinicia** e reflecte a ordem de drill só dentro desse
+segmento (N3→N4→N5→N6).
 
 **Regras invioláveis:**
 1. **1 subpasta = 1 dashboard Grafana = 1 manifest.json com 1 dashboardUid.**
@@ -239,9 +277,17 @@ Exemplos: `02-n3-rede-agencias/`, `09-n4-rede-edificio/`, `11-n6-rede-edificio-s
 2. **A pasta de domínio tem prefixo numérico** espelhando a numeração Grafana
    (`04-rede/` ↔ `04 · Rede`). O número é apenas para ordenação visual — não
    entra no UID do dashboard.
-3. **O número de ordem dentro do domínio** (`01-`, `02-`, …) reflecte a sequência
-   de drill-down natural dentro desse domínio (N2 → N3 → N4 → N5 → N6), agrupado
-   por sub-fluxo (Agências, DC, Edifícios, WAN, etc.).
+3. **Quando um domínio tem múltiplos segmentos paralelos** (ex.: Rede tem 4:
+   Agências/Borda DC/DC Fabric/Edifícios), cada segmento vive na sua própria
+   subpasta `NN.M-segmento/` — nunca misturar dashboards de segmentos diferentes
+   na mesma pasta plana por numeração global crescente (isso foi o estado antes
+   de 2026-07-01 e causava confusão de navegação, tanto no disco como no
+   Grafana). Dentro de cada segmento, a numeração de drill (`01-`, `02-`, …)
+   reinicia. Só criar pastas de segmento quando o domínio realmente tiver mais
+   de um segmento operacionalmente distinto — os restantes domínios (VMware,
+   Armazenamento, Servidores Virtuais, Segurança, Bases de Dados, APIs,
+   Serviços de Negócio) não têm essa necessidade hoje (0-4 dashboards cada,
+   fluxo único N2→N3, sem fan-out).
 4. **O UID não tem número** — usa só `dominio-nivel-funcao` (ver §4.0). O número
    é separado do UID para que reordenações futuras de domínios não invalide links.
 5. Subpastas vazias (ainda por construir) levam um `.gitkeep`.
@@ -260,6 +306,15 @@ Exemplos: `02-n3-rede-agencias/`, `09-n4-rede-edificio/`, `11-n6-rede-edificio-s
 | `07-apis/` | `07 · APIs e Serviços` | `bfpm0sedbpgqob` |
 | `08-servicos-negocio/` | `08 · Serviços de Negócio` | `dfpm0sej5gxs0f` |
 | `99-arquivo/` | `99 · Arquivo` | `dfpm0sey9ut4wb` |
+
+**Subpastas de segmento dentro de `04-rede/` ↔ `04 · Rede` (2026-07-01):**
+
+| Pasta local | Pasta Grafana (nested) | UID Grafana pasta |
+|---|---|---|
+| `04.1-agencias/` | `04.1 · Agências` | `rede-seg-agencias` |
+| `04.2-borda-dc/` | `04.2 · Borda DC` | `rede-seg-bordadc` |
+| `04.3-dc-fabric/` | `04.3 · DC Fabric` | `rede-seg-dcfabric` |
+| `04.4-edificios/` | `04.4 · Edifícios` | `rede-seg-edificios` |
 
 > **Migração pendente (T-05):** as pastas locais actuais não têm prefixo numérico
 > (`rede/` em vez de `04-rede/`, subpastas sem número de drill). A migração faz-se

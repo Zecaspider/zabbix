@@ -1,7 +1,7 @@
 {
   "dashboardUid": "rede-n5-edificio-interfaces",
   "dashboardTitle": "N5 · Rede · Edifício — Interfaces",
-  "folderUid": "bfpm0sdxiclxcf",
+  "folderUid": "rede-seg-edificios",
   "datasource": "ffo8sp8zllog0e",
   "drilldownFrom": "rede-n4-edificio",
   "anchor": {
