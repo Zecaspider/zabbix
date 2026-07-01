@@ -215,7 +215,7 @@ function rcRenderCircuits(sections) {
 
     var downRows = ''
     if (down > 0) {
-      downRows = sec.ifaces.filter(function(i) { return !i.up }).map(function(iface) {
+      var rows = sec.ifaces.filter(function(i) { return !i.up }).map(function(iface) {
         var lbl = iface.label || iface.ifname
         return '<div style="display:flex;align-items:center;gap:6px;padding:5px 8px;'
           + 'background:rgba(248,81,73,0.10);border-radius:4px;margin-bottom:4px">'
@@ -224,6 +224,9 @@ function rcRenderCircuits(sections) {
           + rcEsc(lbl) + ' — DOWN</span>'
           + '</div>'
       }).join('')
+      // Tecto de altura + scroll interno — protege o layout do painel se muitos
+      // circuitos caírem em simultâneo num card (nunca corta informação de falha).
+      downRows = down > 5 ? '<div style="max-height:140px;overflow-y:auto">' + rows + '</div>' : rows
     }
 
     return '<div style="margin-bottom:8px">' + summaryRow + downRows + '</div>'
@@ -257,7 +260,7 @@ function rcRenderCard(host) {
     : '<span style="font-size:14px;color:#8891A8">Ver ficha (N4) →</span>'
 
   var inner = '<div style="background:rgba(14,20,60,0.6);border:1px solid rgba(255,255,255,0.08);'
-    + 'border-left:5px solid ' + stateCol + ';border-radius:8px;padding:16px;height:100%;'
+    + 'border-left:5px solid ' + stateCol + ';border-radius:8px;padding:16px;'
     + 'display:flex;flex-direction:column;' + (n4Href ? 'cursor:pointer' : '') + '">'
 
     + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">'
@@ -283,12 +286,18 @@ function rcRenderCard(host) {
     + '</div>'
 
   return n4Href
-    ? '<a href="' + n4Href + '" style="text-decoration:none;display:block;height:100%">' + inner + '</a>'
-    : '<div style="height:100%">' + inner + '</div>'
+    ? '<a href="' + n4Href + '" style="text-decoration:none;display:block">' + inner + '</a>'
+    : inner
 }
 
 function rcRender(el, model) {
-  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;height:100%;font-family:\'Inter\',\'Segoe UI\',sans-serif">'
+  // Sem height:100% em cascata — deixa o grid alinhar as 5 colunas pela
+  // altura natural do conteúdo (align-items:stretch, default do CSS grid).
+  // Uma cadeia de height:100% sem ancestral com altura explícita cria uma
+  // referência circular que o browser resolve mal dentro do wrapper do
+  // Grafana, inflando a altura real do conteúdo e criando scroll interno
+  // indesejado no painel (visto ao vivo: scrollHeight 633px vs caixa 332px).
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;font-family:\'Inter\',\'Segoe UI\',sans-serif">'
     + model.map(function(host) { return '<div>' + rcRenderCard(host) + '</div>' }).join('')
     + '</div>'
 }
