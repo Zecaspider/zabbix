@@ -22,7 +22,7 @@
       "queryType": "0", "resultFormat": "time_series", "refId": "in",
       "group": { "filter": "HG_DC_ROUTERS" },
       "host": { "filter": "/.*/" },
-      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Bits received/" },
+      "item": { "filter": "/Interface [^:]*(${provider:raw})[^:]*: Bits received/" },
       "options": { "showDisabledItems": false }
     },
     {
@@ -30,7 +30,7 @@
       "queryType": "0", "resultFormat": "time_series", "refId": "out",
       "group": { "filter": "HG_DC_ROUTERS" },
       "host": { "filter": "/.*/" },
-      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Bits sent/" },
+      "item": { "filter": "/Interface [^:]*(${provider:raw})[^:]*: Bits sent/" },
       "options": { "showDisabledItems": false }
     }
   ]

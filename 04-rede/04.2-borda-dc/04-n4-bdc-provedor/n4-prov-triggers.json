@@ -12,7 +12,7 @@
       "host": { "filter": "/.*/" },
       "application": { "filter": "" },
       "proxy": { "filter": "" },
-      "trigger": { "filter": "/(${provider})/i" },
+      "trigger": { "filter": "/(${provider:raw})/i" },
       "tags": { "filter": "" },
       "options": { "minSeverity": 0, "sortProblems": "default", "acknowledged": 2, "hostsInMaintenance": false },
       "refId": "A"

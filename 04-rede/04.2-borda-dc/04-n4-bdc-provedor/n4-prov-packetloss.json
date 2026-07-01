@@ -23,7 +23,7 @@
       "queryType": "0", "resultFormat": "time_series", "refId": "inerr",
       "group": { "filter": "HG_DC_ROUTERS" },
       "host": { "filter": "/.*/" },
-      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Inbound packets with errors/" },
+      "item": { "filter": "/Interface [^:]*(${provider:raw})[^:]*: Inbound packets with errors/" },
       "options": { "showDisabledItems": false }
     },
     {
@@ -31,7 +31,7 @@
       "queryType": "0", "resultFormat": "time_series", "refId": "outerr",
       "group": { "filter": "HG_DC_ROUTERS" },
       "host": { "filter": "/.*/" },
-      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Outbound packets with errors/" },
+      "item": { "filter": "/Interface [^:]*(${provider:raw})[^:]*: Outbound packets with errors/" },
       "options": { "showDisabledItems": false }
     },
     {
@@ -39,7 +39,7 @@
       "queryType": "0", "resultFormat": "time_series", "refId": "indisc",
       "group": { "filter": "HG_DC_ROUTERS" },
       "host": { "filter": "/.*/" },
-      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Inbound packets discarded/" },
+      "item": { "filter": "/Interface [^:]*(${provider:raw})[^:]*: Inbound packets discarded/" },
       "options": { "showDisabledItems": false }
     },
     {
@@ -47,7 +47,7 @@
       "queryType": "0", "resultFormat": "time_series", "refId": "outdisc",
       "group": { "filter": "HG_DC_ROUTERS" },
       "host": { "filter": "/.*/" },
-      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Outbound packets discarded/" },
+      "item": { "filter": "/Interface [^:]*(${provider:raw})[^:]*: Outbound packets discarded/" },
       "options": { "showDisabledItems": false }
     }
   ]

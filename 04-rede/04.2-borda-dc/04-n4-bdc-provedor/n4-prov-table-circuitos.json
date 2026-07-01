@@ -10,7 +10,7 @@
       "functions": [],
       "group": { "filter": "HG_DC_ROUTERS" },
       "host": { "filter": "/.*/" },
-      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Operational status/i" },
+      "item": { "filter": "/Interface [^:]*(${provider:raw})[^:]*: Operational status/i" },
       "queryType": "0",
       "refId": "A",
       "resultFormat": "time_series",

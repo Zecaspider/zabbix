@@ -3,7 +3,7 @@
   "dashboardTitle": "N4 · Rede · Borda DC · Provedor — SLA e circuitos",
   "folderUid": "rede-seg-bordadc",
   "datasource": "ffo8sp8zllog0e",
-  "notes": "Rebuild 2026-07-01 (nativo) — l4-bdc-provedor-ficha.js (Business Text) substituído por painéis nativos, mesma filosofia do N4/N5 Router. Multi-host (spans HG_DC_ROUTERS inteiro, não um único host) — variável $provider guarda a própria alternação regex (reaproveita tokens já validados em l3-bdc-provedores-cards.js), interpolada directamente no item.filter de cada painel. Coluna Router extraída via transform extractFields sobre o campo combinado 'hostname: nome do item' que o datasource Zabbix devolve nativamente em queries multi-host (confirmado ao vivo via /api/ds/query antes de construir).",
+  "notes": "Rebuild 2026-07-01 (nativo) — l4-bdc-provedor-ficha.js (Business Text) substituído por painéis nativos, mesma filosofia do N4/N5 Router. Multi-host (spans HG_DC_ROUTERS inteiro, não um único host) — variável $provider guarda a própria alternação regex (reaproveita tokens já validados em l3-bdc-provedores-cards.js), interpolada directamente no item.filter de cada painel. Tabela usa reduce+organize simples (coluna combinada 'Circuito' = hostname+interface) — extractFields com capture groups nomeados falha silenciosamente nesta versão do Grafana, evitar. IMPORTANTE: usar sempre ${provider:raw} (nunca ${provider} puro) — confirmado ao vivo que a selecção via dropdown (SPA, sem reload) faz Grafana escapar caracteres regex (`|`, `\\`, `[]`) na interpolação normal, partindo a alternação; só o formato :raw preserva o regex literal. Bug só aparecia ao seleccionar no dropdown, nunca ao navegar por URL directa — por isso só foi apanhado depois do utilizador testar manualmente.",
   "anchor": {
     "datasource": {
       "type": "alexanderzobnin-zabbix-datasource",
@@ -25,7 +25,7 @@
       "name": "provider",
       "label": "Provedor",
       "type": "custom",
-      "note": "Valor = alternação regex directamente (não uma chave simbólica) — reaproveita os tokens de l3-bdc-provedores-cards.js. Interpolado em /Interface [^:]*(${provider})[^:]*: .../ em todos os painéis."
+      "note": "Valor = alternação regex directamente (não uma chave simbólica) — reaproveita os tokens de l3-bdc-provedores-cards.js. Interpolado em /Interface [^:]*(${provider:raw})[^:]*: .../ em todos os painéis — o modificador :raw é obrigatório, ver 'notes' acima."
     }
   ],
   "panels": [
