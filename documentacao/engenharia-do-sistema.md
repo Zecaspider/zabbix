@@ -166,7 +166,8 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 | — | 01 | `01-n2-rede/` | `rede.n2.segmentos` | `N2 · Rede — Segmentos e alertas` |
 | Agências | 01 | `04.1-agencias/01-n3-rede-agencias/` | `rede.n3.agencias` | `N3 · Rede · Agências — Mapa de estado` |
 | Agências | 02 | `04.1-agencias/02-n4-rede-agencia/` | `rede.n4.agencia` | `N4 · Rede · Agência — Diagnóstico` |
-| Agências | 03 | `04.1-agencias/03-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
+| Agências | 03 | `04.1-agencias/03-n4-rede-agencia-wan-dispositivo/` | `rede.n4.wan-dispositivo` | `N4 · Rede · Agência · WAN — Interfaces do router` |
+| Agências | 04 | `04.1-agencias/04-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
 | DC Fabric | 01 | `04.3-dc-fabric/01-n3-rede-dc/` | `rede.n3.dc` | `N3 · Rede · DC Fabric — Estado dos switches` |
 | DC Fabric | 02 | `04.3-dc-fabric/02-n4-rede-dc-switch/` | `rede.n4.dc-switch` | `N4 · Rede · DC · Switch — Interfaces` |
 | Edifícios | 01 | `04.4-edificios/01-n3-rede-edificios/` | `rede.n3.edificios` | `N3 · Rede · Edifícios BPC — Routers e switches` |
@@ -175,9 +176,8 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 | Edifícios | 04 | `04.4-edificios/04-n6-rede-edificio-switch/` | `rede.n6.edificio-switch` | `N6 · Rede · Edifício · Switch — Detalhe` |
 | Borda DC | 01 | `04.2-borda-dc/01-n3-rede-wan/` | `rede.n3.wan` | `N3 · Rede · WAN — Serviços e circuitos` |
 | Borda DC | 02 | `04.2-borda-dc/02-n3-rede-wan-carriers/` | `rede.n3.wan-carriers` | `N3 · Rede · WAN — Por provedor` |
-| Borda DC | 03 | `04.2-borda-dc/03-n4-rede-wan-dispositivo/` | `rede.n4.wan-dispositivo` | `N4 · Rede · WAN · Dispositivo — Interfaces` |
-| Borda DC | 04 | `04.2-borda-dc/04-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
-| Borda DC | 05 | `04.2-borda-dc/05-n4-rede-wan-router/` | `rede.n4.wan-router` (canónico do fluxo Borda DC) | `N4 · Rede · WAN · Router — Diagnóstico` |
+| Borda DC | 03 | `04.2-borda-dc/03-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
+| Borda DC | 04 | `04.2-borda-dc/04-n4-rede-wan-router/` | `rede.n4.wan-router` (canónico do fluxo Borda DC) | `N4 · Rede · WAN · Router — Diagnóstico` |
 
 > Os UIDs de dashboard (`rede.n3.agencias` etc.) são a proposta de nomenclatura
 > canónica (T-04, ainda não migrada — os UIDs reais no Grafana continuam
@@ -229,13 +229,13 @@ sistema-de-observabilidade/
 │   ├── 04.1-agencias/              # segmento Agências ↔ pasta Grafana "04.1 · Agências"
 │   │   ├── 01-n3-rede-agencias/
 │   │   ├── 02-n4-rede-agencia/
-│   │   └── 03-n5-rede-agencia-interfaces/
+│   │   ├── 03-n4-rede-agencia-wan-dispositivo/  # generico, so usado por esta ficha
+│   │   └── 04-n5-rede-agencia-interfaces/
 │   ├── 04.2-borda-dc/              # segmento Borda DC ↔ pasta Grafana "04.2 · Borda DC"
 │   │   ├── 01-n3-rede-wan/
 │   │   ├── 02-n3-rede-wan-carriers/
-│   │   ├── 03-n4-rede-wan-dispositivo/
-│   │   ├── 04-n4-rede-wan-provedor/
-│   │   └── 05-n4-rede-wan-router/
+│   │   ├── 03-n4-rede-wan-provedor/
+│   │   └── 04-n4-rede-wan-router/
 │   ├── 04.3-dc-fabric/             # segmento DC Fabric ↔ pasta Grafana "04.3 · DC Fabric"
 │   │   ├── 01-n3-rede-dc/
 │   │   └── 02-n4-rede-dc-switch/
@@ -289,6 +289,17 @@ segmento (N3→N4→N5→N6).
 4. **O UID não tem número** — usa só `dominio-nivel-funcao` (ver §4.0). O número
    é separado do UID para que reordenações futuras de domínios não invalide links.
 5. Subpastas vazias (ainda por construir) levam um `.gitkeep`.
+6. **Isolamento por segmento — zero cruzamento (decisão 2026-07-01).** Um
+   dashboard vive só na pasta do segmento que ele serve; nenhum outro segmento
+   pode apontar para ele. Se uma funcionalidade parecida for precisa noutro
+   segmento, **duplica-se** o dashboard (novo UID, nova pasta, `.js` copiado)
+   e especializa-se a cópia para esse segmento — nunca reaproveitar o
+   original. Precedente: `rede-n4-wan-dispositivo` (genérico) vivia em
+   `04.2-borda-dc/` mas só tinha consumidor real em Agências
+   (`l4-ag-ficha.js`) — foi movido inteiro para `04.1-agencias/`, retitulado,
+   e as suas variáveis (`group` default, opções de `iface`) especializadas
+   para a nomenclatura de interface dos routers de agência (Gi/Tu), já não
+   as do Borda DC (Po/Te). Commit `dba8616`+seguinte.
 
 **Mapa de correspondência domínio local ↔ Grafana:**
 

@@ -1,31 +1,30 @@
 {
   "dashboardUid": "rede-n4-wan-dispositivo",
-  "dashboardTitle": "N4 - WAN Device",
-  "folderUid": "rede-seg-bordadc",
+  "dashboardTitle": "N4 · Rede · Agência · WAN — Interfaces do router",
+  "folderUid": "rede-seg-agencias",
   "datasource": "ffo8sp8zllog0e",
-  "notes": "Dashboard parametrizado para qualquer router WAN. Variáveis passadas pelo N3 via URL.",
-  "drilldownUrl": "/d/rede-n4-wan-dispositivo?var-group=<GROUP>&var-host=<HOSTNAME>&var-iface=.*",
+  "notes": "Movido do segmento Borda DC para Agências (2026-07-01) — regra de isolamento por segmento: cada dashboard serve só um segmento, nunca partilhado entre pastas. Único consumidor real é l4-ag-ficha.js (N4 Agência, botão 'Interfaces WAN'), que passa o hostname do router da própria agência.",
+  "drilldownUrl": "/d/rede-n4-wan-dispositivo?var-group=HG_AGENCIAS_ROUTERS&var-host=<HOSTNAME>&var-iface=.*",
   "variables": [
     {
       "name": "group", "label": "Host Group", "type": "textbox",
-      "default": "HG_DC_ROUTERS", "hide": true,
-      "note": "Passado pelo N3 via URL. Oculto no dashboard."
+      "default": "HG_AGENCIAS_ROUTERS", "hide": true,
+      "note": "Passado pelo N4 Agência via URL. Oculto no dashboard."
     },
     {
       "name": "host", "label": "Host", "type": "textbox",
       "default": "",
-      "note": "Nome do host Zabbix. Passado pelo N3 via URL."
+      "note": "Nome do host Zabbix (router da agência). Passado pelo N4 Agência via URL."
     },
     {
       "name": "iface", "label": "Interfaces", "type": "custom",
       "default": ".*",
       "options": [
         {"text": "All",             "value": ".*"},
-        {"text": "Uplinks",         "value": "Te0"},
-        {"text": "WAN Circuits",    "value": "Po2"},
-        {"text": "DMVPN DC",        "value": "Tu1"},
-        {"text": "DMVPN Edificios", "value": "Tu2"}
-      ]
+        {"text": "LAN (Gi)",        "value": "Gi"},
+        {"text": "WAN Tunnel (Tu)", "value": "Tu"}
+      ],
+      "note": "Opções ajustadas à nomenclatura de interface dos routers de agência (ISR, Gi0/x LAN + Tux DMVPN), diferente dos routers de Borda DC (Po/Te)."
     }
   ],
   "panels": [
@@ -41,6 +40,7 @@
   "validated": {
     "date": "2026-06-26",
     "method": "ds/query directo com group=HG_DC_ROUTERS, host=DC1-RTE-WAN-AG, iface=Te0",
-    "result": "9/9 targets OK — Bits recv/sent: 4 series × 10741pts; Errors/Discards: 4 series × 58pts; ICMP: 1 serie × 10741pts"
+    "result": "9/9 targets OK — Bits recv/sent: 4 series × 10741pts; Errors/Discards: 4 series × 58pts; ICMP: 1 serie × 10741pts",
+    "nota": "Validado antes da mudanca de segmento (era Borda DC); re-validar com host de agencia real apos a mudanca."
   }
 }
