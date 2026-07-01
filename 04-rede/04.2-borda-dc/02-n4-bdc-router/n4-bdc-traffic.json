@@ -1,0 +1,37 @@
+{
+  "type": "timeseries",
+  "title": "Tráfego — interfaces de serviço (últimas 6h)",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "fieldConfig": {
+    "defaults": {
+      "unit": "bps",
+      "custom": { "drawStyle": "line", "lineWidth": 1, "fillOpacity": 8, "showPoints": "auto" }
+    },
+    "overrides": [
+      { "matcher": { "id": "byFrameRefID", "options": "out" }, "properties": [ { "id": "custom.transform", "value": "negative-Y" } ] }
+    ]
+  },
+  "options": {
+    "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true },
+    "tooltip": { "mode": "multi" }
+  },
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "in",
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/Bits received/" },
+      "options": { "showDisabledItems": false }
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "out",
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/Bits sent/" },
+      "options": { "showDisabledItems": false }
+    }
+  ]
+}

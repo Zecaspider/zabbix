@@ -1,0 +1,35 @@
+{
+  "type": "timeseries",
+  "title": "CPU / RAM — histórico (últimas 24h)",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "fieldConfig": {
+    "defaults": {
+      "unit": "percent", "min": 0, "max": 100,
+      "custom": { "drawStyle": "line", "lineWidth": 1, "fillOpacity": 8, "showPoints": "auto" }
+    },
+    "overrides": []
+  },
+  "options": {
+    "legend": { "displayMode": "list", "placement": "bottom", "showLegend": true },
+    "tooltip": { "mode": "multi" }
+  },
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "cpu",
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/CPU utilization/" },
+      "options": { "showDisabledItems": false }
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "ram",
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Processor: Memory utilization$/" },
+      "options": { "showDisabledItems": false }
+    }
+  ]
+}

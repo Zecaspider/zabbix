@@ -1,0 +1,66 @@
+{
+  "dashboardUid": "rede-n4-bdc-router",
+  "dashboardTitle": "N4 · Rede · Borda DC · Router — Diagnóstico",
+  "folderUid": "rede-seg-bordadc",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "variable": {
+    "name": "routerName",
+    "label": "Router",
+    "note": "Custom variable, criada directamente via API na criação do dashboard shell (ver script inline, não gerido por push_panel.py)."
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l4-bdc-router-ficha.js",
+      "id": 101,
+      "role": "content",
+      "title": "Ficha Técnica — Router",
+      "content": "<div id=\"bpc-n4-bdc-router\"></div>"
+    },
+    {
+      "file": "n4-bdc-triggers.json",
+      "id": 200,
+      "role": "content",
+      "title": "Problemas Activos"
+    },
+    {
+      "file": "n4-bdc-traffic.json",
+      "id": 201,
+      "role": "content",
+      "title": "Tráfego — interfaces de serviço (últimas 6h)"
+    },
+    {
+      "file": "n4-bdc-cpuram.json",
+      "id": 202,
+      "role": "content",
+      "title": "CPU / RAM — histórico (últimas 24h)"
+    },
+    {
+      "file": "n4-bdc-rtt.json",
+      "id": 203,
+      "role": "content",
+      "title": "RTT IP SLA — só WAN-INT (últimas 6h)"
+    }
+  ]
+}
