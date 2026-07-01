@@ -51,7 +51,7 @@ var CFG_RCARDS = {
     },
     {
       hostid:   '10996',
-      label:    'AGÊNCIAS / EDIFÍCIOS / AZURE',
+      label:    'AGÊNCIAS/EDIFÍCIOS/AZURE',
       hostname: 'DC1-RTE-WAN-AG',
       desc:     'C8500L · 3 funções: hub Agências + hub Edifícios + Azure ER',
       icon:     '🏢',
@@ -208,9 +208,12 @@ function rcRenderCircuits(sections) {
     var up    = total - down
     var col   = down > 0 ? '#f85149' : '#22C55E'
 
-    var summaryRow = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
-      + '<span style="font-size:14px;color:#B8C0D4">' + rcEsc(sec.label) + '</span>'
-      + '<span style="font-size:18px;font-weight:700;color:' + col + '">' + up + '/' + total + ' UP</span>'
+    // Rótulo em cima, contagem por baixo — mais robusto do que lado-a-lado
+    // em colunas estreitas (5 cards lado a lado), onde rótulo+número a par
+    // colidia e quebrava mal.
+    var summaryRow = '<div style="margin-bottom:8px">'
+      + '<div style="font-size:13px;color:#B8C0D4;line-height:1.3">' + rcEsc(sec.label) + '</div>'
+      + '<div style="font-size:18px;font-weight:700;color:' + col + '">' + up + '/' + total + ' UP</div>'
       + '</div>'
 
     var downRows = ''
@@ -255,18 +258,31 @@ function rcRenderCard(host) {
     ? '/d/' + CFG_RCARDS.n4DashUid + '?var-routerName=' + encodeURIComponent(host.cfg.hostname)
     : null
 
-  var footer = n4Href
-    ? '<a href="' + n4Href + '" style="font-size:14px;color:#00B4D8;font-weight:600;text-decoration:none">Ver ficha (N4) →</a>'
-    : '<span style="font-size:14px;color:#8891A8">Ver ficha (N4) →</span>'
+  // Nota: o card inteiro já é um <a> (ver tag/hrefAttr abaixo) — o rodapé é
+  // só texto estilizado, nunca outro <a> aninhado (HTML inválido; o browser
+  // "corrige" sozinho partindo a estrutura, o que causava uma caixa vazia
+  // a aparecer no meio do card).
+  var footer = '<span style="font-size:14px;color:' + (n4Href ? '#00B4D8' : '#8891A8') + ';font-weight:600">Ver detalhes do router →</span>'
 
-  var inner = '<div style="background:rgba(14,20,60,0.6);border:1px solid rgba(255,255,255,0.08);'
-    + 'border-left:5px solid ' + stateCol + ';border-radius:8px;padding:16px;'
-    + 'display:flex;flex-direction:column;' + (n4Href ? 'cursor:pointer' : '') + '">'
+  // O próprio elemento raiz (link ou div) É o item flex da fila de 5 cards —
+  // sem nenhum wrapper extra por cima. Isto deixa o align-items:stretch do
+  // flexbox esticar directamente esta caixa visível (com a borda/fundo) até
+  // à altura do card mais alto, sem cadeia de height:100% (essa cadeia foi
+  // a causa do bug anterior: media o conteúdo como ~625px e criava scroll
+  // interno no painel). display:flex + flex-direction:column aqui dentro
+  // distribui header/estado/circuitos/rodapé ao longo de toda essa altura
+  // esticada (o rodapé usa margin-top:auto para ficar sempre no fundo).
+  var tag = n4Href ? 'a' : 'div'
+  var hrefAttr = n4Href ? ' href="' + n4Href + '"' : ''
+
+  return '<' + tag + hrefAttr + ' style="text-decoration:none;background:rgba(14,20,60,0.6);'
+    + 'border:1px solid rgba(255,255,255,0.08);border-left:5px solid ' + stateCol + ';border-radius:8px;'
+    + 'padding:16px;display:flex;flex-direction:column;flex:1 1 0;min-width:0;' + (n4Href ? 'cursor:pointer' : '') + '">'
 
     + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">'
     +   '<div>'
-    +     '<div style="font-size:19px;font-weight:700;color:#E6EDF3">' + S.esc(host.cfg.label) + '</div>'
-    +     '<div style="font-size:13px;color:#8891A8;font-family:monospace;margin-top:2px">' + S.esc(host.cfg.hostname) + '</div>'
+    +     '<div style="font-size:21px;font-weight:700;color:#E6EDF3;line-height:1.2">' + S.esc(host.cfg.label) + '</div>'
+    +     '<div style="font-size:13px;color:#8891A8;font-family:monospace;margin-top:3px">' + S.esc(host.cfg.hostname) + '</div>'
     +   '</div>'
     +   '<span style="background:' + pillBg + ';color:' + stateCol + ';font-size:14px;font-weight:700;padding:4px 10px;border-radius:4px;white-space:nowrap">' + pillLbl + '</span>'
     + '</div>'
@@ -279,26 +295,16 @@ function rcRenderCard(host) {
     +   rcRenderCircuits(host.sections)
     + '</div>'
 
-    + '<div style="margin-top:10px;text-align:right">'
+    + '<div style="margin-top:auto;padding-top:10px;text-align:right">'
     +   footer
     + '</div>'
 
-    + '</div>'
-
-  return n4Href
-    ? '<a href="' + n4Href + '" style="text-decoration:none;display:block">' + inner + '</a>'
-    : inner
+    + '</' + tag + '>'
 }
 
 function rcRender(el, model) {
-  // Sem height:100% em cascata — deixa o grid alinhar as 5 colunas pela
-  // altura natural do conteúdo (align-items:stretch, default do CSS grid).
-  // Uma cadeia de height:100% sem ancestral com altura explícita cria uma
-  // referência circular que o browser resolve mal dentro do wrapper do
-  // Grafana, inflando a altura real do conteúdo e criando scroll interno
-  // indesejado no painel (visto ao vivo: scrollHeight 633px vs caixa 332px).
-  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;font-family:\'Inter\',\'Segoe UI\',sans-serif">'
-    + model.map(function(host) { return '<div>' + rcRenderCard(host) + '</div>' }).join('')
+  el.innerHTML = '<div style="display:flex;gap:14px;align-items:stretch;font-family:\'Inter\',\'Segoe UI\',sans-serif">'
+    + model.map(function(host) { return rcRenderCard(host) }).join('')
     + '</div>'
 }
 
