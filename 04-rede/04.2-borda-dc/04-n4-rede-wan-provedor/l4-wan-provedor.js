@@ -31,13 +31,14 @@ var CFG_P4 = {
   wanHostIds:   ['10838', '10839', '10840', '10996', '11001'],
   wanIntHostId: '10838',  // único com IP SLA
 
-  // Nomes dos routers para exibição (hostid → label)
+  // Nomes dos routers para exibição (hostid → label) — confirmado via
+  // host.get 2026-07-01 (rede-topologia.md §3)
   routerNames: {
     '10838': 'WAN-INT',
-    '10839': 'WAN-AG',
-    '10840': 'WAN-EMIS',
-    '10996': 'RTE-PARC',
-    '11001': 'RTE-GTW01',
+    '10839': 'WAN-EMIS',
+    '10840': 'GTW01',
+    '10996': 'WAN-AG',
+    '11001': 'RTE-PARC',
   },
 
   // Catálogo de provedores (label + cor por chave)
@@ -64,7 +65,11 @@ var CFG_P4 = {
     unitel:    ['UNITEL'],
   },
 
-  slaCarrierMap: { '65': 'ita' },
+  // SLA index -> circuito específico que ele mede (não o provedor inteiro).
+  // SLA 65 mede só o link Internet do WAN-INT (Po2.65, BGP_PEER_ITA) — os
+  // outros circuitos do mesmo provedor (túneis DMVPN, P2P) são independentes
+  // e não devem herdar o estado deste SLA (rede-topologia.md §4.6).
+  slaCircuitMap: { '65': { provider: 'ita', hostid: '10838', ifname: 'Po2.65' } },
 
   excludeRe: /^(Lo|Null|Vlan|BVI|Mgmt|nve|Vo\d|SE\d|EFXS|VoiceEncapPeer|VoiceOverIpPeer|Ethernet[0-9]\/[0-9]\/[0-9]+$|Te[0-9]\/[0-9]\/[0-9]+$|Gi0\/0\/[0-9]$|Gi0\/0\/[23456789]\.|Po1\.|Po1$|Po2$|Po11|Po12|Po13|Po200)/i,
   excludeDescRe: /^(GERENCIA|MGMT|vrf_bpc_wifi|P2P_CORE|P2P_ChkPT|RT-to-CUCM|Rede BPC|Public_IPs_BPC|P2P_RTE|P2P_DC-IMP)/i,
@@ -184,10 +189,12 @@ function p4Compute(data, provKey) {
     slaIdx[idx][field] = { val: it.lastvalue, stale: p4Stale(it.lastclock) }
   })
 
-  // SLA deste provedor
+  // SLA deste provedor (mostrado no resumo) + qual circuito específico ele mede
   var provSla = null
-  Object.keys(CFG_P4.slaCarrierMap).forEach(function(idx) {
-    if (CFG_P4.slaCarrierMap[idx] !== provKey) return
+  var slaCircuitKey = null // hostid|ifname do circuito medido pelo SLA
+  Object.keys(CFG_P4.slaCircuitMap).forEach(function(idx) {
+    var target = CFG_P4.slaCircuitMap[idx]
+    if (target.provider !== provKey) return
     if (!slaIdx[idx] || !slaIdx[idx]['Sense']) return
     var sd = slaIdx[idx]
     provSla = {
@@ -195,6 +202,7 @@ function p4Compute(data, provKey) {
       rttMs: sd['CompletionTime'] ? parseInt(sd['CompletionTime'].val, 10) : null,
       stale: sd['Sense'].stale,
     }
+    slaCircuitKey = target.hostid + '|' + target.ifname
   })
 
   // Tráfego index
@@ -222,9 +230,9 @@ function p4Compute(data, provKey) {
 
     var isUp    = it.lastvalue === '1'
     var isStale = p4Stale(it.lastclock)
-    var slaFail = provSla && !provSla.stale && !provSla.ok
-    var effDown = !isUp || slaFail
     var tk      = it.hostid + '|' + p.ifname
+    var slaFail = provSla && !provSla.stale && !provSla.ok && tk === slaCircuitKey
+    var effDown = !isUp || slaFail
     var traffic = trafficIdx[tk] || {}
 
     circuits.push({
