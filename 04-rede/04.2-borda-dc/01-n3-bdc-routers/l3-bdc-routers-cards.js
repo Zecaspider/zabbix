@@ -11,6 +11,12 @@
 // ║     em vez de as misturar — o mesmo router serve 3 funções distintas    ║
 // ║   - PARC: secção "Voz/Telefonia" separada de "Parceiros" (dados vs voz) ║
 // ║                                                                          ║
+// ║  2026-07-01 (revisão pós-N4/N5): linha "SLA X/5 OK" removida do card    ║
+// ║  WAN-INT — Z.13 confirmou que só a sonda 65 tem alvo verificado (as     ║
+// ║  outras 4 nunca tiveram destino confirmado), e a sonda 65 está morta há ║
+// ║  ~7 meses. Mostrar a média das 5 diluía a única falha real numa         ║
+// ║  aparência de "4/5 OK" — mesma decisão já tomada no N4 Router.          ║
+// ║                                                                          ║
 // ║  [1] CFG  [2] HELPERS  [3] FETCH  [4] COMPUTE  [5] RENDER  [6] BOOT     ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
@@ -33,7 +39,6 @@ var CFG_RCARDS = {
       hostname: 'DC1-RTE-WAN-INT',
       desc:     'ISR4451 · BGP · ITA · AT · MSTELCOM',
       icon:     '🌐',
-      hasIpSla: true,
       sections: [
         { label: 'BGP Peers', ifRe: /^Po2\.(65|960|1576)$/i, excludeRe: null },
       ],
@@ -44,7 +49,6 @@ var CFG_RCARDS = {
       hostname: 'DC1-RTE-WAN-EMIS',
       desc:     'ISR4451 · EMIS · ATELECOM · MSTELECOM · UNITEL',
       icon:     '🏦',
-      hasIpSla: false,
       sections: [
         { label: 'Circuitos EMIS', ifRe: /^Po2\.(110|835|1158)$/i, excludeRe: null },
       ],
@@ -55,7 +59,6 @@ var CFG_RCARDS = {
       hostname: 'DC1-RTE-WAN-AG',
       desc:     'C8500L · 3 funções: hub Agências + hub Edifícios + Azure ER',
       icon:     '🏢',
-      hasIpSla: false,
       sections: [
         { label: 'Túneis DMVPN Agências',  ifRe: /^Tu10[1-7]$/i,       excludeRe: null },
         { label: 'Túneis DMVPN Edifícios', ifRe: /^Tu20[1-8]$/i,       excludeRe: null },
@@ -68,7 +71,6 @@ var CFG_RCARDS = {
       hostname: 'DC1-RTE-GTW01',
       desc:     'C8200 · MINFIN · INSS · BODIVA',
       icon:     '🏛️',
-      hasIpSla: false,
       sections: [
         { label: 'Circuitos institucionais', ifRe: /^(Tu20|Tu30|Tu603)$/i, excludeRe: null },
         { label: 'Circuitos institucionais', ifRe: /^Gi0\/0\/1\.802$/i,    excludeRe: null, merge: true },
@@ -80,7 +82,6 @@ var CFG_RCARDS = {
       hostname: 'DC1-RTE-PARC',
       desc:     'ISR4451 · BNA/MJDH/Seguros/UCALL + Voz CUBE',
       icon:     '🤝',
-      hasIpSla: false,
       sections: [
         { label: 'Circuitos de parceiros', ifRe: /^Po2\.\d+$/i,       excludeRe: null },
         { label: 'Troncos de voz',         ifRe: /^VoiceOverIpPeer/i, excludeRe: null },
@@ -137,13 +138,7 @@ function rcFetch(rpc) {
       filter:  { status: 0 },
       output:  ['hostid', 'name', 'key_', 'lastvalue'],
     }),
-    rpc('item.get', {
-      hostids: ['10838'],
-      search:  { key_: 'rttMonCtrlAdminSense' },
-      filter:  { status: 0 },
-      output:  ['key_', 'lastvalue'],
-    }),
-  ]).then(function(r) { return { icmp: r[0], ifaces: r[1], ipsla: r[2] } })
+  ]).then(function(r) { return { icmp: r[0], ifaces: r[1] } })
 }
 
 
@@ -152,12 +147,6 @@ function rcFetch(rpc) {
 // ────────────────────────────────────────────────────────────────────────────
 
 function rcCompute(data) {
-  var ipslaOk = 0, ipslaTotal = 0
-  data.ipsla.forEach(function(i) {
-    ipslaTotal++
-    if (i.lastvalue === '1') ipslaOk++
-  })
-
   return CFG_RCARDS.hosts.map(function(hcfg) {
     var icmpItem = data.icmp.filter(function(i) { return i.hostid === hcfg.hostid })[0]
     var icmpUp   = icmpItem ? icmpItem.lastvalue === '1' : null
@@ -186,10 +175,9 @@ function rcCompute(data) {
     }).filter(function(s) { return s.ifaces.length > 0 })
 
     var totalDown = sections.reduce(function(a, s) { return a + s.downCount }, 0)
-    var ipsla     = hcfg.hasIpSla ? { ok: ipslaOk, total: ipslaTotal } : null
     var worst     = icmpUp === false ? 'down' : totalDown > 0 ? 'warn' : icmpUp === null ? 'warn' : 'ok'
 
-    return { cfg: hcfg, icmpUp: icmpUp, sections: sections, totalDown: totalDown, ipsla: ipsla, worst: worst }
+    return { cfg: hcfg, icmpUp: icmpUp, sections: sections, totalDown: totalDown, worst: worst }
   })
 }
 
@@ -248,12 +236,6 @@ function rcRenderCard(host) {
       ? '<span style="font-size:15px;color:#22C55E;font-weight:600">ICMP UP</span>'
       : '<span style="font-size:15px;color:#f85149;font-weight:700">ICMP DOWN</span>'
 
-  var ipslaLine = ''
-  if (host.ipsla) {
-    var slaCol = host.ipsla.ok === host.ipsla.total ? '#22C55E' : '#d29922'
-    ipslaLine = ' &nbsp;·&nbsp; <span style="font-size:15px;color:' + slaCol + ';font-weight:600">SLA ' + host.ipsla.ok + '/' + host.ipsla.total + ' OK</span>'
-  }
-
   var n4Href = CFG_RCARDS.n4DashUid
     ? '/d/' + CFG_RCARDS.n4DashUid + '?var-routerName=' + encodeURIComponent(host.cfg.hostname)
     : null
@@ -288,7 +270,7 @@ function rcRenderCard(host) {
     + '</div>'
 
     + '<div style="padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:10px">'
-    +   icmpBadge + ipslaLine
+    +   icmpBadge
     + '</div>'
 
     + '<div style="flex:1">'
