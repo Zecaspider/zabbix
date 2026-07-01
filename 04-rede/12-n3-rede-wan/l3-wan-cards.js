@@ -296,7 +296,7 @@ function wcRenderCard(host) {
     +       '<span style="font-size:1.1rem">' + host.cfg.icon + '</span>'
     +       '<span style="font-size:1.05rem;font-weight:700;color:#E6EDF3">' + S.esc(host.cfg.label) + '</span>'
     +     '</div>'
-    +     '<div style="font-size:.78rem;color:var(--bpc-mute);margin-top:1px">' + S.esc(host.cfg.name) + '</div>'
+    +     '<div style="font-size:.78rem;color:var(--bpc-mute);margin-top:1px;font-family:monospace">' + S.esc(host.cfg.hostname) + '</div>'
     +   '</div>'
     +   '<span class="bpc-pill ' + pillCls + '">' + pillLbl + '</span>'
     + '</div>'

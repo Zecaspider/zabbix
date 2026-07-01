@@ -3,10 +3,12 @@
 // ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║
 // ║  Datasource: BPC-NETWORK (ffo8sp8zllog0e) · Zabbix 7.0                ║
 // ║                                                                          ║
-// ║  3 cards de segmento (porta de entrada para os N3):                     ║
-// ║    DC Core   (26+27) → N3 a75e2ba6                                      ║
-// ║    Edifícios (28+29) → N3 471f2208                                      ║
-// ║    WAN       (27)    → N3 (em breve — 4.6)                              ║
+// ║  4 cards de segmento (porta de entrada para os N3), todos contam        ║
+// ║  dispositivos reais (sem disfarce de conceito de negócio):              ║
+// ║    Borda DC  (27)     → 5 routers WAN de borda do DC                    ║
+// ║    DC Fabric (26+22)  → 7 switches Spine-Leaf + 1 OOB                   ║
+// ║    Edifícios (28+29)  → 9 routers + 46 switches                         ║
+// ║    Agências  (24+25)  → 220 routers + 27 switches                       ║
 // ║                                                                          ║
 // ║  Cada card: estado agregado · UP/down/degradado · disponib. · RTT/perda ║
 // ║  drill para o N3 respectivo. Thresholds: window.BPC.NET_THR.            ║
@@ -24,8 +26,8 @@ const CFG_SEG = {
   refreshMs:  60000,
 
   segmentos: [
-    { key: 'wan',  label: 'WAN',       icon: '🌐', groupIds: ['27'],
-      desc: 'Internet · EMIS · Agências · Parceiros · Azure/Gov',
+    { key: 'wan',  label: 'Borda DC',  icon: '🌐', groupIds: ['27'],
+      desc: '5 routers de borda · Internet/EMIS/Agências/Parceiros/Gov',
       dashUid: 'rede-n3-wan', dashSlug: 'n3-c2b7-rede-c2b7-wan-e28094-servicos-e-circuitos' },
     { key: 'dc',   label: 'DC Fabric', icon: '🖥',  groupIds: ['26', '22'],
       desc: '7 switches Spine-Leaf + 1 OOB (DC1)',
@@ -90,69 +92,6 @@ async function segFetchIcmp(rpc, groupIds) {
 }
 
 
-// WAN: NÃO contamos "links" (não há entidade discreta no Zabbix — só sub-interfaces
-//   nomeadas; qualquer total é frágil e duplica os _EDIFICIO). Em vez disso,
-//   estado POR CATEGORIA (auditoria rede-topologia.md):
-//     - categoria = router (hostid) → mapa estável, não regex de nome
-//     - Internet  → verdade de serviço = IP SLA + BGP (sinais deliberados)
-//     - restantes → estado por interfaces DOWN (down é inequívoco; total não importa)
-//   "link de serviço" de uma categoria = interface com descrição entre parênteses
-//   (nomeada pela equipa de rede); deduplicamos variantes _EDIFICIO no down-count.
-const SEG_WAN_CATS = [
-  { key: 'inet', label: 'Internet',   hostids: ['10838'], inet: true },  // DC1-RTE-WAN-INT
-  { key: 'emis', label: 'EMIS',       hostids: ['10839'] },              // DC1-RTE-WAN-EMIS
-  { key: 'ag',   label: 'Agências',   hostids: ['10996'] },              // DC1-RTE-WAN-AG (hub DMVPN)
-  { key: 'parc', label: 'Parceiros',  hostids: ['11001'] },              // PARC
-  { key: 'az',   label: 'Azure/Gov',  hostids: ['10840'] },              // GTW01 (ExpressRoute + Gov)
-]
-const SEG_WAN_DESC = /\(([^)]+)\)/   // interface nomeada pela equipa de rede
-
-async function segFetchWanCats(rpc) {
-  const res = await Promise.all([
-    rpc('item.get', { groupids: ['27'], search: { key_: 'net.if.status' }, filter: { status: 0 },
-                      output: ['name', 'lastvalue', 'hostid'] }),
-    rpc('item.get', { groupids: ['27'], search: { key_: 'rttMonCtrlAdminSense' }, filter: { status: 0 },
-                      output: ['lastvalue', 'hostid'] }),
-  ])
-  const ifStatus = res[0], slaSense = res[1]
-
-  function downByHosts(hostids) {
-    var down = 0
-    ifStatus.forEach(function (i) {
-      if (hostids.indexOf(i.hostid) === -1) return
-      if (!SEG_WAN_DESC.test(i.name || '')) return       // só interfaces nomeadas
-      if (i.lastvalue === '2') down++
-    })
-    return down
-  }
-  function bgpOnHosts(hostids) {
-    var bgp = ifStatus.filter(function (i) {
-      return hostids.indexOf(i.hostid) !== -1 && /BGP_PEER/i.test(i.name || '')
-    })
-    return { total: bgp.length, up: bgp.filter(function (i) { return i.lastvalue === '1' }).length }
-  }
-  function slaOnHosts(hostids) {
-    var s = slaSense.filter(function (i) { return hostids.indexOf(i.hostid) !== -1 })
-    return { total: s.length, ok: s.filter(function (i) { return i.lastvalue === '1' }).length }
-  }
-
-  var cats = SEG_WAN_CATS.map(function (c) {
-    var down = downByHosts(c.hostids)
-    var bgp  = c.inet ? bgpOnHosts(c.hostids) : null
-    var sla  = c.inet ? slaOnHosts(c.hostids) : null
-    var slaNotOk = sla ? sla.total - sla.ok : 0
-    var bgpDown  = bgp ? bgp.total - bgp.up : 0
-    var st = down > 0 ? 'down'
-           : (slaNotOk > 0 || bgpDown > 0) ? 'warn'
-           : 'ok'
-    return { key: c.key, label: c.label, state: st, down: down, bgp: bgp, sla: sla }
-  })
-
-  var worst = window.BPC.state.worst(cats.map(function (c) { return c.state }))
-  return { isWan: true, cats: cats, worst: worst }
-}
-
-
 // ────────────────────────────────────────────────────────────────────────────
 // [4] RENDER
 // ────────────────────────────────────────────────────────────────────────────
@@ -178,36 +117,6 @@ function segDeviceBody(d) {
     + '</div>'
 }
 
-// Corpo do card WAN: uma linha por CATEGORIA (sem total frágil de links)
-function segWanBody(d) {
-  const pill = { ok: 'OK', warn: 'Degradado', crit: 'Crítico', down: 'Down' }
-  const rows = d.cats.map(function (c) {
-    const cls = c.state === 'crit' || c.state === 'down' ? 'down' : c.state
-    const dot = window.BPC.state.color(c.state)
-    // detalhe à direita: Internet → BGP+SLA; restantes → estado de links down
-    var detail
-    if (c.bgp) {
-      const slaTxt = c.sla && c.sla.total ? 'SLA ' + c.sla.ok + '/' + c.sla.total : ''
-      detail = 'BGP ' + c.bgp.up + '/' + c.bgp.total + (slaTxt ? ' · ' + slaTxt : '')
-    } else {
-      detail = c.down > 0 ? c.down + ' link(s) down' : 'sem links down'
-    }
-    return ''
-      + '<div class="bpc-flex" style="justify-content:space-between;align-items:center;'
-      +      'padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.05)">'
-      +   '<div class="bpc-flex bpc-gap-8" style="align-items:center">'
-      +     '<span style="width:9px;height:9px;border-radius:50%;background:' + dot + ';display:inline-block"></span>'
-      +     '<span style="font-size:.98rem;color:#E6EDF3">' + window.BPC_SHARED.esc(c.label) + '</span>'
-      +   '</div>'
-      +   '<div class="bpc-flex bpc-gap-8" style="align-items:center">'
-      +     '<span style="font-size:.85rem;color:var(--bpc-mute)">' + detail + '</span>'
-      +     '<span class="bpc-pill ' + cls + '" style="font-size:.78rem">' + (pill[c.state] || '—') + '</span>'
-      +   '</div>'
-      + '</div>'
-  }).join('')
-  return '<div style="display:flex;flex-direction:column">' + rows + '</div>'
-}
-
 function segCard(seg, d) {
   const S       = window.BPC_SHARED
   const accent  = window.BPC.state.color(d.worst)
@@ -216,7 +125,7 @@ function segCard(seg, d) {
   const pillLbl = { ok: 'OK', warn: 'Degradado', crit: 'Crítico', down: 'Down' }[d.worst] || '—'
   const pillCls = d.worst === 'crit' || d.worst === 'down' ? 'down' : d.worst
 
-  const body = d.isWan ? segWanBody(d) : segDeviceBody(d)
+  const body = segDeviceBody(d)
 
   const footer = seg.dashUid
     ? '<span style="font-size:.90rem;color:var(--bpc-cyan)">Ver detalhe (N3) →</span>'
@@ -277,7 +186,7 @@ function segLoad(rpc) {
     + '</div>'
 
   Promise.all(CFG_SEG.segmentos.map(function (seg) {
-    return seg.key === 'wan' ? segFetchWanCats(rpc) : segFetchIcmp(rpc, seg.groupIds)
+    return segFetchIcmp(rpc, seg.groupIds)
   }))
     .then(function (results) { segRender(el, results) })
     .catch(function (err) { segRenderError(el, err.message || String(err)) })
