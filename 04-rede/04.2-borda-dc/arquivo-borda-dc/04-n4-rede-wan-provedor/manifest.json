@@ -1,7 +1,9 @@
 {
   "dashboardUid": "rede-n4-wan-provedor",
   "dashboardTitle": "N4 · WAN — Provedor",
-  "folderUid": "rede-seg-bordadc",
+  "folderUid": "dfpm0sey9ut4wb",
+  "archived": true,
+  "archivedNote": "Substituído pelo rebuild Borda DC (2026-07-01) — mantido em 99·Arquivo como referência. Ver rede-n4-bdc-provedor.",
   "datasource": "ffo8sp8zllog0e",
   "anchor": {
     "datasource": {

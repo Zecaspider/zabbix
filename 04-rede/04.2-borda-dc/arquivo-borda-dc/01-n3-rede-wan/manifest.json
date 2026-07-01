@@ -1,7 +1,9 @@
 {
   "dashboardUid": "rede-n3-wan",
   "dashboardTitle": "N3 · WAN — Serviços",
-  "folderUid": "rede-seg-bordadc",
+  "folderUid": "dfpm0sey9ut4wb",
+  "archived": true,
+  "archivedNote": "Substituído pelo rebuild Borda DC (2026-07-01) — mantido em 99·Arquivo como referência. Ver rede-n3-bdc-routers.",
   "datasource": "ffo8sp8zllog0e",
   "anchor": {
     "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},

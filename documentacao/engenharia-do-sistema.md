@@ -174,25 +174,49 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 | Edifícios | 02 | `04.4-edificios/02-n4-rede-edificio/` | `rede.n4.edificio` | `N4 · Rede · Edifício — Detalhe` |
 | Edifícios | 03 | `04.4-edificios/03-n5-rede-edificio-interfaces/` | `rede.n5.edificio-interfaces` | `N5 · Rede · Edifício — Interfaces` |
 | Edifícios | 04 | `04.4-edificios/04-n6-rede-edificio-switch/` | `rede.n6.edificio-switch` | `N6 · Rede · Edifício · Switch — Detalhe` |
-| Borda DC · por router | 01 | `04.2-borda-dc/01-n3-rede-wan/` | `rede.n3.wan` | `N3 · Rede · WAN — Serviços e circuitos` |
-| Borda DC · por router | 02 | `04.2-borda-dc/02-n4-rede-wan-router/` | `rede.n4.wan-router` | `N4 · Rede · WAN · Router — Diagnóstico` |
-| Borda DC · por provedor | 01 | `04.2-borda-dc/03-n3-rede-wan-carriers/` | `rede.n3.wan-carriers` | `N3 · Rede · WAN — Por provedor` |
-| Borda DC · por provedor | 02 | `04.2-borda-dc/04-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
+| Borda DC · por router | 01 | `04.2-borda-dc/01-n3-bdc-routers/` | `rede.n3.bdc-routers` | `N3 · Rede · Borda DC — Routers` |
+| Borda DC · por router | 02 | `04.2-borda-dc/02-n4-bdc-router/` | `rede.n4.bdc-router` | `N4 · Rede · Borda DC · Router — Diagnóstico` |
+| Borda DC · por provedor | 01 | `04.2-borda-dc/03-n3-bdc-provedores/` | `rede.n3.bdc-provedores` | `N3 · Rede · Borda DC — Provedores` |
+| Borda DC · por provedor | 02 | `04.2-borda-dc/04-n4-bdc-provedor/` | `rede.n4.bdc-provedor` | `N4 · Rede · Borda DC · Provedor — SLA e circuitos` |
+| Borda DC · por serviço | 01 | `04.2-borda-dc/05-n3-bdc-servicos/` | `rede.n3.bdc-servicos` | `N3 · Rede · Borda DC — Serviços` |
+| Borda DC · por serviço | 02 | `04.2-borda-dc/06-n4-bdc-servico/` | `rede.n4.bdc-servico` | `N4 · Rede · Borda DC · Serviço — Detalhe` |
 
-> **Borda DC tem 2 fluxos paralelos, não 1 cadeia sequencial** (revisão
-> 2026-07-01): o segmento parte dos mesmos 5 routers de borda, mas fatiados
-> por dois eixos distintos — "por router/serviço" (triagem: que router está
-> a falhar, que serviço BPC afecta) e "por provedor" (accountability de SLA:
-> que operadora está a incumprir, para abrir ticket). A numeração de pasta
-> reinicia em cada fluxo (`01`→`02` = par por router; `01`→`02` dentro de
-> `03`→`04` = par por provedor) para que pastas adjacentes sejam sempre o
-> mesmo fluxo — nunca `01`+`04` como acontecia antes desta revisão. Nenhum
-> dos dois fluxos tem N5: ambos os N4 já são fichas de nível "dispositivo
-> único" (5 routers no total, não centenas como Agências), sem uma camada de
-> dispositivo adicional por baixo que justifique aprofundar. Um N5 "Circuito
-> — Histórico" (série temporal longa por circuito, para investigação de
-> quebra de SLA) é candidato válido se/quando surgir necessidade concreta de
-> NOC — não construído por simetria com Agências/Edifícios.
+> **Borda DC EM RECONSTRUÇÃO (2026-07-01+)** — os 4 dashboards antigos
+> (`rede-n3-wan`, `rede-n4-wan-router`, `rede-n3-wan-carriers`,
+> `rede-n4-wan-provedor`) foram **arquivados** em
+> `04.2-borda-dc/arquivo-borda-dc/` (ficheiro local, git mv preserva
+> histórico) e movidos, no Grafana, para a pasta `99 · Arquivo`. Motivo:
+> investigação com dados reais (host.get/item.get ao vivo + rede-topologia.md)
+> revelou 4 ambiguidades nunca resolvidas pelo design anterior — (1) o router
+> WAN-AG faz 3 papéis (Agências + Edifícios + Azure ExpressRoute) no mesmo
+> hardware; (2) o parceiro MINFIN tem 4 circuitos físicos espalhados por 2
+> routers diferentes (GTW01 + PARC); (3) o router PARC mistura circuitos de
+> dados de parceiros com dezenas de trunks de voz/CUBE — dois domínios
+> técnicos distintos; (4) o router GTW01 estava rotulado "AZURE/GOV" no
+> código antigo sem ter nenhum circuito Azure (confirmado zero via
+> item.get). Nenhuma destas ambiguidades era visível nos 2 fluxos antigos
+> (por router / por provedor).
+>
+> **Nova arquitectura: 3 eixos** (decisão de engenharia de rede, não só
+> housekeeping):
+> 1. **Por router** (físico — 5 cards, 1/dispositivo) — "que caixa está com
+>    problema". GTW01 corrigido para reflectir Governo (MINFIN/INSS/BODIVA),
+>    nunca Azure; card do WAN-AG expõe as 3 funções separadamente.
+> 2. **Por provedor** (carrier/SLA — igual ao fluxo antigo, novo UID/pasta)
+>    — "que operadora incumpriu, a quem abrir ticket".
+> 3. **Por serviço de negócio** (NOVO — 7 cards: Internet · EMIS · Agências ·
+>    Edifícios · Azure · Governo/Institucional · Voz/Telefonia) — "que
+>    impacto de negócio existe", com o(s) router(s) explícito(s) por card
+>    (o card Governo mostra "2 routers" por causa do MINFIN partido). O card
+>    Edifícios é só o handoff DC-side (túneis Tu201-208 em WAN-AG); a árvore
+>    completa do lado do edifício mantém-se em `04.4-edificios/` — link de
+>    cross-segmento, não duplicação.
+>
+> Nenhum dos 3 eixos tem N5: cada N4 já é ficha de nível "dispositivo/
+> provedor/serviço único" (5 routers no total), sem camada adicional por
+> baixo que justifique aprofundar. Detalhe da investigação e da decisão em
+> `documentacao/rede-arquitectura.md` (a actualizar no fecho de cada
+> dashboard, secção 8 "Documentar após aprovado").
 
 > Os UIDs de dashboard (`rede.n3.agencias` etc.) são a proposta de nomenclatura
 > canónica (T-04, ainda não migrada — os UIDs reais no Grafana continuam
@@ -247,10 +271,13 @@ sistema-de-observabilidade/
 │   │   ├── 03-n4-rede-agencia-wan-dispositivo/  # generico, so usado por esta ficha
 │   │   └── 04-n5-rede-agencia-interfaces/
 │   ├── 04.2-borda-dc/              # segmento Borda DC ↔ pasta Grafana "04.2 · Borda DC"
-│   │   ├── 01-n3-rede-wan/              # fluxo "por router" (par: 01→02)
-│   │   ├── 02-n4-rede-wan-router/
-│   │   ├── 03-n3-rede-wan-carriers/     # fluxo "por provedor" (par: 03→04)
-│   │   └── 04-n4-rede-wan-provedor/
+│   │   ├── arquivo-borda-dc/            # ARQUIVO — os 4 dashboards antigos (referência)
+│   │   ├── 01-n3-bdc-routers/           # eixo "por router" (par: 01→02)
+│   │   ├── 02-n4-bdc-router/
+│   │   ├── 03-n3-bdc-provedores/        # eixo "por provedor" (par: 03→04)
+│   │   ├── 04-n4-bdc-provedor/
+│   │   ├── 05-n3-bdc-servicos/          # eixo "por serviço de negócio" (par: 05→06)
+│   │   └── 06-n4-bdc-servico/
 │   ├── 04.3-dc-fabric/             # segmento DC Fabric ↔ pasta Grafana "04.3 · DC Fabric"
 │   │   ├── 01-n3-rede-dc/
 │   │   └── 02-n4-rede-dc-switch/
