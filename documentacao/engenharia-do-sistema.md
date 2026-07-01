@@ -174,10 +174,25 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 | Edifícios | 02 | `04.4-edificios/02-n4-rede-edificio/` | `rede.n4.edificio` | `N4 · Rede · Edifício — Detalhe` |
 | Edifícios | 03 | `04.4-edificios/03-n5-rede-edificio-interfaces/` | `rede.n5.edificio-interfaces` | `N5 · Rede · Edifício — Interfaces` |
 | Edifícios | 04 | `04.4-edificios/04-n6-rede-edificio-switch/` | `rede.n6.edificio-switch` | `N6 · Rede · Edifício · Switch — Detalhe` |
-| Borda DC | 01 | `04.2-borda-dc/01-n3-rede-wan/` | `rede.n3.wan` | `N3 · Rede · WAN — Serviços e circuitos` |
-| Borda DC | 02 | `04.2-borda-dc/02-n3-rede-wan-carriers/` | `rede.n3.wan-carriers` | `N3 · Rede · WAN — Por provedor` |
-| Borda DC | 03 | `04.2-borda-dc/03-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
-| Borda DC | 04 | `04.2-borda-dc/04-n4-rede-wan-router/` | `rede.n4.wan-router` (canónico do fluxo Borda DC) | `N4 · Rede · WAN · Router — Diagnóstico` |
+| Borda DC · por router | 01 | `04.2-borda-dc/01-n3-rede-wan/` | `rede.n3.wan` | `N3 · Rede · WAN — Serviços e circuitos` |
+| Borda DC · por router | 02 | `04.2-borda-dc/02-n4-rede-wan-router/` | `rede.n4.wan-router` | `N4 · Rede · WAN · Router — Diagnóstico` |
+| Borda DC · por provedor | 01 | `04.2-borda-dc/03-n3-rede-wan-carriers/` | `rede.n3.wan-carriers` | `N3 · Rede · WAN — Por provedor` |
+| Borda DC · por provedor | 02 | `04.2-borda-dc/04-n4-rede-wan-provedor/` | `rede.n4.wan-provedor` | `N4 · Rede · WAN · Provedor — SLA e circuitos` |
+
+> **Borda DC tem 2 fluxos paralelos, não 1 cadeia sequencial** (revisão
+> 2026-07-01): o segmento parte dos mesmos 5 routers de borda, mas fatiados
+> por dois eixos distintos — "por router/serviço" (triagem: que router está
+> a falhar, que serviço BPC afecta) e "por provedor" (accountability de SLA:
+> que operadora está a incumprir, para abrir ticket). A numeração de pasta
+> reinicia em cada fluxo (`01`→`02` = par por router; `01`→`02` dentro de
+> `03`→`04` = par por provedor) para que pastas adjacentes sejam sempre o
+> mesmo fluxo — nunca `01`+`04` como acontecia antes desta revisão. Nenhum
+> dos dois fluxos tem N5: ambos os N4 já são fichas de nível "dispositivo
+> único" (5 routers no total, não centenas como Agências), sem uma camada de
+> dispositivo adicional por baixo que justifique aprofundar. Um N5 "Circuito
+> — Histórico" (série temporal longa por circuito, para investigação de
+> quebra de SLA) é candidato válido se/quando surgir necessidade concreta de
+> NOC — não construído por simetria com Agências/Edifícios.
 
 > Os UIDs de dashboard (`rede.n3.agencias` etc.) são a proposta de nomenclatura
 > canónica (T-04, ainda não migrada — os UIDs reais no Grafana continuam
@@ -232,10 +247,10 @@ sistema-de-observabilidade/
 │   │   ├── 03-n4-rede-agencia-wan-dispositivo/  # generico, so usado por esta ficha
 │   │   └── 04-n5-rede-agencia-interfaces/
 │   ├── 04.2-borda-dc/              # segmento Borda DC ↔ pasta Grafana "04.2 · Borda DC"
-│   │   ├── 01-n3-rede-wan/
-│   │   ├── 02-n3-rede-wan-carriers/
-│   │   ├── 03-n4-rede-wan-provedor/
-│   │   └── 04-n4-rede-wan-router/
+│   │   ├── 01-n3-rede-wan/              # fluxo "por router" (par: 01→02)
+│   │   ├── 02-n4-rede-wan-router/
+│   │   ├── 03-n3-rede-wan-carriers/     # fluxo "por provedor" (par: 03→04)
+│   │   └── 04-n4-rede-wan-provedor/
 │   ├── 04.3-dc-fabric/             # segmento DC Fabric ↔ pasta Grafana "04.3 · DC Fabric"
 │   │   ├── 01-n3-rede-dc/
 │   │   └── 02-n4-rede-dc-switch/

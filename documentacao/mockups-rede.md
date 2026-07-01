@@ -11,11 +11,23 @@
 | # | Decisão | Racional |
 |---|---|---|
 | D1 | **Agências integradas em Rede** (domínio 04) | Agências e Edifícios têm a mesma natureza — routers + switches de acesso. Separar era fragmentação sem valor operacional. |
-| D2 | **Organização WAN por serviço/router**, não por provider | A arquitectura BPC mapeia directamente router→serviço. A vista por provider é comercial, não operacional. |
+| D2 | ~~Organização WAN por serviço/router, não por provider~~ **SUPERSEDIDA 2026-07-01** — ver nota abaixo | A arquitectura BPC mapeia directamente router→serviço. A vista por provider é comercial, não operacional. |
 | D3 | **N4 · Ficha de dispositivo** parametrizado por `var-hostid` — 1 dashboard único para todos os sub-domínios | Evita 4 dashboards quase idênticos. O tipo de dispositivo é inferido pelo hostid. |
 | D4 | **Triggers: Nativo Grafana Table + Data links** | Table nativo com override Data link na coluna Host passa `var-hostid` para o N4. Sem necessidade de Dynamic Text só para triggers. |
 | D5 | **Time series: 4 painéis separados em grid 2×2** | Um painel por sub-domínio/contexto — fácil de ler, sem sobreposição de séries. |
 | D6 | **Cards de sub-domínio com drill-down directo** para o N3 respectivo | Cada card no N2 tem link explícito `→ N3`. Cada linha no N3 tem link `↗ ficha` para o N4. |
+
+> **Nota 2026-07-01 — D2 revertida na implementação.** A vista "por provider"
+> (`n3-wan-carriers` → `n4-wan-provedor`) **não foi apagada** como este
+> mockup planeava — está viva em produção e a receber manutenção activa,
+> em paralelo com a vista "por router/serviço" (`n3-wan` → `n4-wan-router`).
+> Motivo: respondem a perguntas operacionais diferentes — a vista por router
+> serve a triagem NOC (que router falhou, que serviço BPC é afectado); a
+> vista por provider serve a accountability de SLA (que operadora incumpriu,
+> para abrir ticket com o carrier certo). D2 tratava a vista por provider
+> como "só comercial", mas a componente de SLA/ticket também é operacional.
+> Ambos os fluxos ficam mantidos como arquitectura canónica — ver
+> `engenharia-do-sistema.md` §4.0 e `CLAUDE.md` linha "Fluxo Borda DC".
 
 ---
 
