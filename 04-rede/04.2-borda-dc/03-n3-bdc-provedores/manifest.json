@@ -1,0 +1,34 @@
+{
+  "dashboardUid": "rede-n3-bdc-provedores",
+  "dashboardTitle": "N3 · Rede · Borda DC — Provedores",
+  "folderUid": "rede-seg-bordadc",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},
+    "group": {"filter": "HG_DC_SWITCHES"},
+    "host": {"filter": "DC1-SPINE-11"},
+    "item": {"filter": "ICMP ping"}
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-bdc-provedores-cards.js",
+      "id": 101,
+      "role": "content",
+      "title": "KPI + Cards — por Provedor",
+      "content": "<div id=\"bpc-n3bdc-provedores\"></div>"
+    },
+    {
+      "file": "n3-bdc-triggers.json",
+      "id": 200,
+      "role": "content",
+      "title": "Problemas Activos — Borda DC"
+    }
+  ]
+}

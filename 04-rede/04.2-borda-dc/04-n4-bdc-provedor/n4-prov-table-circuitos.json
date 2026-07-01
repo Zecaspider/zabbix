@@ -1,0 +1,69 @@
+{
+  "type": "table",
+  "title": "Circuitos do Provedor",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "description": "Circuitos deste provedor em qualquer um dos 5 routers de Borda DC. Classificação por regex sobre o nome/descrição da interface (mesma lista de tokens já validada em l3-bdc-provedores-cards.js) — não é uma tag Zabbix nativa. Coluna 'Circuito' combina router+interface num só texto (ex.: 'DC1-RTE-WAN-INT: Interface Po2.65(BGP_PEER_ITA): Operational status') — tentámos separar em colunas Router/Interface via transform extractFields, mas essa transform falhou silenciosamente neste Grafana (capture groups nomeados `(?<name>...)` não funcionaram); reduce+organize simples é robusto e já mostra tudo o que interessa numa só coluna.",
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/.*/" },
+      "item": { "filter": "/Interface [^:]*(${provider})[^:]*: Operational status/i" },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series",
+      "options": { "showDisabledItems": false }
+    }
+  ],
+  "transformations": [
+    {
+      "id": "reduce",
+      "options": {
+        "reducers": ["lastNotNull"],
+        "includeTimeField": false,
+        "mode": "seriesToRows"
+      }
+    },
+    {
+      "id": "organize",
+      "options": {
+        "renameByName": { "Field": "Circuito", "Last *": "Estado", "Last": "Estado" }
+      }
+    }
+  ],
+  "fieldConfig": {
+    "defaults": {
+      "color": { "mode": "thresholds" },
+      "custom": {
+        "align": "auto",
+        "cellOptions": { "type": "auto" },
+        "filterable": false
+      }
+    },
+    "overrides": [
+      {
+        "matcher": { "id": "byName", "options": "Estado" },
+        "properties": [
+          {
+            "id": "mappings",
+            "value": [
+              { "type": "value", "options": {
+                "1": { "text": "UP", "color": "green", "index": 0 },
+                "2": { "text": "DOWN", "color": "red", "index": 1 }
+              } }
+            ]
+          },
+          { "id": "custom.cellOptions", "value": { "type": "color-background" } },
+          { "id": "custom.align", "value": "center" },
+          { "id": "custom.width", "value": 100 }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "showHeader": true,
+    "cellHeight": "sm"
+  }
+}

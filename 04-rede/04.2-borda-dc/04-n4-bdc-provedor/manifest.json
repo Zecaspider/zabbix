@@ -1,0 +1,70 @@
+{
+  "dashboardUid": "rede-n4-bdc-provedor",
+  "dashboardTitle": "N4 · Rede · Borda DC · Provedor — SLA e circuitos",
+  "folderUid": "rede-seg-bordadc",
+  "datasource": "ffo8sp8zllog0e",
+  "notes": "Rebuild 2026-07-01 (nativo) — l4-bdc-provedor-ficha.js (Business Text) substituído por painéis nativos, mesma filosofia do N4/N5 Router. Multi-host (spans HG_DC_ROUTERS inteiro, não um único host) — variável $provider guarda a própria alternação regex (reaproveita tokens já validados em l3-bdc-provedores-cards.js), interpolada directamente no item.filter de cada painel. Coluna Router extraída via transform extractFields sobre o campo combinado 'hostname: nome do item' que o datasource Zabbix devolve nativamente em queries multi-host (confirmado ao vivo via /api/ds/query antes de construir).",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "drilldownFrom": "rede-n3-bdc-provedores",
+  "variables": [
+    {
+      "name": "provider",
+      "label": "Provedor",
+      "type": "custom",
+      "note": "Valor = alternação regex directamente (não uma chave simbólica) — reaproveita os tokens de l3-bdc-provedores-cards.js. Interpolado em /Interface [^:]*(${provider})[^:]*: .../ em todos os painéis."
+    }
+  ],
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "n4-prov-table-circuitos.json",
+      "id": 200,
+      "role": "content",
+      "title": "Circuitos do Provedor"
+    },
+    {
+      "file": "n4-prov-timeline.json",
+      "id": 201,
+      "role": "content",
+      "title": "Histórico (flaps) — Provedor"
+    },
+    {
+      "file": "n4-prov-triggers.json",
+      "id": 202,
+      "role": "content",
+      "title": "Problemas Activos — Provedor"
+    },
+    {
+      "file": "n4-prov-traffic.json",
+      "id": 203,
+      "role": "content",
+      "title": "Tráfego — Provedor (últimas 6h)"
+    },
+    {
+      "file": "n4-prov-packetloss.json",
+      "id": 204,
+      "role": "content",
+      "title": "Packet loss — erros e descartes (Provedor, últimas 6h)"
+    }
+  ]
+}

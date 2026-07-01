@@ -1,0 +1,36 @@
+{
+  "type": "alexanderzobnin-zabbix-triggers-panel",
+  "title": "Problemas Activos — Provedor",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "description": "Filtro por regex sobre o nome da trigger — provedor é classificação por regex, não tag Zabbix nativa. A verificar: se o filtro não isolar correctamente por provedor, este painel é removido (mesma decisão já documentada na versão antiga).",
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "5",
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/.*/" },
+      "application": { "filter": "" },
+      "proxy": { "filter": "" },
+      "trigger": { "filter": "/(${provider})/i" },
+      "tags": { "filter": "" },
+      "options": { "minSeverity": 0, "sortProblems": "default", "acknowledged": 2, "hostsInMaintenance": false },
+      "refId": "A"
+    }
+  ],
+  "options": {
+    "ageField": true,
+    "ackField": true,
+    "descriptionField": true,
+    "hostField": true,
+    "hostTechNameField": false,
+    "severityField": true,
+    "statusField": true,
+    "showTags": true,
+    "highlightNewerThan": "1h",
+    "fontSize": "100%",
+    "limit": 50,
+    "sortProblems": "lastchange",
+    "problemTimeline": true
+  }
+}
