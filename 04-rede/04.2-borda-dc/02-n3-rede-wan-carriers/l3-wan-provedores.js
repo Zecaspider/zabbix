@@ -45,8 +45,11 @@ var CFG_PROV = {
     { key: 'parc',     icon: '🏛', label: 'Gov / Parc' },
   ],
 
-  // IP SLA mapeado a carrier key (só WAN-INT hostid 10838)
-  slaCarrierMap: { '65': 'ita' },
+  // IP SLA index -> circuito específico que ele mede (não o provedor inteiro).
+  // SLA 65 mede só o link Internet do WAN-INT (Po2.65, BGP_PEER_ITA) — os
+  // outros circuitos do mesmo provedor (túneis DMVPN, P2P) são independentes
+  // e não devem herdar o estado deste SLA (rede-topologia.md §4.6).
+  slaCircuitMap: { '65': { provider: 'ita', hostid: '10838', ifname: 'Po2.65' } },
 
   excludeRe: /^(Lo|Null|Vlan|BVI|Mgmt|nve|Vo\d|SE\d|EFXS|VoiceEncapPeer|VoiceOverIpPeer|Ethernet[0-9]\/[0-9]\/[0-9]+$|Te[0-9]\/[0-9]\/[0-9]+$|Gi0\/0\/[0-9]$|Gi0\/0\/[23456789]\.|Po1\.|Po1$|Po2$|Po11|Po12|Po13|Po200)/i,
   excludeDescRe: /^(GERENCIA|MGMT|vrf_bpc_wifi|P2P_CORE|P2P_ChkPT|RT-to-CUCM|Rede BPC|Public_IPs_BPC|P2P_RTE|P2P_DC-IMP)/i,
@@ -171,16 +174,18 @@ function pProvMap(ifStatusItems, trafficIdx, slaIdx) {
       inBps: 0, outBps: 0, sla: null, cats: pEmptyCats() }
   })
 
-  // Resolver SLA por carrier
-  Object.keys(CFG_PROV.slaCarrierMap).forEach(function(idx) {
-    var pk = CFG_PROV.slaCarrierMap[idx]
+  // Resolver SLA por carrier + qual circuito específico ele mede
+  var slaCircuitKeys = {} // provider key -> hostid|ifname do circuito medido
+  Object.keys(CFG_PROV.slaCircuitMap).forEach(function(idx) {
+    var target = CFG_PROV.slaCircuitMap[idx]
     var sd = slaIdx[idx]
-    if (!pk || !sd || !sd['Sense']) return
-    map[pk].sla = {
+    if (!target || !map[target.provider] || !sd || !sd['Sense']) return
+    map[target.provider].sla = {
       ok:    !sd['Sense'].stale && sd['Sense'].val === '1',
       rttMs: sd['CompletionTime'] ? parseInt(sd['CompletionTime'].val, 10) : null,
       stale: sd['Sense'].stale,
     }
+    slaCircuitKeys[target.provider] = target.hostid + '|' + target.ifname
   })
 
   ifStatusItems.forEach(function(it) {
@@ -193,12 +198,12 @@ function pProvMap(ifStatusItems, trafficIdx, slaIdx) {
     if (!pk || !map[pk]) return
 
     var g       = map[pk]
-    var isUp    = it.lastvalue === '1'
-    var slaFail = g.sla && !g.sla.stale && !g.sla.ok
-    var effDown = !isUp || (pk === 'ita' && slaFail)
     var cat     = pCategory(p.ifname, p.desc)
     var tk      = it.hostid + '|' + p.ifname
     var tr      = trafficIdx[tk] || {}
+    var isUp    = it.lastvalue === '1'
+    var slaFail = g.sla && !g.sla.stale && !g.sla.ok && tk === slaCircuitKeys[pk]
+    var effDown = !isUp || slaFail
 
     g.total++
     if (isUp) g.up++
