@@ -166,8 +166,7 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 | — | 01 | `01-n2-rede/` | `rede.n2.segmentos` | `N2 · Rede — Segmentos e alertas` |
 | Agências | 01 | `04.1-agencias/01-n3-rede-agencias/` | `rede.n3.agencias` | `N3 · Rede · Agências — Mapa de estado` |
 | Agências | 02 | `04.1-agencias/02-n4-rede-agencia/` | `rede.n4.agencia` | `N4 · Rede · Agência — Diagnóstico` |
-| Agências | 03 | `04.1-agencias/03-n4-rede-agencia-wan/` | `rede.n4.agencia-wan` | `N4 · Rede · Agência · WAN — Dispositivo` |
-| Agências | 04 | `04.1-agencias/04-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
+| Agências | 03 | `04.1-agencias/03-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
 | DC Fabric | 01 | `04.3-dc-fabric/01-n3-rede-dc/` | `rede.n3.dc` | `N3 · Rede · DC Fabric — Estado dos switches` |
 | DC Fabric | 02 | `04.3-dc-fabric/02-n4-rede-dc-switch/` | `rede.n4.dc-switch` | `N4 · Rede · DC · Switch — Interfaces` |
 | Edifícios | 01 | `04.4-edificios/01-n3-rede-edificios/` | `rede.n3.edificios` | `N3 · Rede · Edifícios BPC — Routers e switches` |
@@ -230,8 +229,7 @@ sistema-de-observabilidade/
 │   ├── 04.1-agencias/              # segmento Agências ↔ pasta Grafana "04.1 · Agências"
 │   │   ├── 01-n3-rede-agencias/
 │   │   ├── 02-n4-rede-agencia/
-│   │   ├── 03-n4-rede-agencia-wan/
-│   │   └── 04-n5-rede-agencia-interfaces/
+│   │   └── 03-n5-rede-agencia-interfaces/
 │   ├── 04.2-borda-dc/              # segmento Borda DC ↔ pasta Grafana "04.2 · Borda DC"
 │   │   ├── 01-n3-rede-wan/
 │   │   ├── 02-n3-rede-wan-carriers/
