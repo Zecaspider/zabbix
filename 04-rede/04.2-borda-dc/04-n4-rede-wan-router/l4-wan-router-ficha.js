@@ -26,6 +26,7 @@ var CFG_R4 = {
   refreshMs:        60000,
   maxAgeSec:        600,
   defaultHostname: 'DC1-RTE-WAN-INT',
+  n3DashUid:       'rede-n3-wan',
 
   routers: {
     'DC1-RTE-WAN-INT':  { funcao:'Internet BGP',     modelo:'ISR4451',     hasSla:true,  hasBgp:true,  hasVoice:false },
@@ -207,7 +208,13 @@ function r4Compute(data, rtr){
   cats['other']=[]
   data.ifStatus.forEach(function(it){
     var p=r4ParseIf(it.name); if(!p) return
-    var cat=r4Classify(p.ifname,p.desc), up=it.lastvalue==='1', stale=r4Stale(it.lastclock), tr=trIdx[p.ifname]||{}
+    var cat=r4Classify(p.ifname,p.desc)
+    // ifOperStatus=4 (unknown) é o estado NORMAL de portas FXS de voz não
+    // ligadas a nenhuma linha (rede-topologia.md §4.4) — não é uma falha.
+    // Só se aplica à categoria 'voice'; qualquer outra categoria continua
+    // estrita (só '1' = up).
+    var up=(cat==='voice') ? (it.lastvalue==='1'||it.lastvalue==='4') : it.lastvalue==='1'
+    var stale=r4Stale(it.lastclock), tr=trIdx[p.ifname]||{}
     cats[cat].push({ ifname:p.ifname, desc:p.desc, up:up, stale:stale, inBps:tr.inBps!=null?tr.inBps:null, outBps:tr.outBps!=null?tr.outBps:null })
   })
   Object.keys(cats).forEach(function(k){
@@ -267,7 +274,12 @@ function r4RenderFicha(hostname, hostId, rtr, model){
   if(model.svcDown>0) badges+=' '+r4Badge(model.svcDown+' circuito'+(model.svcDown>1?'s':'')+' DOWN',T.colorCrit)
   if(model.flapEvents.length>0) badges+=' '+r4Badge(model.flapEvents.length+' eventos 4h','#F0A500')
 
+  var backLink=CFG_R4.n3DashUid
+    ?'<a href="/d/'+CFG_R4.n3DashUid+'" style="font-size:.75rem;color:#64748B;text-decoration:none;display:block;margin-bottom:6px">← N3 · WAN — Serviços</a>'
+    :''
+
   return '<div style="background:rgba(255,255,255,0.03);border:1px solid #1E293B;border-radius:10px;padding:12px 16px;margin-bottom:12px">'
+    +backLink
     +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">'+r4Dot(s.icmp,s.icmp==null,12)
     +'<span style="font-size:1.05rem;font-weight:800;color:#E2E8F0">'+r4Esc(hostname)+'</span></div>'
     +'<div style="font-size:.76rem;color:#475569;margin-bottom:8px">'+r4Esc(rtr.funcao)+' &nbsp;·&nbsp; '+r4Esc(rtr.modelo)+' &nbsp;·&nbsp; hostid '+r4Esc(hostId)+'</div>'
