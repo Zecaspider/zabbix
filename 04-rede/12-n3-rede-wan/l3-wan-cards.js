@@ -21,9 +21,8 @@ var CFG_WCARDS = {
   refreshMs:  60000,
   maxAgeSec:  600,
 
-  // N4 Device dashboard (preenchido quando existir)
-  n4DashUid:  'rede-n4-wan-dispositivo',
-  n4Group:    'HG_DC_ROUTERS',
+  // N4 ficha técnica por router (dropdown fixo aos 5 routers WAN de borda)
+  n4DashUid:  'rede-n4-wan-router',
 
   hosts: [
     {
@@ -278,7 +277,7 @@ function wcRenderCard(host) {
 
   // Drill-down → N4
   var n4Href = CFG_WCARDS.n4DashUid
-    ? '/d/' + CFG_WCARDS.n4DashUid + '?var-group=' + encodeURIComponent(CFG_WCARDS.n4Group) + '&var-host=' + encodeURIComponent(host.cfg.hostname)
+    ? '/d/' + CFG_WCARDS.n4DashUid + '?var-routerName=' + encodeURIComponent(host.cfg.hostname)
     : null
 
   var footer = n4Href
