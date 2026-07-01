@@ -198,6 +198,14 @@ parceiros (Gi0/0/0.896). ⚠ **Po1 DOWN**.
 > latência fina; 60/62/65 (threshold 5000 ms) testes de alcançabilidade. Pedir à
 > equipa de rede para nomear os probes no Zabbix (inventory/description).
 
+> **Actualização Z.13 (2026-07-01):** `history.get` sobre `rttMonCtrlAdminCompletionTime[65]`
+> mostra 0 em todos os 43.836 pontos dos últimos 31 dias (nunca uma resposta), e a trigger é
+> um único evento aberto e ininterrupto desde 2025-11-21 (~7 meses, sem flap) — enquanto
+> Po2.65 tem tráfego real (~23 Mbps). Isto é assinatura de sonda com alvo morto/inatingível
+> no router, não de indisponibilidade real do link Internet. Rebaixado para P2 no
+> `cronograma.md` — não tratar como incidente de serviço activo sem a equipa de redes
+> validar o destino configurado da sonda 65.
+
 ---
 
 ## 5. Chaves de items confirmadas (corrige catálogo §4 da arquitectura)

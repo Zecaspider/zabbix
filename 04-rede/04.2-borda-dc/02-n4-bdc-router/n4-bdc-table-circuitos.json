@@ -1,0 +1,184 @@
+{
+  "type": "table",
+  "title": "Circuitos — Estado",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "ffo8sp8zllog0e"
+  },
+  "transparent": true,
+  "description": "Tabela única por router (categorias curadas por regex verificado ao vivo — Po2.65/960/1576=BGP Internet, Po2.110/835/1158=EMIS, Tu101-107=DMVPN Agências, Tu201-208=DMVPN Edifícios, Po2.2931/2932=Azure, Tu20/Tu30/Tu603/Gi0-0-1.802=Governo, Po2.{7,31,244,245,246,302,367,421,466,537,625,970,453}=Parceiros PARC (lista fechada — nunca $Po2\\.\\d+$ aberto, para não apanhar os Po2.x próprios do WAN-AG), VoiceOverIpPeer*=Voz. BGP fundido na mesma tabela, sem caixa separada.",
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface Po2\\.(65|960|1576)\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface Po2\\.(110|835|1158)\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "B",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface Tu10[1-7]\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "C",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface Tu20[1-8]\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "D",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface Po2\\.293[12]\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "E",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface (Tu20|Tu30|Tu603|Gi0\\/0\\/1\\.802)\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "F",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface Po2\\.(7|31|244|245|246|302|367|421|466|537|625|970|453)\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "G",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_ROUTERS" },
+      "host": { "filter": "/^$routerName$/" },
+      "item": { "filter": "/^Interface VoiceOverIpPeer\\d+\\(.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "H",
+      "resultFormat": "time_series"
+    }
+  ],
+  "transformations": [
+    {
+      "id": "reduce",
+      "options": {
+        "reducers": [
+          "lastNotNull"
+        ],
+        "includeTimeField": false,
+        "mode": "seriesToRows"
+      }
+    },
+    {
+      "id": "organize",
+      "options": {
+        "renameByName": {
+          "Field": "Interface",
+          "Last *": "Estado",
+          "Last": "Estado"
+        }
+      }
+    }
+  ],
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "custom": {
+        "align": "auto",
+        "cellOptions": {
+          "type": "auto"
+        },
+        "filterable": false
+      }
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "Estado|Last.*"
+        },
+        "properties": [
+          {
+            "id": "mappings",
+            "value": [
+              {
+                "type": "value",
+                "options": {
+                  "1": {
+                    "text": "UP",
+                    "color": "green",
+                    "index": 0
+                  },
+                  "2": {
+                    "text": "DOWN",
+                    "color": "red",
+                    "index": 1
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "id": "custom.cellOptions",
+            "value": {
+              "type": "color-background"
+            }
+          },
+          {
+            "id": "custom.align",
+            "value": "center"
+          },
+          {
+            "id": "custom.width",
+            "value": 120
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "showHeader": true,
+    "cellHeight": "sm"
+  }
+}

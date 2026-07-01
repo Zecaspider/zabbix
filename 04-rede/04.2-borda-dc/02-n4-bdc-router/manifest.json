@@ -23,6 +23,8 @@
     "label": "Router",
     "note": "Custom variable, criada directamente via API na criação do dashboard shell (ver script inline, não gerido por push_panel.py)."
   },
+  "notes_rebuild": "Rebuild 2026-07-01 (v2) — l4-bdc-router-ficha.js (Business Text gigante) substituído por painéis nativos, alinhado com o padrão dos irmãos N4 Agência/Edifício. Painel antigo id 101 removido do dashboard no passo de layout final (§4). Painel dedicado SLA 65 (n4-stat-sla65.json) removido no mesmo dia — Z.13 rediagnosticado como sonda provavelmente morta no router (ver cronograma.md), painel permanentemente vermelho não ajudava o NOC; a trigger nativa continua a cobrir isto em Problemas Activos. Ver documentacao + memory handoff-n4-bdc-router-redesign.",
+  "notes_ajustes_layout": "2026-07-01 (v3, feedback de revisão) — painel Identidade do Router (id 102) removido: repetia info já visível no header (nome/função) e no dropdown Router. RTT IP SLA 65 (id 203) removido: mesma sonda morta do Z.13, gráfico só mostra 0 constante — não acionável. Alturas reduzidas (stats 6→4, circuitos 18→10 — usa scroll interno para routers com mais linhas, ex. WAN-AG/PARC). Problemas Activos passou a meia largura (o painel nativo de triggers não estica a tabela quando há poucas linhas — bug conhecido do plugin, não do dashboard); a outra metade tem o novo painel de packet loss (erros+descartes, mesmo padrão do painel de Tráfego).",
   "panels": [
     {
       "file": "utils.js",
@@ -32,17 +34,59 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
-      "file": "l4-bdc-router-ficha.js",
+      "file": "n4-stat-icmp.json",
+      "id": 204,
+      "role": "content",
+      "title": "Disponibilidade"
+    },
+    {
+      "file": "n4-stat-cpu.json",
+      "id": 205,
+      "role": "content",
+      "title": "CPU"
+    },
+    {
+      "file": "n4-stat-ram.json",
+      "id": 206,
+      "role": "content",
+      "title": "RAM"
+    },
+    {
+      "file": "n4-stat-uptime.json",
+      "id": 207,
+      "role": "content",
+      "title": "Uptime"
+    },
+    {
+      "file": "n4-bdc-table-circuitos.json",
+      "id": 208,
+      "role": "content",
+      "title": "Circuitos — Estado"
+    },
+    {
+      "file": "n4-bdc-timeline-circuitos.json",
+      "id": 210,
+      "role": "content",
+      "title": "Histórico (flaps)"
+    },
+    {
+      "file": "l4-bdc-n5-button.js",
       "id": 101,
       "role": "content",
-      "title": "Ficha Técnica — Router",
-      "content": "<div id=\"bpc-n4-bdc-router\"></div>"
+      "title": "N5 Button",
+      "content": "<div id=\"bpc-bdc-n5-btn\" style=\"height:100%\"></div>"
     },
     {
       "file": "n4-bdc-triggers.json",
       "id": 200,
       "role": "content",
       "title": "Problemas Activos"
+    },
+    {
+      "file": "n4-bdc-packetloss.json",
+      "id": 211,
+      "role": "content",
+      "title": "Packet loss — erros e descartes (últimas 6h)"
     },
     {
       "file": "n4-bdc-traffic.json",
@@ -55,12 +99,6 @@
       "id": 202,
       "role": "content",
       "title": "CPU / RAM — histórico (últimas 24h)"
-    },
-    {
-      "file": "n4-bdc-rtt.json",
-      "id": 203,
-      "role": "content",
-      "title": "RTT IP SLA — só WAN-INT (últimas 6h)"
     }
   ]
 }

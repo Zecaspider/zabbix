@@ -1,0 +1,78 @@
+{
+  "dashboardUid": "rede-n5-bdc-router-interfaces",
+  "dashboardTitle": "N5 · Rede · Borda DC · Router — Interfaces",
+  "folderUid": "rede-seg-bordadc",
+  "datasource": "ffo8sp8zllog0e",
+  "notes": "Drill-down do N4 Borda DC Router para o detalhe completo de uma única interface. Clone do padrão n5-rede-agencia-interfaces (2026-07-01).",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_ROUTERS"
+    },
+    "host": {
+      "filter": "DC1-RTE-WAN-INT"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "drilldownFrom": "rede-n4-bdc-router",
+  "variables": [
+    {
+      "name": "routerName",
+      "label": "Router",
+      "type": "custom",
+      "query": "DC1-RTE-WAN-INT — Internet BGP : DC1-RTE-WAN-INT,DC1-RTE-WAN-EMIS — EMIS : DC1-RTE-WAN-EMIS,DC1-RTE-WAN-AG — Agências/Edifícios/Azure : DC1-RTE-WAN-AG,DC1-RTE-GTW01 — Governo : DC1-RTE-GTW01,DC1-RTE-PARC — Parceiros/Voz : DC1-RTE-PARC",
+      "note": "Mesma lista/valores do N4 (routerName). Interactivo aqui também — permite trocar de router directamente no N5."
+    },
+    {
+      "name": "iface",
+      "label": "Interface",
+      "type": "query (mysql)",
+      "datasource": "cfo3cgypdrdvkf",
+      "note": "Lê directamente a tabela items do Zabbix (MySQL config DB) filtrada por h.host=$routerName — SEM depender de tags BPC (que não existem para estes 5 routers). Mesmo padrão comprovado do n5-rede-agencia-interfaces. All=.*"
+    }
+  ],
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "n5-bdc-state-timeline.json",
+      "id": 200,
+      "role": "content",
+      "title": "Estado & flaps (por interface)"
+    },
+    {
+      "file": "n5-bdc-traffic-in.json",
+      "id": 201,
+      "role": "content",
+      "title": "Tráfego recebido"
+    },
+    {
+      "file": "n5-bdc-traffic-out.json",
+      "id": 202,
+      "role": "content",
+      "title": "Tráfego enviado"
+    },
+    {
+      "file": "n5-bdc-erros.json",
+      "id": 203,
+      "role": "content",
+      "title": "Erros (entrada/saída)"
+    },
+    {
+      "file": "n5-bdc-descartes.json",
+      "id": 204,
+      "role": "content",
+      "title": "Descartes (entrada/saída)"
+    }
+  ]
+}

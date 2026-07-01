@@ -1,0 +1,238 @@
+{
+  "type": "state-timeline",
+  "title": "Histórico (flaps)",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "ffo8sp8zllog0e"
+  },
+  "transparent": true,
+  "targets": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface Po2\\.(65|960|1576)\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface Po2\\.(110|835|1158)\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "B",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface Tu10[1-7]\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "C",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface Tu20[1-8]\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "D",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface Po2\\.293[12]\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "E",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface (Tu20|Tu30|Tu603|Gi0\\/0\\/1\\.802)\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "F",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface Po2\\.(7|31|244|245|246|302|367|421|466|537|625|970|453)\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "G",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_ROUTERS"
+      },
+      "host": {
+        "filter": "/^$routerName$/"
+      },
+      "item": {
+        "filter": "/^Interface VoiceOverIpPeer\\d+\\(.*\\): Operational status$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "H",
+      "resultFormat": "time_series"
+    }
+  ],
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "custom": {
+        "fillOpacity": 80,
+        "lineWidth": 0
+      },
+      "mappings": [
+        {
+          "type": "value",
+          "options": {
+            "1": {
+              "text": "UP",
+              "color": "green",
+              "index": 0
+            },
+            "2": {
+              "text": "DOWN",
+              "color": "red",
+              "index": 1
+            }
+          }
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": null
+          },
+          {
+            "color": "red",
+            "value": 2
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "options": {
+    "showValue": "never",
+    "rowHeight": 0.85,
+    "mergeValues": true,
+    "alignValue": "left",
+    "legend": {
+      "showLegend": false
+    }
+  }
+}

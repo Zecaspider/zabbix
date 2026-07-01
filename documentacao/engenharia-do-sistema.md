@@ -176,6 +176,7 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 | Edifícios | 04 | `04.4-edificios/04-n6-rede-edificio-switch/` | `rede.n6.edificio-switch` | `N6 · Rede · Edifício · Switch — Detalhe` |
 | Borda DC · por router | 01 | `04.2-borda-dc/01-n3-bdc-routers/` | `rede.n3.bdc-routers` | `N3 · Rede · Borda DC — Routers` |
 | Borda DC · por router | 02 | `04.2-borda-dc/02-n4-bdc-router/` | `rede.n4.bdc-router` | `N4 · Rede · Borda DC · Router — Diagnóstico` |
+| Borda DC · por router | 07 | `04.2-borda-dc/07-n5-bdc-router-interfaces/` | `rede-n5-bdc-router-interfaces` | `N5 · Rede · Borda DC · Router — Interfaces` |
 | Borda DC · por provedor | 01 | `04.2-borda-dc/03-n3-bdc-provedores/` | `rede.n3.bdc-provedores` | `N3 · Rede · Borda DC — Provedores` |
 | Borda DC · por provedor | 02 | `04.2-borda-dc/04-n4-bdc-provedor/` | `rede.n4.bdc-provedor` | `N4 · Rede · Borda DC · Provedor — SLA e circuitos` |
 | Borda DC · por serviço | 01 | `04.2-borda-dc/05-n3-bdc-servicos/` | `rede.n3.bdc-servicos` | `N3 · Rede · Borda DC — Serviços` |
@@ -277,7 +278,8 @@ sistema-de-observabilidade/
 │   │   ├── 03-n3-bdc-provedores/        # eixo "por provedor" (par: 03→04)
 │   │   ├── 04-n4-bdc-provedor/
 │   │   ├── 05-n3-bdc-servicos/          # eixo "por serviço de negócio" (par: 05→06)
-│   │   └── 06-n4-bdc-servico/
+│   │   ├── 06-n4-bdc-servico/
+│   │   └── 07-n5-bdc-router-interfaces/ # drill N4→N5 do eixo "por router" (numeração 07: 05/06 reservados ao eixo serviço)
 │   ├── 04.3-dc-fabric/             # segmento DC Fabric ↔ pasta Grafana "04.3 · DC Fabric"
 │   │   ├── 01-n3-rede-dc/
 │   │   └── 02-n4-rede-dc-switch/

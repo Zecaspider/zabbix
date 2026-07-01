@@ -1,13 +1,13 @@
 {
   "type": "timeseries",
-  "title": "RTT IP SLA — só WAN-INT (últimas 6h)",
+  "title": "Tráfego recebido",
   "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
   "transparent": true,
-  "description": "Só DC1-RTE-WAN-INT tem sondas IP SLA — nos outros routers este painel fica vazio (sem dados), não é falha.",
   "fieldConfig": {
     "defaults": {
-      "unit": "ms",
-      "custom": { "drawStyle": "line", "lineWidth": 1, "fillOpacity": 6, "showPoints": "auto" }
+      "unit": "bps",
+      "noValue": "Sem dados",
+      "custom": { "fillOpacity": 10, "lineWidth": 1, "showPoints": "never" }
     },
     "overrides": []
   },
@@ -18,11 +18,13 @@
   "targets": [
     {
       "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
-      "queryType": "0", "resultFormat": "time_series", "refId": "rtt",
+      "functions": [],
       "group": { "filter": "HG_DC_ROUTERS" },
-      "host": { "filter": "/^$routerName$/" },
-      "item": { "filter": "/completion time/" },
-      "options": { "showDisabledItems": false }
+      "host": { "filter": "${routerName}" },
+      "item": { "filter": "/Interface ${iface}[^.]*: Bits received/" },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
     }
   ]
 }
