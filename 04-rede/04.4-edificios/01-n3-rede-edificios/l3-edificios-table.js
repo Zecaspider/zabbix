@@ -1,17 +1,22 @@
 // N3 · Rede · Edifícios — Cards 3×3
-// l3-edificios-table.js  v3.0
-// 9 routers de edifício → grid de cards; ordem: DOWN → Degradado → OK.
+// l3-edificios-table.js  v4.0
+// 9 routers de edifício → grid de cards; ordem: DOWN → Crítico → Degradado → OK.
 // Drill → N4 Edifício via URL var-host=<hostname>.
+// 6 sinais por card, 2 linhas de 3:
+//   linha 1 (severidade) — Links WAN, Perda, RTT
+//   linha 2 (contexto)   — Alertas activos, Erros/Descartes, Uptime
 
 const CFG_N3ED = {
   elementId: 'bpc-n3ed-table',
   refreshMs:  60000,
   groupId:   '28',
   n4Uid:     'rede-n4-edificio',
+  wanIfaceRe: /Interface.*\((?:[^)]*(?:WAN|DMVPN|TUNEL|TUNNEL)[^)]*)\)/i,
   thresholds: {
-    lossPct: { warn: 1,  crit: 5  },
-    rttMs:   { warn: 5,  crit: 50 },
-    cpuPct:  { warn: 60, crit: 85 },
+    lossPct:  { warn: 1,  crit: 5  },
+    rttMs:    { warn: 5,  crit: 50 },
+    alerts:   { warn: 1,  crit: 3  },
+    discards: { warn: 1,  crit: 10 },
   },
 }
 
@@ -24,19 +29,32 @@ function n3edEsc(s) {
   })
 }
 
-function n3edStatus(up, lossPct, rttMs) {
-  if (up === false || up === null) return 'down'
+function n3edFmtUptime(secs) {
+  if (secs == null || isNaN(secs)) return { val: '—', unit: '' }
+  var d = Math.floor(secs / 86400)
+  if (d > 0) return { val: String(d), unit: 'd' }
+  var h = Math.floor(secs / 3600)
+  return { val: String(h), unit: 'h' }
+}
+
+function n3edStatus(r) {
+  if (r.up === false || r.up === null) return 'down'
   var T = CFG_N3ED.thresholds
-  if (lossPct > T.lossPct.crit || rttMs > T.rttMs.crit) return 'crit'
-  if (lossPct > T.lossPct.warn || rttMs > T.rttMs.warn) return 'warn'
+  if (r.wanTotal > 0 && r.wanUp < r.wanTotal * 0.5) return 'crit'
+  if (r.lossPct > T.lossPct.crit || r.rttMs > T.rttMs.crit) return 'crit'
+  if (r.alerts >= T.alerts.crit) return 'crit'
+  if (r.wanTotal > 0 && r.wanUp < r.wanTotal) return 'warn'
+  if (r.lossPct > T.lossPct.warn || r.rttMs > T.rttMs.warn) return 'warn'
+  if (r.alerts >= T.alerts.warn) return 'warn'
+  if (r.discards >= T.discards.warn) return 'warn'
   return 'ok'
 }
 
 function n3edSortRows(rows) {
   var order = { down: 0, crit: 1, warn: 2, ok: 3 }
   return rows.slice().sort(function (a, b) {
-    var sa = order[n3edStatus(a.up, a.lossPct, a.rttMs)]
-    var sb = order[n3edStatus(b.up, b.lossPct, b.rttMs)]
+    var sa = order[n3edStatus(a)]
+    var sb = order[n3edStatus(b)]
     if (sa !== sb) return sa - sb
     return (a.label || '').localeCompare(b.label || '')
   })
@@ -46,16 +64,18 @@ function n3edDrillUrl(hostname) {
   return '/d/' + CFG_N3ED.n4Uid + '?var-group=HG_EDIFICIOS_ROUTERS&var-host=' + encodeURIComponent(hostname)
 }
 
-function n3edValColor(val, warn, crit, inverse) {
+function n3edValColor(val, warn, crit) {
   var n = parseFloat(val)
   if (isNaN(n)) return '#64748B'
-  if (inverse) {
-    if (n <= warn) return '#22C55E'
-    if (n <= crit) return '#D29922'
-    return '#F85149'
-  }
   if (n >= crit) return '#F85149'
   if (n >= warn) return '#D29922'
+  return '#22C55E'
+}
+
+function n3edWanColor(up, total) {
+  if (total === 0) return '#64748B'
+  if (up < total * 0.5) return '#F85149'
+  if (up < total) return '#D29922'
   return '#22C55E'
 }
 
@@ -80,21 +100,63 @@ function n3edFetch(rpc) {
       }),
       rpc('item.get', {
         hostids: ids,
-        search:  { key_: 'system.cpu.util' },
+        search:  { key_: 'net.if.status' },
+        filter:  { status: 0 },
+        output:  ['hostid', 'name', 'lastvalue'],
+      }),
+      rpc('item.get', {
+        hostids: ids,
+        search:  { key_: 'net.if.in.discards' },
+        filter:  { status: 0 },
+        output:  ['hostid', 'name', 'lastvalue'],
+      }),
+      rpc('trigger.get', {
+        hostids:   ids,
+        filter:    { value: 1 },
+        monitored: true,
+        output:    ['triggerid'],
+        selectHosts: ['hostid'],
+      }),
+      rpc('item.get', {
+        hostids: ids,
+        search:  { key_: 'system.net.uptime' },
         filter:  { status: 0 },
         output:  ['hostid', 'lastvalue'],
         limit:   hosts.length,
       }),
     ]).then(function (r) {
-      var icmpItems = r[0], cpuItems = r[1]
+      var icmpItems = r[0], ifStatusItems = r[1], discardItems = r[2], triggers = r[3], uptimeItems = r[4]
+      var wanRe = CFG_N3ED.wanIfaceRe
 
-      var icmpMap = {}, rttMap = {}, lossMap = {}, cpuMap = {}
+      var icmpMap = {}, rttMap = {}, lossMap = {}
       icmpItems.forEach(function (i) {
         if (i.key_ === 'icmpping')     icmpMap[i.hostid] = i.lastvalue === '1'
         if (i.key_ === 'icmppingsec')  rttMap[i.hostid]  = parseFloat(i.lastvalue) * 1000
         if (i.key_ === 'icmppingloss') lossMap[i.hostid] = parseFloat(i.lastvalue)
       })
-      cpuItems.forEach(function (i) { if (!cpuMap[i.hostid]) cpuMap[i.hostid] = parseFloat(i.lastvalue) })
+
+      var wanUpMap = {}, wanTotalMap = {}
+      ifStatusItems.forEach(function (i) {
+        if (!wanRe.test(i.name || '')) return
+        wanTotalMap[i.hostid] = (wanTotalMap[i.hostid] || 0) + 1
+        if (i.lastvalue === '1') wanUpMap[i.hostid] = (wanUpMap[i.hostid] || 0) + 1
+      })
+
+      var discardsMap = {}
+      discardItems.forEach(function (i) {
+        if (!wanRe.test(i.name || '')) return
+        var v = parseFloat(i.lastvalue)
+        if (isNaN(v)) return
+        discardsMap[i.hostid] = (discardsMap[i.hostid] || 0) + v
+      })
+
+      var alertsMap = {}
+      triggers.forEach(function (t) {
+        ;(t.hosts || []).forEach(function (h) { alertsMap[h.hostid] = (alertsMap[h.hostid] || 0) + 1 })
+      })
+
+      var uptimeMap = {}
+      uptimeItems.forEach(function (i) { if (uptimeMap[i.hostid] == null) uptimeMap[i.hostid] = parseFloat(i.lastvalue) })
 
       return hosts.map(function (h) {
         var tags = {}
@@ -103,11 +165,14 @@ function n3edFetch(rpc) {
           hostid:   h.hostid,
           name:     h.name,
           label:    tags['unidade_negocio'] || tags['edificio'] || h.name,
-          modelo:   tags['modelo'] || '',
           up:       icmpMap[h.hostid] != null ? icmpMap[h.hostid] : null,
           rttMs:    rttMap[h.hostid]  != null ? rttMap[h.hostid]  : null,
           lossPct:  lossMap[h.hostid] != null ? lossMap[h.hostid] : null,
-          cpuPct:   cpuMap[h.hostid]  != null ? cpuMap[h.hostid]  : null,
+          wanUp:    wanUpMap[h.hostid]    || 0,
+          wanTotal: wanTotalMap[h.hostid] || 0,
+          discards: discardsMap[h.hostid] != null ? discardsMap[h.hostid] : 0,
+          alerts:   alertsMap[h.hostid]   || 0,
+          uptime:   uptimeMap[h.hostid]   != null ? uptimeMap[h.hostid] : null,
         }
       })
     })
@@ -117,8 +182,17 @@ function n3edFetch(rpc) {
 
 // ── render ────────────────────────────────────────────────────────────────────
 
+function n3edStat(label, val, unit, color, big) {
+  var fs = big ? 24 : 21
+  return '<div style="text-align:center">' +
+    '<div style="font-size:' + fs + 'px;font-weight:700;font-family:monospace;color:' + color + '">' + val +
+      '<span style="font-size:15px;font-weight:600">' + unit + '</span></div>' +
+    '<div style="font-size:13px;color:#64748B;text-transform:uppercase;letter-spacing:.03em;margin-top:2px">' + label + '</div>' +
+  '</div>'
+}
+
 function n3edBuildCard(r) {
-  var status   = n3edStatus(r.up, r.lossPct, r.rttMs)
+  var status   = n3edStatus(r)
   var drillUrl = n3edDrillUrl(r.name)
   var T        = CFG_N3ED.thresholds
 
@@ -132,40 +206,48 @@ function n3edBuildCard(r) {
     : 'rgba(255,255,255,0.03)'
 
   var pillHtml = status === 'down'
-    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● Down</span>'
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:3px 11px;font-size:16px;font-weight:600">● Down</span>'
     : status === 'crit'
-    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● Crítico</span>'
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:3px 11px;font-size:16px;font-weight:600">● Crítico</span>'
     : status === 'warn'
-    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● Degradado</span>'
-    : '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● OK</span>'
+    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:3px 11px;font-size:16px;font-weight:600">● Degradado</span>'
+    : '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:3px 11px;font-size:16px;font-weight:600">● OK</span>'
 
   var rttStr  = r.rttMs  != null ? r.rttMs.toFixed(1) : '—'
   var lossStr = r.lossPct != null ? r.lossPct.toFixed(1) : '—'
-  var cpuStr  = r.cpuPct  != null ? r.cpuPct.toFixed(0) : '—'
+  var wanStr  = r.wanTotal > 0 ? r.wanUp + '/' + r.wanTotal : '—'
+  var alertStr = String(r.alerts)
+  var discStr  = r.discards.toFixed(r.discards < 10 ? 1 : 0)
+  var upt = n3edFmtUptime(r.uptime)
+  var uptColor = r.uptime != null && r.uptime < 86400 ? '#D29922' : '#8B949E'
 
-  function stat(label, val, unit, color) {
-    return '<div style="text-align:center">' +
-      '<div style="font-size:21px;font-weight:700;font-family:monospace;color:' + color + '">' + n3edEsc(val) +
-        '<span style="font-size:12px;font-weight:600">' + unit + '</span></div>' +
-      '<div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-top:2px">' + label + '</div>' +
+  var row1 =
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:5px 0">' +
+      n3edStat('Links WAN', wanStr,  '',   n3edWanColor(r.wanUp, r.wanTotal), true) +
+      n3edStat('Perda',     lossStr, '%',  n3edValColor(r.lossPct, T.lossPct.warn, T.lossPct.crit), true) +
+      n3edStat('RTT',       rttStr,  ' ms',n3edValColor(r.rttMs,   T.rttMs.warn,   T.rttMs.crit), true) +
     '</div>'
-  }
 
-  return '<a href="' + n3edEsc(drillUrl) + '" style="text-decoration:none;display:block">' +
-    '<div style="background:' + bgColor + ';border:1px solid rgba(255,255,255,0.08);border-left:4px solid ' + accentColor + ';border-radius:6px;padding:16px 18px 14px;cursor:pointer;transition:background .15s" ' +
+  var row2 =
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:5px 0">' +
+      n3edStat('Alertas',   alertStr, '',  n3edValColor(r.alerts, T.alerts.warn, T.alerts.crit), false) +
+      n3edStat('Descartes', discStr,  '',  n3edValColor(r.discards, T.discards.warn, T.discards.crit), false) +
+      n3edStat('Uptime',    upt.val,  upt.unit, uptColor, false) +
+    '</div>'
+
+  return '<a href="' + n3edEsc(drillUrl) + '" title="' + n3edEsc(r.name) + ' — Ver detalhe (N4)" style="text-decoration:none;display:block">' +
+    '<div style="background:' + bgColor + ';border:1px solid rgba(255,255,255,0.08);border-left:4px solid ' + accentColor + ';border-radius:6px;padding:10px 16px 8px;cursor:pointer;transition:background .15s" ' +
       'onmouseover="this.style.background=\'rgba(255,255,255,0.06)\'" ' +
       'onmouseout="this.style.background=\'' + bgColor + '\'">' +
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px">' +
-        '<span style="font-size:16px;font-weight:700;color:#E6EDF3;line-height:1.3">' + n3edEsc(r.label) + '</span>' +
-        pillHtml +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start">' +
+        '<span style="font-size:20px;font-weight:700;color:#E6EDF3;line-height:1.3">' + n3edEsc(r.label) + '</span>' +
+        '<div style="display:flex;align-items:center;gap:6px">' + pillHtml + '<span style="color:#58A6FF;font-size:16px;font-weight:700">→</span></div>' +
       '</div>' +
-      '<div style="font-size:11px;color:#4A5568;font-family:monospace;margin-bottom:14px">' + n3edEsc(r.name) + '</div>' +
-      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 0;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)">' +
-        stat('RTT',   rttStr,  ' ms', n3edValColor(r.rttMs,   T.rttMs.warn,   T.rttMs.crit,   false)) +
-        stat('Perda', lossStr, '%',   n3edValColor(r.lossPct, T.lossPct.warn, T.lossPct.crit, false)) +
-        stat('CPU',   cpuStr,  '%',   n3edValColor(r.cpuPct,  T.cpuPct.warn,  T.cpuPct.crit,  false)) +
+      '<div style="border-top:1px solid rgba(255,255,255,0.06);margin-top:4px">' +
+        row1 +
+        '<div style="border-top:1px solid rgba(255,255,255,0.05)"></div>' +
+        row2 +
       '</div>' +
-      '<div style="margin-top:10px;text-align:right;font-size:12px;font-weight:600;color:#58A6FF">Ver detalhe (N4) →</div>' +
     '</div>' +
   '</a>'
 }
@@ -173,22 +255,22 @@ function n3edBuildCard(r) {
 function n3edRenderCards(el, rows) {
   var sorted = n3edSortRows(rows)
   var nDown  = sorted.filter(function (r) { return r.up === false || r.up === null }).length
-  var nWarn  = sorted.filter(function (r) { var s = n3edStatus(r.up, r.lossPct, r.rttMs); return s === 'warn' || s === 'crit' }).length
+  var nWarn  = sorted.filter(function (r) { var s = n3edStatus(r); return s === 'warn' || s === 'crit' }).length
 
   var badgeHtml = nDown > 0
-    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">' + nDown + ' down</span> '
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:2px 10px;font-size:16px;font-weight:600">' + nDown + ' down</span> '
     : ''
   badgeHtml += nWarn > 0
-    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">' + nWarn + ' degradado</span>'
+    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:2px 10px;font-size:16px;font-weight:600">' + nWarn + ' degradado</span>'
     : ''
   if (!badgeHtml) {
-    badgeHtml = '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:2px 10px;font-size:12px;font-weight:600">Todos OK</span>'
+    badgeHtml = '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:2px 10px;font-size:16px;font-weight:600">Todos OK</span>'
   }
 
   el.innerHTML =
     '<div class="bpc" style="font-family:\'Inter\',\'Segoe UI\',sans-serif">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">' +
-        '<span style="font-size:12px;color:#64748B">' + sorted.length + ' edifícios</span>' +
+        '<span style="font-size:16px;color:#64748B">' + sorted.length + ' edifícios</span>' +
         '<div style="display:flex;gap:6px">' + badgeHtml + '</div>' +
       '</div>' +
       '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">' +
