@@ -28,7 +28,7 @@ const CFG_SEG = {
   segmentos: [
     { key: 'wan',  label: 'Borda DC',  icon: '🌐', groupIds: ['27'],
       desc: '5 routers de borda · Internet/EMIS/Agências/Parceiros/Gov',
-      dashUid: 'rede-n3-wan', dashSlug: 'n3-c2b7-rede-c2b7-wan-e28094-servicos-e-circuitos' },
+      dashUid: 'rede-n3-bdc-routers', dashSlug: 'n3-c2b7-rede-c2b7-borda-dc-e28094-routers' },
     { key: 'dc',   label: 'DC Fabric', icon: '🖥',  groupIds: ['26', '22'],
       desc: '7 switches Spine-Leaf + 1 OOB (DC1)',
       dashUid: 'rede-n3-dc', dashSlug: '4860203' },
