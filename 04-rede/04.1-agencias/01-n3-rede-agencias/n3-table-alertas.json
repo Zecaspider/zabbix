@@ -1,0 +1,150 @@
+{
+  "datasource": {
+    "type": "mysql",
+    "uid": "cfo3cgypdrdvkf"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "custom": {
+        "align": "left",
+        "cellOptions": {
+          "type": "auto"
+        },
+        "filterable": false,
+        "footer": {
+          "reducers": [
+            "countAll"
+          ]
+        },
+        "inspect": false
+      },
+      "mappings": [],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "transparent",
+            "value": 0
+          }
+        ]
+      }
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Unidade"
+        },
+        "properties": [
+          {
+            "id": "custom.width",
+            "value": 200
+          },
+          {
+            "id": "links",
+            "value": [
+              {
+                "targetBlank": false,
+                "title": "Agência — Diagnóstico · N4",
+                "url": "/d/n4-agencia-detalhe?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Router"
+        },
+        "properties": [
+          {
+            "id": "custom.width",
+            "value": 140
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Status"
+        },
+        "properties": [
+          {
+            "id": "mappings",
+            "value": [
+              {
+                "options": {
+                  "1": {
+                    "color": "red",
+                    "index": 0,
+                    "text": "Sem Sistema"
+                  },
+                  "2": {
+                    "color": "orange",
+                    "index": 1,
+                    "text": "Ligacao Lenta"
+                  }
+                },
+                "type": "value"
+              }
+            ]
+          },
+          {
+            "id": "custom.cellOptions",
+            "value": {
+              "type": "color-background"
+            }
+          },
+          {
+            "id": "custom.width",
+            "value": 130
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "cellHeight": "sm",
+    "frameIndex": 0,
+    "showHeader": true,
+    "sortBy": []
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "cfo3cgypdrdvkf"
+      },
+      "editorMode": "code",
+      "format": "table",
+      "rawQuery": true,
+      "rawSql": "SELECT Unidade, Router, Status\nFROM (\n  SELECT\n  h.name AS Router,\n  COALESCE(MAX(CASE WHEN ht.tag='unidade_negocio' THEN ht.value END), h.name) AS Unidade,\n  CASE\n    WHEN SUM(CASE WHEN t.description = 'Cisco IOS: Unavailable by ICMP ping'\n              AND t.value = 1 THEN 1 ELSE 0 END) > 0 THEN 1\n    WHEN SUM(CASE WHEN t.description IN (\n              'Cisco IOS: High ICMP ping loss',\n              'Cisco IOS: High ICMP ping response time')\n              AND t.value = 1 THEN 1 ELSE 0 END) > 0 THEN 2\n    ELSE 3\n  END AS Status\n  FROM hosts h\n  INNER JOIN host_inventory hi ON h.hostid = hi.hostid\n  INNER JOIN hosts_groups hg ON h.hostid = hg.hostid\n  LEFT JOIN host_tag ht ON h.hostid = ht.hostid\n  INNER JOIN functions f ON h.hostid = (\n    SELECT i2.hostid FROM items i2 WHERE i2.itemid = f.itemid LIMIT 1)\n  INNER JOIN triggers t ON f.triggerid = t.triggerid\n  WHERE hg.groupid = 24\n  AND hi.location_lat IS NOT NULL AND hi.location_lat != ''\n  AND ('${agencia:raw}' = '__Todas__' OR h.hostid IN (\n    SELECT hostid FROM host_tag WHERE tag = 'unidade_negocio' AND value = '${agencia:raw}'))\n  GROUP BY h.hostid, h.name\n) sub\nWHERE Status < 3\nORDER BY Status ASC, Unidade ASC",
+      "refId": "A",
+      "sql": {
+        "columns": [
+          {
+            "parameters": [],
+            "type": "function"
+          }
+        ],
+        "groupBy": [
+          {
+            "property": {
+              "type": "string"
+            },
+            "type": "groupBy"
+          }
+        ],
+        "limit": 50
+      }
+    }
+  ],
+  "title": "Agências com Alertas",
+  "transparent": true,
+  "type": "table"
+}

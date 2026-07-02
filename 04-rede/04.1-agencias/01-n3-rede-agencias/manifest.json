@@ -1,0 +1,32 @@
+{
+  "dashboardUid": "rede-n3-agencias",
+  "dashboardTitle": "N3 · Rede · Agências — Mapa de estado",
+  "folderUid": "rede-seg-agencias",
+  "datasource": "cfo3cgypdrdvkf",
+  "notes": "Dashboard 100% nativo (sem paineis Business Text/header BPC) — existia em producao desde antes da reorg de 2026-06-27 mas nunca tinha sido reflectido localmente (pasta so tinha .gitkeep). Reconstruido localmente por pull da producao em 2026-07-02. 2 paineis 'row' estruturais (id=100 'Estado Geral', id=101 'Mapa e Alertas') nao sao tracked individualmente — sao apenas divisores de seccao, sem configuracao a versionar.",
+  "variables": [
+    { "name": "provincia", "type": "query (mysql)", "note": "dropdown, allValue '%'" },
+    { "name": "agencia", "type": "query (mysql)", "note": "dropdown, default '__Todas__'" },
+    { "name": "status_filter", "type": "custom", "note": "Todos=%/Em Servico=3/Ligacao Lenta=2/Sem Sistema=1" }
+  ],
+  "panels": [
+    {
+      "file": "n3-stat-resumo.json",
+      "id": 1,
+      "role": "content",
+      "title": "Estado Geral (resumo)"
+    },
+    {
+      "file": "n3-geomap-agencias.json",
+      "id": 10,
+      "role": "content",
+      "title": "Mapa de Agências"
+    },
+    {
+      "file": "n3-table-alertas.json",
+      "id": 11,
+      "role": "content",
+      "title": "Agências com Alertas"
+    }
+  ]
+}

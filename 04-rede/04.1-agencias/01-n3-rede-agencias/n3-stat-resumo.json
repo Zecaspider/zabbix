@@ -1,0 +1,181 @@
+{
+  "datasource": {
+    "type": "mysql",
+    "uid": "cfo3cgypdrdvkf"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "mappings": [],
+      "noValue": "0",
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": 0
+          }
+        ]
+      },
+      "unit": "short"
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Em Servico"
+        },
+        "properties": [
+          {
+            "id": "color",
+            "value": {
+              "fixedColor": "green",
+              "mode": "fixed"
+            }
+          },
+          {
+            "id": "thresholds",
+            "value": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "links",
+            "value": [
+              {
+                "targetBlank": false,
+                "title": "Mostrar só Em Serviço",
+                "url": "/d/n3-agencias/n3-c2b7-agencias?var-provincia=${provincia}&var-status_filter=3&${__url_time_range}&refresh=now"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Ligacao Lenta"
+        },
+        "properties": [
+          {
+            "id": "color",
+            "value": {
+              "fixedColor": "orange",
+              "mode": "fixed"
+            }
+          },
+          {
+            "id": "thresholds",
+            "value": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "orange",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "id": "links",
+            "value": [
+              {
+                "targetBlank": false,
+                "title": "Mostrar só Ligação Lenta",
+                "url": "/d/n3-agencias/n3-c2b7-agencias?var-provincia=${provincia}&var-status_filter=2&${__url_time_range}&refresh=now"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Sem Sistema"
+        },
+        "properties": [
+          {
+            "id": "color",
+            "value": {
+              "fixedColor": "red",
+              "mode": "fixed"
+            }
+          },
+          {
+            "id": "thresholds",
+            "value": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 1
+                }
+              ]
+            }
+          },
+          {
+            "id": "links",
+            "value": [
+              {
+                "targetBlank": false,
+                "title": "Mostrar só Sem Sistema",
+                "url": "/d/n3-agencias/n3-c2b7-agencias?var-provincia=${provincia}&var-status_filter=1&${__url_time_range}&refresh=now"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "colorMode": "background",
+    "graphMode": "area",
+    "justifyMode": "center",
+    "orientation": "vertical",
+    "percentChangeColorMode": "standard",
+    "reduceOptions": {
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+    },
+    "showPercentChange": false,
+    "text": {
+      "titleSize": 18,
+      "valueSize": 64
+    },
+    "textMode": "value_and_name",
+    "wideLayout": true
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "cfo3cgypdrdvkf"
+      },
+      "format": "table",
+      "rawSql": "SELECT\n  SUM(CASE WHEN status = 3 THEN 1 ELSE 0 END) AS 'Em Servico',\n  SUM(CASE WHEN status = 2 THEN 1 ELSE 0 END) AS 'Ligacao Lenta',\n  SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END) AS 'Sem Sistema'\nFROM (\n  SELECT h.hostid,\n  CASE\n    WHEN SUM(CASE WHEN t.description = 'Cisco IOS: Unavailable by ICMP ping' AND t.value = 1 THEN 1 ELSE 0 END) > 0 THEN 1\n    WHEN SUM(CASE WHEN t.description IN ('Cisco IOS: High ICMP ping loss','Cisco IOS: High ICMP ping response time') AND t.value = 1 THEN 1 ELSE 0 END) > 0 THEN 2\n    ELSE 3\n  END AS status\n  FROM hosts h\n  INNER JOIN host_inventory hi ON h.hostid = hi.hostid\n  INNER JOIN hosts_groups hg ON h.hostid = hg.hostid\n  LEFT JOIN host_tag ht ON h.hostid = ht.hostid\n  INNER JOIN functions f ON h.hostid = (SELECT i2.hostid FROM items i2 WHERE i2.itemid = f.itemid LIMIT 1)\n  INNER JOIN triggers t ON f.triggerid = t.triggerid\n  WHERE hg.groupid = 24\n  AND hi.location_lat IS NOT NULL AND hi.location_lat != ''\n  AND ('${provincia:raw}' = '%' OR h.hostid IN (SELECT hostid FROM host_tag WHERE tag = 'provincia' AND value = '${provincia:raw}'))\n  GROUP BY h.hostid\n) sub",
+      "refId": "A"
+    }
+  ],
+  "transparent": true,
+  "type": "stat"
+}

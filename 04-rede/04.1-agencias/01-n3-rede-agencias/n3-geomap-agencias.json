@@ -1,0 +1,165 @@
+{
+  "datasource": {
+    "type": "mysql",
+    "uid": "cfo3cgypdrdvkf"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "custom": {
+        "hideFrom": {
+          "legend": false,
+          "tooltip": false,
+          "viz": false
+        }
+      },
+      "links": [
+        {
+          "targetBlank": false,
+          "title": "Detalhe Agência",
+          "url": "/d/n4-agencia-detalhe?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
+        }
+      ],
+      "mappings": [
+        {
+          "options": {
+            "1": {
+              "color": "red",
+              "index": 0,
+              "text": "Sem Sistema"
+            },
+            "2": {
+              "color": "orange",
+              "index": 1,
+              "text": "Ligacao Lenta"
+            },
+            "3": {
+              "color": "green",
+              "index": 2,
+              "text": "Em Servico"
+            }
+          },
+          "type": "value"
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "green",
+            "value": 0
+          },
+          {
+            "color": "orange",
+            "value": 2
+          },
+          {
+            "color": "red",
+            "value": 3
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "options": {
+    "basemap": {
+      "config": {},
+      "name": "Layer 0",
+      "noRepeat": false,
+      "type": "default"
+    },
+    "controls": {
+      "mouseWheelZoom": true,
+      "showAttribution": true,
+      "showDebug": false,
+      "showMeasure": false,
+      "showScale": false,
+      "showZoom": true
+    },
+    "layers": [
+      {
+        "config": {
+          "rules": [],
+          "showLegend": true,
+          "style": {
+            "color": {
+              "field": "Status",
+              "fixed": "green"
+            },
+            "opacity": 0.9,
+            "rotation": {
+              "fixed": 0,
+              "max": 360,
+              "min": -360,
+              "mode": "auto"
+            },
+            "size": {
+              "fixed": 8,
+              "max": 10,
+              "min": 5,
+              "mode": "fixed"
+            },
+            "symbol": {
+              "fixed": "img/icons/marker/circle.svg",
+              "mode": "fixed"
+            },
+            "text": {
+              "field": "Unidade",
+              "fixed": "",
+              "mode": "field"
+            },
+            "textConfig": {
+              "field": "Unidade",
+              "fontSize": 11,
+              "offsetX": 0,
+              "offsetY": -14,
+              "textAlign": "center",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "filterData": {
+          "id": "byRefId",
+          "options": "A"
+        },
+        "layer-tooltip": true,
+        "location": {
+          "latitude": "Latitude",
+          "longitude": "Longitude",
+          "mode": "coords"
+        },
+        "name": "Agencias",
+        "tooltip": true,
+        "type": "markers"
+      }
+    ],
+    "tooltip": {
+      "mode": "details"
+    },
+    "view": {
+      "allLayers": true,
+      "id": "coords",
+      "lat": -11.5,
+      "lon": 17.5,
+      "noRepeat": false,
+      "zoom": 6
+    }
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "cfo3cgypdrdvkf"
+      },
+      "format": "table",
+      "rawSql": "SELECT Router, Unidade, Tipo, Municipio, Provincia, Direccao, Zona, Latitude, Longitude, Status\nFROM (\n  SELECT h.name AS Router,\n  COALESCE(MAX(CASE WHEN ht.tag='unidade_negocio'    THEN ht.value END), h.name) AS Unidade,\n  COALESCE(MAX(CASE WHEN ht.tag='tipo_un'            THEN ht.value END), '')     AS Tipo,\n  COALESCE(MAX(CASE WHEN ht.tag='municipio'          THEN ht.value END), hi.location, '') AS Municipio,\n  COALESCE(MAX(CASE WHEN ht.tag='provincia'          THEN ht.value END), '')     AS Provincia,\n  COALESCE(MAX(CASE WHEN ht.tag='direccao_comercial' THEN ht.value END), '')     AS Direccao,\n  COALESCE(MAX(CASE WHEN ht.tag='zona_comercial'     THEN ht.value END), '')     AS Zona,\n  CAST(hi.location_lat AS DECIMAL(10,6)) AS Latitude,\n  CAST(hi.location_lon AS DECIMAL(10,6)) AS Longitude,\n  CASE\n    WHEN SUM(CASE WHEN t.description = 'Cisco IOS: Unavailable by ICMP ping' AND t.value = 1 THEN 1 ELSE 0 END) > 0 THEN 1\n    WHEN SUM(CASE WHEN t.description IN ('Cisco IOS: High ICMP ping loss','Cisco IOS: High ICMP ping response time') AND t.value = 1 THEN 1 ELSE 0 END) > 0 THEN 2\n    ELSE 3\n  END AS Status\n  FROM hosts h\n  INNER JOIN host_inventory hi ON h.hostid = hi.hostid\n  INNER JOIN hosts_groups hg ON h.hostid = hg.hostid\n  LEFT JOIN host_tag ht ON h.hostid = ht.hostid\n  INNER JOIN functions f ON h.hostid = (SELECT i2.hostid FROM items i2 WHERE i2.itemid = f.itemid LIMIT 1)\n  INNER JOIN triggers t ON f.triggerid = t.triggerid\n  WHERE hg.groupid = 24\n  AND hi.location_lat IS NOT NULL AND hi.location_lat != ''\n  AND ('${agencia:raw}' = '__Todas__' OR h.hostid IN (\n    SELECT hostid FROM host_tag WHERE tag = 'unidade_negocio' AND value = '${agencia:raw}'))\n  AND ('${provincia:raw}' = '%' OR h.hostid IN (\n    SELECT hostid FROM host_tag WHERE tag = 'provincia' AND value = '${provincia:raw}'))\n  GROUP BY h.hostid, h.name, hi.location_lat, hi.location_lon, hi.location\n) sub\nWHERE ('${status_filter:raw}' = '%' OR Status = CAST('${status_filter:raw}' AS UNSIGNED))\nORDER BY Status ASC",
+      "refId": "A"
+    }
+  ],
+  "transparent": true,
+  "type": "geomap"
+}
