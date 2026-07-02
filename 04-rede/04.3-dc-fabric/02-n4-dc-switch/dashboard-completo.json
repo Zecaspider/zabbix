@@ -153,7 +153,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
+        "w": 5,
         "x": 0,
         "y": 3
       },
@@ -236,8 +236,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 6,
+        "w": 5,
+        "x": 5,
         "y": 3
       },
       "id": 201,
@@ -319,8 +319,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 12,
+        "w": 5,
+        "x": 10,
         "y": 3
       },
       "id": 202,
@@ -398,8 +398,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
+        "w": 5,
+        "x": 15,
         "y": 3
       },
       "id": 203,
@@ -1187,6 +1187,60 @@
       "title": "CPU / RAM — histórico (últimas 24h)",
       "transparent": true,
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 3
+      },
+      "id": 102,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — N4 · DC FABRIC · SWITCH — ALERTAS (KPI)  v1.0                 ║\n// ║  Framework: BPC-UI v9 · waitForBPC bootstrap                            ║\n// ║  Datasource: BPC-NETWORK (ffo8sp8zllog0e) · Zabbix 7.0                 ║\n// ║                                                                          ║\n// ║  Contador de alertas activos SÓ do switch seleccionado (var switchName), ║\n// ║  ao lado dos 4 stats nativos (Disponibilidade/CPU/RAM/Uptime). Não há    ║\n// ║ painel nativo Zabbix que conte problemas — datasource plugin só tem o    ║\n// ║ tipo \"lista de problemas\" (triggers-panel); contagem por host é sempre   ║\n// ║ Business Text + trigger.get, mesmo padrão de l2-kpi.js/l3-fab-kpi.js.    ║\n// ║                                                                          ║\n// ║  [1] CFG  [2] FETCH  [3] RENDER  [4] BOOT                              ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [1] CFG\n// ────────────────────────────────────────────────────────────────────────────\n\nvar CFG_FALERT = {\n  elementId: 'bpc-n4fab-alerts',\n  refreshMs:  60000,\n}\n\nfunction falertGetVar(name) {\n  return new URLSearchParams(window.location.search).get('var-' + name) || ''\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [2] FETCH\n// ────────────────────────────────────────────────────────────────────────────\n\nasync function falertFetch(rpc, switchName) {\n  var hosts = await rpc('host.get', { filter: { host: [switchName] }, output: ['hostid'], limit: 1 })\n  var host = hosts[0]\n  if (!host) return { total: 0, crit: 0 }\n\n  var trigs = await rpc('trigger.get', {\n    hostids:   [host.hostid],\n    filter:    { value: 1 },\n    monitored: true,\n    only_true: true,\n    output:    ['priority'],\n  })\n\n  var crit = trigs.filter(function (t) { return parseInt(t.priority, 10) >= 4 }).length\n  return { total: trigs.length, crit: crit }\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [3] RENDER\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction falertRender(el, model) {\n  var T = window.BPC.THEME\n  var color = model.crit > 0 ? T.colorCrit : model.total > 0 ? T.colorWarn : T.colorOk\n\n  el.innerHTML = '<div style=\"height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:\\'Inter\\',\\'Segoe UI\\',sans-serif\">'\n    + '<div style=\"font-size:.85rem;font-weight:500;color:rgba(255,255,255,0.75)\">Alertas</div>'\n    + '<div style=\"font-size:3rem;font-weight:400;color:' + color + ';line-height:1.2\">' + model.total + '</div>'\n    + '</div>'\n}\n\nfunction falertRenderError(el, msg) {\n  el.innerHTML = '<div class=\"bpc bpc-card state-down\"><div class=\"bpc-error-msg\">⚠ ' + msg + '</div></div>'\n}\n\n\n// ────────────────────────────────────────────────────────────────────────────\n// [4] BOOT\n// ────────────────────────────────────────────────────────────────────────────\n\nfunction falertLoad(rpc) {\n  var el = document.getElementById(CFG_FALERT.elementId)\n  if (!el) return\n\n  var switchName = falertGetVar('switchName')\n  if (!switchName) { el.innerHTML = ''; return }\n\n  falertFetch(rpc, switchName)\n    .then(function (model) { falertRender(el, model) })\n    .catch(function (err) { falertRenderError(el, err.message || String(err)) })\n\n  window.BPC.utils.startRefresh(el, function () { falertLoad(rpc) }, CFG_FALERT.refreshMs)\n}\n\nfunction falertInitWithRetry(attempt) {\n  attempt = attempt || 0\n  if (typeof window.waitForBPC === 'function') { window.waitForBPC(falertLoad); return }\n  if (attempt > 50) { console.error('[BPC] n4-fab-alerts: waitForBPC nunca disponivel'); return }\n  setTimeout(function () { falertInitWithRetry(attempt + 1) }, 100)\n}\n\nfalertInitWithRetry()\n",
+        "content": "<div id=\"bpc-n4fab-alerts\" style=\"height:100%\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "ffo8sp8zllog0e"
+          },
+          "group": {
+            "filter": "HG_DC_SWITCHES"
+          },
+          "host": {
+            "filter": "DC1-SPINE-11"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
     }
   ],
   "schemaVersion": 39,
@@ -1251,5 +1305,5 @@
   "timezone": "browser",
   "title": "N4 · Rede · DC Fabric · Switch — Diagnóstico",
   "uid": "rede-n4-dc-fabric-switch",
-  "version": 4
+  "version": 7
 }

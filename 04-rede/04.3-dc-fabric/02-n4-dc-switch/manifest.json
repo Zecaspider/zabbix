@@ -59,6 +59,13 @@
       "title": "Uptime"
     },
     {
+      "file": "n4-fab-alerts.js",
+      "id": 102,
+      "role": "content",
+      "title": "Alertas",
+      "content": "<div id=\"bpc-n4fab-alerts\" style=\"height:100%\"></div>"
+    },
+    {
       "file": "n4-fab-table-uplinks.json",
       "id": 204,
       "role": "content",
