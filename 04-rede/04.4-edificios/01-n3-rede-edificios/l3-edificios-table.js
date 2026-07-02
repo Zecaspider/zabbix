@@ -24,14 +24,6 @@ function n3edEsc(s) {
   })
 }
 
-function n3edFmtUptime(secs) {
-  secs = parseInt(secs, 10)
-  if (!secs || isNaN(secs)) return '—'
-  var d = Math.floor(secs / 86400)
-  var h = Math.floor((secs % 86400) / 3600)
-  return d > 0 ? d + 'd ' + h + 'h' : h + 'h'
-}
-
 function n3edStatus(up, lossPct, rttMs) {
   if (up === false || up === null) return 'down'
   var T = CFG_N3ED.thresholds
@@ -56,15 +48,15 @@ function n3edDrillUrl(hostname) {
 
 function n3edValColor(val, warn, crit, inverse) {
   var n = parseFloat(val)
-  if (isNaN(n)) return 'color:#64748B'
+  if (isNaN(n)) return '#64748B'
   if (inverse) {
-    if (n <= warn) return 'color:#22C55E'
-    if (n <= crit) return 'color:#D29922'
-    return 'color:#F85149'
+    if (n <= warn) return '#22C55E'
+    if (n <= crit) return '#D29922'
+    return '#F85149'
   }
-  if (n >= crit) return 'color:#F85149'
-  if (n >= warn) return 'color:#D29922'
-  return 'color:#22C55E'
+  if (n >= crit) return '#F85149'
+  if (n >= warn) return '#D29922'
+  return '#22C55E'
 }
 
 
@@ -88,29 +80,20 @@ function n3edFetch(rpc) {
       }),
       rpc('item.get', {
         hostids: ids,
-        search:  { name: 'uptime' },
-        searchWildcardsEnabled: true,
-        filter:  { status: 0 },
-        output:  ['hostid', 'lastvalue'],
-        limit:   hosts.length,
-      }),
-      rpc('item.get', {
-        hostids: ids,
         search:  { key_: 'system.cpu.util' },
         filter:  { status: 0 },
         output:  ['hostid', 'lastvalue'],
         limit:   hosts.length,
       }),
     ]).then(function (r) {
-      var icmpItems = r[0], uptItems = r[1], cpuItems = r[2]
+      var icmpItems = r[0], cpuItems = r[1]
 
-      var icmpMap = {}, rttMap = {}, lossMap = {}, uptMap = {}, cpuMap = {}
+      var icmpMap = {}, rttMap = {}, lossMap = {}, cpuMap = {}
       icmpItems.forEach(function (i) {
         if (i.key_ === 'icmpping')     icmpMap[i.hostid] = i.lastvalue === '1'
         if (i.key_ === 'icmppingsec')  rttMap[i.hostid]  = parseFloat(i.lastvalue) * 1000
         if (i.key_ === 'icmppingloss') lossMap[i.hostid] = parseFloat(i.lastvalue)
       })
-      uptItems.forEach(function (i) { if (!uptMap[i.hostid]) uptMap[i.hostid] = i.lastvalue })
       cpuItems.forEach(function (i) { if (!cpuMap[i.hostid]) cpuMap[i.hostid] = parseFloat(i.lastvalue) })
 
       return hosts.map(function (h) {
@@ -125,7 +108,6 @@ function n3edFetch(rpc) {
           rttMs:    rttMap[h.hostid]  != null ? rttMap[h.hostid]  : null,
           lossPct:  lossMap[h.hostid] != null ? lossMap[h.hostid] : null,
           cpuPct:   cpuMap[h.hostid]  != null ? cpuMap[h.hostid]  : null,
-          uptime:   uptMap[h.hostid]  || null,
         }
       })
     })
@@ -150,45 +132,40 @@ function n3edBuildCard(r) {
     : 'rgba(255,255,255,0.03)'
 
   var pillHtml = status === 'down'
-    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● Down</span>'
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● Down</span>'
     : status === 'crit'
-    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● Crítico</span>'
+    ? '<span style="background:rgba(239,68,68,0.18);color:#f87171;border:1px solid rgba(239,68,68,0.4);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● Crítico</span>'
     : status === 'warn'
-    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● Degradado</span>'
-    : '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:2px 9px;font-size:11px;font-weight:600">● OK</span>'
+    ? '<span style="background:rgba(210,153,34,0.15);color:#D29922;border:1px solid rgba(210,153,34,0.35);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● Degradado</span>'
+    : '<span style="background:rgba(34,197,94,0.12);color:#22C55E;border:1px solid rgba(34,197,94,0.3);border-radius:20px;padding:3px 11px;font-size:12px;font-weight:600">● OK</span>'
 
-  var rttStr  = r.rttMs  != null ? r.rttMs.toFixed(1) + ' ms' : '—'
-  var lossStr = r.lossPct != null ? r.lossPct.toFixed(1) + '%' : '—'
-  var cpuStr  = r.cpuPct  != null ? r.cpuPct.toFixed(0) + '%' : '—'
-  var uptStr  = n3edFmtUptime(r.uptime)
+  var rttStr  = r.rttMs  != null ? r.rttMs.toFixed(1) : '—'
+  var lossStr = r.lossPct != null ? r.lossPct.toFixed(1) : '—'
+  var cpuStr  = r.cpuPct  != null ? r.cpuPct.toFixed(0) : '—'
 
-  var rttStyle  = 'font-size:12px;font-family:monospace;' + n3edValColor(r.rttMs,  T.rttMs.warn,   T.rttMs.crit,   false)
-  var lossStyle = 'font-size:12px;font-family:monospace;' + n3edValColor(r.lossPct,T.lossPct.warn, T.lossPct.crit, false)
-  var cpuStyle  = 'font-size:12px;font-family:monospace;' + n3edValColor(r.cpuPct, T.cpuPct.warn,  T.cpuPct.crit,  false)
-
-  function kv(label, val, style) {
-    return '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:5px">' +
-      '<span style="font-size:11px;color:#64748B">' + label + '</span>' +
-      '<span style="' + style + '">' + n3edEsc(val) + '</span>' +
+  function stat(label, val, unit, color) {
+    return '<div style="text-align:center">' +
+      '<div style="font-size:21px;font-weight:700;font-family:monospace;color:' + color + '">' + n3edEsc(val) +
+        '<span style="font-size:12px;font-weight:600">' + unit + '</span></div>' +
+      '<div style="font-size:10px;color:#64748B;text-transform:uppercase;letter-spacing:.04em;margin-top:2px">' + label + '</div>' +
     '</div>'
   }
 
   return '<a href="' + n3edEsc(drillUrl) + '" style="text-decoration:none;display:block">' +
-    '<div style="background:' + bgColor + ';border:1px solid rgba(255,255,255,0.08);border-left:3px solid ' + accentColor + ';border-radius:6px;padding:12px 14px;cursor:pointer;transition:background .15s" ' +
+    '<div style="background:' + bgColor + ';border:1px solid rgba(255,255,255,0.08);border-left:4px solid ' + accentColor + ';border-radius:6px;padding:16px 18px 14px;cursor:pointer;transition:background .15s" ' +
       'onmouseover="this.style.background=\'rgba(255,255,255,0.06)\'" ' +
       'onmouseout="this.style.background=\'' + bgColor + '\'">' +
-      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">' +
-        '<span style="font-size:13px;font-weight:600;color:#E6EDF3;line-height:1.3">' + n3edEsc(r.label) + '</span>' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:2px">' +
+        '<span style="font-size:16px;font-weight:700;color:#E6EDF3;line-height:1.3">' + n3edEsc(r.label) + '</span>' +
         pillHtml +
       '</div>' +
-      '<div style="font-size:10px;color:#4A5568;font-family:monospace;margin-bottom:8px">' + n3edEsc(r.name) + '</div>' +
-      kv('RTT',    rttStr,  rttStyle) +
-      kv('Perda',  lossStr, lossStyle) +
-      kv('CPU',    cpuStr,  cpuStyle) +
-      kv('Uptime', uptStr,  'font-size:12px;color:#64748B') +
-      '<div style="margin-top:10px;text-align:right">' +
-        '<span style="font-size:11px;color:#58A6FF;border:1px solid rgba(88,166,255,0.25);border-radius:4px;padding:3px 8px">N4 →</span>' +
+      '<div style="font-size:11px;color:#4A5568;font-family:monospace;margin-bottom:14px">' + n3edEsc(r.name) + '</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 0;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06)">' +
+        stat('RTT',   rttStr,  ' ms', n3edValColor(r.rttMs,   T.rttMs.warn,   T.rttMs.crit,   false)) +
+        stat('Perda', lossStr, '%',   n3edValColor(r.lossPct, T.lossPct.warn, T.lossPct.crit, false)) +
+        stat('CPU',   cpuStr,  '%',   n3edValColor(r.cpuPct,  T.cpuPct.warn,  T.cpuPct.crit,  false)) +
       '</div>' +
+      '<div style="margin-top:10px;text-align:right;font-size:12px;font-weight:600;color:#58A6FF">Ver detalhe (N4) →</div>' +
     '</div>' +
   '</a>'
 }
