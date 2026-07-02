@@ -65,7 +65,7 @@ const CFG_HEADER = {
   title: 'BPC NOC',
   nocLabel: 'AGÊNCIAS · NÍVEL 5 · INTERFACES',   // fallback estático; substituído dinamicamente em renderHeader
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
-  backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
+  backLink: { url: '/d/rede-n4-agencia', label: '← N4 · Agência' },
 };
 
 
