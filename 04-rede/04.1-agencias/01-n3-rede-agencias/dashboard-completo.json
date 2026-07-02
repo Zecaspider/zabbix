@@ -256,7 +256,7 @@
             {
               "targetBlank": false,
               "title": "Detalhe Agência",
-              "url": "/d/n4-agencia-detalhe?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
+              "url": "/d/rede-n4-agencia?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
             }
           ],
           "mappings": [
@@ -404,6 +404,7 @@
           "refId": "A"
         }
       ],
+      "title": "Mapa de Agências",
       "transparent": true,
       "type": "geomap"
     },
@@ -458,7 +459,7 @@
                   {
                     "targetBlank": false,
                     "title": "Agência — Diagnóstico · N4",
-                    "url": "/d/n4-agencia-detalhe?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
+                    "url": "/d/rede-n4-agencia?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
                   }
                 ]
               }
@@ -662,6 +663,6 @@
   "timezone": "browser",
   "title": "N3 · Rede · Agências — Mapa de estado",
   "uid": "rede-n3-agencias",
-  "version": 2,
+  "version": 4,
   "weekStart": ""
 }

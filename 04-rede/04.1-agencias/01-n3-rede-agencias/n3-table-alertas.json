@@ -49,7 +49,7 @@
               {
                 "targetBlank": false,
                 "title": "Agência — Diagnóstico · N4",
-                "url": "/d/n4-agencia-detalhe?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
+                "url": "/d/rede-n4-agencia?var-group=HG_AGENCIAS_ROUTERS&var-host=${__data.fields[\"Router\"]}&${__url_time_range}"
               }
             ]
           }
