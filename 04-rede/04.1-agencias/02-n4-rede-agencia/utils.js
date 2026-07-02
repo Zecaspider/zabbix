@@ -616,10 +616,16 @@ const CFG_THRESHOLDS = {
 
     if (window.BPC?.log) BPC.log('Header renderizado (' + CFG_META.version + ')');
 
-    // Resolve o nome da agência (unidade_negocio) via Zabbix e actualiza header + título
-    (function resolveAgencyLabel() {
+    // Resolve o nome da agência (unidade_negocio) via Zabbix e actualiza header + título.
+    // Poller (não disparo único): a âncora do painel é fixa de propósito (não
+    // referencia $host), por isso o painel nunca re-renderiza sozinho quando o
+    // dropdown muda — sem isto o título fica preso na primeira agência
+    // carregada mesmo com os dados da direita já actualizados (bug confirmado
+    // 2026-07-02). Cache por hostParam evita RPC a cada tick sem necessidade.
+    function resolveAgencyLabel() {
       var hostParam = new URLSearchParams(window.location.search).get('var-host');
-      if (!hostParam) return;
+      if (!hostParam || hostParam === window._bpc_agLabel_lastHost) return;
+      window._bpc_agLabel_lastHost = hostParam;
       var proxy = CFG_META.apiUrl;
       fetch(proxy, {
         method: 'POST',
@@ -645,7 +651,10 @@ const CFG_THRESHOLDS = {
         document.title = 'Agências · N4 · ' + agName + ' — BPC NOC';
       })
       .catch(function () {});
-    })();
+    }
+    resolveAgencyLabel();
+    if (window._bpc_agLabel_interval) clearInterval(window._bpc_agLabel_interval);
+    window._bpc_agLabel_interval = setInterval(resolveAgencyLabel, 1000);
   }
 
 

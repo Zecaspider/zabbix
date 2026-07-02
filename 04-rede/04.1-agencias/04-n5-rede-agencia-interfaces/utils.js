@@ -563,17 +563,53 @@ const CFG_THRESHOLDS = {
   //    ├── .bpc-noc-center  (título + subtítulo)
   //    └── .bpc-noc-right   (relógio + data)
 
+  // buildNocLabel lia context.grafana.templateSrv — API indisponível no
+  // sandbox do afterRender deste plugin/versão do Grafana (falha sempre,
+  // silenciosamente, cai no fallback estático — bug confirmado 2026-07-02,
+  // titulo nunca mostrava a agência). Substituído por leitura directa do
+  // URL (mesmo mecanismo comprovado do objectContext do Borda DC) +
+  // resolução assíncrona do nome da agência (unidade_negocio) via Zabbix,
+  // com cache por hostname para não repetir o RPC a cada tick.
+  window._bpc_n5ag_labelCache = window._bpc_n5ag_labelCache || {};
+
+  function n5agResolveHostLabel(host) {
+    if (!host || window._bpc_n5ag_labelCache[host] !== undefined) return;
+    window._bpc_n5ag_labelCache[host] = null;   // marca "a resolver"
+    fetch(CFG_META.apiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        jsonrpc: '2.0', id: 1, method: 'host.get',
+        params: { filter: { host: [host] }, output: ['host'], selectTags: 'extend', limit: 1 }
+      })
+    })
+      .then(function (r) { return r.json() })
+      .then(function (d) {
+        const hosts = d.result || []
+        let name = host
+        if (hosts.length) {
+          (hosts[0].tags || []).forEach(function (t) { if (t.tag === 'unidade_negocio') name = t.value })
+        }
+        window._bpc_n5ag_labelCache[host] = name
+      })
+      .catch(function () { window._bpc_n5ag_labelCache[host] = host })
+  }
+
+  // Base estática capturada UMA VEZ — nunca ler de CFG_HEADER.nocLabel dentro
+  // desta função: renderHeader faz C.nocLabel = buildNocLabel(), e como C É
+  // o mesmo objecto CFG_HEADER, ler daí causaria duplicação progressiva do
+  // sufixo a cada tick do poller (1s).
+  const NOC_LABEL_BASE = CFG_HEADER.nocLabel
+
   function buildNocLabel() {
-    try {
-      const tSrv = context.grafana && context.grafana.templateSrv;
-      if (!tSrv) return CFG_HEADER.nocLabel;
-      const hv = tSrv.getVariables().find(function(v) { return v.name === 'host'; });
-      const router = (hv && hv.current && hv.current.value) || '';
-      const agName = (hv && hv.current && hv.current.text) || '';
-      if (!router || router === 'All' || router === '$__all') return 'AGÊNCIAS · NÍVEL 5 · INTERFACES';
-      return 'AGÊNCIAS · NÍVEL 5 · INTERFACES · ' + router
-        + (agName && agName !== router ? ' · ' + agName : '');
-    } catch(e) { return CFG_HEADER.nocLabel; }
+    const params = new URLSearchParams(window.location.search)
+    const host  = params.get('var-host')  || ''
+    const iface = params.get('var-iface') || ''
+    if (!host) return NOC_LABEL_BASE
+    n5agResolveHostLabel(host)
+    const parts = [window._bpc_n5ag_labelCache[host] || host]
+    if (iface && iface !== '$__all' && iface.charAt(0) !== '$') parts.push(iface)
+    return NOC_LABEL_BASE + ' · ' + parts.join(' · ')
   }
 
   function renderHeader(el) {
