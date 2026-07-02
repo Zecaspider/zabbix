@@ -223,13 +223,16 @@ async function dcFetch(rpc) {
   return { hosts, icmpItems, memItems, uptItems, triggers, tagsResp }
 }
 
-async function dcFetchCpu(rpc, hostIds) {
-  if (!hostIds.length) return []
+async function dcFetchCpu(rpc) {
+  // groupids (não hostids dinâmico) — mesma assinatura de query dos outros
+  // fetches deste painel (icmp/mem/uptime/triggers), para não colidir com
+  // uma entrada de cache do proxy zabbix-api presa a um lote de hostids
+  // antigo/vazio (cache de ~30min, ver engenharia-do-sistema.md).
   return rpc('item.get', {
-    hostids: hostIds,
-    filter:  { status: 0 },
-    output:  ['hostid', 'key_', 'lastvalue', 'lastclock'],
-    search:  { key_: 'system.cpu.util' },
+    groupids: CFG_DC.groupIds,
+    filter:   { status: 0 },
+    output:   ['hostid', 'key_', 'lastvalue', 'lastclock'],
+    search:   { key_: 'system.cpu.util' },
   })
 }
 
@@ -545,8 +548,7 @@ function dcLoad(rpc) {
 
   dcFetch(rpc)
     .then(function (data) {
-      var hostIds = data.hosts.map(function (h) { return h.hostid })
-      return dcFetchCpu(rpc, hostIds).then(function (cpuItems) {
+      return dcFetchCpu(rpc).then(function (cpuItems) {
         return dcCompute(data, cpuItems)
       })
     })
