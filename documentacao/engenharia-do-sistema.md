@@ -615,6 +615,44 @@ passaram a seguir o catálogo canónico do modelo de estado (§6: `#22C55E` / `#
 de verdade. O accent de marca `gold` (`#F0A500`) ficou distinto do `warn` (antes
 eram iguais no header de referência).
 
+**Contexto do objecto no título (`CFG_HEADER.objectContext`, 2026-07-02) —
+obrigatório em qualquer N4/N5 com dropdown de selecção de objecto:** quando
+um dashboard tem uma variável Grafana para escolher um router/interface/
+provedor/agência, o **nome desse objecto tem de aparecer no final do título
+do header**, ao lado do `nocLabel`, para que nunca haja ambiguidade sobre o
+que está a ser mostrado. Configuração em `CFG_HEADER`:
+
+```js
+objectContext: {
+  urlVars: ['routerName'],        // nome(s) da(s) variável(is) Grafana a ler do URL
+  labelMap: null,                  // opcional — ver abaixo
+  separator: ' · ',                // opcional — junta vários urlVars (default ' · ')
+},
+```
+
+- `urlVars` — lista de nomes de variáveis (sem o prefixo `var-`). Um valor →
+  mostra tal-e-qual (ex.: N4 Router, `['routerName']` → `DC1-RTE-WAN-INT`).
+  Vários valores → concatenados pela ordem indicada (ex.: N5 Router
+  Interfaces, `['routerName','iface']` → `DC1-RTE-PARC · Po2.421`).
+- `labelMap` — só necessário quando o **valor** da variável não é
+  directamente legível (ex.: N4 Provedor, onde `$provider` guarda a própria
+  alternação regex `MST|MSTELECOM|MSTELCOM|KWANZA` em vez de uma chave
+  simbólica). Mapa `{ 'valor-bruto': 'Label bonito' }`; tem de ficar **em
+  sync manual** com a lista de opções da variável (mesmo problema dos
+  `CFG.provedores` espalhados por vários painéis — não há uma fonte única
+  ainda). `null` → mostra o valor bruto sem tradução.
+- `null` (o valor por omissão do template) → sem contexto, para dashboards
+  sem selecção de objecto (N1/N2/N3 tipo lista/comparação).
+
+**Mecanismo:** o header lê `window.location.search` directamente (não
+depende da query do painel referenciar a variável — as âncoras destes
+dashboards são propositadamente fixas, para o header nunca desaparecer só
+porque o objecto seleccionado está down) e actualiza `#bpc-noc-context` a
+cada tick do relógio (1s), reaproveitando o `setInterval` já existente.
+Como o Grafana actualiza o URL via `pushState` ao mudar uma variável (sem
+recarregar a página), isto apanha a mudança sem precisar de um evento
+dedicado. Ver `resolveObjectContext`/`renderContext` em `_comum/utils.js`.
+
 ### 5.2 Framework BPC do card (5 blocos) + contrato de dados
 
 Detalhe completo do framework e do contrato `getData()→adapter()→render()` em
@@ -897,6 +935,14 @@ Uma unidade só conta como ☑ na §12 quando cumpre o seu DoD. Sem isto, "pront
 **Dashboard N2/N3** (pronto): todos os painéis prontos + 1 painel `utils` +
 layout final aplicado + `dashboard-snapshot.json` gravado (fecho, CLAUDE.md §4)
 + navegação de entrada/saída testada (N1→N2→N3) + commit.
+
+**Dashboard N4/N5 com dropdown de objecto** (pronto, adicional ao acima):
+- [ ] `CFG_HEADER.objectContext` configurado (§5.1) — nome do objecto
+      seleccionado aparece no final do título do header
+- [ ] testado trocando o objecto no dropdown **real** (não só por URL — os
+      dois caminhos de interpolação do Grafana podem divergir; ver
+      `cronograma.md` 4.25 sobre o bug do `${provider:raw}`, encontrado
+      exactamente por só ter sido testado por URL antes)
 
 **Domínio** (pronto): N2 pronto **e** N3 pronto **e** card N1 do domínio liga ao
 N2 (`dashUid` real) **e** drill-down N1→N2→N3→volta verificado ponta-a-ponta.

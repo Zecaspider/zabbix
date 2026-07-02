@@ -66,6 +66,7 @@ const CFG_HEADER = {
   nocLabel: 'REDE · BORDA DC · ROUTER — NÍVEL 4',
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
   backLink: { url: '/d/rede-n3-bdc-routers', label: '← N3 · Borda DC — Routers' },
+  objectContext: { urlVars: ['routerName'] },
 };
 
 
@@ -486,6 +487,10 @@ const CFG_THRESHOLDS = {
         text-transform:uppercase; color:#fff; line-height:1;
       }
       .bpc-noc-title em { color:var(--bpc-gold, ${CFG_THEME.gold}); font-style:normal; }
+      .bpc-noc-context {
+        color:var(--bpc-cyan, ${CFG_THEME.cyan}); font-weight:700;
+        text-transform:none; letter-spacing:normal;
+      }
       .bpc-noc-sub    {
         font-size:${Z.subtitle.size}; color:rgba(255,255,255,0.22);
         letter-spacing:.14em; text-transform:uppercase; margin-top:4px;
@@ -555,6 +560,41 @@ const CFG_THRESHOLDS = {
   }
 
 
+  // ── renderContext ─ actualiza #bpc-noc-context com o objecto seleccionado ─
+  //
+  //  Lê CFG_HEADER.objectContext.urlVars directamente do URL (var-<nome>) a
+  //  cada tick do relógio — não depende de a query do painel referenciar a
+  //  variável, por isso funciona mesmo quando a âncora do painel é fixa
+  //  (caso normal nestes dashboards, para o header não desaparecer se o
+  //  objecto seleccionado estiver down). Grafana actualiza o URL via
+  //  pushState ao mudar uma variável (sem recarregar a página), por isso
+  //  reler window.location.search a cada segundo apanha a mudança sem
+  //  precisar de um evento dedicado.
+
+  function resolveObjectContext() {
+    const cfg = CFG_HEADER.objectContext;
+    if (!cfg || !cfg.urlVars || !cfg.urlVars.length) return '';
+    const params = new URLSearchParams(window.location.search);
+    const parts = cfg.urlVars
+      .map(v => {
+        const raw = params.get('var-' + v);
+        if (!raw) return null;
+        if (cfg.labelMap && cfg.labelMap[raw]) return cfg.labelMap[raw];
+        return raw;
+      })
+      .filter(Boolean);
+    return parts.join(cfg.separator || ' · ');
+  }
+
+  function renderContext() {
+    const el = document.getElementById('bpc-noc-context');
+    if (!el) return;
+    const txt = resolveObjectContext();
+    el.textContent = txt ? ('· ' + txt) : '';
+    el.style.display = txt ? '' : 'none';
+  }
+
+
   // ── renderHeader — gera o HTML e inicia o relógio ─────────────────────────
   //
   //  Estrutura:
@@ -594,7 +634,7 @@ const CFG_THRESHOLDS = {
         <!-- Título + Subtítulo -->
         <div class="bpc-noc-center">
           <div class="bpc-noc-title">
-            ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em>
+            ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em> <span class="bpc-noc-context" id="bpc-noc-context"></span>
           </div>
           ${C.subtitle ? `<div class="bpc-noc-sub">${C.subtitle}</div>` : ''}
         </div>
@@ -610,7 +650,8 @@ const CFG_THRESHOLDS = {
     // Inicia o relógio (limpa timer anterior se o header for re-renderizado)
     if (window._bpc_clock_interval) clearInterval(window._bpc_clock_interval);
     renderClock();
-    window._bpc_clock_interval = setInterval(renderClock, 1000);
+    renderContext();
+    window._bpc_clock_interval = setInterval(() => { renderClock(); renderContext(); }, 1000);
 
     if (window.BPC?.log) BPC.log('Header renderizado (' + CFG_META.version + ')');
   }

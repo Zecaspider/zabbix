@@ -59,6 +59,16 @@ const CFG_META = {
 //  nocLabel  → palavra destacada a dourado após o separador  |
 //  subtitle  → linha pequena por baixo do título
 //              '' → omite a linha de subtítulo
+//  objectContext → mostra no FINAL do título o nome do objecto seleccionado
+//              numa variável Grafana (router/interface/provedor/agência…) —
+//              obrigatório em qualquer dashboard N4/N5 com dropdown de
+//              selecção de objecto (ver engenharia-do-sistema.md §5.1).
+//              null → sem contexto (dashboards sem selecção, ex. N2/N3 lista)
+//              { urlVars: ['routerName'] }              → mostra o valor tal-e-qual
+//              { urlVars: ['routerName','iface'] }       → junta vários, nesta ordem
+//              { urlVars: ['provider'], labelMap: {...} } → troca o valor bruto
+//                (ex. regex) pelo label bonito antes de mostrar; usar quando o
+//                valor da variável não é directamente legível (ver N4 Provedor)
 
 const CFG_HEADER = {
   logoUrl: '/public/img/bpc-logo.png',
@@ -66,6 +76,7 @@ const CFG_HEADER = {
   nocLabel: 'DOMINIO - NIVEL',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')
   subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',
   backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }
+  objectContext: null,           // ← TEMPLATE: definir nos dashboards com dropdown de objecto
 };
 
 
@@ -486,6 +497,10 @@ const CFG_THRESHOLDS = {
         text-transform:uppercase; color:#fff; line-height:1;
       }
       .bpc-noc-title em { color:var(--bpc-gold, ${CFG_THEME.gold}); font-style:normal; }
+      .bpc-noc-context {
+        color:var(--bpc-cyan, ${CFG_THEME.cyan}); font-weight:700;
+        text-transform:none; letter-spacing:normal;
+      }
       .bpc-noc-sub    {
         font-size:${Z.subtitle.size}; color:rgba(255,255,255,0.22);
         letter-spacing:.14em; text-transform:uppercase; margin-top:4px;
@@ -555,6 +570,41 @@ const CFG_THRESHOLDS = {
   }
 
 
+  // ── renderContext — actualiza #bpc-noc-context com o objecto seleccionado ─
+  //
+  //  Lê CFG_HEADER.objectContext.urlVars directamente do URL (var-<nome>) a
+  //  cada tick do relógio — não depende de a query do painel referenciar a
+  //  variável, por isso funciona mesmo quando a âncora do painel é fixa
+  //  (caso normal nestes dashboards, para o header não desaparecer se o
+  //  objecto seleccionado estiver down). Grafana actualiza o URL via
+  //  pushState ao mudar uma variável (sem recarregar a página), por isso
+  //  reler window.location.search a cada segundo apanha a mudança sem
+  //  precisar de um evento dedicado.
+
+  function resolveObjectContext() {
+    const cfg = CFG_HEADER.objectContext;
+    if (!cfg || !cfg.urlVars || !cfg.urlVars.length) return '';
+    const params = new URLSearchParams(window.location.search);
+    const parts = cfg.urlVars
+      .map(v => {
+        const raw = params.get('var-' + v);
+        if (!raw) return null;
+        if (cfg.labelMap && cfg.labelMap[raw]) return cfg.labelMap[raw];
+        return raw;
+      })
+      .filter(Boolean);
+    return parts.join(cfg.separator || ' · ');
+  }
+
+  function renderContext() {
+    const el = document.getElementById('bpc-noc-context');
+    if (!el) return;
+    const txt = resolveObjectContext();
+    el.textContent = txt ? ('· ' + txt) : '';
+    el.style.display = txt ? '' : 'none';
+  }
+
+
   // ── renderHeader — gera o HTML e inicia o relógio ─────────────────────────
   //
   //  Estrutura:
@@ -594,7 +644,7 @@ const CFG_THRESHOLDS = {
         <!-- Título + Subtítulo -->
         <div class="bpc-noc-center">
           <div class="bpc-noc-title">
-            ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em>
+            ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em> <span class="bpc-noc-context" id="bpc-noc-context"></span>
           </div>
           ${C.subtitle ? `<div class="bpc-noc-sub">${C.subtitle}</div>` : ''}
         </div>
@@ -608,9 +658,11 @@ const CFG_THRESHOLDS = {
       </div>`;
 
     // Inicia o relógio (limpa timer anterior se o header for re-renderizado)
+    // — a mesma tick actualiza o contexto do objecto seleccionado (§ renderContext)
     if (window._bpc_clock_interval) clearInterval(window._bpc_clock_interval);
     renderClock();
-    window._bpc_clock_interval = setInterval(renderClock, 1000);
+    renderContext();
+    window._bpc_clock_interval = setInterval(() => { renderClock(); renderContext(); }, 1000);
 
     if (window.BPC?.log) BPC.log('Header renderizado (' + CFG_META.version + ')');
   }
