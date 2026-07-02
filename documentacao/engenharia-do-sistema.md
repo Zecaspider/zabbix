@@ -168,8 +168,10 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 | Agências | 02 | `04.1-agencias/02-n4-rede-agencia/` | `rede.n4.agencia` | `N4 · Rede · Agência — Diagnóstico` |
 | Agências | 03 | `04.1-agencias/03-n4-rede-agencia-wan-dispositivo/` | `rede.n4.wan-dispositivo` | `N4 · Rede · Agência · WAN — Interfaces do router` |
 | Agências | 04 | `04.1-agencias/04-n5-rede-agencia-interfaces/` | `rede.n5.agencia-interfaces` | `N5 · Rede · Agência — Interfaces` |
-| DC Fabric | 01 | `04.3-dc-fabric/01-n3-rede-dc/` | `rede.n3.dc` | `N3 · Rede · DC Fabric — Estado dos switches` |
-| DC Fabric | 02 | `04.3-dc-fabric/02-n4-rede-dc-switch/` | `rede.n4.dc-switch` | `N4 · Rede · DC · Switch — Interfaces` |
+| DC Fabric · dispositivo | 01 | `04.3-dc-fabric/01-n3-dc-dispositivos/` | `rede-n3-dc-dispositivos` | `N3 · Rede · DC Fabric — Dispositivos` |
+| DC Fabric · dispositivo | 02 | `04.3-dc-fabric/02-n4-dc-switch/` | `rede-n4-dc-fabric-switch` | `N4 · Rede · DC Fabric · Switch — Diagnóstico` |
+| DC Fabric · dispositivo | 03 | `04.3-dc-fabric/03-n5-dc-switch-interfaces/` | `rede-n5-dc-switch-interfaces` | `N5 · Rede · DC Fabric · Switch — Interfaces` |
+| DC Fabric · saúde | 04 | `04.3-dc-fabric/04-n3-dc-fabric-saude/` | `rede-n3-dc-fabric-saude` | `N3 · Rede · DC Fabric — Saúde do Fabric` |
 | Edifícios | 01 | `04.4-edificios/01-n3-rede-edificios/` | `rede.n3.edificios` | `N3 · Rede · Edifícios BPC — Routers e switches` |
 | Edifícios | 02 | `04.4-edificios/02-n4-rede-edificio/` | `rede.n4.edificio` | `N4 · Rede · Edifício — Detalhe` |
 | Edifícios | 03 | `04.4-edificios/03-n5-rede-edificio-interfaces/` | `rede.n5.edificio-interfaces` | `N5 · Rede · Edifício — Interfaces` |
@@ -218,6 +220,43 @@ O N2 (`01-n2-rede/`) **não pertence a nenhum segmento** — fica directamente e
 > baixo que justifique aprofundar. Detalhe da investigação e da decisão em
 > `documentacao/rede-arquitectura.md` (a actualizar no fecho de cada
 > dashboard, secção 8 "Documentar após aprovado").
+
+> **DC Fabric REDESENHADO DO ZERO (2026-07-02)** — o dashboard único antigo
+> (`rede-n3-dc`, 4 painéis: KPI + "Saúde do Fabric" + tabela "DC Core" +
+> secção de routers WAN dentro do mesmo painel) foi **arquivado** em
+> `04.3-dc-fabric/arquivo-dc-fabric/` (local) e movido, no Grafana, para
+> `99 · Arquivo`, junto com o N4 antigo (`rede-n4-dc-switch`, ficha única
+> Business Text). Motivo: o dashboard misturava switches (grupo 26,
+> `HG_DC_SWITCHES`) com os 5 routers WAN (grupo 27, `HG_DC_ROUTERS`) — o
+> mesmo hardware que já tem card próprio em Borda DC — sem link cruzado entre
+> as duas pastas Grafana; e usava "core"/"backbone" (que na doc de topologia
+> só se aplicam ao SPINE) para descrever o conjunto SPINE+LEAF.
+>
+> **Nova arquitectura: 2 eixos paralelos**, ambos só sobre os 7 switches
+> (routers ficam exclusivamente em Borda DC, com link cruzado):
+> 1. **Por dispositivo** (`01-n3-dc-dispositivos` → `02-n4-dc-switch` →
+>    `03-n5-dc-switch-interfaces`) — 7 cards (2 SPINE + 5 LEAF), classificados
+>    pela tag Zabbix `funcao`/`modelo` (confirmada ao vivo via `host.get`,
+>    **não** regex sobre nome de host). Clone do padrão N4/N5 Router de Borda
+>    DC (stats nativos, tabela de uplinks, timeline, triggers, tráfego,
+>    packet loss, CPU/RAM).
+> 2. **Por saúde/correlação** (`04-n3-dc-fabric-saude`) — matriz underlay
+>    spine×leaf, pares vPC, overlay VXLAN — revive a lógica do painel antigo
+>    "Saúde do Fabric" (já com o fix de staleness aplicado, ver Z.17 no
+>    cronograma) porque a relação "1 link, 2 pontas" não se representa bem
+>    em cards por dispositivo isolados. Rodapé com link cruzado para os
+>    routers WAN em `rede-n3-bdc-routers`.
+>
+> **Achado durante a construção**: o uplink de um LEAF ao SPINE descreve-se
+> `LINK TO SPINE-XX` (não `UNDERLAY`, que só aparece do lado SPINE e,
+> enganosamente, também numa loopback de BGP que não é um uplink físico) —
+> confirmado ao vivo via `item.get`, afectava o regex de classificação em
+> 3 sítios (cards, tabela nativa, gráficos de tráfego/erros do N4).
+>
+> Layout final (gridPos, CLAUDE.md §4) replica as proporções já aprovadas do
+> N4 Router de Borda DC: header `h=3`, 4 stats lado a lado `h=4`/`w=6` cada,
+> tabela `h=10`, timeline `h=6`, triggers+packetloss a meia-largura `h=8`,
+> tráfego+CPU/RAM a meia-largura `h=9`.
 
 > Os UIDs de dashboard (`rede.n3.agencias` etc.) são a proposta de nomenclatura
 > canónica (T-04, ainda não migrada — os UIDs reais no Grafana continuam
@@ -281,8 +320,11 @@ sistema-de-observabilidade/
 │   │   ├── 06-n4-bdc-servico/
 │   │   └── 07-n5-bdc-router-interfaces/ # drill N4→N5 do eixo "por router" (numeração 07: 05/06 reservados ao eixo serviço)
 │   ├── 04.3-dc-fabric/             # segmento DC Fabric ↔ pasta Grafana "04.3 · DC Fabric"
-│   │   ├── 01-n3-rede-dc/
-│   │   └── 02-n4-rede-dc-switch/
+│   │   ├── arquivo-dc-fabric/            # ARQUIVO — os 2 dashboards antigos (referência)
+│   │   ├── 01-n3-dc-dispositivos/        # eixo "por dispositivo" (par: 01→02→03)
+│   │   ├── 02-n4-dc-switch/
+│   │   ├── 03-n5-dc-switch-interfaces/
+│   │   └── 04-n3-dc-fabric-saude/        # eixo "por saúde/correlação" (paralelo, sem N4/N5)
 │   └── 04.4-edificios/             # segmento Edifícios ↔ pasta Grafana "04.4 · Edifícios"
 │       ├── 01-n3-rede-edificios/
 │       ├── 02-n4-rede-edificio/
