@@ -30,6 +30,13 @@
       "role": "content",
       "title": "4 Blocos Fabric",
       "content": "<div id=\"bpc-n3dc-fabric\"></div>"
+    },
+    {
+      "file": "l3-dc-table.js",
+      "id": 103,
+      "role": "content",
+      "title": "Tabela Switches + Routers",
+      "content": "<div id=\"bpc-n3dc-table\"></div>"
     }
   ]
 }

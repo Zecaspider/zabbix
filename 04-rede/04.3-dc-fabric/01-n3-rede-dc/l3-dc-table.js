@@ -433,7 +433,7 @@ function dcRenderRouterRow(row) {
   var peersHtml  = row.parceiro ? dcEsc(row.parceiro) : '<span class="bpc-mute">—</span>'
   var bg = dcRowBg(row.rowState)
   var bl = dcRowBorderLeft(row.rowState)
-  var rtDrillUrl  = '/d/rede-n4-wan-router/n4-rede-wan-router?var-routerName=' + encodeURIComponent(row.name)
+  var rtDrillUrl  = '/d/rede-n4-bdc-router?var-routerName=' + encodeURIComponent(row.name)
   var rtNameCell  = '<a href="' + rtDrillUrl + '" style="color:#CDD9E5;text-decoration:none;font-weight:600;font-size:1.03rem" title="Abrir ficha N4">' + dcEsc(row.name) + ' <span style="font-size:.70rem;opacity:.45">↗</span></a>'
 
   return [
