@@ -1,0 +1,55 @@
+{
+  "type": "timeseries",
+  "title": "Packet loss — erros e descartes (últimas 6h)",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "description": "Mesmo âmbito do painel de Tráfego — só underlay + overlay.",
+  "fieldConfig": {
+    "defaults": {
+      "unit": "pps",
+      "custom": { "drawStyle": "line", "lineWidth": 1, "fillOpacity": 8, "showPoints": "auto" }
+    },
+    "overrides": [
+      { "matcher": { "id": "byFrameRefID", "options": "outerr" }, "properties": [ { "id": "custom.transform", "value": "negative-Y" } ] },
+      { "matcher": { "id": "byFrameRefID", "options": "outdisc" }, "properties": [ { "id": "custom.transform", "value": "negative-Y" } ] }
+    ]
+  },
+  "options": {
+    "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true },
+    "tooltip": { "mode": "multi" }
+  },
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "inerr",
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*(LINK TO SPINE-\\d+|LEAF-\\d+\\s*UNDERLAY|VXLAN OVERLAY).*\\): Inbound packets with errors$/" },
+      "options": { "showDisabledItems": false }
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "outerr",
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*(LINK TO SPINE-\\d+|LEAF-\\d+\\s*UNDERLAY|VXLAN OVERLAY).*\\): Outbound packets with errors$/" },
+      "options": { "showDisabledItems": false }
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "indisc",
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*(LINK TO SPINE-\\d+|LEAF-\\d+\\s*UNDERLAY|VXLAN OVERLAY).*\\): Inbound packets discarded$/" },
+      "options": { "showDisabledItems": false }
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "outdisc",
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*(LINK TO SPINE-\\d+|LEAF-\\d+\\s*UNDERLAY|VXLAN OVERLAY).*\\): Outbound packets discarded$/" },
+      "options": { "showDisabledItems": false }
+    }
+  ]
+}

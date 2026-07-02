@@ -1,0 +1,78 @@
+{
+  "dashboardUid": "rede-n5-dc-switch-interfaces",
+  "dashboardTitle": "N5 · Rede · DC Fabric · Switch — Interfaces",
+  "folderUid": "rede-seg-dcfabric",
+  "datasource": "ffo8sp8zllog0e",
+  "notes": "Drill-down do N4 DC Fabric Switch para o detalhe completo de uma única interface. Clone do padrão n5-bdc-router-interfaces (2026-07-02).",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "drilldownFrom": "rede-n4-dc-fabric-switch",
+  "variables": [
+    {
+      "name": "switchName",
+      "label": "Switch",
+      "type": "custom",
+      "query": "DC1-SPINE-11 — SPINE : DC1-SPINE-11,DC1-SPINE-12 — SPINE : DC1-SPINE-12,DC1-LEAF-101 — LEAF (vPC-A) : DC1-LEAF-101,DC1-LEAF-102 — LEAF (vPC-A) : DC1-LEAF-102,DC1-LEAF-103 — LEAF (vPC-B) : DC1-LEAF-103,DC1-LEAF-104 — LEAF (vPC-B) : DC1-LEAF-104,DC1-LEAF-105 — LEAF (standalone) : DC1-LEAF-105",
+      "note": "Mesma lista/valores do N4 (switchName). Interactivo aqui também — permite trocar de switch directamente no N5."
+    },
+    {
+      "name": "iface",
+      "label": "Interface",
+      "type": "query (mysql)",
+      "datasource": "cfo3cgypdrdvkf",
+      "note": "Lê directamente a tabela items do Zabbix (MySQL config DB) filtrada por h.host=$switchName — SEM depender de tags BPC. Mesmo padrão comprovado do n5-bdc-router-interfaces. All=.*"
+    }
+  ],
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "n5-fab-state-timeline.json",
+      "id": 200,
+      "role": "content",
+      "title": "Estado & flaps (por interface)"
+    },
+    {
+      "file": "n5-fab-traffic-in.json",
+      "id": 201,
+      "role": "content",
+      "title": "Tráfego recebido"
+    },
+    {
+      "file": "n5-fab-traffic-out.json",
+      "id": 202,
+      "role": "content",
+      "title": "Tráfego enviado"
+    },
+    {
+      "file": "n5-fab-erros.json",
+      "id": 203,
+      "role": "content",
+      "title": "Erros (entrada/saída)"
+    },
+    {
+      "file": "n5-fab-descartes.json",
+      "id": 204,
+      "role": "content",
+      "title": "Descartes (entrada/saída)"
+    }
+  ]
+}

@@ -4,10 +4,19 @@
   "folderUid": "rede-seg-dcfabric",
   "datasource": "ffo8sp8zllog0e",
   "anchor": {
-    "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e"},
-    "group": {"filter": "HG_DC_SWITCHES"},
-    "host": {"filter": "DC1-SPINE-11"},
-    "item": {"filter": "ICMP ping"}
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
   },
   "panels": [
     {
@@ -26,7 +35,7 @@
     },
     {
       "file": "l3-dc-fabric.js",
-      "id": null,
+      "id": 102,
       "role": "content",
       "title": "4 Blocos Fabric",
       "content": "<div id=\"bpc-n3dc-fabric\"></div>"

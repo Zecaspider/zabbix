@@ -1,0 +1,105 @@
+{
+  "dashboardUid": "rede-n4-dc-fabric-switch",
+  "dashboardTitle": "N4 · Rede · DC Fabric · Switch — Diagnóstico",
+  "folderUid": "rede-seg-dcfabric",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "variable": {
+    "name": "switchName",
+    "label": "Switch",
+    "type": "custom",
+    "query": "DC1-SPINE-11 — SPINE : DC1-SPINE-11,DC1-SPINE-12 — SPINE : DC1-SPINE-12,DC1-LEAF-101 — LEAF (vPC-A) : DC1-LEAF-101,DC1-LEAF-102 — LEAF (vPC-A) : DC1-LEAF-102,DC1-LEAF-103 — LEAF (vPC-B) : DC1-LEAF-103,DC1-LEAF-104 — LEAF (vPC-B) : DC1-LEAF-104,DC1-LEAF-105 — LEAF (standalone) : DC1-LEAF-105",
+    "note": "Custom var, mesma lista/formato do N5 (rede-n5-dc-switch-interfaces) — consistência entre os 2 níveis. Criada directamente via API na criação do dashboard shell, mesmo padrão de rede-n4-bdc-router (não gerida por push_panel.py)."
+  },
+  "notes": "Reaproveita o N4 previamente arquivado (arquivo-dc-fabric/02-n4-rede-dc-switch) como referência de layout (já tinha painéis nativos de tráfego/CPU/erros), mas reconstruído do zero 2026-07-02 no redesign de 2 eixos do segmento DC Fabric — alinhado ao padrão N4 Router de Borda DC (stats + tabela + timeline + triggers + packetloss + traffic + cpuram + botão N5), com 'Circuitos' substituído por 'Uplinks' (underlay/vPC/overlay, é o que existe para um switch de fabric, não circuitos WAN).",
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "n4-stat-icmp.json",
+      "id": 200,
+      "role": "content",
+      "title": "Disponibilidade"
+    },
+    {
+      "file": "n4-stat-cpu.json",
+      "id": 201,
+      "role": "content",
+      "title": "CPU"
+    },
+    {
+      "file": "n4-stat-ram.json",
+      "id": 202,
+      "role": "content",
+      "title": "RAM"
+    },
+    {
+      "file": "n4-stat-uptime.json",
+      "id": 203,
+      "role": "content",
+      "title": "Uptime"
+    },
+    {
+      "file": "n4-fab-table-uplinks.json",
+      "id": 204,
+      "role": "content",
+      "title": "Uplinks — Estado"
+    },
+    {
+      "file": "n4-fab-timeline-uplinks.json",
+      "id": 205,
+      "role": "content",
+      "title": "Histórico (flaps)"
+    },
+    {
+      "file": "l4-fab-n5-button.js",
+      "id": 101,
+      "role": "content",
+      "title": "N5 Button",
+      "content": "<div id=\"bpc-fab-n5-btn\" style=\"height:100%\"></div>"
+    },
+    {
+      "file": "n4-fab-triggers.json",
+      "id": 206,
+      "role": "content",
+      "title": "Problemas Activos"
+    },
+    {
+      "file": "n4-fab-packetloss.json",
+      "id": 207,
+      "role": "content",
+      "title": "Packet loss — erros e descartes (últimas 6h)"
+    },
+    {
+      "file": "n4-fab-traffic.json",
+      "id": 208,
+      "role": "content",
+      "title": "Tráfego — uplinks fabric (últimas 6h)"
+    },
+    {
+      "file": "n4-fab-cpuram.json",
+      "id": 209,
+      "role": "content",
+      "title": "CPU / RAM — histórico (últimas 24h)"
+    }
+  ]
+}

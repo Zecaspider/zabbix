@@ -1,0 +1,140 @@
+{
+  "type": "table",
+  "title": "Uplinks — Estado",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "ffo8sp8zllog0e"
+  },
+  "transparent": true,
+  "description": "Tabela única por switch — categorias lidas pela descrição da interface (ifAlias, confirmado ao vivo em item.get 2026-07-02), igual para os 7 hosts do fabric (ao contrário dos routers de Borda DC, aqui não há curadoria por host). Underlay é assimétrico: SPINE diz 'LEAF-10X UNDERLAY', LEAF diz 'LINK TO SPINE-1X' — a palavra 'UNDERLAY' sozinha também aparece na loopback0 de BGP dos LEAFs (não é uplink físico), por isso o filtro exige um dos dois padrões específicos. vPC PEER-LINK aparece em 3 interfaces (port-channel lógico + 2 portas membro) — filtro restrito ao port-channel para 1 linha só. vPC só existe nos LEAFs emparelhados (LEAF-105 fica vazio nessas linhas, é esperado — standalone).",
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*(LINK TO SPINE-\\d+|LEAF-\\d+\\s*UNDERLAY).*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface port-channel\\d+\\(VPC PEER-?LINK\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "B",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*VPC\\s*KEEPALIVE.*\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "C",
+      "resultFormat": "time_series"
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface nve1\\(VXLAN OVERLAY\\): Operational status$/" },
+      "options": { "showDisabledItems": false },
+      "queryType": "0",
+      "refId": "D",
+      "resultFormat": "time_series"
+    }
+  ],
+  "transformations": [
+    {
+      "id": "reduce",
+      "options": {
+        "reducers": [
+          "lastNotNull"
+        ],
+        "includeTimeField": false,
+        "mode": "seriesToRows"
+      }
+    },
+    {
+      "id": "organize",
+      "options": {
+        "renameByName": {
+          "Field": "Interface",
+          "Last *": "Estado",
+          "Last": "Estado"
+        }
+      }
+    }
+  ],
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "custom": {
+        "align": "auto",
+        "cellOptions": {
+          "type": "auto"
+        },
+        "filterable": false
+      }
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "Estado|Last.*"
+        },
+        "properties": [
+          {
+            "id": "mappings",
+            "value": [
+              {
+                "type": "value",
+                "options": {
+                  "1": {
+                    "text": "UP",
+                    "color": "green",
+                    "index": 0
+                  },
+                  "2": {
+                    "text": "DOWN",
+                    "color": "red",
+                    "index": 1
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "id": "custom.cellOptions",
+            "value": {
+              "type": "color-background"
+            }
+          },
+          {
+            "id": "custom.align",
+            "value": "center"
+          },
+          {
+            "id": "custom.width",
+            "value": 120
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "showHeader": true,
+    "cellHeight": "sm"
+  }
+}

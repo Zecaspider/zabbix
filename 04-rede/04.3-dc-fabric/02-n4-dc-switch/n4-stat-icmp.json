@@ -1,0 +1,84 @@
+{
+  "type": "stat",
+  "title": "Disponibilidade",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "ffo8sp8zllog0e"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "unit": "none",
+      "mappings": [
+        {
+          "type": "value",
+          "options": {
+            "1": {
+              "text": "UP",
+              "color": "green"
+            },
+            "0": {
+              "text": "DOWN",
+              "color": "red"
+            }
+          }
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "red",
+            "value": null
+          },
+          {
+            "color": "green",
+            "value": 1
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": {
+      "calcs": [
+        "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+    },
+    "orientation": "auto",
+    "textMode": "value",
+    "colorMode": "background",
+    "graphMode": "none",
+    "justifyMode": "auto"
+  },
+  "targets": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "ffo8sp8zllog0e"
+      },
+      "functions": [],
+      "group": {
+        "filter": "HG_DC_SWITCHES"
+      },
+      "host": {
+        "filter": "/^$switchName$/"
+      },
+      "item": {
+        "filter": "/^ICMP ping$/"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    }
+  ],
+  "transparent": true
+}

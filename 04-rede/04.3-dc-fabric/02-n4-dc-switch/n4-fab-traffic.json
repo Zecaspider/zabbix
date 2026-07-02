@@ -1,0 +1,38 @@
+{
+  "type": "timeseries",
+  "title": "Tráfego — uplinks fabric (últimas 6h)",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "description": "Só underlay (uplinks aos SPINEs/LEAFs) + overlay (nve1) — o plano de dados do fabric. vPC peer-link/keepalive ficam fora (são controlo/redundância, não tráfego de produção) para não sobrepor séries redundantes (port-channel + portas membro).",
+  "fieldConfig": {
+    "defaults": {
+      "unit": "bps",
+      "custom": { "drawStyle": "line", "lineWidth": 1, "fillOpacity": 8, "showPoints": "auto" }
+    },
+    "overrides": [
+      { "matcher": { "id": "byFrameRefID", "options": "out" }, "properties": [ { "id": "custom.transform", "value": "negative-Y" } ] }
+    ]
+  },
+  "options": {
+    "legend": { "displayMode": "table", "placement": "bottom", "showLegend": true },
+    "tooltip": { "mode": "multi" }
+  },
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "in",
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*(LINK TO SPINE-\\d+|LEAF-\\d+\\s*UNDERLAY|VXLAN OVERLAY).*\\): Bits received$/" },
+      "options": { "showDisabledItems": false }
+    },
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "0", "resultFormat": "time_series", "refId": "out",
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "/^$switchName$/" },
+      "item": { "filter": "/^Interface \\S+\\(.*(LINK TO SPINE-\\d+|LEAF-\\d+\\s*UNDERLAY|VXLAN OVERLAY).*\\): Bits sent$/" },
+      "options": { "showDisabledItems": false }
+    }
+  ]
+}

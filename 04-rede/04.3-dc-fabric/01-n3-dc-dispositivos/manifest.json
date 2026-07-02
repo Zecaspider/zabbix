@@ -1,0 +1,51 @@
+{
+  "dashboardUid": "rede-n3-dc-dispositivos",
+  "dashboardTitle": "N3 · Rede · DC Fabric — Dispositivos",
+  "folderUid": "rede-seg-dcfabric",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "notes": "Eixo dispositivo do segmento DC Fabric (2026-07-02 redesign, do zero — antigo rede-n3-dc arquivado em arquivo-dc-fabric/). 7 cards (2 SPINE + 5 LEAF, grupo 26), classificação por tag Zabbix funcao/modelo (não regex sobre nome). Eixo paralelo: 04-n3-dc-fabric-saude (correlação underlay/vPC/overlay). Routers WAN (grupo 27) NÃO aparecem aqui — vivem só em 04.2 Borda DC, evita duplicação.",
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-fab-kpi.js",
+      "id": 101,
+      "role": "content",
+      "title": "KPI Strip — DC Fabric",
+      "content": "<div id=\"bpc-n3fab-kpi\"></div>"
+    },
+    {
+      "file": "l3-fab-cards.js",
+      "id": 102,
+      "role": "content",
+      "title": "7 Cards — por Switch",
+      "content": "<div id=\"bpc-n3fab-switches\"></div>"
+    },
+    {
+      "file": "n3-fab-triggers.json",
+      "id": 200,
+      "role": "content",
+      "title": "Problemas Activos — DC Fabric"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "dashboardUid": "rede-n3-dc-fabric-saude",
+  "dashboardTitle": "N3 · Rede · DC Fabric — Saúde do Fabric",
+  "folderUid": "rede-seg-dcfabric",
+  "datasource": "ffo8sp8zllog0e",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "ffo8sp8zllog0e"
+    },
+    "group": {
+      "filter": "HG_DC_SWITCHES"
+    },
+    "host": {
+      "filter": "DC1-SPINE-11"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "notes": "Eixo saúde/correlação do segmento DC Fabric (2026-07-02 redesign, do zero). Revive a lógica do antigo painel 'Saúde do Fabric' (id=102 em rede-n3-dc, arquivado) já com o fix de staleness aplicado (maxAgeSec 21600 + estado 'stale' neutro) — matriz underlay spine×leaf, pares vPC, overlay VXLAN. Removida a secção de routers WAN (grupo 27): esse hardware já tem card próprio em 04.2 Borda DC, link cruzado no rodapé em vez de duplicar. Eixo paralelo: 01-n3-dc-dispositivos (cards por switch).",
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-fab-saude.js",
+      "id": 101,
+      "role": "content",
+      "title": "Saúde do Fabric — Correlação",
+      "content": "<div id=\"bpc-n3fabsaude-health\"></div>"
+    }
+  ]
+}

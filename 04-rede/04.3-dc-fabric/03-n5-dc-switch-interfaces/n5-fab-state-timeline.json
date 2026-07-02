@@ -1,0 +1,42 @@
+{
+  "type": "state-timeline",
+  "title": "Estado & flaps (por interface)",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "fieldConfig": {
+    "defaults": {
+      "color": { "mode": "thresholds" },
+      "custom": { "fillOpacity": 80, "lineWidth": 0 },
+      "mappings": [
+        { "type": "value", "options": {
+          "1": { "text": "UP", "color": "green", "index": 0 },
+          "2": { "text": "DOWN", "color": "red", "index": 1 }
+        } }
+      ],
+      "thresholds": { "mode": "absolute", "steps": [
+        { "color": "green", "value": null },
+        { "color": "red", "value": 2 }
+      ] }
+    },
+    "overrides": []
+  },
+  "options": {
+    "showValue": "never",
+    "rowHeight": 0.85,
+    "mergeValues": true,
+    "alignValue": "left",
+    "legend": { "showLegend": false }
+  },
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "functions": [],
+      "group": { "filter": "HG_DC_SWITCHES" },
+      "host": { "filter": "${switchName}" },
+      "item": { "filter": "/Interface ${iface}[^.]*: Operational status/" },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    }
+  ]
+}

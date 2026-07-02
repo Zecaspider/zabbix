@@ -31,7 +31,9 @@ const CFG_SEG = {
       dashUid: 'rede-n3-bdc-routers', dashSlug: 'n3-c2b7-rede-c2b7-borda-dc-e28094-routers' },
     { key: 'dc',   label: 'DC Fabric', icon: '🖥',  groupIds: ['26', '22'],
       desc: '7 switches Spine-Leaf + 1 OOB (DC1)',
-      dashUid: 'rede-n3-dc', dashSlug: '4860203' },
+      // 2026-07-02: redesign do zero, 2 eixos paralelos (arquivo-dc-fabric/).
+      // Card liga ao eixo dispositivo; Saúde do Fabric fica a 1 clique lá dentro.
+      dashUid: 'rede-n3-dc-dispositivos', dashSlug: 'n3-rede-dc-fabric-dispositivos' },
     { key: 'edif', label: 'Edifícios', icon: '🏢', groupIds: ['28', '29'],
       desc: '9 routers + 46 switches · 4 edifícios BPC',
       dashUid: 'rede-n3-edificios', dashSlug: 'd471eea' },
