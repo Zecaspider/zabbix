@@ -36,11 +36,18 @@ function trgEsc(s) {
   })
 }
 
-function trgN4Link(hostname, groupIds) {
-  if (groupIds.indexOf('26') >= 0)
-    return '/d/rede-n4-dc-switch/n4-rede-dc-switch?var-switchName=' + encodeURIComponent(hostname)
-  if (groupIds.indexOf('27') >= 0)
-    return '/d/rede-n4-wan-router/n4-rede-wan-router?var-routerName=' + encodeURIComponent(hostname)
+function trgN4Link(hostname, funcao) {
+  // 2026-07-02: descoberto ao validar o drill-down que trigger.get com
+  // selectGroups devolve sempre null nesta versão do Zabbix/proxy (confirmado
+  // ao vivo — groupIds nunca tinha valores, esta função nunca funcionou,
+  // mesmo antes desta sessão). A tag "funcao" do TRIGGER também não é fiável
+  // (só alguns templates herdam do host) — funcao vem agora de um host.get
+  // dedicado em trgFetch(), fonte confirmada fiável para os 12 hosts de
+  // DC Fabric + Borda DC.
+  if (funcao === 'switch-spine' || funcao === 'switch-leaf')
+    return '/d/rede-n4-dc-fabric-switch?var-switchName=' + encodeURIComponent(hostname)
+  if (funcao.indexOf('wan-') === 0 || funcao === 'gateway')
+    return '/d/rede-n4-bdc-router?var-routerName=' + encodeURIComponent(hostname)
   return null // g28/g29 edifícios: N4 não existe ainda
 }
 
@@ -58,25 +65,39 @@ function trgFmtAge(lastchange) {
 // ────────────────────────────────────────────────────────────────────────────
 
 async function trgFetch(rpc) {
-  const triggers = await rpc('trigger.get', {
-    groupids:       CFG_TRG.groupIds,
-    filter:         { value: 1 },
-    monitored:      true,
-    only_true:      true,
-    output:         ['triggerid', 'description', 'priority', 'lastchange'],
-    selectHosts:    ['hostid', 'name'],
-    selectGroups:   ['groupid'],
-    selectTags:     ['tag', 'value'],
-    sortfield:      ['priority', 'lastchange'],
-    sortorder:      'DESC',
-    limit:          100,
+  // "funcao" via tag do TRIGGER não é fiável — confirmado ao vivo 2026-07-02:
+  // só alguns templates (ex. portmirror) herdam a tag do host, a maioria dos
+  // triggers (ex. temperatura, link speed) só tem tags "scope". A tag do
+  // HOST em si é sempre fiável (confirmado para os 12 hosts de DC Fabric +
+  // Borda DC) — por isso um host.get à parte, não os tags do trigger.
+  const [triggers, hosts] = await Promise.all([
+    rpc('trigger.get', {
+      groupids:       CFG_TRG.groupIds,
+      filter:         { value: 1 },
+      monitored:      true,
+      only_true:      true,
+      output:         ['triggerid', 'description', 'priority', 'lastchange'],
+      selectHosts:    ['hostid', 'name'],
+      sortfield:      ['priority', 'lastchange'],
+      sortorder:      'DESC',
+      limit:          100,
+    }),
+    rpc('host.get', {
+      groupids:   ['26', '27'],
+      output:     ['hostid'],
+      selectTags: ['tag', 'value'],
+      filter:     { status: 0 },
+    }),
+  ])
+
+  const funcaoByHostid = {}
+  hosts.forEach(function (h) {
+    const tag = (h.tags || []).filter(function (t) { return t.tag === 'funcao' })[0]
+    if (tag) funcaoByHostid[h.hostid] = tag.value
   })
 
   return triggers.map(function (t) {
     const host = (t.hosts || [])[0] || {}
-    const tagMap = {}
-    ;(t.tags || []).forEach(function (tg) { tagMap[tg.tag] = tg.value })
-    const groupIds = (t.groups || []).map(function (g) { return g.groupid })
     return {
       triggerid:  t.triggerid,
       desc:       t.description,
@@ -84,8 +105,7 @@ async function trgFetch(rpc) {
       lastchange: t.lastchange,
       hostid:     host.hostid,
       hostname:   host.name || '—',
-      funcao:     tagMap['funcao'] || '',
-      groupIds:   groupIds,
+      funcao:     funcaoByHostid[host.hostid] || '',
     }
   })
 }
@@ -116,7 +136,7 @@ function trgRender(el, rows) {
     const bgRow = r.priority >= 4 ? 'rgba(239,68,68,0.04)' : r.priority >= 2 ? 'rgba(240,165,0,0.03)' : ''
     const border= r.priority >= 4 ? 'border-left:2px solid var(--bpc-crit)' : r.priority >= 2 ? 'border-left:2px solid var(--bpc-warn)' : 'border-left:2px solid transparent'
 
-    const n4Href = trgN4Link(r.hostname, r.groupIds || [])
+    const n4Href = trgN4Link(r.hostname, r.funcao || '')
     const hostCell = n4Href
       ? `<a href="${n4Href}" style="color:var(--bpc-cyan);text-decoration:none;font-weight:600">${trgEsc(r.hostname)} →</a>`
       : `<span style="color:#CDD9E5;font-weight:600">${trgEsc(r.hostname)}</span>`
