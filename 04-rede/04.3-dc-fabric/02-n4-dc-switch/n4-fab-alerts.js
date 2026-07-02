@@ -19,7 +19,8 @@
 
 var CFG_FALERT = {
   elementId: 'bpc-n4fab-alerts',
-  refreshMs:  60000,
+  pollMs:     1000,   // frequência a que verifica se o dropdown mudou (barato, só lê o URL)
+  refreshMs:  60000,  // frequência a que refaz o RPC para o MESMO host (fica actualizado ao vivo)
 }
 
 function falertGetVar(name) {
@@ -72,18 +73,35 @@ function falertRenderError(el, msg) {
 // [4] BOOT
 // ────────────────────────────────────────────────────────────────────────────
 
+// A âncora do painel é fixa de propósito (não referencia $switchName), por
+// isso o painel nunca re-renderiza sozinho quando o dropdown muda — sem
+// isto o contador ficava preso no primeiro switch carregado mesmo com o
+// resto do dashboard já actualizado (mesma classe de bug do título do
+// header, commit 5b3d931). Poller de 1s (barato, só lê o URL) detecta a
+// mudança e refaz o RPC nesse instante; para o MESMO host, só refaz a
+// cada refreshMs (60s) para não martelar a API sem necessidade.
+var _falertLastSwitch = null
+var _falertLastFetch  = 0
+
 function falertLoad(rpc) {
   var el = document.getElementById(CFG_FALERT.elementId)
   if (!el) return
 
   var switchName = falertGetVar('switchName')
-  if (!switchName) { el.innerHTML = ''; return }
+  if (!switchName) { el.innerHTML = ''; _falertLastSwitch = null; return }
 
-  falertFetch(rpc, switchName)
-    .then(function (model) { falertRender(el, model) })
-    .catch(function (err) { falertRenderError(el, err.message || String(err)) })
+  var now = Date.now()
+  var changed = switchName !== _falertLastSwitch
+  if (changed || now - _falertLastFetch >= CFG_FALERT.refreshMs) {
+    _falertLastSwitch = switchName
+    _falertLastFetch = now
+    falertFetch(rpc, switchName)
+      .then(function (model) { falertRender(el, model) })
+      .catch(function (err) { falertRenderError(el, err.message || String(err)) })
+  }
 
-  window.BPC.utils.startRefresh(el, function () { falertLoad(rpc) }, CFG_FALERT.refreshMs)
+  if (window._bpc_n4falert_interval) clearInterval(window._bpc_n4falert_interval)
+  window._bpc_n4falert_interval = setInterval(function () { falertLoad(rpc) }, CFG_FALERT.pollMs)
 }
 
 function falertInitWithRetry(attempt) {
