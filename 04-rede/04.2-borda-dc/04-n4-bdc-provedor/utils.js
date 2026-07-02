@@ -595,6 +595,8 @@ const CFG_THRESHOLDS = {
       .map(v => {
         const raw = params.get('var-' + v);
         if (!raw) return null;
+        if (raw === '$__all') return cfg.allLabel || 'Todas';   // "All" seleccionado
+        if (raw.charAt(0) === '$') return null;                 // valor de variavel nao interpolado
         if (cfg.labelMap && cfg.labelMap[raw]) return cfg.labelMap[raw];
         return raw;
       })
