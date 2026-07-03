@@ -8,7 +8,7 @@
 > Legenda: ☐ pendente · ◐ em curso · ☑ concluído · ⏸ bloqueado · ✖ descartado
 > Cada ponto só passa a ☑ quando cumpre o DoD (engenharia §10.1).
 
-Última actualização: 2026-07-01 (§4.15 N3/N4 Edifícios. §12.x naming convention: contrato de UIDs confirmado (`dominio.nivel.funcao` sem número), mapa canónico domínio Rede documentado, convenção de pastas locais com prefixo numérico definida. T-04/T-05 agendados como sessão dedicada.)
+Última actualização: 2026-07-02 (Fase 13: avaliação de comercialização, fix crítico N2 Rede (guard apiUrl), repo Git separado e histórico reescrito, fecho de navegação Rede, auditoria completa de lógica de estado + correcção de 13 ficheiros contra o catálogo §6.2, fix de corrupção silenciosa no `push_panel.py`.)
 
 ---
 
@@ -208,6 +208,26 @@
 | 12.4 | Consolidar legados + testes em `99 · Arquivo` | ☑ | 2026-06-19 | 67/68 arquivados. 1 preso: `visao-geral-v5` (payload não transferível via CDP) — já estava em pasta de arquivo legado, fica lá. IA não apaga; eliminação fica para o utilizador |
 | 12.5 | Esvaziar/arquivar `dashboards v5` + actualizar constraint do CLAUDE.md | ☑ | 2026-06-19 | `dashboards v5` (`efpbu5tvrhce8a`) ficou vazia; constraint do CLAUDE.md substituído pelos UIDs das pastas de domínio. Pastas legadas numeradas `00`–`08` (com `-`) ficaram vazias — eliminação fica para o utilizador |
 | 12.6 | Sincronizar `dashboardTitle` + `folderUid` nos `manifest.json` | ☑ | 2026-06-19 | 14 manifests actualizados (título novo + folderUid da pasta de domínio; 4 sem folderUid passaram a tê-lo). Evita que o próximo push devolva o dashboard à pasta velha. JSON validado |
+
+---
+
+## Fase 13 · Auditoria de comercialização + saneamento transversal (2026-07-02/03)
+
+> Sessão de avaliação sénior (engenheiro network/sistemas): testou todos os
+> dashboards/drill-downs, produziu `documentacao/relatorio-avaliacao-comercializacao-2026-07-03.md`,
+> corrigiu o bug crítico N2 Rede e depois auditou a lógica de estado (ok/warn/crit)
+> em todos os domínios contra o princípio "Zabbix é a fonte de verdade" (§4A dos
+> CLAUDE.md locais / §6 engenharia).
+
+| # | Tarefa | Estado | Data | Nota |
+|---|---|---|---|---|
+| 13.1 | Bug crítico N2 Rede: dashboard a zeros pós-navegação SPA | ☑ | 2026-07-02 | Causa-raiz: guard do `utils.js` só comparava `version`, não `apiUrl` — `rpc` de um dashboard anterior sobrevivia à navegação SPA e apontava para o datasource errado. Fix: guard passa a validar `window.BPC._apiUrl === CFG_META.apiUrl`; propagado às ~22 cópias de `utils.js` do repo |
+| 13.2 | Repo Git: reescrita de histórico + separação em repo standalone | ☑ | 2026-07-02 | `tok3n` e token Grafana hardcoded encontrados no histórico antes do 1º push — histórico reescrito via `git filter-branch` (verificado: zero matches para `glsa_`, chaves AWS, headers de chave privada). `sistema-de-observabilidade` tornado repo próprio (opção A), ligado a `github.com/Zecaspider/zabbix`; `.gitignore` reforçado (`tok3n`, `*.key`, relatório diário confidencial mantido fora do git por decisão do utilizador) |
+| 13.3 | Fluxo de fecho Rede: regressão de navegação nos 4 segmentos | ☑ | 2026-07-02 | Click-through completo (Agências/Borda DC/DC Fabric/Edifícios); 1 link partido encontrado e corrigido — `l4-n5-button.js` das Agências apontava para UID pré-migração `n5-agencia-interfaces` (faltava prefixo `rede-`) |
+| 13.4 | Auditoria completa da lógica de estado (todos os cards, todos os domínios) | ☑ | 2026-07-02 | Agente Explore mapeou toda a lógica de classificação ok/warn/crit do repo. Achados: (a) card Edifícios N3 classificava por contagem de alertas em vez de severidade máxima da trigger; (b) `lossPct.crit` inconsistente (5 vs 10) entre cards de rede; (c) função `severityToState` duplicada localmente em `l2-dc.js`; (d) thresholds de CPU/RAM/disco em VMware e Servidores Virtuais desviados do catálogo canónico §6.2; (e) tabela local `03-servidores-virtuais/CLAUDE.md` §7 conflituava com a global — resolvido a favor da global (decisão do utilizador) |
+| 13.5 | Aplicar correcções do 13.4 | ☑ | 2026-07-02 | 13 ficheiros `.js` corrigidos (Edifícios N2/N3, VMware N2/N3, Servidores Virtuais N2/N3) para usar `severityToState`/thresholds do catálogo §6.2; `l2-dc.js` deixa de duplicar `severityToState`; `03-servidores-virtuais/CLAUDE.md` §7 actualizado para reflectir a global como fonte de verdade. Commit `3b76bae` |
+| 13.6 | Bug crítico descoberto durante a auditoria: corrupção silenciosa do `push_panel.py` | ☑ | 2026-07-02 | A reconciliação pós-push casava painéis por `title` (sempre `""` por convenção NOC) em vez de `id`/`content`, colapsando todo o `manifest.json` para o id do último painel processado sempre que um dashboard já tinha vários painéis sem título. Causou perda de conteúdo do painel `l3-ficha-servidor.js` (N3 VM Detalhe) — recuperado e verificado ao vivo (rootId + thresholds confirmados via API). Fix aplicado em `push_panel.py` (match só para `id=null`, chave = `content`); os outros 4 dashboards tocados na mesma sessão confirmados não-corrompidos |
+| 13.7 | Corolário Zabbix-fonte-de-verdade: `l2-correlacionador-de-eventos.js` sem manifest | ☐ | 2026-07-02 | Threshold de CPU corrigido localmente mas ficheiro não tem entrada em nenhum `manifest.json` do repo — por confirmar se está realmente implantado em Grafana antes do próximo push |
 
 ---
 

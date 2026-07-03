@@ -1,7 +1,10 @@
 # CLAUDE.md — Servidores Virtuais
 > Guia de arquitectura, políticas e decisões do sistema de observabilidade de VMs BPC NOC.
-> Este ficheiro é a fonte de verdade para qualquer IA ou pessoa que trabalhe nesta pasta.
-> Última revisão: 2026-06-16
+> Este ficheiro é a fonte de verdade para qualquer IA ou pessoa que trabalhe nesta pasta,
+> **excepto a tabela de thresholds da secção 7**, onde `documentacao/engenharia-do-sistema.md`
+> §6.2 é a única fonte de verdade (decisão do utilizador, 2026-07-02, após auditoria
+> completa de lógica de estado ter encontrado desvio entre as duas tabelas).
+> Última revisão: 2026-07-02
 
 ---
 
@@ -351,11 +354,12 @@ var CFG = {
   // ATENÇÃO: ajustar aqui SÓ se os valores Zabbix não estiverem disponíveis.
   // A fonte de verdade é o Zabbix.
   thresholds: {
-    cpuWarn:    60,
-    cpuCrit:    85,
-    ramCrit:    90,
-    diskWarn:   70,
-    diskCrit:   85,
+    cpuWarn:    70,
+    cpuCrit:    90,
+    ramWarn:    70,
+    ramCrit:    85,
+    diskWarn:   75,
+    diskCrit:   90,
   },
 
   // ── Limites de API ─────────────────────────────────────────────────────────
@@ -623,19 +627,26 @@ Nunca mostrar `—` sem indicar qual a fonte que falhou. Sempre mostrar um badge
 
 Estes são os valores fallback quando os thresholds não estão disponíveis via `usermacro.get`. **A fonte primária é sempre o Zabbix** (ver secção 4A).
 
-| Métrica | Aviso | Crítico |
-|---|---|---|
-| CPU % | 60 | 85 |
-| RAM % | — | 90 |
-| Disco % (volume) | 70 | 85 |
-| Disco % (L2 KPI strip) | 80 | 90 |
-| I/O ops/s | 50 | 100 |
-| I/O latência ms | 10 | 50 |
-| I/O queue depth | 1 | 5 |
-| I/O utilização % | 60 | 85 |
-| ICMP RTT ms | 10 | 50 |
-| Balloon GB | 0.1 | — |
-| Swap GB | 0.1 (aviso) | 0.5 (crítico) |
+**As linhas marcadas ✅ têm entrada no catálogo canónico global
+(`documentacao/engenharia-do-sistema.md` §6.2) — os valores abaixo foram
+alinhados a esse catálogo em 2026-07-02 e qualquer alteração futura
+faz-se primeiro lá, depois aqui. As restantes linhas (I/O, ICMP RTT,
+Balloon) não têm entrada global — permanecem como fallback local até
+serem ratificadas.**
+
+| Métrica | Aviso | Crítico | Fonte |
+|---|---|---|---|
+| CPU % | 70 | 90 | ✅ global §6.2 |
+| RAM % | 70 | 85 | ✅ global §6.2 |
+| Disco % (volume, uso) | 75 | 90 | ✅ global §6.2 |
+| Disco % (L2 KPI strip) | 75 | 90 | ✅ global §6.2 |
+| I/O ops/s | 50 | 100 | local (sem entrada global) |
+| I/O latência ms | 10 | 50 | local (sem entrada global) |
+| I/O queue depth | 1 | 5 | local (sem entrada global) |
+| I/O utilização % | 60 | 85 | local (sem entrada global) |
+| ICMP RTT ms | 10 | 50 | local (sem entrada global — global só cobre perda % ICMP, 1/10) |
+| Balloon (ratio) | 0.1 | 0.1 | ✅ global §6.2 |
+| Swap (ratio) | 0.1 | 0.5 | ✅ global §6.2 |
 
 ---
 
