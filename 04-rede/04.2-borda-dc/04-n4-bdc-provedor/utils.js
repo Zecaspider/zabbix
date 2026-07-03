@@ -726,11 +726,22 @@ const CFG_THRESHOLDS = {
 
   // ── Guard — evita dupla inicialização ────────────────────────────────────
   //
-  //  Se já existir uma instância com a mesma versão E todos os componentes
-  //  presentes, termina sem fazer nada.
+  //  Se já existir uma instância com a mesma versão E o mesmo apiUrl E todos
+  //  os componentes presentes, termina sem fazer nada.
   //  Se o estado for parcial (crash parcial, recarga do painel), reinicializa.
+  //
+  //  Porquê comparar também o apiUrl (não só a versão): a versão (VERSION)
+  //  é igual em todas as cópias deste ficheiro (ex. 'v9'), mas cada dashboard
+  //  aponta a um datasource Zabbix diferente (Infra vs Network). Ao navegar
+  //  de um dashboard para outro por link interno do Grafana (SPA, sem reload
+  //  de página), o window.BPC do dashboard anterior fica residente. Sem esta
+  //  comparação, o guard via "versão igual" e devolvia sem recriar o rpc —
+  //  os painéis do dashboard novo ficavam a usar o rpc (e o datasource) do
+  //  dashboard anterior, devolvendo sempre 0 resultados. Confirmado ao vivo
+  //  2026-07-03: N1 (Infra) → clique "Ver N2 →" (Rede) sem reload → N2 Rede
+  //  com todos os painéis a 0, porque herdava o rpc apontado ao Infra.
 
-  if (window.BPC && window.BPC.version === VERSION) {
+  if (window.BPC && window.BPC.version === VERSION && window.BPC._apiUrl === CFG_META.apiUrl) {
     const ok =
       !!document.getElementById('bpc-global-css') &&
       typeof (window.BPC.utils && window.BPC.utils.waitForElement) === 'function' &&
@@ -742,6 +753,8 @@ const CFG_THRESHOLDS = {
     console.warn('[BPC] Estado parcial — reinicializando (' + VERSION + ')');
     window.BPC._ready = false;
     window.BPC.rpc = null;
+  } else if (window.BPC && window.BPC.version === VERSION) {
+    console.warn('[BPC] apiUrl mudou face à instância residente — reinicializando runtime para este dashboard (' + VERSION + ')');
   }
   if (!window.BPC) window.BPC = {};
   window.BPC._initPending = true;
@@ -752,6 +765,7 @@ const CFG_THRESHOLDS = {
   window.BPC = window.BPC || {};
   Object.assign(window.BPC, {
     version: VERSION,
+    _apiUrl: CFG_META.apiUrl,
     rpc: null,
     _ready: false,
     _callbacks: window.BPC._callbacks || [],
