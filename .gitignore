@@ -1,2 +1,11 @@
 # copia local de material antigo (referencia) - nao versionar
 arquivo-referencia/
+
+# artefactos locais de ferramentas — nunca versionar
+.claude/
+__pycache__/
+*.pyc
+tok3n
+*.key
+~$*.xlsx
+~$*.docx
