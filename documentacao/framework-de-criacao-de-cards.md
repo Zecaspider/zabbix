@@ -2,7 +2,22 @@
 
 ### Versão 2.0 — Universal · Plug & Play · Vendor-Agnóstico
 
-> **Propósito:** Este documento é o contrato de design e implementação do sistema de cards KPI para NOC. Qualquer IA, developer ou auditor deve conseguir implementar um novo card lendo apenas este ficheiro.
+> ⚠️ **NÃO ADOPTADO (auditado 2026-07-01) — não seguir para código novo.**
+> Auditoria exaustiva a todo o repositório (produção + arquivo) confirmou
+> **zero ficheiros** a usar `BPC_KPI`, `buildModel`, `BPC_KPI_VIEW`,
+> `BPC_KPI_SCHEMA`, `adapter()` no formato aqui descrito, ou `validateModel`.
+> Os próprios ficheiros "core" que este documento diz nunca modificar
+> (`bpc.kpi.core.js`, `bpc.kpi.view.js`, `bpc.kpi.schema.js`) **não existem**
+> no repositório. O padrão `deviceClass` só aparece em
+> `arquivo-referencia/v5-material-bruto/` — uma tentativa anterior à
+> reconstrução actual, abandonada. O padrão realmente universal (61 ficheiros
+> em produção, todos os domínios) é **CFG → FETCH → COMPUTE → RENDER → BOOT**,
+> documentado em `engenharia-do-sistema.md §5.2`. Este ficheiro fica como
+> referência histórica — só reconsiderar para um tipo de card futuro que seja
+> genuinamente um tile golden-signals de 1 dispositivo (ex.: N1 wallboard),
+> nunca para fichas ricas multi-secção como as que já existem em N3/N4.
+>
+> **Propósito original:** Este documento é o contrato de design e implementação do sistema de cards KPI para NOC. Qualquer IA, developer ou auditor deve conseguir implementar um novo card lendo apenas este ficheiro.
 
 ---
 
