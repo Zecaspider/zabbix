@@ -37,9 +37,11 @@
       vmware: 600,
     },
 
+    // Valores canónicos: engenharia-do-sistema.md §6.2 (fonte de verdade única, não inventar aqui).
+    // Swap medido em % neste ficheiro; canónico é ratio 0.1/0.5 = 10%/50%.
     thresholds: {
-      mem:  { warn: 70, crit: 90 },
-      swap: { warn: 20, crit: 50 },
+      mem:  { warn: 70, crit: 85 },
+      swap: { warn: 10, crit: 50 },
     },
 
     sparkWindowSecs: 21600,

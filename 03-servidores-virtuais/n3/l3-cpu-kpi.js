@@ -47,8 +47,9 @@
       vmware: 7200,
     },
 
+    // cpu: canónico engenharia-do-sistema.md §6.2. Sub-métricas abaixo (user/priv/dpc/...) não têm entrada canónica — mantidas.
     thresholds: {
-      cpu:      { warn: 60,  crit: 85  },
+      cpu:      { warn: 70,  crit: 90  },
       cpuUser:  { warn: 50,  crit: 75  },
       cpuPriv:  { warn: 20,  crit: 40  },
       cpuDPC:   { warn: 5,   crit: 15  },

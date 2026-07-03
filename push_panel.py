@@ -182,21 +182,27 @@ def push_panels(domain_level, only_file=None):
     result = gapi('POST', 'dashboards/db', payload, token=token)
     print(f'  => {result.get("status")} | {GRAFANA}{result.get("url","")}')
 
-    # Reler dashboard para obter ids atribuidos e actualizar manifest
+    # Reler dashboard para obter ids atribuidos a paineis novos e actualizar manifest.
+    # So reconcilia entradas com id=null (paineis genuinamente novos, sem id ainda).
+    # NUNCA tocar em entradas que ja tem id — o titulo esta em branco em todos os
+    # paineis por convencao NOC, por isso "match por titulo" e ambiguo e corrompe
+    # o manifest (varias entradas colidem no mesmo titulo ''). Match feito pelo
+    # content (div id unico), unica chave fiavel disponivel.
     resp2 = gapi('GET', f'dashboards/uid/{dash_uid}', token=token)
     panels_final = resp2['dashboard'].get('panels', [])
-    manifest_entries = {e['file']: e for e in manifest.get('panels', [])}
 
-    for p in panels_final:
-        pid = p.get('id')
-        if pid is None:
+    for entry in manifest.get('panels', []):
+        if entry.get('id') is not None:
             continue
-        title = p.get('title', '')
-        for entry in manifest.get('panels', []):
-            if entry.get('title') == title and entry.get('id') != pid:
-                print(f'  manifest: {entry["file"]} -> id={pid}')
-                entry['id'] = pid
+        entry_content = entry.get('content')
+        if not entry_content:
+            continue
+        for p in panels_final:
+            if (p.get('options') or {}).get('content') == entry_content:
+                print(f'  manifest: {entry["file"]} -> id={p["id"]}')
+                entry['id'] = p['id']
                 manifest_changed = True
+                break
 
     if manifest_changed:
         manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding='utf-8')

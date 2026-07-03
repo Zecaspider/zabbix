@@ -11,8 +11,9 @@ var CFG_VMW_ESXI_TAB = {
   maxAgeSec:    600,
   grafanaL3:    'http://10.10.126.22:3000/d/b55d5481-9f82-4371-a7ca-e83ceb3064cc/n3-servidores-fisicos-esxi-detalhe',
 
+  // Valores canónicos: engenharia-do-sistema.md §6.2 (fonte de verdade única, não inventar aqui).
   thresholds: {
-    cpu: { warn: 75, crit: 90 },
+    cpu: { warn: 70, crit: 90 },
     ram: { warn: 70, crit: 85 },
     ds:  { warn: 20, crit: 10 },
   },

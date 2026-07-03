@@ -19,7 +19,8 @@ const CFG_EDSW = {
   groupId:    '29',
 
   thresholds: {
-    lossPct: { warn: 1, crit: 5 },
+    // Perda ICMP: canónico engenharia-do-sistema.md §6.2 ("rede, agências") — não inventar aqui.
+    lossPct: { warn: 1, crit: 10 },
     rttMs:   { warn: 5, crit: 50 },
   },
 }

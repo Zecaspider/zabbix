@@ -17,8 +17,9 @@ var CFG_L3H = {
   elementId: 'bpc-sf-l3-header',
   n2Url:     'http://10.10.126.22:3000/d/8f6a94be-c96f-4177-987d-fd187a14e6b7/n2-servidores-fisicos-esxi',
   maxAgeSec: 600,
+  // Valores canónicos: engenharia-do-sistema.md §6.2 (fonte de verdade única, não inventar aqui).
   thresholds: {
-    cpu: { warn: 75, crit: 90 },
+    cpu: { warn: 70, crit: 90 },
     ram: { warn: 70, crit: 85 },
   },
 }

@@ -57,7 +57,7 @@
 
     // ── Limiares de alerta — partições (%) ──────────────────────────────────
     thresholds: {
-      disk:    { warn: 70,  crit: 85  },  // % espaço usado
+      disk:    { warn: 75,  crit: 90  },  // % espaço usado — canónico engenharia-do-sistema.md §6.2
       ioOps:   { warn: 50,  crit: 100 },  // operações/s
       ioLatW:  { warn: 10,  crit: 50  },  // ms latência escrita
       ioLatR:  { warn: 10,  crit: 50  },  // ms latência leitura

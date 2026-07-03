@@ -55,7 +55,7 @@
     // Thresholds unificados (estrutura aninhada)
     thresholds: {
       cpuReady: { warn: 5,  crit: 15 },   // % CPU ready
-      cpuHost:  { warn: 60, crit: 80 },   // % CPU ESXi
+      cpuHost:  { warn: 70, crit: 90 },   // % CPU ESXi — canónico engenharia-do-sistema.md §6.2
       ramHost:  { warn: 70, crit: 85 },   // % RAM ESXi
       balloon:  { warn: 0.1 },            // GB balloon VM
     },

@@ -117,13 +117,6 @@ function dcWorstState(states) {
   return 'ok'
 }
 
-function dcSeverityToState(p) {
-  p = parseInt(p, 10)
-  if (p >= 4) return 'crit'
-  if (p >= 2) return 'warn'
-  return 'ok'
-}
-
 function dcIsStale(lastclock) {
   return !lastclock || (Math.floor(Date.now() / 1000) - parseInt(lastclock, 10)) > CFG_DC.maxAgeSec
 }
@@ -241,7 +234,7 @@ function dcCompute(data, cpuItems) {
       dcStateAbove(e.rtt,  CFG_DC.thresholds.rttMs),
       dcStateAbove(e.loss, CFG_DC.thresholds.lossPct),
       dcStateAbove(e.cpu,  CFG_DC.thresholds.cpuPct),
-      tList.length ? dcSeverityToState(Math.max.apply(null, tList.map(function (t) { return parseInt(t.priority, 10) }))) : 'ok',
+      tList.length ? window.BPC_SHARED.severityToState(Math.max.apply(null, tList.map(function (t) { return parseInt(t.priority, 10) }))) : 'ok',
     ])
 
     return {
@@ -297,7 +290,7 @@ function dcRenderRow(row) {
   let trigHtml = ''
   if (row.triggers.length) {
     const worst = Math.max.apply(null, row.triggers.map(function (t) { return parseInt(t.priority, 10) }))
-    const s = dcSeverityToState(worst)
+    const s = window.BPC_SHARED.severityToState(worst)
     const c = s === 'crit' ? 'var(--bpc-crit)' : 'var(--bpc-warn)'
     const icon = s === 'crit' ? '✖' : '⚠'
     trigHtml = `<span style="font-size:.96rem;color:${c}">${icon} ${row.triggers.length}</span>`

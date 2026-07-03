@@ -34,10 +34,11 @@ var CFG_VMTAB = {
   // Keys RAM do agente — este ambiente usa [used]+[total], não [available]+[total]
   agentMemKeys: { used: 'vm.memory.size[used]', total: 'vm.memory.size[total]' },
 
+  // Valores canónicos: engenharia-do-sistema.md §6.2 (fonte de verdade única, não inventar aqui).
   thresholds: {
-    cpu:  { warn: 75, crit: 90 },
-    ram:  { warn: 75, crit: 90 },
-    disk: { warn: 70, crit: 85 },
+    cpu:  { warn: 70, crit: 90 },
+    ram:  { warn: 70, crit: 85 },
+    disk: { warn: 75, crit: 90 },
   },
 
   fs: {

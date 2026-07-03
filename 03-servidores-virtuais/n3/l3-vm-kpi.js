@@ -66,10 +66,11 @@
       icmp:   7200,   // 40 min — ICMP usa mesmo intervalo que agente
     },
 
+    // Valores canónicos: engenharia-do-sistema.md §6.2 (fonte de verdade única, não inventar aqui).
     thresholds: {
-      cpu:   { warn: 60,  crit: 85  },
-      mem:   { warn: 70,  crit: 90  },
-      disk:  { warn: 70,  crit: 85  },
+      cpu:   { warn: 70,  crit: 90  },
+      mem:   { warn: 70,  crit: 85  },
+      disk:  { warn: 75,  crit: 90  },
       ioOps: { warn: 50,  crit: 100 },
       ioLat: { warn: 10,  crit: 50  },
       ioQ:   { warn: 1,   crit: 5   },

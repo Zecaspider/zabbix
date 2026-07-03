@@ -32,7 +32,7 @@ var CFG_KPI = {
 
   triggerPriority: { crit: [4, 5], warn: [2, 3], info: [0, 1] },
   dsThreshold:     { warn: 20, crit: 10 },
-  thresholds:      { cpu: { warn: 75, crit: 90 }, ram: { warn: 70, crit: 85 } },
+  thresholds:      { cpu: { warn: 70, crit: 90 }, ram: { warn: 70, crit: 85 } },  // canónico engenharia-do-sistema.md §6.2
 }
 
 

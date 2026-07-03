@@ -13,9 +13,10 @@ const CFG_N3ED = {
   n4Uid:     'rede-n4-edificio',
   wanIfaceRe: /Interface.*\((?:[^)]*(?:WAN|DMVPN|TUNEL|TUNNEL)[^)]*)\)/i,
   thresholds: {
-    lossPct:  { warn: 1,  crit: 5  },
+    // Perda ICMP: canónico engenharia-do-sistema.md §6.2 ("rede, agências") — não inventar aqui.
+    lossPct:  { warn: 1,  crit: 10 },
     rttMs:    { warn: 5,  crit: 50 },
-    alerts:   { warn: 1,  crit: 3  },
+    alerts:   { warn: 1,  crit: 3  },  // só colore o número "Alertas" do card, não decide o estado (ver n3edStatus)
     discards: { warn: 1,  crit: 10 },
   },
 }
@@ -40,12 +41,15 @@ function n3edFmtUptime(secs) {
 function n3edStatus(r) {
   if (r.up === false || r.up === null) return 'down'
   var T = CFG_N3ED.thresholds
+  // Estado por severidade de trigger (fonte de verdade Zabbix, engenharia-do-sistema.md §6.2
+  // "Severidade trigger → estado") — nunca por contagem bruta de alertas.
+  var alertState = window.BPC_SHARED.severityToState(r.alertSeverity)
   if (r.wanTotal > 0 && r.wanUp < r.wanTotal * 0.5) return 'crit'
   if (r.lossPct > T.lossPct.crit || r.rttMs > T.rttMs.crit) return 'crit'
-  if (r.alerts >= T.alerts.crit) return 'crit'
+  if (alertState === 'crit') return 'crit'
   if (r.wanTotal > 0 && r.wanUp < r.wanTotal) return 'warn'
   if (r.lossPct > T.lossPct.warn || r.rttMs > T.rttMs.warn) return 'warn'
-  if (r.alerts >= T.alerts.warn) return 'warn'
+  if (alertState === 'warn') return 'warn'
   if (r.discards >= T.discards.warn) return 'warn'
   return 'ok'
 }
@@ -114,7 +118,7 @@ function n3edFetch(rpc) {
         hostids:   ids,
         filter:    { value: 1 },
         monitored: true,
-        output:    ['triggerid'],
+        output:    ['triggerid', 'priority'],
         selectHosts: ['hostid'],
       }),
       rpc('item.get', {
@@ -150,9 +154,13 @@ function n3edFetch(rpc) {
         discardsMap[i.hostid] = (discardsMap[i.hostid] || 0) + v
       })
 
-      var alertsMap = {}
+      var alertsMap = {}, alertSeverityMap = {}
       triggers.forEach(function (t) {
-        ;(t.hosts || []).forEach(function (h) { alertsMap[h.hostid] = (alertsMap[h.hostid] || 0) + 1 })
+        var sev = parseInt(t.priority, 10) || 0
+        ;(t.hosts || []).forEach(function (h) {
+          alertsMap[h.hostid] = (alertsMap[h.hostid] || 0) + 1
+          alertSeverityMap[h.hostid] = Math.max(alertSeverityMap[h.hostid] || 0, sev)
+        })
       })
 
       var uptimeMap = {}
@@ -172,6 +180,7 @@ function n3edFetch(rpc) {
           wanTotal: wanTotalMap[h.hostid] || 0,
           discards: discardsMap[h.hostid] != null ? discardsMap[h.hostid] : 0,
           alerts:   alertsMap[h.hostid]   || 0,
+          alertSeverity: alertSeverityMap[h.hostid] || 0,
           uptime:   uptimeMap[h.hostid]   != null ? uptimeMap[h.hostid] : null,
         }
       })
