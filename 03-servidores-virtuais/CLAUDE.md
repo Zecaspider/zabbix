@@ -29,7 +29,7 @@ Os ficheiros `.js` são scripts injectados no painel Dynamic Text do Grafana. Ca
 | Ficheiro | Nível | Painel Grafana | Estado |
 |---|---|---|---|
 | `l2-kpi-card-v5.js` | L2 | D03-N2-VMs · Painel 1 · KPI Strip | ✅ Activo |
-| `l2-correlacionador-de-eventos.js` | L2 | D03-N2-VMs · Event Correlation | ✅ Activo |
+| `l2-correlacionador-de-eventos.js` | L2 | D03-N2-VMs · Event Correlation | ⚠️ Órfão — **não está no `manifest.json`** nem no dashboard Grafana ao vivo (confirmado por query directa à API, 2026-07-02: só 4 painéis existem — header/KPI/tabela/triggers). Ficheiro mantido no repo, mantido correcto (thresholds §7), mas não implantado. Decidir: implantar (criar entrada no manifest + push) ou mover para `../arquivo/` |
 | `l3-vm-header.js` | L3 | D5-Detalhe-VM · Row 0 · Header | ✅ Activo |
 | `l3-vm-kpi.js` | L3 | D5-Detalhe-VM · Row 1 · KPI Golden Signals | ✅ Activo (v16) |
 | `l3-cpu-kpi.js` | L3 | D5-Detalhe-VM · Row 3 · CPU Detalhado | ✅ Activo (v2) |
