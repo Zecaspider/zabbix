@@ -9,3 +9,6 @@ tok3n
 *.key
 ~$*.xlsx
 ~$*.docx
+
+# relatorios operacionais confidenciais - nunca versionar
+"documentacao/RELATORIO DIARIO*"
