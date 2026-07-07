@@ -103,6 +103,24 @@ do nome devolve os 2 registos, compara-se `interfaces[].ip` (igual) e
 Networker` duplicados e mortos (mesma família de limpeza do Z.29), já que
 a monitorização real já existe no `GUEST-OS`.
 
+**Actualização 2026-07-08 — limpeza executada (Z.43-Z.46):** levantamento
+alargado a toda a instância (630 hosts) confirmou **25 máquinas com registo
+Zabbix duplicado** no total (9 vProxy + vCenter PRD + vCenter DR + 6
+zombies confirmados por `agent.ping` + 3 UUID já conhecidos + 3 confirmados
+por WinRM + par PMSI + 1 recovery/DR). **20 já apagados** com aprovação
+explícita do utilizador, backups pré-delete gravados (macros de password
+sempre redactadas antes de persistir em disco): os 9 vProxy, os 6 zombies
+(`VS8000810_netbox`, `LTTI44`, `VS8000806`, `VS8000808`, `TACACS UBUNTU`,
+`VS8000115`), os 2 do grupo vCenter (`SV9000204` — que também continha a
+password exposta — e `VS9001206`), e os 3 confirmados por inspecção WinRM
+directa à VM (Sigcap/Ebankit/SGC). **Restam 5**: 3 pares já conhecidos por
+UUID de sessão anterior (2º lado já desactivado, baixo risco), o par PMSI
+(pendente de decisão sobre credencial SSH), e `sv9001206` ("Vcenter DR")
+— que afinal **não é duplicado**, é um conector vCenter com
+`{$VMWARE.URL}` vazio, nunca configurado — decisão à parte (consertar ou
+desactivar). Detalhe completo por trigger/hostid em
+`bpc-workspace/zabbix-infra-limpeza-ruido-handoff-20260707.md §10`.
+
 **Achado lateral (segurança, não relacionado com agentes):** durante esta
 verificação, a password do vCenter PRD (`administrator@vsphere.local`) foi
 encontrada em claro numa macro **não-Secret** de um host Zabbix duplicado
