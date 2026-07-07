@@ -65,23 +65,43 @@ estavam nomeados** nesses handoffs como itens em aberto (SWIFT, UAC Server
 ainda por resolver. Os outros **55 nunca tinham sido tocados**.
 
 **Achado sobre os 55 novos — appliances de fabricante, não template mal
-aplicado:** 24 destes 55 são VMs de infra-estrutura especializada (12
-`vProxy-EMC Networker`, 7 PowerFlex management/SVM, 4 Tenable/Nessus, 1
-JumpServer). Hipótese inicial era template Linux/Windows mal aplicado —
-**descartada** depois de confirmar no vCenter PRD (`10.10.101.9`, credencial
-válida) 6 das VMs `vProxy`: são **SLES 12/15 genuínas, ligadas, VMware Tools
-activo, IP real** (não appliance "fantasma" nem isolada de rede) — e **5/6
-com a porta 22 (SSH) aberta e alcançável** (`VS8000109/110/111/101/105`; só
-`VS8000145`, SLES 15, tem a 22 fechada). Conclusão: o agente Zabbix
-provavelmente **nunca foi instalado** nestas appliances de fabricante (Dell
-EMC NetWorker vProxy) — é uma decisão de acesso/instalação a tomar por VM
-nomeada, não uma correcção de configuração. As restantes **18 das 24**
-(8 vProxy + PowerFlex SVM/pfm + Tenable) apontam para o vCenter **PowerFlex**
-(`10.10.232.84`), que já tem credencial confirmada inválida (Z.8) — mesmo
-bloqueio antigo, não verificável sem credencial nova. Os outros **32 dos 55**
-(Graylog, Cacti, Netbox, PHPIPAM, DNS externos NS3/NS4, jump servers, WAF,
+aplicado (revisto 2026-07-08, ver correcção abaixo):** 24 destes 55 são VMs
+de infra-estrutura especializada (12 `vProxy-EMC Networker`, 7 PowerFlex
+management/SVM, 4 Tenable/Nessus, 1 JumpServer). Hipótese inicial era
+template Linux/Windows mal aplicado — **descartada** depois de confirmar no
+vCenter PRD (`10.10.101.9`, credencial válida) 6 das VMs `vProxy`: são
+**SLES 12/15 genuínas, ligadas, VMware Tools activo, IP real** (não
+appliance "fantasma" nem isolada de rede) — e **5/6 com a porta 22 (SSH)
+aberta e alcançável**. As restantes **18 das 24** (8 vProxy + PowerFlex
+SVM/pfm + Tenable) apontam para o vCenter **PowerFlex** (`10.10.232.84`),
+que já tem credencial confirmada inválida (Z.8) — mesmo bloqueio antigo,
+não verificável sem credencial nova. Os outros **32 dos 55** (Graylog,
+Cacti, Netbox, PHPIPAM, DNS externos NS3/NS4, jump servers, WAF,
 Securesphere, etc.) são servidores normais nunca antes trabalhados —
 candidatos genuínos a entrar na fila de recuperação de agentes.
+
+**Correcção (2026-07-08) — conclusão "agente nunca instalado" estava
+errada para a maioria das vProxy:** o utilizador reparou num problema activo
+"Zabbix agent is not available" em `VS8000110_vProxy-EMC Networker" e
+perguntou se era o mesmo host já analisado — a resposta revelou que **cada
+VM `vProxy` tem 2 registos Zabbix distintos para a mesma máquina física**
+(mesmo IP, hostids diferentes): um `GUEST-OS - VSxxxxxxx (vProxy VxBlock)`
+com template `Linux by Zabbix agent` (passivo) — **este é que tem o agente
+real, a reportar** — e o `..._vProxy-EMC Networker` com `VMware Guest` +
+`Linux by Zabbix agent active`, que é o registo **morto/duplicado** que eu
+tinha analisado (o `agent.ping` nunca teve dado nenhum). Verificado nas 12
+vProxy: **8 têm o duplicado `GUEST-OS` com agente fresco** (`VS8000110/111/
+101/105/100/120/121/122`) — já estão monitorizadas correctamente, só
+"escondidas" atrás do registo duplicado morto. **1** (`VS8000109`) tem o
+duplicado mas sem dado de agente nele também. **3** (`VS8000145`,
+`VS8000114`, `VS8000116`) não têm duplicado nenhum — continuam como
+candidatas reais a "sem agente confirmado". Método de verificação: mesma
+técnica dos duplicados ESXi (Z.29)/UUID (Z.25) — `host.get` por substring
+do nome devolve os 2 registos, compara-se `interfaces[].ip` (igual) e
+`agent.ping.lastclock` (um fresco, outro `0`) para confirmar qual é o real.
+**Pendente**: decidir se se desactiva/apaga os registos `..._vProxy-EMC
+Networker` duplicados e mortos (mesma família de limpeza do Z.29), já que
+a monitorização real já existe no `GUEST-OS`.
 
 **Achado lateral (segurança, não relacionado com agentes):** durante esta
 verificação, a password do vCenter PRD (`administrator@vsphere.local`) foi
