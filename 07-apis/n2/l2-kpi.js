@@ -103,10 +103,10 @@ function kpiApiTile(opts) {
   const accent = window.BPC.state.color(state)
   const cardSt = state === 'crit' || state === 'down' ? 'down' : state
   const sub    = opts.sub
-    ? '<div style="font-size:1.05rem;color:var(--bpc-mute);margin-top:auto">' + opts.sub + '</div>'
+    ? '<div style="font-size:1.05rem;color:var(--bpc-mute)">' + opts.sub + '</div>'
     : ''
   return '<div class="bpc bpc-card state-' + cardSt + '"'
-    + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;gap:10px;padding:18px 22px">'
+    + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:18px 22px">'
     + '<div class="bpc-flex" style="justify-content:space-between;align-items:flex-start">'
     +   '<span class="bpc-label" style="font-size:1.35rem;letter-spacing:.03em;text-transform:none;font-weight:700;color:#CDD9E5">' + window.BPC_SHARED.esc(opts.label) + '</span>'
     + '</div>'
