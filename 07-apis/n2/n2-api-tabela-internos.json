@@ -1,0 +1,156 @@
+{
+  "datasource": {
+    "type": "mysql",
+    "uid": "afor1g5862fb4c"
+  },
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "custom": {
+        "align": "left",
+        "cellOptions": {
+          "type": "auto"
+        },
+        "filterable": true,
+        "inspect": false
+      },
+      "mappings": [],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "transparent",
+            "value": 0
+          }
+        ]
+      }
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Host/App"
+        },
+        "properties": [
+          {
+            "id": "custom.width",
+            "value": 260
+          },
+          {
+            "id": "links",
+            "value": [
+              {
+                "targetBlank": false,
+                "title": "Detalhe da app — N3",
+                "url": "/d/apis-n3/n3-c2b7-apis-e-servicos-app?var-app=${__data.fields[\"Host/App\"]}&${__url_time_range}"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Problemas"
+        },
+        "properties": [
+          {
+            "id": "custom.width",
+            "value": 110
+          },
+          {
+            "id": "custom.cellOptions",
+            "value": {
+              "type": "color-background"
+            }
+          },
+          {
+            "id": "thresholds",
+            "value": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "transparent", "value": 0 },
+                { "color": "orange", "value": 1 }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Dias"
+        },
+        "properties": [
+          {
+            "id": "custom.width",
+            "value": 90
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byName",
+          "options": "Estado"
+        },
+        "properties": [
+          {
+            "id": "mappings",
+            "value": [
+              {
+                "options": {
+                  "1": { "color": "red", "index": 0, "text": "L1 · INDISPONÍVEL" },
+                  "2": { "color": "orange", "index": 1, "text": "L2 · LENTO" },
+                  "3": { "color": "#d4a017", "index": 2, "text": "L3 · CONTEÚDO EM FALTA" },
+                  "4": { "color": "orange", "index": 3, "text": "OUTRO PROBLEMA" },
+                  "5": { "color": "green", "index": 4, "text": "OK" }
+                },
+                "type": "value"
+              }
+            ]
+          },
+          {
+            "id": "custom.cellOptions",
+            "value": { "type": "color-background" }
+          },
+          {
+            "id": "custom.width",
+            "value": 140
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "cellHeight": "sm",
+    "frameIndex": 0,
+    "showHeader": true,
+    "sortBy": [
+      { "desc": false, "displayName": "Estado" }
+    ]
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afor1g5862fb4c"
+      },
+      "editorMode": "code",
+      "format": "table",
+      "rawQuery": true,
+      "rawSql": "SELECT `Host/App`, Servico, VM, Problemas, Dias, Estado FROM (\n  SELECT\n    h.name AS `Host/App`,\n    COALESCE(MAX(CASE WHEN ht.tag='servico' THEN ht.value END), '') AS Servico,\n    COALESCE(MAX(CASE WHEN ht.tag='vm' THEN ht.value END), '') AS VM,\n    (SELECT COUNT(DISTINCT t2.triggerid) FROM triggers t2\n       INNER JOIN functions f2 ON f2.triggerid = t2.triggerid\n       INNER JOIN items i2 ON i2.itemid = f2.itemid\n       WHERE i2.hostid = h.hostid AND t2.value = 1 AND t2.status = 0) AS Problemas,\n    (SELECT ROUND((UNIX_TIMESTAMP() - MIN(t3.lastchange)) / 86400) FROM triggers t3\n       INNER JOIN functions f3 ON f3.triggerid = t3.triggerid\n       INNER JOIN items i3 ON i3.itemid = f3.itemid\n       WHERE i3.hostid = h.hostid AND t3.value = 1 AND t3.status = 0) AS Dias,\n    COALESCE((SELECT MIN(CASE\n                WHEN t4.description LIKE '%[L1]%' THEN 1\n                WHEN t4.description LIKE '%[L2]%' THEN 2\n                WHEN t4.description LIKE '%[L3]%' THEN 3\n                ELSE 4 END)\n       FROM triggers t4\n       INNER JOIN functions f4 ON f4.triggerid = t4.triggerid\n       INNER JOIN items i4 ON i4.itemid = f4.itemid\n       WHERE i4.hostid = h.hostid AND t4.value = 1 AND t4.status = 0), 5) AS Estado\n  FROM hosts h\n  INNER JOIN hosts_groups hg ON h.hostid = hg.hostid\n  LEFT JOIN host_tag ht ON h.hostid = ht.hostid\n  WHERE hg.groupid = 663\n  AND h.status = 0\n  AND h.hostid IN (SELECT hostid FROM host_tag WHERE tag = 'tipo' AND value = 'sistema')\n  GROUP BY h.hostid, h.host, h.name\n) sub\nORDER BY Estado ASC, Dias DESC, `Host/App` ASC",
+      "refId": "A",
+      "sql": {
+        "columns": [{ "parameters": [], "type": "function" }],
+        "groupBy": [{ "property": { "type": "string" }, "type": "groupBy" }],
+        "limit": 50
+      }
+    }
+  ],
+  "title": "Sistemas Internos",
+  "transparent": true,
+  "type": "table"
+}

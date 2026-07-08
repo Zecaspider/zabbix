@@ -1,0 +1,59 @@
+{
+  "dashboardUid": "apis-n2",
+  "dashboardTitle": "N2 · APIs e Serviços",
+  "folderUid": "bfpm0sedbpgqob",
+  "datasource": "3_KgG43nz",
+  "groupIds": [
+    "663",
+    "345"
+  ],
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "BPC / INFRAESTRUTURA / STORAGE"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l2-kpi.js",
+      "id": 101,
+      "role": "content",
+      "title": "KPI Strip",
+      "content": "<div id=\"bpc-api-kpi\"></div>"
+    },
+    {
+      "file": "n2-api-tabela-internos.json",
+      "id": 102,
+      "role": "content",
+      "title": "Sistemas Internos"
+    },
+    {
+      "file": "n2-api-tabela-parceiros.json",
+      "id": 201,
+      "role": "content",
+      "title": "Parceiros"
+    },
+    {
+      "file": "n2-api-triggers.json",
+      "id": 200,
+      "role": "content",
+      "title": "Problemas Activos — APIs e Serviços"
+    }
+  ]
+}
