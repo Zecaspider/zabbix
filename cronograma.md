@@ -152,6 +152,9 @@
 ## Fase 7 · APIs & Serviços (anchor 663 + 345, Infra)
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
+| 7.0.1 | Template único `BPC Web Monitoring v2` (14715) — fecho Fase C | ☑ | 2026-07-08 | 2 templates antigos (12042/12045) apagados; 28 cenários legados `Monitor *` desactivados (paridade confirmada); bug `{$TIMEOUT.L2/L3}` corrigido; L3/L4 off por omissão. Detalhe em `documentacao/mapa-apps-vms.md §1` |
+| 7.0.2 | Tags `tipo`/`servico`/`vm`/`ip` nos 41 hosts `app-*` — fecho do elo app↔VM (Fase B) | ☑ | 2026-07-08 | 24 VMs confirmadas por IP ao vivo; reciprocidade `servico` nas VMs corrigida (2/15). Detalhe em `documentacao/mapa-apps-vms.md §2-3` |
+| 7.0.3 | Investigação inicial de dependências BD/backend | ◐ | 2026-07-08 | 9/15 VMs auto-contidas confirmadas; 2 sem BD local (dependência externa por identificar); `ebankit` confirmado multi-VM (20 hosts, só 1 mapeado). Detalhe em `documentacao/mapa-apps-vms.md §4`. Pendente: decide se muda domínio/pasta Grafana por sistema |
 | 7.1 | N2 + N3 (endpoints/sintéticos) | ☐ | | |
 | 7.2 | Navegação + teste + commit | ☐ | | |
 
