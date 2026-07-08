@@ -55,6 +55,54 @@
 - **Resultado: nenhum alerta sai do Zabbix hoje.** A alarmística só vive na
   consola/Grafana.
 
+### 4-bis. Mecanismo confirmado: é o EMAIL que abre o ticket no GLPI (2026-07-09)
+
+**Achado crítico, explica o incidente já conhecido** (memória: activar um
+template MSSQL gerou uma "enxurrada de triggers → emails → tickets
+abertos automaticamente no GLPI"): confirmado ao vivo (`action.get`,
+`mediatype.get`) que **não há nenhuma action/media type Zabbix a chamar a
+API do GLPI directamente** — o mediatype `GLPi` existe na lista instalada
+por omissão do Zabbix mas **nenhuma action o usa**. O caminho real é mais
+simples e mais perigoso de subestimar:
+
+```
+Trigger dispara → Action "Send Notification Email" (id 9, ON)
+  → Media type "Email" (id 1, hoje OFF)
+  → Email chega a uma caixa/endereço monitorizado pelo GLPI
+  → GLPI (email-to-ticket, fora do Zabbix) abre 1 ticket por email recebido
+```
+
+Ou seja: **ligar o mediatype `Email`** (mesmo sem tocar em nada do lado
+do GLPI) é o suficiente para reactivar a criação automática de tickets —
+é exactamente o que aconteceu no incidente do template MSSQL. Isto
+confirma e torna concreta a regra já registada no `CLAUDE.md`
+("Nunca activar discovery rules/templates Zabbix sem avaliar o risco de
+flood"): o mesmo cuidado aplica-se a **ligar o mediatype `Email`**, não só
+a activar templates/discovery.
+
+**Antes de reactivar, falta planear** (pedido explícito do utilizador,
+2026-07-09):
+1. **Confirmar o endereço/caixa exacta** que o GLPI escuta para
+   email-to-ticket, e as regras de parsing (assunto→categoria,
+   corpo→prioridade, remetente→requerente) — hoje desconhecidas desta
+   equipa.
+2. **Dependências/supressão de triggers** (já prevista na Fase D,
+   `D3`) — sem isto, qualquer falha em cascata (ex. VM em baixo) abre 1
+   ticket por trigger, não 1 ticket pela causa raiz.
+3. **Operação do dia-a-dia uma vez ligado**: quem triscia os tickets
+   abertos por email (NOC? 1ª linha?), como se faz acknowledge/fecho
+   (fecha-se no GLPI, ou o Zabbix também precisa de `event.acknowledge`
+   para não re-notificar?), e o que fazer com re-notificação (o Zabbix
+   reenvia email a cada `esc_period` — hoje 1h — enquanto o problema
+   está activo; sem supressão isso pode gerar tickets duplicados/updates
+   constantes no GLPI).
+4. **Teste controlado**: 1 trigger de baixo risco, 1 destinatário, antes
+   de reactivar para os 6 utilizadores e todos os triggers do grupo
+   g663/g609.
+
+Nenhuma escrita feita nesta investigação — só leitura (`action.get`,
+`mediatype.get`, `user.get`).
+
 ## 5. Mapeamento URL → serviço → VM
 
 Derivado nesta auditoria por 3 fontes cruzadas que **concordam entre si**:

@@ -147,6 +147,35 @@ Método usado (sem WinRM novo): (a) `item.get` filtrado por chave `mssql` nas
 |---|---|---|
 | `VS8000724` | ebankit/internet-bank | Só mostra o gateway web (sites IIS `ebk-ib`/`ebk-ids`/`ebk-gtw-omnichannel`/`ebk-cdn`/`ebk-cms`), sem BD local. A tag `ebankit` cobre **20 hosts** no total (achado de 05/07) — o `vm=` aponta só à porta de entrada; BD/middleware reais ficam nas outras ~19 VMs desse grupo, ainda não mapeadas 1:1 |
 
+### 4.5 `ebankit` — fechado (2026-07-08/09)
+
+Retomada a validação das tags automáticas do `inventario_zabbix_final.csv`
+(script `1-zabbix_sync.py`/`34-zabbix-vmware-mapper.py`, parseado da
+`Anotacao_Original`, nunca validado 1:1). Cruzado o CSV (Abril) contra
+`host.get` ao vivo (`tags: servico contains ebankit`), token Admin, só
+leitura:
+
+- **18 VMs reais confirmadas** hoje com `servico=ebankit` (2 Front End,
+  2 Back Office, 4 Middleware, 2 BD cluster, 2 Load Balancer, 3 QA, 2 Audit
+  System QA+Prod, 1 IIS/CPI) — reconcilia o "20 hosts" da auditoria 14.27:
+  16 já vinham do CSV de Abril + 2 novas criadas/tagueadas depois
+  (`VS9000358` "eBanking Audit System Prod", `VS8000735` "Load
+  Balance_Camada_Backoffice (Ebanking)") + `app-internet-bank` (monitor
+  sintético, `vm=VS8000724` já confirmado em 14.24) = 20 no total à data.
+- **1 falso-positivo identificado e já resolvido por outra frente**:
+  `vs8000740` (minúsculas) tinha tag `EBANKIT` no CSV antigo ("Load balance
+  do Middleware") — mas era o **duplicado zombie** apagado no Z.46 (mesma
+  sessão). O host real, `VS8000740` (maiúsculas, confirmado por WinRM),
+  está correctamente tagueado **`servico=canais digitais`** ("Whatsapp BPC
+  \| Load balance_Camada_Appcenter") — é um load balancer partilhado de
+  outro canal digital, não pertence ao `ebankit`. Confirma que o parser
+  antigo (baseado só na descrição) atribuía o serviço errado quando 2 VMs
+  partilhavam o mesmo IP histórico.
+- **Nenhuma escrita feita** — achado fechado só com leitura (`host.get`
+  directo à API, sem passar pelo snapshot local desactualizado
+  `audit_609_hosts_raw_20260708.json`, que também não continha
+  `VS8000740`/`vs8000740` por ter um âmbito de grupo mais restrito).
+
 ### 4.4 Sem dados — precisa de investigação nova (WinRM nomeado) ou fica só com visible name (§5)
 
 - `VS9000235` (Cezanne) — Server 2003 EOL, levantamento antigo muito limitado
@@ -262,7 +291,7 @@ não de TI genérica).
 | **DIGIWAVE** (+variantes) | 16 | `FINASTRA` |
 | **FIRCOSOFT** (+App/MQ/Utilities) | 12 | Já conhecido de 05/07 — compliance/AML, `FINASTRA` |
 | **ESSENCE / FUSION ESSENCE** | 11 | "Migration Tool"/"Equation Client" — ferramenta de migração ligada ao Equation |
-| **ACM** | 8 | Sem contexto adicional — por identificar |
+| **ACM** | 8 (+1 `ACMRELATIONAL`) | Ver §8.6 — contexto técnico encontrado (2026-07-09), meaning de negócio ainda por confirmar |
 | **CreditQuest** | 5 | `FINASTRA` |
 | **TOBE (só BD)** | 4 | Achado: a camada BD do TOBE está tagged `PMSI`, não `DTI` (a camada app está); "Portal de Operações"/"Sistema de Compensação" |
 | **OPTICS, NETMARKET, PRIMAVERA, BANKTRADE, GIT LAB, EXCEL REPORT, NGINX, E-Learning, SUPPORTSERVER** | ~1-4 cada | Menor escala, diversos |
@@ -288,6 +317,35 @@ Muito mais contido que PMSI — 1 plataforma/produto específico
 (1º nível, ex. `10·PMSI`/`11·SAFIRA`) — não são apps de negócio individuais,
 são programas/plataformas inteiras com arquitectura própria. Não fazem
 sentido dentro de "APIs e Serviços" ou "Serviços de Negócio" como estão
-hoje. Decisão final por tomar; `ACM` (8 VMs, PMSI) fica sem contexto
-identificado — candidato a confirmar com o negócio antes de fechar a
-estrutura.
+hoje. Decisão final por tomar; ver §8.6 para o contexto (parcial) já
+encontrado sobre `ACM`.
+
+### 8.6 `ACM` — contexto técnico encontrado, meaning de negócio por confirmar (2026-07-09)
+
+Retomada a validação (`host.get` ao vivo, tag `servico`/`departamento`,
+token Admin, só leitura). Confirmado ao vivo (departamento=PMSI, hoje: 94
+VMs, vs 96 do CSV de Abril — ligeira deriva normal, sem investigar).
+
+`ACM` **não é exclusivo do PMSI** — é maior e está fragmentado por 3
+departamentos:
+
+| Departamento | VMs | Ambiente | Nota |
+|---|---:|---|---|
+| `PMSI` | 8 `ACM` + 1 `ACMRELATIONAL` | 5 Produção + 4 QA | Confirma a tabela §8.3 |
+| `DTI` | 8 `ACM` | Todas QA | Ambiente paralelo/legado, possivelmente pré-migração para PMSI |
+| `DSE` | 1 `ACM` | QA | `VS8000345` — descrição menciona **"Aplicação da Assecco (MIA)"** |
+
+**Pista de negócio (não confirmada)**: o próprio `visible name` de
+`VS8000345` liga `ACM` ao fornecedor **Assecco** e ao produto **"MIA"** —
+primeira pista concreta de que sistema é este. Reforça achado anterior
+(`vm-agente-recuperacao-handoff-20260704.md`, WinRM em `VS8000768`):
+**11 serviços Windows nomeados `ACM-*`** + `Keycloak` (autenticação) +
+`RabbitMQ` (mensageria) — arquitectura de microserviços real, não um
+artefacto de tag. `VS8000482` acrescenta outra pista: "Server ACM - MFT \
+PRT Qualidade, Certificação" (MFT = Managed File Transfer).
+
+**Ainda por confirmar com o negócio**: o que "ACM"/"MIA" fazem
+concretamente (nenhuma das 50 linhas do relatório diário de negócio bate
+com este nome) — candidato a pergunta directa ao utilizador antes de
+decidir se `ACM` é sub-sistema do domínio `PMSI` ou merece o seu próprio
+`app-*`/tratamento.
