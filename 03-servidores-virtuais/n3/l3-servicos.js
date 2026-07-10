@@ -6,12 +6,18 @@
   // ╚═══════════════════════════════════════════════════════════════════════════╝
 
   // ════════════════════════════════════════════════════════════
-  // D5-Detalhe-VM · SERVIÇOS  v1.0
+  // D5-Detalhe-VM · SERVIÇOS  v1.1
   // Business Text — ES5, sem dependências externas
   //<div id="bt-kpi-servicos"></div>
   // Reactividade: query dumb força re-render do BT quando a
   // variável Grafana muda. O JS lê var-hostid do URL em cada
   // execução — sem eventos, sem polling, sem listeners.
+  //
+  // v1.1 (2026-07-10) — acrescenta identidade de negócio (tags
+  // servico/departamento/camada/ambiente) acima da lista de serviços
+  // Windows. Muitas VMs não têm o discovery de serviços Windows
+  // aplicado (só um subconjunto, ex. eBankit) — sem isto o painel
+  // ficava "vazio" mesmo quando há informação de negócio disponível.
   //
   // Estrutura:
   //   [1] CFG
@@ -117,6 +123,13 @@
       // "HTTPS service is running" → "HTTPS"
       return itemName.replace(/\s*service is running\s*/i, '').trim();
     },
+
+    tagVal: function (tags, key) {
+      for (var i = 0; i < (tags || []).length; i++) {
+        if (tags[i].tag === key) return tags[i].value;
+      }
+      return '';
+    },
   };
 
 
@@ -151,6 +164,14 @@
     '#bt-kpi-servicos .sv-state{color:' + CFG.colors.mute + ';font-size:9px;text-transform:uppercase;}',
     '#bt-kpi-servicos .sv-empty{color:' + CFG.colors.mute + ';font-size:10px;font-style:italic;}',
 
+    // Identidade de negócio (tags servico/departamento/camada/ambiente) — mostrada
+    // sempre que existir, mesmo sem serviços Windows explícitos (que dependem de
+    // um template de discovery só aplicado a algumas VMs).
+    '#bt-kpi-servicos .sv-identity{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid ' + CFG.colors.border + ';}',
+    '#bt-kpi-servicos .sv-id-item{display:flex;flex-direction:column;gap:2px;}',
+    '#bt-kpi-servicos .sv-id-label{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' + CFG.colors.mute + ';}',
+    '#bt-kpi-servicos .sv-id-val{font-size:11px;color:' + CFG.colors.text + ';font-weight:600;}',
+
     '</style>',
   ].join('');
 
@@ -172,17 +193,21 @@
     return zbx('host.get', {
       output: ['hostid', 'host'],
       filter: { host: [hostName] },
+      selectTags: ['tag', 'value'],
     })
     .then(function (hosts) {
       if (!hosts || hosts.length === 0)
         throw new Error('Host não encontrado: ' + hostName);
 
+      var host = hosts[0];
       return zbx('item.get', {
-        hostids: [hosts[0].hostid],
+        hostids: [host.hostid],
         output: ['name', 'lastvalue', 'key_'],
         search: { name: 'service is running' },
         monitored: true,
         limit: CFG.apiLimits.items,
+      }).then(function (items) {
+        return { tags: host.tags || [], items: items };
       });
     });
   }
@@ -215,12 +240,34 @@
       + '</div>';
   }
 
-  function render(services) {
+  // Identidade de negócio — tags servico/departamento/camada/ambiente, quando existirem.
+  function renderIdentity(tags) {
+    var wanted = [
+      ['servico', 'Serviço'],
+      ['departamento', 'Departamento'],
+      ['camada', 'Camada'],
+      ['ambiente', 'Ambiente'],
+    ];
+    var parts = [];
+    for (var i = 0; i < wanted.length; i++) {
+      var v = U.tagVal(tags, wanted[i][0]);
+      if (v) {
+        parts.push('<span class="sv-id-item"><span class="sv-id-label">' + U.esc(wanted[i][1])
+          + '</span><span class="sv-id-val">' + U.esc(v) + '</span></span>');
+      }
+    }
+    return parts.length ? '<div class="sv-identity">' + parts.join('') + '</div>' : '';
+  }
+
+  function render(data) {
+    var services = data.services;
+    var identity = renderIdentity(data.tags);
     var body = services.length
       ? '<div class="sv-list">' + services.map(renderRow).join('') + '</div>'
-      : '<div class="sv-empty">Sem serviços monitorizados explicitamente neste host.</div>';
+      : '<div class="sv-empty">Sem serviços Windows monitorizados explicitamente neste host.</div>';
 
     return CSS + '<div class="sv-wrap">'
+      + identity
       + '<div class="sv-title">Serviços</div>'
       + body
       + '</div>';
@@ -265,9 +312,9 @@
     + ';font-family:monospace;font-size:11px;">A carregar...</span>';
 
   fetchAll(hostName)
-    .then(function (items) {
+    .then(function (result) {
       if (!_isCurrent()) return;
-      root.innerHTML = render(compute(items));
+      root.innerHTML = render({ services: compute(result.items), tags: result.tags });
     })
     .catch(function (e) {
       if (e.name === 'AbortError' || !_isCurrent()) return;

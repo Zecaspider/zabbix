@@ -64,11 +64,10 @@
       "content": "<div id=\"bt-kpi-servicos\"></div>"
     },
     {
-      "file": "l3-triggers.js",
-      "id": 107,
+      "file": "n3-vm-triggers.json",
+      "id": 109,
       "role": "content",
-      "title": "",
-      "content": "<div id=\"bt-kpi-triggers\"></div>"
+      "title": "Problemas activos — VM"
     },
     {
       "file": "l3-ficha-servidor.js",

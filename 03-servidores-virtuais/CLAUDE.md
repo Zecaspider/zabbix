@@ -39,8 +39,9 @@ Os ficheiros `.js` são scripts injectados no painel Dynamic Text do Grafana. Ca
 | `l3-memoria-kpi.js` | L3 | N3 · VM Detalhe · Memória Detalhada | ✅ Activo (v1.0) — guard §4C.7 (referência) |
 | `l3-discos-kpi.js` | L3 | N3 · VM Detalhe · Disco & I/O | ✅ Activo (v1) — guard §4C.7 |
 | `l3-rede.js` | L3 | N3 · VM Detalhe · Rede | ✅ Activo (v1) — guard §4C.7 + Poll |
-| `l3-servicos.js` | L3 | N3 · VM Detalhe · Serviços | ✅ Activo (v1.0) — guard §4C.7 |
-| `l3-triggers.js` | L3/L4 | N3 · VM Detalhe · Triggers | ✅ Activo (v1.1) — guard §4C.7 |
+| `l3-servicos.js` | L3 | N3 · VM Detalhe · Serviços | ✅ Activo (v1.1) — guard §4C.7; mostra identidade de negócio (tags) mesmo sem serviços Windows discovered |
+| `l3-triggers.js` | L3/L4 | N3 · VM Detalhe · Triggers — **só Versão B** | ✅ Activo (v1.1) — guard §4C.7. Versão A trocou para nativo (`n3-vm-triggers.json`, §13.6); ficheiro não apagado, continua a servir a Versão B |
+| `n3-vm-triggers.json` | L3/L4 | N3 · VM Detalhe · Triggers — **Versão A** | ✅ Activo (2026-07-10) — painel nativo `alexanderzobnin-zabbix-triggers-panel`, `group:$groupid`/`host:$hostid`, ver §13.6 |
 | `l3-ficha-servidor.js` | L3 | N3 · VM Detalhe · Ficha do Servidor | ✅ Activo (v1.0) — guard §4C.7 |
 
 > **`l2-correlacionador-de-eventos.js`** — arquivado em `n2/arquivo-n2/` (2026-07-09). Estava fora de qualquer manifest; a vista de triggers do grupo 609 é servida pelo `l2-triggers.js`. Reversível — ver `n2/arquivo-n2/README.md`.
@@ -871,3 +872,15 @@ Continuação da avaliação do N3, agora na Versão B (`0812353b`, painéis nat
 Validado ao vivo com `VS8000345`: RAM 66.9% agora verde, CPU mostra "Agente 0.9%" / "VMware 1.0%" claramente distintos, disco 32.9% verde. Snapshot local `n3/versao-b-corrected.json` actualizado a partir do dashboard ao vivo (13 painéis, era 15 antes de remover os 2 gauges).
 
 **Pendente**: `build_versao_b.py` continua a gerar a versão *antiga* (thresholds errados, sem os rótulos PT, com os gauges duplicados) — se alguém correr o script outra vez, desfaz estas correcções. Precisa de ser actualizado para gerar o estado corrigido, ou passar a ser só histórico/referência (decidir).
+
+### 13.6 Versão A (BT) — 3 pedidos directos do utilizador: Rede full-width, identidade de negócio nos Serviços, Triggers nativo (2026-07-10)
+
+Continuação da avaliação, de volta à Versão A depois da B (§13.5). Três pedidos concretos:
+
+**1. Painel Rede tinha scroll interno.** Partilhava linha com Disco (`w12 h8`) e o conteúdo (interface, throughput, erros/drops, ICMP) não cabia. **Fix**: `l3-rede.js` não mudou (o scroll era só de layout, não de código) — gridPos passou a `w24 h10`, linha própria. Disco (`l3-discos-kpi.js`) também passou a `w24` (já não tinha com quem partilhar a linha) e Serviços (`l3-servicos.js`) também, ocupando a linha que os Triggers libertaram (ver ponto 3).
+
+**2. Painel Serviços aparecia vazio em `VS8000345`** — utilizador perguntou se não havia dados de serviços de negócio a vir do Zabbix. **Investigado antes de mexer**: confirmado que `VS8000345` genuinamente não tem items Windows `"X service is running"` (esse discovery só está aplicado a um subconjunto de VMs, ex. as 18 do eBankit — confirmado que o mecanismo funciona lá). Mas a VM **tem** a tag `servico=ACM` (+ `departamento=DSE`, `camada=Camada Aplicacional`, `ambiente=QA`) que não aparecia nem aqui nem na Ficha (`l3-ficha-servidor.js` só busca `selectGroups`, nunca `selectTags`). **Fix** (`l3-servicos.js` v1.1): `fetchAll` passa a pedir `selectTags` no `host.get`; nova função `renderIdentity` mostra uma linha de identidade (Serviço/Departamento/Camada/Ambiente) acima da lista de serviços Windows, sempre que a tag existir — deixa de ser um painel "morto" para VMs sem esse discovery aplicado. Validado ao vivo: `VS8000345` mostra "ACM · DSE · Camada Aplicacional · QA" + "Sem serviços Windows monitorizados explicitamente neste host." (a frase antiga "Sem serviços monitorizados" ficou mais específica, para não parecer que falta tudo).
+
+**3. Triggers deixou de ser Business Text, passou a nativo, e moveu-se para o fim (antes da Ficha).** `l3-triggers.js` **não foi apagado** (ficheiro partilhado — a Versão B continua a usá-lo como um dos seus 4 painéis BT, `manifest-versao-b.json`); só saiu do `manifest.json`/dashboard da Versão A. Novo painel nativo `n3-vm-triggers.json` (mesmo padrão do domínio de APIs — `alexanderzobnin-zabbix-triggers-panel`, `group:$groupid`, `host:$hostid`, `hostField:false` porque já está scoped a 1 VM). Simples de fazer porque `$hostid` já resolve para o nome visível completo (confirmado no §13.4) — nenhuma variável regex extra necessária, ao contrário do `${hostRegex:raw}` que a Fase 7 (APIs) precisou. Reordenado para ficar logo antes da Ficha (era o 2º painel, a seguir ao KPI).
+
+Layout final (topo→fundo): Header → KPI → **Serviços** (full-width, com identidade) → CPU / Memória (lado a lado) → **Disco** (full-width) → **Rede** (full-width, sem scroll) → **Triggers nativo** → Ficha. Validado ao vivo com `VS8000345`: Rede sem scroll, Serviços mostra a identidade + estado real, Triggers nativo mostra "Page 1 of 0" (0 problemas, consistente com o header "Sem triggers activos"), Ficha no fim. Snapshots locais actualizados (`n3/dashboard-completo.json` a partir do dashboard ao vivo, 9 painéis — mesma contagem que antes, só trocou 1 BT por 1 nativo).
