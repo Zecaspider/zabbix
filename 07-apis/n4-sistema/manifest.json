@@ -40,7 +40,7 @@
       "file": "l4-sys-camadas.js",
       "id": 105,
       "role": "content",
-      "title": "Tabela de Camadas",
+      "title": "Tabela de Departamentos",
       "content": "<div id=\"bpc-sys-camadas\"></div>"
     },
     {
@@ -54,7 +54,7 @@
       "file": "l4-sys-vms.js",
       "id": 102,
       "role": "content",
-      "title": "VMs por Camada",
+      "title": "VMs por Departamento",
       "content": "<div id=\"bpc-sys-vms\"></div>"
     },
     {

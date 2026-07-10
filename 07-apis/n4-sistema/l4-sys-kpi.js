@@ -5,7 +5,7 @@
 // ║  VARIÁVEIS GRAFANA REQUERIDAS                                           ║
 // ║    var-servico — valor da tag servico do sistema (dropdown)            ║
 // ║                                                                          ║
-// ║  4 KPIs: VMs do sistema · Saudáveis · Com problemas · Camadas          ║
+// ║  4 KPIs: VMs do sistema · Saudáveis · Com problemas · Departamentos    ║
 // ║  As VMs vêm da tag servico=X (fecho multi-VM da reconciliação 7.0.5);  ║
 // ║  os hosts sintéticos app-* (nome app-*) são excluídos da contagem.     ║
 // ║                                                                          ║
@@ -101,6 +101,7 @@ function s4kpiRender(el, vms, trigs) {
   const camadas = {}
   vms.forEach(function (v) { camadas[s4kpiPapel(v.name)] = true })
   const nCamadas = Object.keys(camadas).length
+  const listaDeptos = Object.keys(camadas).sort().join(' · ')
 
   const zoneLabel = '<div style="font-size:.85rem;color:var(--bpc-mute);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;display:flex;align-items:center;gap:10px">'
     + 'Estado da infraestrutura<div style="flex:1;height:1px;background:rgba(255,255,255,.09)"></div></div>'
@@ -119,11 +120,11 @@ function s4kpiRender(el, vms, trigs) {
     + s4kpiTile({
         label: 'Com problemas', value: comProblemas, valueSuffix: comProblemas === 1 ? 'máquina' : 'máquinas',
         state: comProblemas > 0 ? 'warn' : 'ok',
-        sub: comProblemas > 0 ? 'ver detalhe nas camadas abaixo' : 'nenhuma',
+        sub: comProblemas > 0 ? 'ver detalhe nos departamentos abaixo' : 'nenhuma',
       })
     + s4kpiTile({
-        label: 'Camadas', value: nCamadas, valueSuffix: 'níveis',
-        state: 'ok', sub: 'frontend · middleware · base de dados …',
+        label: 'Departamentos', value: nCamadas, valueSuffix: nCamadas === 1 ? 'área' : 'áreas',
+        state: 'ok', sub: listaDeptos || 'sem departamento atribuído',
       })
     + '</div>'
 }

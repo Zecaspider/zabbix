@@ -34,7 +34,7 @@
           "added": false,
           "text": "scale(-100)",
           "params": [
-            -100
+            "-100"
           ],
           "def": {
             "category": "Transform",
@@ -52,7 +52,7 @@
               }
             ],
             "defaultParams": [
-              100
+              "100"
             ]
           }
         },
@@ -60,7 +60,7 @@
           "added": false,
           "text": "offset(100)",
           "params": [
-            100
+            "100"
           ],
           "def": {
             "category": "Transform",
@@ -76,7 +76,7 @@
               }
             ],
             "defaultParams": [
-              100
+              "100"
             ]
           }
         }

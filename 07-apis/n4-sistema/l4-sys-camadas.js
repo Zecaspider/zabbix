@@ -179,11 +179,11 @@ function s4camRender(el, data) {
       + '</tr>'
   }).join('')
 
-  el.innerHTML = s4camZoneLabel('Onde está o problema — por camada')
+  el.innerHTML = s4camZoneLabel('Onde está o problema — por departamento')
     + '<div class="bpc bpc-card" style="padding:6px 8px;overflow:auto;height:calc(100% - 28px)">'
     + '<table style="width:100%;border-collapse:collapse">'
     + '<thead><tr style="text-align:left;color:var(--bpc-mute);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em">'
-    +   '<th style="padding:6px 12px">Camada</th><th style="padding:6px 12px;text-align:center">VMs</th>'
+    +   '<th style="padding:6px 12px">Departamento</th><th style="padding:6px 12px;text-align:center">VMs</th>'
     +   '<th style="padding:6px 12px">Pior CPU</th><th style="padding:6px 12px">Pior RAM</th>'
     +   '<th style="padding:6px 12px">Pior Disco</th><th style="padding:6px 12px;text-align:center">Problemas</th>'
     +   '<th style="padding:6px 12px;text-align:right">Estado</th>'
@@ -193,7 +193,7 @@ function s4camRender(el, data) {
 
 function s4camRenderError(el, msg) {
   el.innerHTML = '<div class="bpc bpc-card state-down" style="--card-accent:var(--bpc-crit)">'
-    + '<div class="bpc-error-msg">⚠ Camadas do sistema: ' + window.BPC_SHARED.esc(msg) + '</div></div>'
+    + '<div class="bpc-error-msg">⚠ Departamentos do sistema: ' + window.BPC_SHARED.esc(msg) + '</div></div>'
 }
 
 

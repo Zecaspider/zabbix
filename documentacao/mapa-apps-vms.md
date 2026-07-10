@@ -246,6 +246,77 @@ excel.md §3-bis`). Não corrigido por hardcode — é o mesmo dado que o resto
 do projecto já usa; o fix real é retaguear essas 3 VMs no Zabbix, pendente
 de confirmação de negócio.
 
+## 1.5 Validação ao vivo dos 3 dashboards + 2 correcções (2026-07-10)
+
+Passagem de validação ponta-a-ponta dos 3 dashboards de APIs antes de os dar
+como prontos para produção (cronograma 7.0.12). Cruzou dados reais do Zabbix
+(`host.get`/`trigger.get`/`item.get`), do Grafana (`ds/query`) e o render no
+browser.
+
+**A monitoria está a funcionar — apanha problemas reais.** No momento da
+validação, dos 40 sintéticos: `app-sms-banking` [L1] FORA DO AR há 8h
+(`Failed to connect to 10.10.238.214 port 8091: Connection refused` — serviço
+interno genuinamente em baixo, **candidato a escalar à operação**, não é bug
+de dashboard); `app-inss-bpc` [L1] queda **externa** real (item mostrava HTTP
+200 em 0.07s há ~100 min, agora `Connection timed out` — não é a assinatura
+`SSL_ERROR_ZERO_RETURN` do bloqueio de saída da §1.2, é o portal mesmo em
+baixo); 6 externos SEM ACESSO (DC) correctamente suprimidos por manutenção;
+`app-sgc` [L3] e `app-live` [L2] reais.
+
+**N2 (`apis-n2`) — pronto para produção, sem alterações.** KPI + tabela de
+internos + tabela de parceiros + painel nativo de problemas. As duas tabelas
+são MySQL directo contra a BD do Zabbix (sem a cache de ~30min do proxy RPC),
+com o estado suppression-aware por `maintenance_status=1 → 6 (SEM ACESSO DC)`.
+Confirmado 1:1 com o Zabbix ao vivo: 25 internos + 15 parceiros = 40; SMS
+Banking/INSS-BPC = FORA DO AR, EMP/bpcao/inss/mundial/pumangol/sap = SEM
+ACESSO, resto OK.
+
+**N3 (`apis-n3`) — bug real corrigido e validado.** Os 3 cartões de stat de
+disponibilidade (24h/7d/30d, painéis 203/204/205) davam **"No data"** mesmo
+para apps saudáveis. Causa-raiz (isolada por `ds/query`): as funções
+`scale(-100)`+`offset(100)` que convertem o item de falha L1 (0/1) em % de
+disponibilidade tinham os `params` guardados como **números** (`[-100]`,
+`[100]`), mas esta versão do datasource Zabbix exige **strings** — devolve
+**HTTP 500** `failed to parse function param: failed to convert value to
+string: -100`, que o painel mostra como "No data". Corrigido para
+`["-100"]`/`["100"]` nos 3 `n3-app-disp-*.json` (params **e** `defaultParams`)
+e via push directo dos 3 painéis (apis-n3 v34, patch cirúrgico só das
+`functions`, preservando gridPos). Confirmado ao vivo: os 3 cartões passaram a
+mostrar **100.00%**. **Lição reutilizável**: nos painéis nativos do datasource
+Zabbix, os params de qualquer função de transformação (`scale`/`offset`/…)
+têm de ser **strings**, nunca números — senão HTTP 500 silencioso → "No data".
+Restante N3 validado nos dois estados: saudável (SACC — 5 KPIs, timeline 24h,
+4 VMs com gauges radiais, ficha) e em baixo (SMS Banking — "Está no ar? NÃO"
+com o erro real, "Velocidade SEM DADOS" sem mostrar valor obsoleto, "1 problema
+há 8h") — o tratamento maintenance/stale da §1.3 funciona.
+
+**N4 (`apis-n4-sistema`) — relabel honesto "camada"→"departamento".** O N4
+agrupava as VMs por `s4camPapel(name)`/`s4kpiPapel(name)` — um regex
+`/\|\s*(.*)\)\s*$/` que extrai o fim do visible name da VM depois do último
+`|`, que na prática é o **departamento** (deu `DTI` / `Outros` para o SACC),
+não uma camada arquitectural. O rótulo dizia "camada" e o subtítulo do cartão
+KPI dizia "frontend · middleware · base de dados …" — ambos enganadores.
+Decisão do utilizador: **renomear para "departamento"** (honesto, baixo
+esforço) em vez de fingir camadas que não existem como tag. Alterado o texto
+visível em `l4-sys-kpi.js` (cartão "Departamentos · N áreas", subtítulo passou
+a **listar os departamentos reais** — `Object.keys(camadas).sort().join(' · ')`
+→ "DTI · Outros" — em vez do texto fixo), `l4-sys-camadas.js` (zone label
+"por departamento", coluna "Departamento", erro), e os títulos do
+`manifest.json`. Variáveis internas (`camadas`/`papel`/`s4camPapel`) mantidas
+para não introduzir risco. Push dos 2 painéis BT (101/105) via
+`options.afterRender` (apis-n4-sistema v6), confirmado ao vivo. **Caveats do N4
+que ficam (não bloqueiam):** (1) não é maintenance-aware — mas só é alcançável
+para sistemas internos multi-VM (`vmCount>1`, gate do botão N3→N4) e nenhum
+desses está em manutenção hoje; (2) herda a colisão de sigla do SGC como o
+resto do projecto; (3) o agrupamento por departamento vem de parse do nome, não
+de uma tag — se um dia existir uma tag `camada`/`papel` real (app/bd/gateway),
+migrar a fonte para essa tag.
+
+**Pendências herdadas confirmadas ainda abertas:** `{$STRING.CHECK}` do
+`app-bpcao` continua lixo (GUID, 1 host — corrigir ou desligar L3 nesse host);
+os 6 triggers do template `BPC Web Monitoring v2` não saem no
+`configuration.export` (recriar como exportáveis quando se tocar no template).
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já
