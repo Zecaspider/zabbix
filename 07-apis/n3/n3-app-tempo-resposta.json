@@ -36,7 +36,8 @@
       "custom": {
         "drawStyle": "line",
         "lineWidth": 2,
-        "fillOpacity": 10,
+        "fillOpacity": 18,
+        "gradientMode": "opacity",
         "pointSize": 4,
         "showPoints": "never",
         "spanNulls": true

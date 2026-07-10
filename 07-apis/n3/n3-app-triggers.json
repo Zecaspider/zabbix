@@ -1,0 +1,58 @@
+{
+  "type": "alexanderzobnin-zabbix-triggers-panel",
+  "title": "",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "3_KgG43nz"
+  },
+  "transparent": true,
+  "targets": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "3_KgG43nz"
+      },
+      "queryType": "5",
+      "group": {
+        "filter": "BPC / APLICACOES / SINTETICOS"
+      },
+      "host": {
+        "filter": "${app}"
+      },
+      "application": {
+        "filter": ""
+      },
+      "proxy": {
+        "filter": ""
+      },
+      "trigger": {
+        "filter": ""
+      },
+      "tags": {
+        "filter": ""
+      },
+      "options": {
+        "minSeverity": 0,
+        "sortProblems": "default",
+        "acknowledged": 2,
+        "hostsInMaintenance": false
+      },
+      "refId": "A"
+    }
+  ],
+  "options": {
+    "ageField": true,
+    "ackField": true,
+    "descriptionField": true,
+    "hostField": true,
+    "hostTechNameField": false,
+    "severityField": true,
+    "statusField": true,
+    "showTags": true,
+    "highlightNewerThan": "1h",
+    "fontSize": "100%",
+    "limit": 50,
+    "sortProblems": "lastchange",
+    "problemTimeline": true
+  }
+}

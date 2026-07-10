@@ -1,15 +1,21 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · CARTÕES DE ESTADO  v2.0         ║
+// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · CARTÕES DE ESTADO  v3.0         ║
 // ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║
 // ║                                                                          ║
 // ║  VARIÁVEIS GRAFANA REQUERIDAS                                           ║
 // ║    var-app — visible name do host app-* seleccionado (dropdown)        ║
 // ║                                                                          ║
-// ║  v2 — linguagem intuitiva (sem jargão L1/L2/L3 nos títulos):            ║
-// ║    1. Está no ar?          (acesso à página — cenário L1)               ║
+// ║  v3 — 5 cards, ícone por card, linguagem intuitiva (sem jargão L1/L2/L3 ║
+// ║  nos títulos):                                                          ║
+// ║    0. Aplicação            (identidade: nome, serviço, nº de VMs)       ║
+// ║    1. Está no ar?          (acesso à página — cenário L1) + mini-24h    ║
 // ║    2. Velocidade           (tempo de resposta + sparkline 6h — L2)      ║
-// ║    3. Conteúdo da página   (texto esperado presente — L3)               ║
+// ║    3. Conteúdo da página   (texto esperado — mostra a string real)      ║
 // ║    4. Problemas activos    (contagem + idade do mais antigo)            ║
+// ║                                                                          ║
+// ║  VMs ligadas: host.get filtrado por tags servico=<mesmo valor do app>,  ║
+// ║  excluindo o próprio host app-* — funciona para sistemas multi-VM       ║
+// ║  (SACC, CONTIF, ebankit…) sem depender de nenhum ficheiro local.        ║
 // ║                                                                          ║
 // ║  Estado vem de trigger.get (Zabbix já avaliou); valores de item.get;    ║
 // ║  sparkline de history.get. webitems:true obrigatório nos web items.     ║
@@ -27,6 +33,17 @@ const CFG_L3KPI = {
   refreshMs: 60000,
   sparkWindowSecs: 21600, // 6h de histórico para a sparkline de velocidade
   sparkMaxPoints: 80,
+  bucketWindowSecs: 86400, // 24h para a mini-barra do card "Está no ar?"
+  bucketCount: 8,
+}
+
+// Ícones — SVG inline (sem dependência de fonte externa), 13x13, herdam a cor via stroke.
+const L3KPI_ICONS = {
+  app:      '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>',
+  pulse:    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg>',
+  speed:    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2"/><path d="M9 3h6"/></svg>',
+  docCheck: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>',
+  bell:     '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg>',
 }
 
 
@@ -67,6 +84,11 @@ function l3kpiDelaySecs(delayStr) {
   return m[2] === 'h' ? n * 3600 : m[2] === 'm' ? n * 60 : n
 }
 
+function l3kpiTagVal(tags, key) {
+  const t = (tags || []).find(function (x) { return x.tag === key })
+  return t ? t.value : ''
+}
+
 
 // ────────────────────────────────────────────────────────────────────────────
 // [3] FETCH
@@ -76,6 +98,7 @@ async function l3kpiFetchHost(rpc, appName) {
   const hosts = await rpc('host.get', {
     filter: { name: [appName] },
     output: ['hostid', 'host', 'name', 'maintenance_status'],
+    selectTags: ['tag', 'value'],
   })
   return hosts[0] || null
 }
@@ -117,6 +140,45 @@ async function l3kpiFetchSpark(rpc, itemid) {
   return out
 }
 
+// Mini-histórico de 24h para o card "Está no ar?" — bucketiza o histórico do
+// item web.test.fail[L1] em N janelas iguais: 'down' se alguma falha no
+// bucket, 'ok' se só sucessos, 'nodata' se o bucket não tem amostras.
+async function l3kpiFetchDayBuckets(rpc, itemid) {
+  if (!itemid) return []
+  const now = Math.floor(Date.now() / 1000)
+  const from = now - CFG_L3KPI.bucketWindowSecs
+  const rows = await rpc('history.get', {
+    itemids: [itemid], history: 3, time_from: from, time_till: now,
+    output: 'extend', sortfield: 'clock', sortorder: 'ASC',
+  })
+  const bucketSecs = CFG_L3KPI.bucketWindowSecs / CFG_L3KPI.bucketCount
+  const buckets = []
+  for (let i = 0; i < CFG_L3KPI.bucketCount; i++) {
+    const bStart = from + i * bucketSecs, bEnd = bStart + bucketSecs
+    const inBucket = rows.filter(function (r) { return r.clock >= bStart && r.clock < bEnd })
+    if (!inBucket.length) { buckets.push('nodata'); continue }
+    buckets.push(inBucket.some(function (r) { return r.value === '1' }) ? 'down' : 'ok')
+  }
+  return buckets
+}
+
+// Nº de VMs ligadas a este serviço — todos os hosts com a mesma tag servico=,
+// excluindo o próprio host app-* (que é o monitor sintético, não uma VM).
+async function l3kpiFetchVmCount(rpc, servico, ownHost) {
+  if (!servico) return 0
+  const hosts = await rpc('host.get', {
+    output: ['host'],
+    tags: [{ tag: 'servico', value: servico, operator: 1 }],
+  })
+  return hosts.filter(function (h) { return h.host !== ownHost && h.host.indexOf('app-') !== 0 }).length
+}
+
+async function l3kpiFetchStringCheck(rpc, hostid) {
+  const macros = await rpc('usermacro.get', { hostids: [hostid], output: ['macro', 'value'] })
+  const m = macros.find(function (x) { return x.macro === '{$STRING.CHECK}' })
+  return m ? m.value : ''
+}
+
 
 // ────────────────────────────────────────────────────────────────────────────
 // [4] RENDER
@@ -131,26 +193,46 @@ function l3kpiTile(opts) {
     ? '<div style="font-size:1.0rem;color:var(--bpc-mute);line-height:1.35">' + opts.sub + '</div>'
     : ''
   const extra = opts.extra || ''
+  const icon = opts.icon
+    ? '<span style="display:inline-flex;color:' + accent + ';margin-right:6px;vertical-align:-1px">' + opts.icon + '</span>'
+    : ''
   return '<div class="bpc bpc-card state-' + cardSt + '"'
     + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px 20px">'
-    + '<span class="bpc-label" style="font-size:1.2rem;letter-spacing:.02em;text-transform:none;font-weight:700;color:#CDD9E5">' + opts.label + '</span>'
+    + '<span class="bpc-label" style="font-size:1.05rem;letter-spacing:.02em;text-transform:none;font-weight:700;color:#CDD9E5">' + icon + opts.label + '</span>'
     + '<div class="bpc-flex" style="align-items:baseline;gap:10px">'
-    +   '<span style="font-size:2.6rem;font-weight:800;line-height:1.05;color:' + valueColor + '">' + opts.value + '</span>'
-    +   (opts.valueSuffix ? '<span style="font-size:1.1rem;color:var(--bpc-mute)">' + opts.valueSuffix + '</span>' : '')
+    +   '<span style="font-size:2.3rem;font-weight:800;line-height:1.05;color:' + valueColor + '">' + opts.value + '</span>'
+    +   (opts.valueSuffix ? '<span style="font-size:1.05rem;color:var(--bpc-mute)">' + opts.valueSuffix + '</span>' : '')
     + '</div>'
     + extra
     + sub
     + '</div>'
 }
 
+// Mini-barra de 8 segmentos (24h) — usada no card "Está no ar?"
+function l3kpiMiniBar(buckets) {
+  if (!buckets.length) return ''
+  const colorOf = function (b) {
+    if (b === 'down') return window.BPC.state.color('down')
+    if (b === 'ok') return window.BPC.state.color('ok')
+    return 'rgba(255,255,255,.12)'
+  }
+  const bars = buckets.map(function (b) {
+    return '<div style="flex:1;height:10px;border-radius:1px;background:' + colorOf(b) + '"></div>'
+  }).join('')
+  return '<div style="display:flex;gap:1.5px;margin-top:2px">' + bars + '</div>'
+    + '<div style="font-size:.85rem;color:#5f5e5a;margin-top:2px">últimas 24h</div>'
+}
+
 function l3kpiRender(el, data) {
   const items = {}
   data.items.forEach(function (i) { items[i.key_] = i })
   const trigs = data.trigs
-  const inMaintenance = data.host && data.host.maintenance_status === '1'
+  const host = data.host
+  const inMaintenance = host && host.maintenance_status === '1'
   const esc = window.BPC_SHARED.esc
 
   function lastVal(key) { const it = items[key]; return it ? it.lastvalue : null }
+  function itemOf(key) { return items[key] }
   function hasData(key) { const it = items[key]; return it && parseInt(it.lastclock, 10) > 0 }
   // O item so actualiza quando o cenario tem sucesso — se o L1 estiver a
   // falhar ha muito tempo, o ultimo valor "bom" fica congelado (visto em
@@ -166,26 +248,40 @@ function l3kpiRender(el, data) {
     return trigs.find(function (t) { return t.description.indexOf(levelTag) !== -1 })
   }
 
+  // ── 0. Aplicação (identidade) ──
+  const servico = l3kpiTagVal(host.tags, 'servico')
+  const nome = esc(String(host.name || '').replace(' - Monitor da URL', ''))
+  const vmCount = data.vmCount
+  const vmSub = vmCount === 0 ? 'sem VM interna (externo/parceiro)'
+    : vmCount === 1 ? '1 VM ligada' : vmCount + ' VMs ligadas'
+  const card0 = l3kpiTile({
+    label: 'Aplicação', icon: L3KPI_ICONS.app,
+    value: '<span style="font-size:1.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:280px">' + nome + '</span>',
+    state: 'ok',
+    sub: (servico ? 'Serviço: ' + esc(servico) : '') + (servico && vmSub ? ' · ' : '') + vmSub,
+  })
+
   // ── 1. Está no ar? (cenário L1-Disponibilidade) ──
   const l1Fail = problemOf('[L1]')
   const l1Time = l3kpiMs(lastVal('web.test.time[L1-Disponibilidade,Verificar disponibilidade,resp]'))
+  const miniBar = l3kpiMiniBar(data.buckets)
   let card1
   if (inMaintenance) {
     card1 = l3kpiTile({
-      label: 'Está no ar?', value: 'SEM ACESSO', state: 'mute',
+      label: 'Está no ar?', icon: L3KPI_ICONS.pulse, value: 'SEM ACESSO', state: 'mute',
       sub: 'monitorização em manutenção — sem acesso de saída a partir do DC',
     })
   } else if (!hasData('web.test.fail[L1-Disponibilidade]')) {
-    card1 = l3kpiTile({ label: 'Está no ar?', value: 'SEM DADOS', state: 'mute', sub: 'verificação não configurada' })
+    card1 = l3kpiTile({ label: 'Está no ar?', icon: L3KPI_ICONS.pulse, value: 'SEM DADOS', state: 'mute', sub: 'verificação não configurada' })
   } else if (l1Fail) {
     const err = lastVal('web.test.error[L1-Disponibilidade]')
     card1 = l3kpiTile({
-      label: 'Está no ar?', value: 'NÃO', state: 'down',
+      label: 'Está no ar?', icon: L3KPI_ICONS.pulse, value: 'NÃO', state: 'down', extra: miniBar,
       sub: err ? esc(String(err).slice(0, 70)) : 'a página não responde',
     })
   } else {
     card1 = l3kpiTile({
-      label: 'Está no ar?', value: 'SIM', state: 'ok',
+      label: 'Está no ar?', icon: L3KPI_ICONS.pulse, value: 'SIM', state: 'ok', extra: miniBar,
       sub: 'página acessível' + (l1Time ? ' · resposta em ' + l1Time : '') + ' · verificada a cada minuto',
     })
   }
@@ -199,22 +295,22 @@ function l3kpiRender(el, data) {
     : ''
   let card2
   if (inMaintenance) {
-    card2 = l3kpiTile({ label: 'Velocidade', value: 'SEM ACESSO', state: 'mute', sub: 'sem verificação a partir do DC' })
+    card2 = l3kpiTile({ label: 'Velocidade', icon: L3KPI_ICONS.speed, value: 'SEM ACESSO', state: 'mute', sub: 'sem verificação a partir do DC' })
   } else if (!hasData('web.test.fail[L2-Performance]')) {
-    card2 = l3kpiTile({ label: 'Velocidade', value: 'SEM DADOS', state: 'mute', sub: 'verificação não configurada' })
+    card2 = l3kpiTile({ label: 'Velocidade', icon: L3KPI_ICONS.speed, value: 'SEM DADOS', state: 'mute', sub: 'verificação não configurada' })
   } else if (l1Fail && !hasData('web.test.time[L2-Performance,Medir tempo de resposta,resp]')) {
     card2 = l3kpiTile({
-      label: 'Velocidade', value: 'SEM DADOS', state: 'mute',
+      label: 'Velocidade', icon: L3KPI_ICONS.speed, value: 'SEM DADOS', state: 'mute',
       sub: 'app fora do ar — ainda sem nenhuma resposta bem sucedida registada',
     })
   } else if (l1Fail && !isFresh('web.test.time[L2-Performance,Medir tempo de resposta,resp]')) {
     card2 = l3kpiTile({
-      label: 'Velocidade', value: 'SEM DADOS RECENTES', state: 'mute',
+      label: 'Velocidade', icon: L3KPI_ICONS.speed, value: 'SEM DADOS RECENTES', state: 'mute',
       sub: 'app fora do ar — último tempo de resposta é de antes da falha (' + esc(String(l2Time || '—')) + ')',
     })
   } else {
     card2 = l3kpiTile({
-      label: 'Velocidade',
+      label: 'Velocidade', icon: L3KPI_ICONS.speed,
       value: l2Time || '—',
       valueSuffix: l2Slow ? 'MAIS LENTA QUE O NORMAL' : 'normal',
       state: l2Slow ? 'warn' : 'ok',
@@ -225,25 +321,26 @@ function l3kpiRender(el, data) {
 
   // ── 3. Conteúdo da página (cenário L3-Conteudo) ──
   const l3Fail = problemOf('[L3]')
+  const expectedString = data.stringCheck
   let card3
   if (inMaintenance) {
-    card3 = l3kpiTile({ label: 'Conteúdo da página', value: 'SEM ACESSO', state: 'mute', sub: 'sem verificação a partir do DC' })
+    card3 = l3kpiTile({ label: 'Conteúdo da página', icon: L3KPI_ICONS.docCheck, value: 'SEM ACESSO', state: 'mute', sub: 'sem verificação a partir do DC' })
   } else if (!hasData('web.test.fail[L3-Conteudo]')) {
-    card3 = l3kpiTile({ label: 'Conteúdo da página', value: 'NÃO VERIFICADO', state: 'mute', sub: 'sem texto de controlo definido para esta app' })
+    card3 = l3kpiTile({ label: 'Conteúdo da página', icon: L3KPI_ICONS.docCheck, value: 'NÃO VERIFICADO', state: 'mute', sub: 'sem texto de controlo definido para esta app' })
   } else if (l1Fail && !isFresh('web.test.fail[L3-Conteudo]')) {
     card3 = l3kpiTile({
-      label: 'Conteúdo da página', value: 'SEM DADOS RECENTES', state: 'mute',
+      label: 'Conteúdo da página', icon: L3KPI_ICONS.docCheck, value: 'SEM DADOS RECENTES', state: 'mute',
       sub: 'app fora do ar — a página não chegou a carregar para verificar o conteúdo',
     })
   } else if (l3Fail) {
     card3 = l3kpiTile({
-      label: 'Conteúdo da página', value: 'ERRADO', state: 'warn',
+      label: 'Conteúdo da página', icon: L3KPI_ICONS.docCheck, value: 'ERRADO', state: 'warn',
       sub: esc(l3kpiContentError(lastVal('web.test.error[L3-Conteudo]'))),
     })
   } else {
     card3 = l3kpiTile({
-      label: 'Conteúdo da página', value: 'CORRECTO', state: 'ok',
-      sub: 'o texto esperado está presente na página',
+      label: 'Conteúdo da página', icon: L3KPI_ICONS.docCheck, value: 'CORRECTO', state: 'ok',
+      sub: expectedString ? 'texto "' + esc(expectedString) + '" presente na página' : 'o texto esperado está presente na página',
     })
   }
 
@@ -256,12 +353,12 @@ function l3kpiRender(el, data) {
   let card4
   if (inMaintenance) {
     card4 = l3kpiTile({
-      label: 'Problemas activos', value: String(total), valueSuffix: total === 1 ? 'suprimido' : 'suprimidos',
+      label: 'Problemas activos', icon: L3KPI_ICONS.bell, value: String(total), valueSuffix: total === 1 ? 'suprimido' : 'suprimidos',
       state: 'mute', sub: 'host em manutenção — notificações silenciadas',
     })
   } else {
     card4 = l3kpiTile({
-      label: 'Problemas activos',
+      label: 'Problemas activos', icon: L3KPI_ICONS.bell,
       value: String(total),
       valueSuffix: total === 1 ? 'problema' : 'problemas',
       state: l1Fail ? 'down' : total > 0 ? 'warn' : 'ok',
@@ -269,8 +366,8 @@ function l3kpiRender(el, data) {
     })
   }
 
-  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">'
-    + card1 + card2 + card3 + card4 + '</div>'
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:100%">'
+    + card0 + card1 + card2 + card3 + card4 + '</div>'
 }
 
 function l3kpiRenderError(el, msg) {
@@ -295,22 +392,34 @@ function l3kpiLoad(rpc) {
   const appName = l3kpiGetAppName()
   if (!appName) { l3kpiRenderNoApp(el); return }
 
-  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">'
-    + [0,1,2,3].map(function () { return '<div>' + window.BPC.utils.buildSkeleton() + '</div>' }).join('')
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:100%">'
+    + [0,1,2,3,4].map(function () { return '<div>' + window.BPC.utils.buildSkeleton() + '</div>' }).join('')
     + '</div>'
 
   l3kpiFetchHost(rpc, appName).then(function (host) {
     if (!host) { l3kpiRenderError(el, 'app "' + appName + '" não encontrada'); return null }
+    const servico = l3kpiTagVal(host.tags, 'servico')
     return Promise.all([
       l3kpiFetchItems(rpc, host.hostid),
       l3kpiFetchTriggers(rpc, host.hostid),
+      l3kpiFetchVmCount(rpc, servico, host.host),
+      l3kpiFetchStringCheck(rpc, host.hostid),
     ]).then(function (r) {
-      const items = r[0], trigs = r[1]
+      const items = r[0], trigs = r[1], vmCount = r[2], stringCheck = r[3]
       const l2Item = items.find(function (i) {
         return i.key_ === 'web.test.time[L2-Performance,Medir tempo de resposta,resp]'
       })
-      return l3kpiFetchSpark(rpc, l2Item ? l2Item.itemid : null).then(function (spark) {
-        l3kpiRender(el, { items: items, trigs: trigs, spark: spark, host: host })
+      const l1Item = items.find(function (i) {
+        return i.key_ === 'web.test.fail[L1-Disponibilidade]'
+      })
+      return Promise.all([
+        l3kpiFetchSpark(rpc, l2Item ? l2Item.itemid : null),
+        l3kpiFetchDayBuckets(rpc, l1Item ? l1Item.itemid : null),
+      ]).then(function (r2) {
+        l3kpiRender(el, {
+          items: items, trigs: trigs, spark: r2[0], buckets: r2[1],
+          vmCount: vmCount, stringCheck: stringCheck, host: host,
+        })
       })
     })
   }).catch(function (err) { l3kpiRenderError(el, err.message || String(err)) })

@@ -196,6 +196,56 @@ tem `id`** (só se aplica a painéis recém-criados nesta run) — testado com u
 push de controlo que confirmou zero corrupção cruzada. Lição: `title:""`
 partilhado por múltiplos painéis não pode ser chave de correlação.
 
+## 1.4 Redesenho N3 v2 — refinamento visual + ficha completa (2026-07-10)
+
+Segunda ronda do redesenho do N3, a partir de feedback directo sobre o v1
+(hero redundante, layout a rever, "impacto visual"). Mockup aprovado antes de
+codificar (`n3_app_redesign_mockup_v2`).
+
+**Mudanças:**
+- **Hero removido** (`l3-app-estado.js` apagado) — era redundante com o card
+  "Está no ar?" do KPI (ambos mostravam nome/estado grande). A identidade
+  (nome, serviço, nº de VMs) passou a ser o **card 0** do KPI.
+- **KPI agora com 5 cards**: Aplicação · Está no ar? (+ mini-barra de 24h,
+  8 blocos) · Velocidade (+ sparkline) · Conteúdo (mostra a **string real**
+  esperada, via macro `{$STRING.CHECK}`, não só "correcto/errado") ·
+  Problemas activos. Ícones SVG inline por card (sem dependência de fonte
+  externa — funciona dentro de um painel Business Text).
+- **VMs (`l3-app-vm.js`) reescrito para multi-VM real**: descobre todas as
+  VMs por `host.get` com `tags: servico=<mesmo valor do app>` (exclui o
+  próprio host `app-*`) — funciona ao vivo para SACC (4), CONTIF (2), ebankit
+  (18+) sem depender de nenhum ficheiro local. Gauges radiais SVG (CPU/RAM/
+  Disco) em vez de barras lineares; cada card tem link de drill-down para o
+  N3 Servidores Virtuais. Cap de 4 gauges visíveis + indicador "+N mais" para
+  sistemas com muitas VMs (a lista completa fica na ficha).
+- **Painel de problemas nativo reposto** (`n3-app-triggers.json` recuperado
+  do git, `alexanderzobnin-zabbix-triggers-panel`) — desfaz o Business Text
+  custom da ronda anterior, por pedido explícito (o nativo dá ack/prioridade/
+  ordenação que o custom não tinha).
+- **Ficha da aplicação** (`l3-app-ficha.js`, novo): nome, URL (`{$URL}`), e
+  VMs ligadas com serviços monitorizados por VM (`item.get` chave
+  `service.info["X",state]`, `0`=a correr) — só mostra o que existe
+  realmente, nunca inventa (confirmado: `VS8000305` só tem 2 destes items,
+  `W3SVC`/`WAS`; outras VMs têm 9-10, algumas 0).
+- **Painéis nativos**: timeline de disponibilidade com título mais simpático
+  ("Disponibilidade — últimas 24 horas") e o rótulo lateral em bruto
+  suprimido via `fieldConfig.overrides` (`displayName` vazio); timeseries de
+  velocidade com preenchimento sob a linha (`fillOpacity:18`,
+  `gradientMode:"opacity"`).
+- **Layout final** (11 painéis, todos full-width empilhados): KPI →
+  disponibilidade → stats 24h/7d/30d → velocidade → VMs → problemas nativo →
+  ficha → botão N4.
+
+**Caveat conhecido (dado, não código)**: a descoberta de VMs por tag
+`servico=` partilhada é o sinal correcto e ao vivo para a esmagadora maioria
+dos casos, mas herda qualquer **colisão de sigla já documentada** — ex.:
+`app-sgc` (SGC real, `VS8000305`) mostra "4 VMs" porque `VS9000309`/
+`VS8000475`/`VS8000476` têm a mesma tag `servico=SGC` mas são na verdade
+"Gestão de Carteiras", sistema diferente (`reconciliacao-50-sistemas-
+excel.md §3-bis`). Não corrigido por hardcode — é o mesmo dado que o resto
+do projecto já usa; o fix real é retaguear essas 3 VMs no Zabbix, pendente
+de confirmação de negócio.
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já

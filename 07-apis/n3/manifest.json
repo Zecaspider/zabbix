@@ -30,13 +30,6 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
-      "file": "l3-app-estado.js",
-      "id": 104,
-      "role": "content",
-      "title": "Estado da aplicação (hero)",
-      "content": "<div id=\"bpc-app-estado\"></div>"
-    },
-    {
       "file": "l3-app-kpi.js",
       "id": 101,
       "role": "content",
@@ -44,17 +37,10 @@
       "content": "<div id=\"bpc-app-kpi\"></div>"
     },
     {
-      "file": "l3-app-vm.js",
-      "id": 102,
-      "role": "content",
-      "title": "VM de Hospedagem",
-      "content": "<div id=\"bpc-app-vm\"></div>"
-    },
-    {
       "file": "n3-app-disponibilidade.json",
       "id": 200,
       "role": "content",
-      "title": ""
+      "title": "Disponibilidade — últimas 24 horas"
     },
     {
       "file": "n3-app-tempo-resposta.json",
@@ -63,11 +49,24 @@
       "title": ""
     },
     {
-      "file": "l3-app-problemas.js",
+      "file": "l3-app-vm.js",
+      "id": 102,
+      "role": "content",
+      "title": "VMs de Hospedagem",
+      "content": "<div id=\"bpc-app-vm\"></div>"
+    },
+    {
+      "file": "n3-app-triggers.json",
       "id": 105,
       "role": "content",
-      "title": "Problemas activos desta aplicação",
-      "content": "<div id=\"bpc-app-problemas\"></div>"
+      "title": ""
+    },
+    {
+      "file": "l3-app-ficha.js",
+      "id": 104,
+      "role": "content",
+      "title": "Ficha da aplicação",
+      "content": "<div id=\"bpc-app-ficha\"></div>"
     },
     {
       "file": "n3-app-disp-24h.json",
