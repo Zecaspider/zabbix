@@ -142,6 +142,60 @@ Estado do N2/N3** — essas tabelas derivam de `triggers.value=1` directo (MySQL
 RPC), que **não** é suppression-aware; para a vista custom reflectir "sem acesso"
 é preciso, à parte, filtrar problemas suprimidos ou uma tag de estado própria.
 
+## 1.3 Redesenho do N3 (App) — cards "No data" corrigidos + bug de produção (2026-07-10)
+
+O N3 (`apis-n3`) tinha painéis nativos que ficavam "No data" em situações
+normais, não em erro: (1) o painel nativo de triggers ficava vazio quando a
+app não tinha problemas (a maioria do tempo); (2) o card de velocidade (KPI)
+mostrava o último valor **bom** de tempo de resposta mesmo com a app fora do
+ar há horas (idade real >8h, sem aviso de obsolescência — mesma armadilha
+descrita em §1.2 para o `app-bpcao`).
+
+**Correcções:**
+- **Hero de estado** novo (`l3-app-estado.js`, painel 104) — banner full-width
+  com o nome da app + badge grande do estado (`NO AR`/`FORA DO AR`/`LENTA`/
+  `CONTEÚDO ERRADO`/**`SEM ACESSO (DC)`**), maintenance-aware, mesma semântica
+  do N2 (§1.2).
+- **KPI (`l3-app-kpi.js`)**: card "Está no ar?" e "Velocidade"/"Conteúdo"
+  passam a **`SEM ACESSO`** quando o host está em manutenção; quando o L1
+  falha e o item de velocidade/conteúdo não é fresco (idade > 3× o próprio
+  `delay` do item), mostra **"SEM DADOS RECENTES"** em vez do valor antigo
+  como se fosse ao vivo. Card "Problemas activos" mostra "suprimidos" em vez
+  de contar o trigger (que continua `value=1` mesmo em manutenção — supressão
+  não muda o valor do trigger, só as notificações).
+- **Painel de problemas (`l3-app-problemas.js`, painel 105)** substitui o
+  nativo `alexanderzobnin-zabbix-triggers-panel` — mostra "✓ Sem problemas
+  activos" (não "No data") quando saudável, lista traduzida quando há
+  problemas, e "Notificações suprimidas" quando em manutenção.
+- **Layout final** (todos os 11 painéis, gridPos único): hero no topo, KPI
+  logo abaixo, disponibilidade+VM lado a lado, stats 24h/7d/30d em linha,
+  velocidade+problemas lado a lado, botão N4 no fim.
+- **Títulos zerados** nos 5 painéis nativos (regra NOC `title:""`) — os 3
+  stats (24h/7d/30d) usam `fieldConfig.defaults.displayName` +
+  `textMode:"value_and_name"` para manterem o rótulo dentro do próprio
+  painel, já que a barra de título fica vazia.
+
+**⚠️ Incidente de produção durante a construção, causa-raiz e fix:**
+`push_native.py` tinha um bug real no passo de "reler dashboard e actualizar
+ids no manifest": fazia match por **`title`**, sem verificar se a entrada já
+tinha `id` resolvido. Como a convenção NOC exige `title:""` em **todos** os
+painéis de conteúdo, qualquer dashboard com 2+ painéis nativos colide nessa
+chave — o dicionário `{titulo: painel}` fica com um único painel arbitrário
+para a chave `""`, e **todas** as entradas do manifest com título vazio são
+reatribuídas ao `id` desse painel. Na prática: ao editar os títulos dos 5
+painéis nativos do N3 para `""` e voltar a fazer push, o manifest corrompeu-se
+(todos os 5 apontavam para `id=105`) e os pushes seguintes **sobrescreveram
+sucessivamente o painel 105** (o novo painel de problemas) com o conteúdo dos
+outros 4 ficheiros — o último a correr (`n3-app-disp-30d.json`) ficou a
+"vencer", deixando o painel de problemas substituído por um stat de
+disponibilidade 30 dias na posição errada. **Reparado** via API directa
+(reconstruindo os 5 painéis a partir dos ficheiros locais + `gridPos` ao
+vivo, sem depender do passo de readback) e **corrigido na fonte**:
+`push_native.py` agora só faz o match por título quando a entrada **ainda não
+tem `id`** (só se aplica a painéis recém-criados nesta run) — testado com um
+push de controlo que confirmou zero corrupção cruzada. Lição: `title:""`
+partilhado por múltiplos painéis não pode ser chave de correlação.
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já

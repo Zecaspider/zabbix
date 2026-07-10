@@ -1,6 +1,6 @@
 {
   "type": "timeseries",
-  "title": "Velocidade de resposta — cada verificação",
+  "title": "",
   "datasource": {
     "type": "alexanderzobnin-zabbix-datasource",
     "uid": "3_KgG43nz"

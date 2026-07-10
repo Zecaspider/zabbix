@@ -30,6 +30,13 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
+      "file": "l3-app-estado.js",
+      "id": 104,
+      "role": "content",
+      "title": "Estado da aplicação (hero)",
+      "content": "<div id=\"bpc-app-estado\"></div>"
+    },
+    {
       "file": "l3-app-kpi.js",
       "id": 101,
       "role": "content",
@@ -47,37 +54,38 @@
       "file": "n3-app-disponibilidade.json",
       "id": 200,
       "role": "content",
-      "title": "No ar / Fora do ar — últimas 24 horas"
+      "title": ""
     },
     {
       "file": "n3-app-tempo-resposta.json",
       "id": 201,
       "role": "content",
-      "title": "Velocidade de resposta — cada verificação"
+      "title": ""
     },
     {
-      "file": "n3-app-triggers.json",
-      "id": 202,
+      "file": "l3-app-problemas.js",
+      "id": 105,
       "role": "content",
-      "title": "Problemas activos desta aplicação"
+      "title": "Problemas activos desta aplicação",
+      "content": "<div id=\"bpc-app-problemas\"></div>"
     },
     {
       "file": "n3-app-disp-24h.json",
       "id": 203,
       "role": "content",
-      "title": "Disponibilidade — 24 horas"
+      "title": ""
     },
     {
       "file": "n3-app-disp-7d.json",
       "id": 204,
       "role": "content",
-      "title": "Disponibilidade — 7 dias"
+      "title": ""
     },
     {
       "file": "n3-app-disp-30d.json",
       "id": 205,
       "role": "content",
-      "title": "Disponibilidade — 30 dias"
+      "title": ""
     },
     {
       "file": "l3-n4-button.js",

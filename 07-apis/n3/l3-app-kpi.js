@@ -59,6 +59,14 @@ function l3kpiContentError(errMsg) {
   return errMsg ? String(errMsg).slice(0, 70) : 'ver problemas activos'
 }
 
+// "5m" / "1h" / "30s" -> segundos
+function l3kpiDelaySecs(delayStr) {
+  const m = /^(\d+)([smh])$/.exec(String(delayStr || '').trim())
+  if (!m) return 60
+  const n = parseInt(m[1], 10)
+  return m[2] === 'h' ? n * 3600 : m[2] === 'm' ? n * 60 : n
+}
+
 
 // ────────────────────────────────────────────────────────────────────────────
 // [3] FETCH
@@ -67,7 +75,7 @@ function l3kpiContentError(errMsg) {
 async function l3kpiFetchHost(rpc, appName) {
   const hosts = await rpc('host.get', {
     filter: { name: [appName] },
-    output: ['hostid', 'host', 'name'],
+    output: ['hostid', 'host', 'name', 'maintenance_status'],
   })
   return hosts[0] || null
 }
@@ -77,7 +85,7 @@ async function l3kpiFetchItems(rpc, hostid) {
     hostids: [hostid],
     webitems: true,
     search: { key_: 'web.test.' },
-    output: ['itemid', 'key_', 'lastvalue', 'lastclock'],
+    output: ['itemid', 'key_', 'lastvalue', 'lastclock', 'delay'],
   })
 }
 
@@ -139,10 +147,21 @@ function l3kpiRender(el, data) {
   const items = {}
   data.items.forEach(function (i) { items[i.key_] = i })
   const trigs = data.trigs
+  const inMaintenance = data.host && data.host.maintenance_status === '1'
   const esc = window.BPC_SHARED.esc
 
   function lastVal(key) { const it = items[key]; return it ? it.lastvalue : null }
   function hasData(key) { const it = items[key]; return it && parseInt(it.lastclock, 10) > 0 }
+  // O item so actualiza quando o cenario tem sucesso — se o L1 estiver a
+  // falhar ha muito tempo, o ultimo valor "bom" fica congelado (visto em
+  // producao: 8h+ de idade a parecer dado ao vivo). Considerar obsoleto
+  // quando a idade excede 3x o proprio delay do item.
+  function isFresh(key) {
+    const it = items[key]
+    if (!it || !(parseInt(it.lastclock, 10) > 0)) return false
+    const ageSecs = (Date.now() / 1000) - parseInt(it.lastclock, 10)
+    return ageSecs <= l3kpiDelaySecs(it.delay) * 3
+  }
   function problemOf(levelTag) {
     return trigs.find(function (t) { return t.description.indexOf(levelTag) !== -1 })
   }
@@ -151,7 +170,12 @@ function l3kpiRender(el, data) {
   const l1Fail = problemOf('[L1]')
   const l1Time = l3kpiMs(lastVal('web.test.time[L1-Disponibilidade,Verificar disponibilidade,resp]'))
   let card1
-  if (!hasData('web.test.fail[L1-Disponibilidade]')) {
+  if (inMaintenance) {
+    card1 = l3kpiTile({
+      label: 'Está no ar?', value: 'SEM ACESSO', state: 'mute',
+      sub: 'monitorização em manutenção — sem acesso de saída a partir do DC',
+    })
+  } else if (!hasData('web.test.fail[L1-Disponibilidade]')) {
     card1 = l3kpiTile({ label: 'Está no ar?', value: 'SEM DADOS', state: 'mute', sub: 'verificação não configurada' })
   } else if (l1Fail) {
     const err = lastVal('web.test.error[L1-Disponibilidade]')
@@ -174,8 +198,20 @@ function l3kpiRender(el, data) {
     ? '<div style="margin-top:2px">' + window.BPC_CHARTS.sparkline(data.spark, sparkColor) + '</div>'
     : ''
   let card2
-  if (!hasData('web.test.fail[L2-Performance]')) {
+  if (inMaintenance) {
+    card2 = l3kpiTile({ label: 'Velocidade', value: 'SEM ACESSO', state: 'mute', sub: 'sem verificação a partir do DC' })
+  } else if (!hasData('web.test.fail[L2-Performance]')) {
     card2 = l3kpiTile({ label: 'Velocidade', value: 'SEM DADOS', state: 'mute', sub: 'verificação não configurada' })
+  } else if (l1Fail && !hasData('web.test.time[L2-Performance,Medir tempo de resposta,resp]')) {
+    card2 = l3kpiTile({
+      label: 'Velocidade', value: 'SEM DADOS', state: 'mute',
+      sub: 'app fora do ar — ainda sem nenhuma resposta bem sucedida registada',
+    })
+  } else if (l1Fail && !isFresh('web.test.time[L2-Performance,Medir tempo de resposta,resp]')) {
+    card2 = l3kpiTile({
+      label: 'Velocidade', value: 'SEM DADOS RECENTES', state: 'mute',
+      sub: 'app fora do ar — último tempo de resposta é de antes da falha (' + esc(String(l2Time || '—')) + ')',
+    })
   } else {
     card2 = l3kpiTile({
       label: 'Velocidade',
@@ -190,8 +226,15 @@ function l3kpiRender(el, data) {
   // ── 3. Conteúdo da página (cenário L3-Conteudo) ──
   const l3Fail = problemOf('[L3]')
   let card3
-  if (!hasData('web.test.fail[L3-Conteudo]')) {
+  if (inMaintenance) {
+    card3 = l3kpiTile({ label: 'Conteúdo da página', value: 'SEM ACESSO', state: 'mute', sub: 'sem verificação a partir do DC' })
+  } else if (!hasData('web.test.fail[L3-Conteudo]')) {
     card3 = l3kpiTile({ label: 'Conteúdo da página', value: 'NÃO VERIFICADO', state: 'mute', sub: 'sem texto de controlo definido para esta app' })
+  } else if (l1Fail && !isFresh('web.test.fail[L3-Conteudo]')) {
+    card3 = l3kpiTile({
+      label: 'Conteúdo da página', value: 'SEM DADOS RECENTES', state: 'mute',
+      sub: 'app fora do ar — a página não chegou a carregar para verificar o conteúdo',
+    })
   } else if (l3Fail) {
     card3 = l3kpiTile({
       label: 'Conteúdo da página', value: 'ERRADO', state: 'warn',
@@ -205,15 +248,26 @@ function l3kpiRender(el, data) {
   }
 
   // ── 4. Problemas activos ──
+  // Nota: trigger.value continua 1 mesmo com o host em manutenção (supressão
+  // silencia notificações/painel nativo, não o valor do trigger) — por isso
+  // este card trata a manutenção à parte, para não contradizer os cards 1-3.
   const total = trigs.length
   const oldest = total > 0 ? Math.min.apply(null, trigs.map(function (t) { return parseInt(t.lastchange, 10) })) : null
-  const card4 = l3kpiTile({
-    label: 'Problemas activos',
-    value: String(total),
-    valueSuffix: total === 1 ? 'problema' : 'problemas',
-    state: l1Fail ? 'down' : total > 0 ? 'warn' : 'ok',
-    sub: total > 0 ? 'o mais antigo começou ' + l3kpiAgeLabel(oldest) : 'nenhum — tudo saudável',
-  })
+  let card4
+  if (inMaintenance) {
+    card4 = l3kpiTile({
+      label: 'Problemas activos', value: String(total), valueSuffix: total === 1 ? 'suprimido' : 'suprimidos',
+      state: 'mute', sub: 'host em manutenção — notificações silenciadas',
+    })
+  } else {
+    card4 = l3kpiTile({
+      label: 'Problemas activos',
+      value: String(total),
+      valueSuffix: total === 1 ? 'problema' : 'problemas',
+      state: l1Fail ? 'down' : total > 0 ? 'warn' : 'ok',
+      sub: total > 0 ? 'o mais antigo começou ' + l3kpiAgeLabel(oldest) : 'nenhum — tudo saudável',
+    })
+  }
 
   el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">'
     + card1 + card2 + card3 + card4 + '</div>'
@@ -256,7 +310,7 @@ function l3kpiLoad(rpc) {
         return i.key_ === 'web.test.time[L2-Performance,Medir tempo de resposta,resp]'
       })
       return l3kpiFetchSpark(rpc, l2Item ? l2Item.itemid : null).then(function (spark) {
-        l3kpiRender(el, { items: items, trigs: trigs, spark: spark })
+        l3kpiRender(el, { items: items, trigs: trigs, spark: spark, host: host })
       })
     })
   }).catch(function (err) { l3kpiRenderError(el, err.message || String(err)) })

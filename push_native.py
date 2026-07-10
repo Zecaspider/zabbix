@@ -140,13 +140,20 @@ def push_native(domain_level, only_file=None):
     for entry in manifest.get('panels', []):
         if not entry['file'].endswith('.json'):
             continue
+        if entry.get('id'):
+            continue  # id ja resolvido (branch id/title do loop principal) — nao precisa de re-match.
+                      # Critico: nao remover este guard — sem ele, 2+ paineis com o mesmo
+                      # title (ex: "" — obrigatorio pela convencao NOC de todos os paineis
+                      # de conteudo) colidem em panels_final_by_title e o ULTIMO painel a
+                      # partilhar esse title "ganha", reatribuindo o id de TODOS os outros
+                      # entries para o dele — corrompeu o manifest e sobrescreveu paineis
+                      # ja correctos em producao (achado 2026-07-10, ver git log).
         title = entry.get('title') or ''
-        if title in panels_final_by_title:
+        if title and title in panels_final_by_title:
             pid = panels_final_by_title[title]['id']
-            if entry.get('id') != pid:
-                print(f'  manifest: {entry["file"]} -> id={pid}')
-                entry['id'] = pid
-                manifest_changed = True
+            print(f'  manifest: {entry["file"]} -> id={pid}')
+            entry['id'] = pid
+            manifest_changed = True
 
     if manifest_changed:
         manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding='utf-8')

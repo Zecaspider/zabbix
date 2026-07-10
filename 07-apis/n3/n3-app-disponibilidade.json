@@ -1,6 +1,6 @@
 {
   "type": "state-timeline",
-  "title": "No ar / Fora do ar — últimas 24 horas",
+  "title": "",
   "timeFrom": "24h",
   "hideTimeOverride": false,
   "datasource": {
