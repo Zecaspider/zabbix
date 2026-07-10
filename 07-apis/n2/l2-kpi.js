@@ -56,18 +56,20 @@ function kpiApiHostState(hostid, byHost) {
 // [3] FETCH
 // ────────────────────────────────────────────────────────────────────────────
 
-// Total de apps (hosts activos do grupo)
+// Total de apps (hosts activos do grupo) — inclui maintenance_status para
+// distinguir hosts suprimidos (ex.: sem acesso de saida do DC) de indisponiveis
 async function kpiApiFetchTotal(rpc) {
   return rpc('host.get', {
     groupids: [CFG_KPI_API.groupId],
     filter: { status: 0 },
-    output: ['hostid', 'host'],
+    output: ['hostid', 'host', 'maintenance_status'],
   })
 }
 
-// Triggers activos do grupo → estado por host + contagem crit/warn
+// Triggers activos do grupo (raw) — a contagem crit/warn e o estado por host
+// sao calculados no render, ja que so ai se sabe que hosts estao em manutencao
 async function kpiApiFetchTriggers(rpc) {
-  const trigs = await rpc('trigger.get', {
+  return rpc('trigger.get', {
     groupids: [CFG_KPI_API.groupId],
     filter: { value: 1 },
     output: ['triggerid', 'description', 'priority'],
@@ -75,22 +77,6 @@ async function kpiApiFetchTriggers(rpc) {
     monitored: true,
     only_true: true,
   })
-
-  const byHost = {}
-  let crit = 0, warn = 0
-  trigs.forEach(function (t) {
-    const s = kpiApiPrioState(t.priority)
-    if (s === 'crit') crit++
-    else if (s === 'warn') warn++
-
-    const isL1 = /\[L1\]/i.test(t.description) || /indispon/i.test(t.description)
-    ;(t.hosts || []).forEach(function (h) {
-      if (!byHost[h.hostid]) byHost[h.hostid] = { l1: false }
-      if (isL1) byHost[h.hostid].l1 = true
-    })
-  })
-
-  return { byHost, crit, warn, total: crit + warn }
 }
 
 
@@ -119,17 +105,43 @@ function kpiApiTile(opts) {
 }
 
 function kpiApiRender(el, data) {
-  const total = data.hosts.length
-  const byHost = data.trg.byHost
-  let down = 0, degraded = 0
-  data.hosts.forEach(function (h) {
+  const hosts = data.hosts
+  const total = hosts.length
+
+  // Hosts em manutencao (ex.: sem acesso de saida do DC) estao suprimidos:
+  // nao contam como indisponivel nem geram alerta — vao para o bucket "sem acesso".
+  const maint = {}
+  hosts.forEach(function (h) { if (h.maintenance_status === '1') maint[h.hostid] = true })
+
+  // Estado por host + contagem crit/warn, ignorando os hosts suprimidos
+  const byHost = {}
+  let crit = 0, warn = 0
+  ;(data.trg || []).forEach(function (t) {
+    const hs = t.hosts || []
+    if (hs.some(function (h) { return maint[h.hostid] })) return // trigger suprimido
+    const s = kpiApiPrioState(t.priority)
+    if (s === 'crit') crit++
+    else if (s === 'warn') warn++
+    const isL1 = /\[L1\]/i.test(t.description) || /indispon/i.test(t.description)
+    hs.forEach(function (h) {
+      if (!byHost[h.hostid]) byHost[h.hostid] = { l1: false }
+      if (isL1) byHost[h.hostid].l1 = true
+    })
+  })
+
+  let down = 0, degraded = 0, semAcesso = 0
+  hosts.forEach(function (h) {
+    if (maint[h.hostid]) { semAcesso++; return }
     const s = kpiApiHostState(h.hostid, byHost)
     if (s === 'down') down++
     else if (s === 'warn') degraded++
   })
-  const up = total - down - degraded
+
+  const monitoravel = total - semAcesso
+  const up = monitoravel - down - degraded
   const devState = down > 0 ? 'down' : degraded > 0 ? 'warn' : 'ok'
-  const alrtSt = data.trg.crit > 0 ? 'crit' : data.trg.warn > 0 ? 'warn' : 'ok'
+  const alrtSt = crit > 0 ? 'crit' : warn > 0 ? 'warn' : 'ok'
+  const semAcessoSub = semAcesso > 0 ? ' · ' + semAcesso + ' sem acesso' : ''
 
   el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;height:100%">'
     + kpiApiTile({
@@ -138,22 +150,22 @@ function kpiApiRender(el, data) {
         sub: 'Sistemas internos + Parceiros',
       })
     + kpiApiTile({
-        label: 'Disponíveis', value: up, unit: '/ ' + total,
+        label: 'Disponíveis', value: up, unit: '/ ' + monitoravel,
         state: devState,
         valueColor: down === 0 && degraded === 0 ? window.BPC.state.color('ok') : '#E6EDF3',
-        sub: Math.round((up / (total || 1)) * 100) + '% disponibilidade',
+        sub: Math.round((up / (monitoravel || 1)) * 100) + '% disponibilidade',
       })
     + kpiApiTile({
         label: 'Indisponíveis / Degradados', value: down + degraded, unit: 'apps',
         state: devState,
         valueColor: (down + degraded) > 0 ? window.BPC.state.color(devState) : '#E6EDF3',
-        sub: down + ' indisponível · ' + degraded + ' degradado',
+        sub: down + ' indisponível · ' + degraded + ' degradado' + semAcessoSub,
       })
     + kpiApiTile({
-        label: 'Alertas activos', value: data.trg.total, unit: 'alertas',
+        label: 'Alertas activos', value: crit + warn, unit: 'alertas',
         state: alrtSt,
-        valueColor: data.trg.total > 0 ? window.BPC.state.color(alrtSt) : '#E6EDF3',
-        sub: data.trg.crit + ' crítico · ' + data.trg.warn + ' aviso',
+        valueColor: (crit + warn) > 0 ? window.BPC.state.color(alrtSt) : '#E6EDF3',
+        sub: crit + ' crítico · ' + warn + ' aviso',
       })
     + '</div>'
 }
