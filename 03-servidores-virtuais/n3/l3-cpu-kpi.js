@@ -131,6 +131,14 @@
   // PROXY construído a partir do CFG — nunca hardcoded
   var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';
 
+  // ── Guard anti-double-fire (CLAUDE.md §4C.7 / _l3-base.js BLOCO A) ──
+  var _sig = null;
+  var _myToken = null;
+  function _isCurrent() {
+    return window.__bpc_ns && window.__bpc_ns[CFG.rootId] &&
+           window.__bpc_ns[CFG.rootId].token === _myToken;
+  }
+
   function fetchWithRetry(url, body, signal, attempt) {
     attempt = attempt || 0;
     var maxAttempts = CFG.retry ? CFG.retry.maxAttempts : 3;
@@ -140,7 +148,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: signal
+      signal: signal || _sig
     })
     .then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -310,24 +318,6 @@
       var vmwReady  = nv(KV.cpuReady, IN.vmwReady);
       var vmwRdyLt  = nv(KV.cpuRdyLt, IN.vmwRdyLat);
       var vmwNumCPU = nv(KV.numCPU,   IN.vmwNumCPU);
-
-      // ── DEBUG VMware (activo — ajuda a diagnosticar itens em falta) ───────
-      var now = Math.floor(Date.now() / 1000);
-      var vmwKeys = [KV.cpuPct, KV.cpuMhz, KV.cpuLat, KV.cpuReady, KV.cpuRdyLt, KV.numCPU];
-      vmwKeys.forEach(function(k) {
-        var it = byKey[k];
-        if (it) {
-          var age = it.lastclock ? (now - parseInt(it.lastclock, 10)) : 'N/A';
-          console.log('[CPU3 VMware]', it.name,
-            '| val:', it.lastvalue,
-            '| age:', age + 's',
-            '| state:', it.state,
-            '| maxAge:', CFG.maxAgeSec.vmware + 's');
-        } else {
-          console.log('[CPU3 VMware] item NÃO encontrado por key_:', k);
-        }
-      });
-      console.log('[CPU3 VMware] resolved → ready:', vmwReady, '| lat:', vmwLat, '| rdyLt:', vmwRdyLt);
 
       var utilPct, source, sparkKey;
       if (hasAgent) {
@@ -729,13 +719,26 @@
   // BLOCO 8 · BOOTSTRAP
   // ════════════════════════════════════════════════════════════════════════════
 
+  // Double-fire guard: aborta o fetch anterior e marca este como o corrente
+  if (!window.__bpc_ns) window.__bpc_ns = {};
+  var _ns = window.__bpc_ns[CFG.rootId] || {};
+  window.__bpc_ns[CFG.rootId] = _ns;
+  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }
+  var _prev = _ns.controller;
+  if (_prev) {
+    _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, (CFG.abortDelayMs || 80));
+  }
+  var _ctrl = new AbortController();
+  _ns.controller = _ctrl;
+  _sig = _ctrl.signal;
+  _myToken = Date.now() + Math.random();
+  _ns.token = _myToken;
+
   var root = document.getElementById(CFG.rootId);
   if (!root) return;
 
   var hostRaw  = new URLSearchParams(window.location.search).get('var-hostid') || '';
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
-
-  console.log('[CPU3 v2.0] hostRaw:', hostRaw, '→', hostName);
 
   if (!hostName) {
     root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:11px;">Selecciona uma VM no selector acima.</span>';
@@ -746,11 +749,12 @@
 
   ZbxApi.getHostId(hostName)
     .then(function (hostInfo) {
+      if (!_isCurrent()) return;
       var hasAgentIface = U.hasAgentInterface(hostInfo.interfaces);
-      console.log('[CPU3 v2.0] hasAgentIface:', hasAgentIface);
 
       return ZbxApi.getItems(hostInfo.hostid)
         .then(function (items) {
+          if (!_isCurrent()) return;
           var byKey = U.buildKeyIndex(items);
           var data  = Resolver.cpu3(items, byKey, hasAgentIface);
 
@@ -758,6 +762,7 @@
         });
     })
     .catch(function (e) {
+      if (e.name === 'AbortError' || !_isCurrent()) return;
       console.error('[CPU3 v2.0] Erro:', e.message);
       root.innerHTML = U.renderErro(e.message, 'Confirmar que a VM existe no Zabbix e que o proxy Grafana responde.');
     });

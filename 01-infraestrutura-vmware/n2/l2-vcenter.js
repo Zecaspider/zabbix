@@ -7,7 +7,7 @@
 
 var CFG_VMW_VC = {
   elementId:      'bpc-vmw-vcenter',
-  groupIdESXi:    '608',
+  groupIdESXi:    '603',   // BPC / INFRAESTRUTURA / SERVIDORES FISICOS — grupo com os ESXi reais ({$VMWARE.URL} + vmware.hv.*). 608 (HYPERVISORES) so tem VMs/appliances.
   refreshMs:      60000,
   staleThreshold: 3600,    // segundos — item com lastclock > isto é considerado stale
   vmTableDefault: 15,      // VMs desligadas visíveis antes do toggle "ver todas"
@@ -521,7 +521,7 @@ function vmw_render(el, vcMap) {
     '</div>'
 
     // ── DRILL LINKS ──
-    var n3Url   = 'http://10.10.126.22:3000/d/59e7e4b2-2ccd-4c97-b523-e7b50b705666/n3-vcenter-detalhe?var-vcenter_hostid=' + vcId
+    var n3Url   = 'http://10.10.126.22:3000/d/59e7e4b2-2ccd-4c97-b523-e7b50b705666/n3-vcenter-detalhe?var-vcenter_hostid=' + encodeURIComponent(vc.name)
     var vcWebUrl = (vc.url ? vc.url.replace(/^https?:\/\//, 'https://') : '#') + '/ui/'
     var drillSec = '<div class="vc-drill">' +
       '<a class="vc-drill-link" href="' + n3Url + '" target="_blank" rel="noopener" style="margin-right:6px">' +

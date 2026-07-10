@@ -1,0 +1,68 @@
+{
+  "dashboardUid": "apis-n4-sistema",
+  "dashboardTitle": "N4 · APIs e Serviços — Sistema",
+  "folderUid": "bfpm0sedbpgqob",
+  "datasource": "3_KgG43nz",
+  "groupIds": [
+    "663"
+  ],
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "BPC / INFRAESTRUTURA / STORAGE"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l4-sys-estado.js",
+      "id": 104,
+      "role": "content",
+      "title": "Estado Global + Zona A",
+      "content": "<div id=\"bpc-sys-estado\"></div>"
+    },
+    {
+      "file": "l4-sys-camadas.js",
+      "id": 105,
+      "role": "content",
+      "title": "Tabela de Camadas",
+      "content": "<div id=\"bpc-sys-camadas\"></div>"
+    },
+    {
+      "file": "l4-sys-kpi.js",
+      "id": 101,
+      "role": "content",
+      "title": "KPI do Sistema",
+      "content": "<div id=\"bpc-sys-kpi\"></div>"
+    },
+    {
+      "file": "l4-sys-vms.js",
+      "id": 102,
+      "role": "content",
+      "title": "VMs por Camada",
+      "content": "<div id=\"bpc-sys-vms\"></div>"
+    },
+    {
+      "file": "l4-sys-problemas.js",
+      "id": 103,
+      "role": "content",
+      "title": "Problemas do Sistema",
+      "content": "<div id=\"bpc-sys-problemas\"></div>"
+    }
+  ]
+}

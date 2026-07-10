@@ -25,8 +25,9 @@ Zabbix, não usar nos cards (usar sempre o datasource Zabbix).
 
 | Domínio (N2) | groupId | Grupo Zabbix | Hosts |
 |---|---|---|---|
-| **Infraestrutura VMware** — N2 vCenters+ESXi | `608` | BPC / INFRAESTRUTURA / HYPERVISORES | 24 ESXi |
-| └ N3-ESXi (tabela hosts) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) |
+| ~~**Infraestrutura VMware** — N2 vCenters+ESXi | `608` | BPC / INFRAESTRUTURA / HYPERVISORES | 24 ESXi~~ | **CORRIGIDO 2026-07-06**: `608` tem 24 hosts mas **zero são ESXi reais** — são VMs/appliances (vProxy EMC Networker, VMs de gestão PowerFlex, os próprios appliances vCenter) que partilham a macro `{$VMWARE.URL}`. O código (`l2-vcenter.js`, `l3-vcenter-topo.js`) usava este grupo para contar/listar "Hosts ESXi" por vCenter desde a criação (2026-06-17) — números plausíveis mas errados (ex: PowerFlex mostrava "17 ESXi", eram 17 VMs). Corrigido para usar `603` (ver linha abaixo), onde estão os 20 ESXi reais. Ver `cronograma.md` 1.24 |
+| **Infraestrutura VMware** — N2 vCenters+ESXi (ESXi) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) |
+| └ N3-ESXi (tabela hosts) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) — mesmo grupo, sempre esteve correcto aqui |
 | **Servidores Virtuais** — N2 saúde VMs | `609` | BPC / INFRAESTRUTURA / SERVIDORES VIRTUAIS | 453 |
 | └ filtro padrão N2 | tag `ambiente` | `"Produção"` \| `"producao"` | ~306 prod |
 | Armazenamento — Storage | `602` | BPC / INFRAESTRUTURA / STORAGE | 10 |
@@ -173,7 +174,14 @@ Os ESXi são monitorizados via VMware poller (`vmware.hv.*`).
 - 1× `The health is Red` (ESXi com status vermelho)
 
 **Query âncora recomendada para o painel utils N2:**
-Grupo `BPC / INFRAESTRUTURA / HYPERVISORES` (608, 24 ESXi) — mais estável que 603 misturado.
+~~Grupo `BPC / INFRAESTRUTURA / HYPERVISORES` (608, 24 ESXi) — mais estável que 603 misturado.~~
+**CORRIGIDO 2026-07-06**: esta recomendação estava errada — o grupo `608` não tem ESXi
+nenhum (24 VMs/appliances que partilham a macro `{$VMWARE.URL}` com hosts vCenter/PowerFlex,
+não hypervisores). Confirmado por `item.get` (`vmware.hv.version`, presente só nos hosts do
+`603`) e por `host.get` directo ao grupo `608` (24/24 hosts com nome `*VM*`/`*Appliance*`,
+nenhum `VIRT - ESXi -`). Usar sempre `603`, apesar de "misturado" com os físicos — o código
+já filtra por host dentro do grupo via macro `{$VMWARE.URL}`, o que anula a vantagem teórica
+de um grupo pré-filtrado. Ver `cronograma.md` 1.24.
 Ou usar host `VIRT - ESXi - sv9000640` + item `vmware.hv.status`.
 
 ## Lacunas de classificação (cobertura)
@@ -241,6 +249,25 @@ Ou usar host `VIRT - ESXi - sv9000640` + item `vmware.hv.status`.
 1. **Separador inconsistente:** eixo INFRAESTRUTURA usa `" / "` (com espaços),
    eixos SERVICO/CAMADA/TECNOLOGIA usam `"/"` (sem espaços). Filtros por regex
    ficam frágeis.
-2. **Espaço duplo:** grupo `602` = `"BPC / INFRAESTRUTURA  / STORAGE"`.
-3. **Quase-duplicado:** `412` "Git lab" vs `416` "Gitlab".
+2. ~~**Espaço duplo:** grupo `602` = `"BPC / INFRAESTRUTURA  / STORAGE"`.~~
+   **Resolvido no Zabbix em 2026-07-04** (renomeado para 1 espaço,
+   `host.update` por `jmuque`, confirmado via `auditlog.get`) — **mas isso
+   partiu 7 dashboards Grafana** que ainda apontavam para a grafia antiga de
+   2 espaços (a âncora canónica "Storage - IBM FS9500 / ICMP ping" é usada
+   como painel utilitário em quase todos os domínios Infra). Detectado e
+   corrigido em 2026-07-06 (29 alvos em 7 dashboards, ver `cronograma.md`
+   Fase 16). **Lição**: renomear um grupo Zabbix usado como âncora
+   partilhada exige verificar todos os dashboards que o referenciam, não só
+   corrigir o nome na origem.
+3. ~~**Quase-duplicado:** `412` "Git lab" vs `416` "Gitlab".~~ **Resolvido
+   2026-07-06**: `VS8000890` movido de `416` para `412`, grupo `412`
+   renomeado para `"BPC/SERVICO/GitLab"` (grafia oficial do produto,
+   mesma escolha já feita na tag `servico`), `416` apagado (ficou vazio).
+   Ambos os hosts (`VS8000700` PMSI, `VS8000890` DTI) confirmados
+   **desactivados** (`status=1`, QA) antes de mexer — housekeeping de
+   baixo risco, sem impacto em monitorização activa.
 4. **Casing misto:** INFRAESTRUTURA em MAIÚSCULAS, SERVICO em Title Case.
+5. ~~**Novo (2026-07-06):** `655` (0 hosts, com cedilha) é órfão/duplicado
+   de `656` (8 hosts, sem cedilha).~~ **Resolvido 2026-07-06**: `655`
+   confirmado genuinamente vazio (nada a migrar) e apagado; `656`
+   (Imperva ×3 + Check Point ×5) mantido sem alterações.

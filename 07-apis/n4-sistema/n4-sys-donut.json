@@ -1,0 +1,41 @@
+{
+  "type": "piechart",
+  "title": "Saúde das VMs",
+  "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+  "transparent": true,
+  "fieldConfig": {
+    "defaults": {
+      "color": { "mode": "fixed" },
+      "custom": { "hideFrom": { "legend": false, "tooltip": false, "viz": false } },
+      "mappings": []
+    },
+    "overrides": [
+      {
+        "matcher": { "id": "byName", "options": "Saudáveis" },
+        "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } } ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Com problemas" },
+        "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } } ]
+      }
+    ]
+  },
+  "options": {
+    "pieType": "donut",
+    "displayLabels": ["name", "value"],
+    "legend": { "displayMode": "list", "placement": "right", "showLegend": true, "values": ["value"] },
+    "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+    "tooltip": { "mode": "single" }
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "editorMode": "code",
+      "format": "table",
+      "rawQuery": true,
+      "rawSql": "SELECT\n  SUM(CASE WHEN prob = 0 THEN 1 ELSE 0 END) AS `Saudáveis`,\n  SUM(CASE WHEN prob > 0 THEN 1 ELSE 0 END) AS `Com problemas`\nFROM (\n  SELECT h.hostid,\n    (SELECT COUNT(DISTINCT t.triggerid) FROM triggers t\n       INNER JOIN functions f ON f.triggerid = t.triggerid\n       INNER JOIN items i ON i.itemid = f.itemid\n       WHERE i.hostid = h.hostid AND t.value = 1 AND t.status = 0) AS prob\n  FROM hosts h\n  INNER JOIN hosts_groups hg ON hg.hostid = h.hostid\n  WHERE hg.groupid = 663\n    AND h.status = 0\n    AND h.host NOT LIKE 'app-%'\n    AND h.hostid IN (SELECT hostid FROM host_tag WHERE tag = 'servico' AND value = '${servico}')\n  GROUP BY h.hostid\n) t",
+      "refId": "A"
+    }
+  ]
+}

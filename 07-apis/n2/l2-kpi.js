@@ -135,7 +135,7 @@ function kpiApiRender(el, data) {
     + kpiApiTile({
         label: 'Apps monitorizados', value: total, unit: 'sintéticos',
         state: 'ok',
-        sub: 'Sistemas + Parceiros (grupo 663)',
+        sub: 'Sistemas internos + Parceiros',
       })
     + kpiApiTile({
         label: 'Disponíveis', value: up, unit: '/ ' + total,

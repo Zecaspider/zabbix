@@ -73,7 +73,7 @@
       lnx:  '#F0A500',
       bsd:  '#AB7967',
       vm:   '#58A6FF',
-      text: '#E6EDF3',
+      text: '#CDD9E5',
       sub:  '#8B949E',
     },
 
@@ -85,6 +85,14 @@
 
   // PROXY construído a partir do CFG — nunca hardcoded
   var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';
+
+  // ── Guard anti-double-fire (CLAUDE.md §4C.7 / _l3-base.js BLOCO A) ──
+  var _sig = null;
+  var _myToken = null;
+  function _isCurrent() {
+    return window.__bpc_ns && window.__bpc_ns[CFG.rootId] &&
+           window.__bpc_ns[CFG.rootId].token === _myToken;
+  }
 
   // Regex de grupos a ignorar, construída a partir de CFG.groupsIgnore
   var IGNORE_RE = new RegExp('^(' + CFG.groupsIgnore.join('|') + ')', 'i');
@@ -98,7 +106,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: signal
+      signal: signal || _sig
     })
     .then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -537,13 +545,26 @@
   // o BT a re-executar este JS cada vez que a variável muda.
   // ────────────────────────────────────────────────────────────
 
+  // Double-fire guard: aborta o fetch anterior e marca este como o corrente
+  if (!window.__bpc_ns) window.__bpc_ns = {};
+  var _ns = window.__bpc_ns[CFG.rootId] || {};
+  window.__bpc_ns[CFG.rootId] = _ns;
+  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }
+  var _prev = _ns.controller;
+  if (_prev) {
+    _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, (CFG.abortDelayMs || 80));
+  }
+  var _ctrl = new AbortController();
+  _ns.controller = _ctrl;
+  _sig = _ctrl.signal;
+  _myToken = Date.now() + Math.random();
+  _ns.token = _myToken;
+
   var root = document.getElementById(CFG.rootId);
   if (!root) return;
 
   var hostRaw  = new URLSearchParams(window.location.search).get('var-hostid') || '';
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
-
-  console.log('[BPC header v4] hostRaw:', hostRaw, '→', hostName);
 
   if (!hostName) {
     root.innerHTML = '<span style="color:' + CFG.colors.mute
@@ -557,9 +578,11 @@
 
   fetchAll(hostName)
     .then(function (results) {
+      if (!_isCurrent()) return;
       root.innerHTML = render(compute(results));
     })
     .catch(function (e) {
+      if (e.name === 'AbortError' || !_isCurrent()) return;
       console.error('[BPC header v4]', e.message);
       root.innerHTML = U.renderErro(e.message, 'Confirmar que o host existe no Zabbix e que o proxy Grafana responde.');
     });

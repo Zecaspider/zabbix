@@ -3,7 +3,7 @@
 
 var CFG_VCDT = {
   elementId:      'bpc-vmw-vc-topo',
-  groupIdESXi:    '608',
+  groupIdESXi:    '603',   // BPC / INFRAESTRUTURA / SERVIDORES FISICOS — grupo com os ESXi reais ({$VMWARE.URL} + vmware.hv.*). 608 (HYPERVISORES) so tem VMs/appliances.
   groupIdVMs:     '609',
   refreshMs:      60000,
   staleThreshold: 3600,

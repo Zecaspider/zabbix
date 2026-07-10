@@ -1,0 +1,90 @@
+{
+  "dashboardUid": "apis-n3",
+  "dashboardTitle": "N3 · APIs e Serviços — App",
+  "folderUid": "bfpm0sedbpgqob",
+  "datasource": "3_KgG43nz",
+  "groupIds": [
+    "663"
+  ],
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "BPC / INFRAESTRUTURA / STORAGE"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l3-app-kpi.js",
+      "id": 101,
+      "role": "content",
+      "title": "KPI L1/L2/L3 + Resumo",
+      "content": "<div id=\"bpc-app-kpi\"></div>"
+    },
+    {
+      "file": "l3-app-vm.js",
+      "id": 102,
+      "role": "content",
+      "title": "VM de Hospedagem",
+      "content": "<div id=\"bpc-app-vm\"></div>"
+    },
+    {
+      "file": "n3-app-disponibilidade.json",
+      "id": 200,
+      "role": "content",
+      "title": "No ar / Fora do ar — últimas 24 horas"
+    },
+    {
+      "file": "n3-app-tempo-resposta.json",
+      "id": 201,
+      "role": "content",
+      "title": "Velocidade de resposta — cada verificação"
+    },
+    {
+      "file": "n3-app-triggers.json",
+      "id": 202,
+      "role": "content",
+      "title": "Problemas activos desta aplicação"
+    },
+    {
+      "file": "n3-app-disp-24h.json",
+      "id": 203,
+      "role": "content",
+      "title": "Disponibilidade — 24 horas"
+    },
+    {
+      "file": "n3-app-disp-7d.json",
+      "id": 204,
+      "role": "content",
+      "title": "Disponibilidade — 7 dias"
+    },
+    {
+      "file": "n3-app-disp-30d.json",
+      "id": 205,
+      "role": "content",
+      "title": "Disponibilidade — 30 dias"
+    },
+    {
+      "file": "l3-n4-button.js",
+      "id": 103,
+      "role": "content",
+      "title": "Botão N4 Sistema",
+      "content": "<div id=\"bpc-app-n4-btn\"></div>"
+    }
+  ]
+}

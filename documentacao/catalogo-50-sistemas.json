@@ -1,0 +1,851 @@
+{
+  "_meta": {
+    "titulo": "Catalogo mestre dos 50 sistemas do Relatorio Diario",
+    "gerado": "2026-07-10",
+    "fonte": "Excel BPC_I_AO_BNC_2100034AL + reconciliacao-50-sistemas-excel.md + host.get app-* ao vivo (grupo 663)",
+    "total": 50,
+    "por_seccao": {
+      "sistema": 34,
+      "parceiro": 16
+    },
+    "por_cobertura": {
+      "bloqueado": 5,
+      "monitorizado": 38,
+      "gap": 3,
+      "sem-vm": 1,
+      "sem-url": 3
+    },
+    "legenda_cobertura": {
+      "monitorizado": "tem app-* sintetico activo",
+      "bloqueado": "VM identificada, falta URL/porta ou nao e app web",
+      "gap": "sem app-* e sem VM clara — precisa input de negocio",
+      "sem-url": "parceiro sem URL no relatorio diario",
+      "sem-vm": "tem app-* mas VM nunca registada no Zabbix"
+    }
+  },
+  "sistemas": [
+    {
+      "id": 1,
+      "sistema": "EQUATION - Core Bancario",
+      "seccao": "sistema",
+      "owner": "Todas as Unidades",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "bloqueado",
+      "vms": [
+        {
+          "host": "VS8000320",
+          "papel": "app/FPM",
+          "primario": false
+        },
+        {
+          "host": "VS8000321",
+          "papel": "app/FPM",
+          "primario": false
+        }
+      ],
+      "nota": "VM identificada (VS8000320/VS8000321, 'Equation Teller and FPM') mas sem URL/porta confirmada; nem se sabe se e app web."
+    },
+    {
+      "id": 2,
+      "sistema": "SACC",
+      "seccao": "sistema",
+      "owner": "NACCS",
+      "app_host": "app-sacc",
+      "servico_tag": "SACC",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000789",
+          "papel": "principal",
+          "primario": true
+        },
+        {
+          "host": "VS8000134",
+          "papel": "VM",
+          "primario": false
+        },
+        {
+          "host": "VS8000347",
+          "papel": "VM",
+          "primario": false
+        },
+        {
+          "host": "VS8000867",
+          "papel": "VM",
+          "primario": false
+        }
+      ],
+      "nota": "Multi-VM fechado (4 VMs, tag servico=SACC nas 4).",
+      "multi_vm": 4
+    },
+    {
+      "id": 3,
+      "sistema": "EBA - Caixa das Agencias",
+      "seccao": "sistema",
+      "owner": "Agencias/DRL/DRC/DRS/DRLE/DRN",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "bloqueado",
+      "vms": [
+        {
+          "host": "VS1800002",
+          "papel": "app",
+          "primario": false
+        },
+        {
+          "host": "SV9000401",
+          "papel": "bd",
+          "primario": false
+        }
+      ],
+      "nota": "Nao e app web (servicos Windows BranchAutomation). VM app VS1800002 + BD SV9000401."
+    },
+    {
+      "id": 4,
+      "sistema": "BFTELLER - Caixa das Agencias",
+      "seccao": "sistema",
+      "owner": "Agencias/DRL/DRC/DRS/DRLE/DRN",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "bloqueado",
+      "vms": [
+        {
+          "host": "VS8000452",
+          "papel": "app",
+          "primario": false
+        }
+      ],
+      "nota": "VM VS8000452 ('Gestao do BFTELLER') identificada, sem URL confirmada."
+    },
+    {
+      "id": 5,
+      "sistema": "STC - Transferencia a Credito",
+      "seccao": "sistema",
+      "owner": "Agencias/DRL/DRC/DRS/DRLE/DRN",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "gap",
+      "vms": [],
+      "nota": "Fluxo espalhado por varias VMs (TOBE/Match Cash/EMIS); provavel modulo interno, nao app isolada."
+    },
+    {
+      "id": 6,
+      "sistema": "Portal de Operacoes / SOP",
+      "seccao": "sistema",
+      "owner": "Todas as Unidades",
+      "app_host": "app-sop",
+      "servico_tag": "TOBE",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000454",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "Plataforma TOBE. Confirmado por WinRM."
+    },
+    {
+      "id": 7,
+      "sistema": "SICV-R/SCC - Compensacao de Cheques",
+      "seccao": "sistema",
+      "owner": "DOP/Agencias",
+      "app_host": "app-sicv",
+      "servico_tag": "sistema de compensacao de cheques",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000427",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": ""
+    },
+    {
+      "id": 8,
+      "sistema": "PSI - Pagamento Salarios BPC",
+      "seccao": "sistema",
+      "owner": "DOP",
+      "app_host": "app-psi",
+      "servico_tag": "PSI",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000305."
+    },
+    {
+      "id": 9,
+      "sistema": "SIB - Pagamento Salarios outros Bancos",
+      "seccao": "sistema",
+      "owner": "DOP",
+      "app_host": "app-sib",
+      "servico_tag": "SIB",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000305."
+    },
+    {
+      "id": 10,
+      "sistema": "SWIFT - Transferencias Interbancarias",
+      "seccao": "sistema",
+      "owner": "DOP/DTM",
+      "app_host": "app-swift-swp",
+      "servico_tag": "SWIFT",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000141",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "Perimetro segregado (~20 VMs com tag SWIFT, nao mapeadas 1:1 por decisao). Agente da VS8000141 indisponivel (esperado).",
+      "multi_vm": 20
+    },
+    {
+      "id": 11,
+      "sistema": "BANK TRADE - Carta de Credito",
+      "seccao": "sistema",
+      "owner": "DOP/DTM",
+      "app_host": "app-banktrade",
+      "servico_tag": "BANK TRADE",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS9000912",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": ""
+    },
+    {
+      "id": 12,
+      "sistema": "INTIX - Relatorios SWIFT",
+      "seccao": "sistema",
+      "owner": "DOP/DTM",
+      "app_host": "app-intix",
+      "servico_tag": "INTIX",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000418",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": ""
+    },
+    {
+      "id": 13,
+      "sistema": "MATCH CASH - Reconciliacao Bancaria",
+      "seccao": "sistema",
+      "owner": "DOP/DTM/DCO",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "bloqueado",
+      "vms": [
+        {
+          "host": "VS8000401",
+          "papel": "VM",
+          "primario": false
+        },
+        {
+          "host": "VS8000416",
+          "papel": "VM",
+          "primario": false
+        },
+        {
+          "host": "VS8000417",
+          "papel": "VM",
+          "primario": false
+        }
+      ],
+      "nota": "App desktop/on-demand (Match Cash-2), nao servico web permanente. 3+ VMs (VS8000401/416/417)."
+    },
+    {
+      "id": 14,
+      "sistema": "SGC - Integracao Movimentos Contabilisticos",
+      "seccao": "sistema",
+      "owner": "DTI/DTM/DCO",
+      "app_host": "app-sgc",
+      "servico_tag": "SGC",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000305. ATENCAO: colisao de sigla — VS9000309/475/476 tem tag SGC mas sao 'Gestao de Carteiras', sistema diferente (nao consolidar sem confirmacao de negocio)."
+    },
+    {
+      "id": 15,
+      "sistema": "CTB/400 (Equation) - Contabilidade",
+      "seccao": "sistema",
+      "owner": "DCO",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "gap",
+      "vms": [],
+      "nota": "Zero mencoes a iSeries/AS400/CTB em toda a frota (463 VMs). Precisa de input do negocio."
+    },
+    {
+      "id": 16,
+      "sistema": "PORTAL CONTIF",
+      "seccao": "sistema",
+      "owner": "DCO",
+      "app_host": "app-contif",
+      "servico_tag": "CONTIF",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        },
+        {
+          "host": "VS9000359",
+          "papel": "dedicada",
+          "primario": false
+        }
+      ],
+      "nota": "Multi-VM fechado (VS8000305 partilhada + VS9000359 dedicada). Nota: agente da VS9000359 parado ha ~2,5 meses.",
+      "multi_vm": 2
+    },
+    {
+      "id": 17,
+      "sistema": "LIVE - Gestao de Risco",
+      "seccao": "sistema",
+      "owner": "DGR/DGE",
+      "app_host": "app-live",
+      "servico_tag": "LIVE",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "Excel marca 'Invalid license'. Baseline real ~6.3s (L2 lento activo)."
+    },
+    {
+      "id": 18,
+      "sistema": "EURONET - Emissao Cartoes Debito",
+      "seccao": "sistema",
+      "owner": "DSE/Agencias",
+      "app_host": "app-euronet",
+      "servico_tag": "EURONET",
+      "tipo_tag": "sistema",
+      "cobertura": "sem-vm",
+      "vms": [],
+      "nota": "Tem monitor sintetico (por IP) mas a VM nunca foi registada em nenhum Zabbix — gap de infra."
+    },
+    {
+      "id": 19,
+      "sistema": "BPCNET - Internet Banking",
+      "seccao": "sistema",
+      "owner": "DSE/Agencias",
+      "app_host": "app-internet-bank",
+      "servico_tag": "ebankit",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000724",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "ebankit: 18 VMs no total (o vm= aponta so ao gateway VS8000724). Excel diz VS8000742 (desalinhado). Nota: VS9000358 Audit Prod inacessivel ICMP; VS8000737 BD memoria alta.",
+      "multi_vm": 18
+    },
+    {
+      "id": 20,
+      "sistema": "SMS BANKING (Consultas)",
+      "seccao": "sistema",
+      "owner": "DSE/Agencias",
+      "app_host": "app-sms-banking",
+      "servico_tag": "SMS BANKING+CHAT BOT",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000438",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "DEFEITO CONHECIDO: web scenario aponta VS8000438:8091 (connection refused); app real corre na VS8000439. L1 falha mas trigger nao dispara -> dashboard mostra verde."
+    },
+    {
+      "id": 21,
+      "sistema": "Audit Bank",
+      "seccao": "sistema",
+      "owner": "DAI/DTI",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "gap",
+      "vms": [],
+      "nota": "Nenhuma VM corresponde ('AD Audit' e 'Ebankit audit' sao outra coisa). Precisa de negocio."
+    },
+    {
+      "id": 22,
+      "sistema": "PAYMENT MANAGER (Swift/Equation)",
+      "seccao": "sistema",
+      "owner": "DTI",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "bloqueado",
+      "vms": [
+        {
+          "host": "VS8000324",
+          "papel": "Producao",
+          "primario": false
+        },
+        {
+          "host": "VS8000317",
+          "papel": "QA",
+          "primario": false
+        }
+      ],
+      "nota": "Candidato VS8000317/VS8000324 ('FPM - Fusion Payment Manager'), dentro do perimetro SWIFT (nao mexer)."
+    },
+    {
+      "id": 23,
+      "sistema": "SAP - Processamento BPC",
+      "seccao": "sistema",
+      "owner": "DCH",
+      "app_host": "app-sap",
+      "servico_tag": "SAP ERP",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "SaaS externo (.ondemand.com), sem VM interna. Tag tipo=parceiro (externo). SSL_ERROR no L1 — provavel falso-DOWN TLS."
+    },
+    {
+      "id": 24,
+      "sistema": "Site Institucional",
+      "seccao": "sistema",
+      "owner": "Todas as Unidades",
+      "app_host": "app-bpcao",
+      "servico_tag": "Site Institucional",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "Externo/CDN, sem VM interna. Tag tipo=parceiro (externo). SSL_ERROR no L1 — provavel falso-DOWN TLS; L3 conteudo string frouxa."
+    },
+    {
+      "id": 25,
+      "sistema": "CEZANNE - Gestao de Pessoal",
+      "seccao": "sistema",
+      "owner": "DCH",
+      "app_host": "app-cezanne",
+      "servico_tag": "CEZANNE",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS9000235",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM VS9000235 (Server 2003 EOL, sem agente — esperado). Excel escreve VS90004235/172.166.8.183 (gralhas)."
+    },
+    {
+      "id": 26,
+      "sistema": "FORGEST - Salarios Funcionarios",
+      "seccao": "sistema",
+      "owner": "DCH",
+      "app_host": "app-forgest",
+      "servico_tag": "FORGEST",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS9000480",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VS9000480: SQLAgent$FORGEST + Task Scheduler parados ha ~3 meses (confirmar se intencional)."
+    },
+    {
+      "id": 27,
+      "sistema": "SIR 3.0 - Relatorios",
+      "seccao": "sistema",
+      "owner": "Direccoes Comerciais",
+      "app_host": "app-sir",
+      "servico_tag": "SIR",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000304",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000304 (c/ SAFT)."
+    },
+    {
+      "id": 28,
+      "sistema": "UYSIG - Relatorios BNA",
+      "seccao": "sistema",
+      "owner": "DPC",
+      "app_host": "app-uysig",
+      "servico_tag": "UYSIG",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000422",
+          "papel": "principal",
+          "primario": true
+        },
+        {
+          "host": "VS8000437",
+          "papel": "BNA (app-uysig-bna)",
+          "primario": false
+        }
+      ],
+      "nota": "Multi-VM correcto: 2 apps (app-uysig VS8000422 + app-uysig-bna VS8000437), mesma tag.",
+      "multi_vm": 2
+    },
+    {
+      "id": 29,
+      "sistema": "SPCC - Concessao de Credito",
+      "seccao": "sistema",
+      "owner": "Agencias/DCC/DRG",
+      "app_host": "app-spcc",
+      "servico_tag": "SPCC",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000305."
+    },
+    {
+      "id": 30,
+      "sistema": "Sistema de Abertura de Contas",
+      "seccao": "sistema",
+      "owner": "Direccoes Comerciais",
+      "app_host": "app-abc",
+      "servico_tag": "Abertura de Contas",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000305. Nota: VS8000102 tem tag ABC mas e sistema diferente."
+    },
+    {
+      "id": 31,
+      "sistema": "SIC - Cobrancas",
+      "seccao": "sistema",
+      "owner": "DOP",
+      "app_host": "app-sic",
+      "servico_tag": "SIC",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000813",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM VS8000813. Excel diz VS8000305 (desalinhado)."
+    },
+    {
+      "id": null,
+      "sistema": "Sistema de Agendamento de Salas de Reunioes",
+      "seccao": "sistema",
+      "owner": "Direccoes Central",
+      "app_host": "app-sala-reunioes",
+      "servico_tag": "Agendamento de Salas",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000305. Sev Disaster (app web indisponivel) aberta ha ~3 meses sem ninguem avisado."
+    },
+    {
+      "id": null,
+      "sistema": "Sistema de Registo de Clientes Falecidos (SGF)",
+      "seccao": "sistema",
+      "owner": "Direccoes Comerciais",
+      "app_host": "app-sgf",
+      "servico_tag": "SGF",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000305",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM partilhada VS8000305."
+    },
+    {
+      "id": 32,
+      "sistema": "SAFT BPC - Facturas",
+      "seccao": "sistema",
+      "owner": "DCO",
+      "app_host": "app-saft",
+      "servico_tag": "SAFT",
+      "tipo_tag": "sistema",
+      "cobertura": "monitorizado",
+      "vms": [
+        {
+          "host": "VS8000304",
+          "papel": "principal",
+          "primario": true
+        }
+      ],
+      "nota": "VM VS8000304. Excel diz VS8000305 (desalinhado)."
+    },
+    {
+      "id": 1,
+      "sistema": "EMP - Emissao Cartoes Credito",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-emp",
+      "servico_tag": "EMP",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "Excel: 'o link nao abre'. L1 timeout 30s confirmado (real)."
+    },
+    {
+      "id": 2,
+      "sistema": "PRE-AVISO (BNA)",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-bna-preaviso",
+      "servico_tag": "Preaviso",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": ""
+    },
+    {
+      "id": 3,
+      "sistema": "SINOC (BNA)",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-bna-sinoc",
+      "servico_tag": "SINOC",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": ""
+    },
+    {
+      "id": 4,
+      "sistema": "SSIF (BNA)",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-bna-ssif",
+      "servico_tag": "SSIF",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": ""
+    },
+    {
+      "id": 5,
+      "sistema": "PIF (BNA)",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-bna-pif",
+      "servico_tag": "PIF",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": ""
+    },
+    {
+      "id": 6,
+      "sistema": "SIGMA (BNA)",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-bna-sigma",
+      "servico_tag": "Sigma",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "URL de teste (pendencia de negocio)."
+    },
+    {
+      "id": 7,
+      "sistema": "SGMC (BNA)",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-bna-sgmc",
+      "servico_tag": "SGMC",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": ""
+    },
+    {
+      "id": 8,
+      "sistema": "MINFIN",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-minfin",
+      "servico_tag": "MINFIN",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": ""
+    },
+    {
+      "id": 9,
+      "sistema": "INSS",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-inss",
+      "servico_tag": "INSS",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "Excel: 'Em analise'. L1 SSL_ERROR."
+    },
+    {
+      "id": 10,
+      "sistema": "INSS2",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-inss-bpc",
+      "servico_tag": "INSS BPC",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": ""
+    },
+    {
+      "id": 11,
+      "sistema": "BLOOMBERG",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "sem-url",
+      "vms": [],
+      "nota": "Sem hyperlink no relatorio diario. Pendencia de negocio (obter URL)."
+    },
+    {
+      "id": 12,
+      "sistema": "Portal EMIS",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "sem-url",
+      "vms": [],
+      "nota": "Sem URL. Pista ACM/VS8000769 (componente interno, nao confirmado)."
+    },
+    {
+      "id": 13,
+      "sistema": "BODIVA",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": null,
+      "servico_tag": null,
+      "tipo_tag": null,
+      "cobertura": "sem-url",
+      "vms": [],
+      "nota": "Sem URL. Marcado degradado no proprio relatorio do dia."
+    },
+    {
+      "id": 14,
+      "sistema": "SPTR",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-bna-sptr",
+      "servico_tag": "SPTR",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "URL de teste (pendencia de negocio)."
+    },
+    {
+      "id": 15,
+      "sistema": "PAGAMENTO MUNDIAL SEGURO",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-mundial-seguro",
+      "servico_tag": "Mundial Seguro",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "Excel: 'Em analise'. L1 SSL_ERROR."
+    },
+    {
+      "id": 16,
+      "sistema": "Pumangol",
+      "seccao": "parceiro",
+      "owner": "-",
+      "app_host": "app-pumangol",
+      "servico_tag": "Pumangol",
+      "tipo_tag": "parceiro",
+      "cobertura": "monitorizado",
+      "vms": [],
+      "nota": "Excel: 'Em analise'. L1 SSL_ERROR."
+    }
+  ]
+}

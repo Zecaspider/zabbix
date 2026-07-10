@@ -31,7 +31,7 @@ GRAFANA = 'http://10.10.126.22:3000'
 # Ancora padrao — host sempre disponivel, nao referencia variaveis
 ANCHOR_TARGET = {
     "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
-    "group": {"filter": "BPC / INFRAESTRUTURA  / STORAGE"},
+    "group": {"filter": "BPC / INFRAESTRUTURA / STORAGE"},
     "host": {"filter": "Storage - IBM FS9500"},
     "item": {"filter": "ICMP ping"},
     "queryType": "0",

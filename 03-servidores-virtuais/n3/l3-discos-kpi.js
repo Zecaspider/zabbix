@@ -121,6 +121,14 @@
   // PROXY construído a partir do CFG — nunca hardcoded
   var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';
 
+  // ── Guard anti-double-fire (CLAUDE.md §4C.7 / _l3-base.js BLOCO A) ──
+  var _sig = null;
+  var _myToken = null;
+  function _isCurrent() {
+    return window.__bpc_ns && window.__bpc_ns[CFG.rootId] &&
+           window.__bpc_ns[CFG.rootId].token === _myToken;
+  }
+
   function fetchWithRetry(url, body, signal, attempt) {
     attempt = attempt || 0;
     var maxAttempts = CFG.retry ? CFG.retry.maxAttempts : 3;
@@ -130,7 +138,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: signal
+      signal: signal || _sig
     })
     .then(function (r) {
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -751,13 +759,26 @@
   // BLOCO 8 · BOOTSTRAP
   // ════════════════════════════════════════════════════════════════════════════
 
+  // Double-fire guard: aborta o fetch anterior e marca este como o corrente
+  if (!window.__bpc_ns) window.__bpc_ns = {};
+  var _ns = window.__bpc_ns[CFG.rootId] || {};
+  window.__bpc_ns[CFG.rootId] = _ns;
+  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }
+  var _prev = _ns.controller;
+  if (_prev) {
+    _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, (CFG.abortDelayMs || 80));
+  }
+  var _ctrl = new AbortController();
+  _ns.controller = _ctrl;
+  _sig = _ctrl.signal;
+  _myToken = Date.now() + Math.random();
+  _ns.token = _myToken;
+
   var root = document.getElementById(CFG.rootId);
   if (!root) return;
 
   var hostRaw  = new URLSearchParams(window.location.search).get('var-hostid') || '';
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
-
-  console.log('[DISK2 v1.0] hostRaw:', hostRaw, '→', hostName);
 
   if (!hostName) {
     root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:11px;">Selecciona uma VM no selector acima.</span>';
@@ -768,12 +789,12 @@
 
   ZbxApi.getHostId(hostName)
     .then(function (hostInfo) {
+      if (!_isCurrent()) return;
       var hasAgentIface = U.hasAgentInterface(hostInfo.interfaces);
-
-      console.log('[DISK2 v1.0] hasAgentIface:', hasAgentIface);
 
       return ZbxApi.getItems(hostInfo.hostid)
         .then(function (items) {
+          if (!_isCurrent()) return;
 
           var byKey = U.buildKeyIndex(items);
 
@@ -800,6 +821,7 @@
         });
     })
     .catch(function (e) {
+      if (e.name === 'AbortError' || !_isCurrent()) return;
       console.error('[DISK2 v1.0] Erro:', e.message);
       root.innerHTML = U.renderErro(e.message, 'Confirmar que a VM existe no Zabbix e que o proxy Grafana responde.');
     });

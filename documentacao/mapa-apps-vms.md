@@ -43,6 +43,68 @@ lados, 5 dias). 3 "falhas" do legado que pareciam reais eram só o cenário
 antigo aceitar só HTTP 200 (apps devolvem 301/400/404 legítimos que o novo
 `{$HTTP.CODE.OK}` por host já trata correctamente).
 
+## 1.1 Calibração dos triggers L1/L3 — bug crítico corrigido (2026-07-10)
+
+Auditoria ao vivo do estado dos dashboards N2/N3 de APIs revelou que a coluna
+**Estado mentia nos dois sentidos** — apps genuinamente fora do ar apareciam
+verdes, e sites saudáveis apareciam "conteúdo errado". A causa **não eram os
+web scenarios** (esses reportam a realidade fielmente), mas sim **os triggers
+do template**. Corrigido por `trigger.update` (só o template, propaga aos 40
+hosts). IDs: `171845` (L1 P5 indisponível), `171987` (L1 P4 HTTP inesperado),
+`171848` (L3 conteúdo).
+
+**Bug 1 — L1 nunca disparava.** Expressão original
+`count(/…/web.test.fail[L1-Disponibilidade],{$FAILS.BEFORE.ALERT},"eq","1")={$FAILS.BEFORE.ALERT}`.
+O período do `count()` **sem `#`** significa **segundos**, não amostras; com o
+item a correr de 60 em 60s, nunca há 3 (ou 6) amostras numa janela de 3 (ou 6)
+**segundos** → a condição é matematicamente impossível. Prova: **0 eventos de
+L1 em 30 dias** no grupo 663, contra 2 do L2 e 8 do L3, apesar de vários apps
+solidamente em baixo há 24h+.
+
+**Bug 2 — L3 sobre-disparava e rotulava mal.** Expressão original
+`last(/…/web.test.fail[L3-Conteudo])>0`: (a) sem guarda de consecutivas (1 blip
+alarmava); (b) o cenário L3 falha **também** quando o site está em baixo (SSL/
+timeout), pelo que um site inacessível aparecia como "conteúdo ausente" (visto
+no `app-bpcao`/`app-sap`).
+
+**Correcção (validada ao vivo).**
+- **Macro nova `{$FAILS.WINDOW}`** — contém já o `#` (`#3` no template, `#6`
+  override nos 15 hosts externos). Necessária porque o Zabbix **não aceita**
+  `#{$MACRO}` (hash fora da macro) nem `{$MACRO}` com `#` do lado do limiar; a
+  macro tem de **conter** o `#`. `{$FAILS.BEFORE.ALERT}` (3/6) mantém-se para o
+  nome do trigger e o limiar, garantindo que o nome ("3+/6+ falhas") bate com o
+  comportamento real.
+- **L1**: `count(/…/web.test.fail[L1-Disponibilidade],{$FAILS.WINDOW},"eq","1")={$FAILS.BEFORE.ALERT} and find(…error…,"like","Response code")=0` (P5)
+  / `=1` (P4). Dispara com N falhas consecutivas (3 internos, 6 externos).
+- **L3**: `count(/…/web.test.fail[L3-Conteudo],{$FAILS.WINDOW},"eq","1")={$FAILS.BEFORE.ALERT} and find(…error…,"like","required pattern")=1`.
+  O `find("required pattern")` só casa o erro real de conteúdo em falta
+  (`required pattern "X" was not found`), **não** os erros de ligação (SSL/
+  timeout) — separa "conteúdo em falta" de "site em baixo" (esse fica para o L1).
+
+**Resultado confirmado:** os 7 apps em baixo (bpcao, emp, inss, mundial-seguro,
+pumangol, sap, sms-banking) passaram a acender [L1]; `app-bpcao`/`app-sap`
+deixaram de dar falso [L3]; `app-sgc` (falta real de `SgcIntegracao`) mantém
+[L3]; `app-live` [L2] inalterado. Nenhuma notificação disparou — a única
+acção ligada ("Send Notification Email") entrega só pelo mediatype `Email`
+(id 1, **OFF**); verificado antes da escrita.
+
+**Achados dos web scenarios (a maioria estava bem):** dos 40 hosts, 21 têm
+`{$STRING.CHECK}` com string de conteúdo **legítima** (`SgcIntegracao`,
+`Cezanne 8`, `BPC-SACC`…), 15 têm-no vazio com L3 desligado (correcto). Só o
+**`app-bpcao`** tem lixo (um GUID `0666e2b2-…`) — **pendência: limpar/corrigir
+essa string** (1 host, não bloqueia). O `app-sap` usa o subdomínio `ahh6kcgnj`,
+por confirmar se aparece na página.
+
+**Pendências relacionadas** (não bloqueiam):
+1. `{$STRING.CHECK}` do `app-bpcao` é lixo — corrigir para conteúdo real ou
+   desligar L3 nesse host.
+2. Os 6 triggers do template **não aparecem no `configuration.export`** (só
+   httptests + macros) — se o template for reimportado do export, os triggers
+   perdem-se; recriar como parte exportável quando se tocar no template.
+3. **Falso-DOWN vs real**: as falhas SSL do bpcao/sap (blocos, up ~62% do tempo)
+   são conectividade de saída real, não bug de config — investigação
+   operacional à parte.
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já

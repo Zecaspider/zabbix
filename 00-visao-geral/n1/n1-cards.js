@@ -1,13 +1,19 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  N1 · Portal NOC — Cards de Domínio                          v1.0       ║
+// ║  N1 · Portal NOC — Cards de Área                              v2.0       ║
 // ║                                                                          ║
-// ║  9 cards (3 colunas × 3 linhas) com estado de saúde por domínio.       ║
-// ║  Estado calculado via problem.get (triggers activos) por groupids.      ║
-// ║  Domínios sem N2 mostram badge "Em Construção" e sem link.              ║
+// ║  8 cards (3 colunas × 3 linhas, última incompleta) com estado de saúde   ║
+// ║  por área. Estado calculado via problem.get (triggers activos) por       ║
+// ║  groupids. Áreas sem N2 mostram badge "Em Construção" e sem link.        ║
+// ║                                                                          ║
+// ║  Ordem = modelo em camadas, chão de fábrica → aplicações enduser:        ║
+// ║  Virtualização/Físico → Compute/Storage → Rede → Dados → APIs →          ║
+// ║  Serviços de Negócio, com Segurança à parte (camada transversal).        ║
+// ║  Agências deixou de ter card próprio — é segmento de Rede (CLAUDE.md,    ║
+// ║  ver 04·Rede › 04.1·Agências); continua acessível via Rede → N2 → N3.    ║
 // ║                                                                          ║
 // ║  DATASOURCES                                                             ║
 // ║  Infra  (3_KgG43nz)         → VMware, VMs, Storage, Seg, BD, APIs, SN  ║
-// ║  Network (ffo8sp8zllog0e)   → Rede, Agências (fetch directo)            ║
+// ║  Network (ffo8sp8zllog0e)   → Rede (fetch directo)                       ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
 // ── CFG ───────────────────────────────────────────────────────────────────────
@@ -19,13 +25,13 @@ var CFG = {
   // Proxy para o Zabbix Network (usado directamente nas 2 chamadas de rede/agências)
   networkProxy: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
 
-  // Definição dos 9 domínios. Ordem = posição no grid (esq→dir, cima→baixo).
-  // dashUid: null → domínio em construção (sem link, badge visível)
+  // Definição das 8 áreas. Ordem = modelo em camadas (chão de fábrica → enduser),
+  // posição no grid esq→dir, cima→baixo. dashUid: null → área em construção.
   domains: [
     {
       id: 'vmware',
       label: 'Infraestrutura VMware',
-      sublabel: 'vCenters · ESXi · Clusters',
+      sublabel: 'Físico · vCenters · ESXi · Clusters',
       groupids: ['608'],
       datasource: 'infra',
       dashUid: 'a967e936-99a3-47c8-af98-052d7a80beb8',
@@ -52,20 +58,11 @@ var CFG = {
     {
       id: 'rede',
       label: 'Rede',
-      sublabel: 'DC · Edifícios · WAN',
+      sublabel: 'DC · Edifícios · WAN · Agências',
       groupids: ['26', '27', '28', '29'],
       datasource: 'network',
       dashUid: 'rede-n2-segmentos',
       dashSlug: 'n2-rede',
-    },
-    {
-      id: 'seguranca',
-      label: 'Segurança',
-      sublabel: 'Firewalls · WAF · Darktrace',
-      groupids: ['656'],
-      datasource: 'infra',
-      dashUid: null,
-      dashSlug: null,
     },
     {
       id: 'bd',
@@ -79,7 +76,7 @@ var CFG = {
     {
       id: 'apis',
       label: 'APIs & Serviços',
-      sublabel: 'Sintéticos · Camada Aplicacional',
+      sublabel: 'Endpoints técnicos · Sintéticos',
       groupids: ['663', '345'],
       datasource: 'infra',
       dashUid: null,
@@ -87,23 +84,21 @@ var CFG = {
     },
     {
       id: 'negocio',
-      label: 'Serviços de Negócio',
-      sublabel: 'eBankit · Jornadas',
+      label: 'Serviços de Negócio (Aplicações)',
+      sublabel: 'eBankit · Jornadas de utilizador final',
       groupids: ['391'],
       datasource: 'infra',
       dashUid: null,
       dashSlug: null,
     },
     {
-      id: 'agencias',
-      label: 'Agências',
-      sublabel: 'Routers · Links WAN',
-      groupids: ['24', '25'],
-      datasource: 'network',
-      // Agências é sub-domínio de Rede — salta directo para o N3 (sem N2 próprio)
-      dashUid: 'rede-n3-agencias',
-      dashSlug: 'rede-n3-agencias',
-      linkLabel: 'Ver detalhe (N3) →',
+      id: 'seguranca',
+      label: 'Segurança',
+      sublabel: 'Transversal · Firewalls · WAF · Darktrace',
+      groupids: ['656'],
+      datasource: 'infra',
+      dashUid: null,
+      dashSlug: null,
     },
   ],
 };
@@ -185,10 +180,10 @@ function fetchProblemsNetwork(groupids) {
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 
-// Skeleton de loading (9 cards)
+// Skeleton de loading (8 cards)
 function renderSkeleton() {
   var cards = '';
-  for (var i = 0; i < 9; i++) {
+  for (var i = 0; i < 8; i++) {
     cards += '<div class="bpc bpc-card" style="--card-accent:var(--bpc-mute);display:flex;flex-direction:column;gap:10px;">'
       + '<div class="bpc-skeleton" style="height:10px;width:55%"></div>'
       + '<div class="bpc-skeleton" style="height:8px;width:70%;margin-top:2px"></div>'

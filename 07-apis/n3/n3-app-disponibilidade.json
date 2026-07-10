@@ -1,0 +1,80 @@
+{
+  "type": "state-timeline",
+  "title": "No ar / Fora do ar — últimas 24 horas",
+  "timeFrom": "24h",
+  "hideTimeOverride": false,
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "3_KgG43nz"
+  },
+  "transparent": true,
+  "targets": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "3_KgG43nz"
+      },
+      "functions": [],
+      "group": {
+        "filter": "BPC / APLICACOES / SINTETICOS"
+      },
+      "host": {
+        "filter": "${app}"
+      },
+      "item": {
+        "filter": "/Failed step of scenario \"L1-Disponibilidade\"\\./"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    }
+  ],
+  "fieldConfig": {
+    "defaults": {
+      "color": {
+        "mode": "thresholds"
+      },
+      "custom": {
+        "fillOpacity": 80,
+        "lineWidth": 0
+      },
+      "mappings": [
+        {
+          "type": "value",
+          "options": {
+            "0": {
+              "text": "NO AR",
+              "color": "green",
+              "index": 0
+            },
+            "1": {
+              "text": "FORA DO AR",
+              "color": "red",
+              "index": 1
+            }
+          }
+        }
+      ],
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          { "color": "green", "value": null },
+          { "color": "red", "value": 1 }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "options": {
+    "showValue": "never",
+    "rowHeight": 0.85,
+    "mergeValues": true,
+    "alignValue": "left",
+    "legend": {
+      "showLegend": false
+    }
+  }
+}

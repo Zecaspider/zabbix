@@ -1,0 +1,130 @@
+{
+  "type": "stat",
+  "title": "Disponibilidade — 24 horas",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "3_KgG43nz"
+  },
+  "transparent": true,
+  "timeFrom": "24h",
+  "hideTimeOverride": false,
+  "targets": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "3_KgG43nz"
+      },
+      "queryType": "0",
+      "group": {
+        "filter": "BPC / APLICACOES / SINTETICOS"
+      },
+      "host": {
+        "filter": "${app}"
+      },
+      "item": {
+        "filter": "/Failed step of scenario \"L1-Disponibilidade\"\\./"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "resultFormat": "time_series",
+      "refId": "A",
+      "functions": [
+        {
+          "added": false,
+          "text": "scale(-100)",
+          "params": [
+            -100
+          ],
+          "def": {
+            "category": "Transform",
+            "name": "scale",
+            "params": [
+              {
+                "name": "factor",
+                "options": [
+                  100,
+                  0.01,
+                  0.1,
+                  -1
+                ],
+                "type": "float"
+              }
+            ],
+            "defaultParams": [
+              100
+            ]
+          }
+        },
+        {
+          "added": false,
+          "text": "offset(100)",
+          "params": [
+            100
+          ],
+          "def": {
+            "category": "Transform",
+            "name": "offset",
+            "params": [
+              {
+                "name": "delta",
+                "options": [
+                  -100,
+                  100
+                ],
+                "type": "float"
+              }
+            ],
+            "defaultParams": [
+              100
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "fieldConfig": {
+    "defaults": {
+      "unit": "percent",
+      "decimals": 2,
+      "min": 0,
+      "max": 100,
+      "color": {
+        "mode": "thresholds"
+      },
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          {
+            "color": "red",
+            "value": null
+          },
+          {
+            "color": "orange",
+            "value": 95
+          },
+          {
+            "color": "green",
+            "value": 99.5
+          }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": {
+      "calcs": [
+        "mean"
+      ],
+      "fields": "",
+      "values": false
+    },
+    "orientation": "auto",
+    "textMode": "value",
+    "colorMode": "value",
+    "graphMode": "none",
+    "justifyMode": "auto",
+    "wideLayout": true
+  }
+}

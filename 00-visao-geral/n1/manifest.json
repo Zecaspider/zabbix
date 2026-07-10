@@ -19,5 +19,5 @@
       "content": "<div id=\"bpc-n1-cards\"></div>"
     }
   ],
-  "notas": "Portal N1 — homepage do NOC. 9 cards de domínio (3x3) com estado live via problem.get. Infra=3_KgG43nz, Network=ffo8sp8zllog0e. Âncora Zabbix: Storage IBM FS9500 / ICMP ping. Após push: PUT /api/org/preferences {homeDashboardUID} para definir como homepage."
+  "notas": "Portal N1 — homepage do NOC. 8 cards de área (3x3, última incompleta) com estado live via problem.get, ordenados como modelo em camadas chão-de-fábrica→enduser (v2.0, 2026-07-06): VMware→Servidores Virtuais→Armazenamento→Rede→Bases de Dados→APIs & Serviços→Serviços de Negócio (Aplicações)→Segurança (transversal). Agências deixou de ter card próprio (é segmento de Rede, ver CLAUDE.md); continua acessível via Rede→N2→N3. Infra=3_KgG43nz, Network=ffo8sp8zllog0e. Âncora Zabbix: Storage IBM FS9500 / ICMP ping. Após push: PUT /api/org/preferences {homeDashboardUID} para definir como homepage."
 }

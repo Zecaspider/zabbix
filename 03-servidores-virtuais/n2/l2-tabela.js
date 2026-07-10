@@ -27,7 +27,12 @@ var CFG_VMTAB = {
     vmware: 600,
   },
 
-  grafanaL3: 'http://10.10.126.22:3000/d/0ae673a3-44c8-41e0-98f5-f5c53473ad54/n3-sv-versao-a-bt',
+  // Drill "Ver Detalhe" → N3 · VM Detalhe. Duas versões em produção:
+  //   Versão A (all-BT):  0ae673a3-44c8-41e0-98f5-f5c53473ad54 / n3-sv-versao-a-bt   ← destino actual
+  //   Versão B (nativo):  0812353b-3da2-4b65-a884-862633c7d70a / n3-sv-versao-b-nativo
+  grafanaUrl:  'http://10.10.126.22:3000',
+  n3DashUid:   '0ae673a3-44c8-41e0-98f5-f5c53473ad54',
+  n3DashSlug:  'n3-sv-versao-a-bt',
 
   ambienteTags: ['Produção', 'producao'],
 
@@ -283,7 +288,8 @@ function vmRender(el, rows, err) {
   }
 
   function drillUrl(hostName) {
-    return CFG_VMTAB.grafanaL3 ? CFG_VMTAB.grafanaL3 + '?var-hostid=' + encodeURIComponent(hostName) : '#'
+    var base = CFG_VMTAB.grafanaUrl + '/d/' + CFG_VMTAB.n3DashUid + '/' + CFG_VMTAB.n3DashSlug
+    return CFG_VMTAB.n3DashUid ? base + '?var-hostid=' + encodeURIComponent(hostName) : '#'
   }
 
   // Indicador de sort no header

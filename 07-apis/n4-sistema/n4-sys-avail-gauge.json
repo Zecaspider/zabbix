@@ -1,0 +1,42 @@
+{
+  "type": "gauge",
+  "title": "Disponibilidade 24h",
+  "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+  "transparent": true,
+  "fieldConfig": {
+    "defaults": {
+      "unit": "percent",
+      "decimals": 2,
+      "min": 90,
+      "max": 100,
+      "color": { "mode": "thresholds" },
+      "thresholds": {
+        "mode": "absolute",
+        "steps": [
+          { "color": "red", "value": null },
+          { "color": "orange", "value": 95 },
+          { "color": "green", "value": 99.5 }
+        ]
+      }
+    },
+    "overrides": []
+  },
+  "options": {
+    "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+    "orientation": "auto",
+    "showThresholdLabels": false,
+    "showThresholdMarkers": true,
+    "sizing": "auto"
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "editorMode": "code",
+      "format": "table",
+      "rawQuery": true,
+      "rawSql": "SELECT 100.0 * (1 - AVG(CASE WHEN h.value > 0 THEN 1 ELSE 0 END)) AS `Disponibilidade`\nFROM history_uint h\nINNER JOIN items i ON i.itemid = h.itemid\nINNER JOIN hosts_groups hg ON hg.hostid = i.hostid\nWHERE hg.groupid = 663\n  AND i.key_ = 'web.test.fail[L1-Disponibilidade]'\n  AND i.hostid IN (SELECT hostid FROM host_tag WHERE tag = 'servico' AND value = '${servico}')\n  AND h.clock >= UNIX_TIMESTAMP() - 86400",
+      "refId": "A"
+    }
+  ]
+}

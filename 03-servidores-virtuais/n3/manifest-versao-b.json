@@ -1,5 +1,6 @@
 {
   "dashboardUid": "0812353b-3da2-4b65-a884-862633c7d70a",
+  "folderUid": "cfpm0sdsxjb40c",
   "dashboardTitle": "n3-sv-versao-b-nativo",
   "panels": [
     { "file": "l3-vm-header.js",     "id": 100, "role": "content", "title": "",                 "content": "<div id=\"bt-vm-header\"></div>" },

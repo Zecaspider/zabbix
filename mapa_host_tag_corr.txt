@@ -1,0 +1,139 @@
+VS8000304 | tag=APLICACOES INTERNAS | corr=SIR3 + SAFT (app-sir, app-saft - mesma VM)
+VS8000305 | tag=pagamento de salarios outros bancos | corr=ABC + SGF + CONTIF + PSI + SIB + SGC + SPCC + SALAREUNIOES + LIVE (9 apps, mesma VM, app-*)
+VS8000418 | tag=INTIX | corr=INTIX (app-intix)
+VS8000427 | tag=sistema de compensacao de cheques | corr=SICVR/SCC (app-sicv)
+VS8000438 | tag=SMS BANKING+CHAT BOT | corr=SMSBANKING (app-sms-banking)
+VS8000454 | tag=TOBE | corr=SOP (app-sop)
+VS9000235 | tag=CEZANNE | corr=CEZANNE
+VS9000480 | tag=FORGEST | corr=FORGEST (app-forgest)
+VS9000912 | tag=BANK TRADE | corr=BANKTRADE (app-banktrade)
+VS1800002 | tag=EBA | corr=EBA
+VS8000437 | tag=UYSIG | corr=UYSIG (Tomcat)
+VS8000439 | tag=SMS BANKING+CHAT BOT | corr=SMSBANKING (PullSMSv2)
+VS8000728 | tag=ebankit | corr=EMP/fila EMIS (EmisQueueKeyConverter1)
+VS8000769 | tag=ACM | corr=EMIS - componente dentro do ACM (acm-plus-emis-host-2-host) - confirmar se e o Portal EMIS ou so integracao interna
+VS8000802 | tag=SUPPORTSERVER | corr=EMIS - componente dentro do ACM (ACM-mft-emis)
+VS9000309 | tag=SGC | corr=SGC (servicos SGC *)
+VS8000113 | tag=TOBE | corr=
+VS8000739 | tag=HEXASTEP | corr=
+VS8000822 | tag=CreditQuest | corr=
+VS8000824 | tag=FircosoftUtilities | corr=
+VS8000825 | tag=FircosoftUtilities | corr=
+VS8000827 | tag=Digiwave | corr=
+VS8000831 | tag=CreditQuest | corr=
+VD5000JM003 | tag=JUMP SERVER | corr=
+VS8000476 | tag=SGC | corr=
+VS8000522 | tag=DYNATRACE | corr=
+VS8000523 | tag=DYNATRACE | corr=
+VS8000712 | tag=INTEGRADOR | corr=
+VS8000718 | tag=SMS Gateway | corr=
+VS8000741 | tag=CANAL DE DENUNCIAS | corr=
+VS9000328 | tag=BANK TRADE | corr=
+VS9000404 | tag=EAI | corr=
+VS9000508 | tag=JUMP SERVER | corr=
+LTTI44_CLONE | tag=PSI | corr=
+SRV-JUMP01 | tag=IAM | corr=
+SRV-JUMP02 | tag=IAM | corr=
+VD5000JUMP04 | tag=JUMP_SERVER | corr=
+VD5000PD001 | tag=JUMP SERVER | corr=
+VD5000UCALL005 | tag=JUMP SERVER | corr=
+VS8000102 | tag=ABC | corr=
+VS8000104 | tag=KMS | corr=
+VS8000106 | tag=OFFICE ONLINE SERVER | corr=
+VS8000108 | tag=EMC NETWORKER | corr=
+VS8000134 | tag=SACC | corr=
+VS8000213 | tag=SEGURO DE CREDITO | corr=
+VS8000214 | tag=AD AUDIT | corr=
+VS8000218 | tag=SOPHOS | corr=
+VS8000219 | tag=SOPHOS | corr=
+VS8000221 | tag=SYSTEM CENTER | corr=
+VS8000224 | tag=SIRIS | corr=
+VS8000226 | tag=SIRIS | corr=
+VS8000228 | tag=WSUS | corr=
+VS8000297 | tag=BINFOLIO | corr=
+VS8000299 | tag=BINFOLIO | corr=
+VS8000312 | tag=SIGCAP | corr=
+VS8000330 | tag=EXCEL REPORT | corr=
+VS8000342 | tag=TALENTIA | corr=
+VS8000347 | tag=SACC | corr=
+VS8000360 | tag=RMS | corr=
+VS8000363 | tag=FTP | corr=
+VS8000390 | tag=EXCHANGE | corr=
+VS8000391 | tag=EXCHANGE | corr=
+VS8000392 | tag=EXCHANGE | corr=
+VS8000393 | tag=EXCHANGE | corr=
+VS8000401 | tag=MATCH CASH | corr=
+VS8000403 | tag=AZURE AD CONNET | corr=
+VS8000412 | tag=SIGCAP | corr=
+VS8000414 | tag=APLICA��ES_INTERNAS | corr=
+VS8000416 | tag=MATCH CASH | corr=
+VS8000417 | tag=MATCH CASH | corr=
+VS8000422 | tag=UYSIG | corr=
+VS8000430 | tag=APLICACOES INTERNAS | corr=
+VS8000431 | tag=BANK TRADE | corr=
+VS8000434 | tag=TALENTIA | corr=
+VS8000440 | tag=PAPERCUT | corr=
+VS8000452 | tag=Gest�o do BFTELLER | corr=
+VS8000456 | tag=EAI | corr=
+VS8000475 | tag=SGC | corr=
+VS8000600 | tag=PERSONALIZADORAS DE CARTOES | corr=
+VS8000601 | tag=PERSONALIZADORAS DE CARTOES | corr=
+VS8000724 | tag=ebankit | corr=
+VS8000725 | tag=ebankit | corr=
+VS8000726 | tag=ebankit | corr=
+VS8000727 | tag=ebankit | corr=
+VS8000729 | tag=ebankit | corr=
+VS8000730 | tag=ebankit | corr=
+VS8000731 | tag=ebankit | corr=
+VS8000737 | tag=ebankit | corr=
+VS8000738 | tag=ebankit | corr=
+VS8000746 | tag=ESSENCE | corr=
+VS8000759 | tag=FINANTECH | corr=
+VS8000767 | tag=FINANTECH | corr=
+VS8000768 | tag=ACM | corr=
+VS8000790 | tag=SERVIDOR DE BASE DE DADOS | corr=
+VS8000791 | tag=PRIMAVERA | corr=
+VS8000801 | tag=ACM | corr=
+VS8000803 | tag=ACMRELATIONAL | corr=
+VS8000806_Excel Report | tag=EXCEL REPORT | corr=
+VS8000808_Excel Report | tag=EXCEL REPORT | corr=
+VS8000809 | tag=INTEGRADOR | corr=
+VS8000813 | tag=MICROCREDITO | corr=
+VS8000820 | tag=BANKTRADE | corr=
+VS8000837 | tag=SIRIS | corr=
+VS8000838 | tag=SIRIS | corr=
+VS8000839 | tag=SIRIS | corr=
+VS8000840 | tag=SIRIS | corr=
+VS8000841 | tag=SIGCAP | corr=
+VS8000842 | tag=SIGCAP | corr=
+VS8000843 | tag=SIGCAP | corr=
+VS8000844 | tag=SIGCAP | corr=
+VS8000845 | tag=SIGCAP | corr=
+VS8000846 | tag=SIGCAP | corr=
+VS8000847 | tag=SIGCAP | corr=
+VS8000853 | tag=FircosoftMQ | corr=
+VS8000867 | tag=SACC | corr=
+VS8000893 | tag=KudiPala | corr=
+VS8000913 | tag=Fileserver_SharePoint_Migration | corr=
+VS8000919 | tag=TOBE | corr=
+VS8000992 | tag=Data Lake | corr=
+VS8000994 | tag=SAS | corr=
+VS9000003 | tag=DOMAIN CONTROLLER | corr=
+VS9000007 | tag=DOMAIN CONTROLLER | corr=
+VS9000105 | tag=FILE SERVER | corr=
+VS9000214 | tag=SYSTEM CENTER | corr=
+VS9000282 | tag=ServidorTFTP | corr=
+VS9000312 | tag=SWIFT | corr=
+VS9000318 | tag=TALENTIA | corr=
+VS9000322 | tag=BINFOLIO | corr=
+VS9000403 | tag=PRTGNetwork | corr=
+VS9000406 | tag=SYSTEM CENTER | corr=
+VS9000494 | tag=ebankit | corr=
+VS9000506 | tag=JUMP SERVER | corr=
+VS9000507 | tag=JUMP SERVER | corr=
+VS9000509 | tag=JUMP SERVER | corr=
+VS9000726 | tag=RECEBIMENTOS UNITEL | corr=
+SV9000401 | tag=EBA | corr=EBA (provavel BD de apoio)
+VS8000320 | tag=SERVIDOR DE APLICACOES | corr=CTB/400 (possivel gateway AS/400)
+VS8000321 | tag=SERVIDOR DE APLICACOES | corr=CTB/400 (possivel gateway AS/400)
+VS8000406 | tag=RECONCILIADOR | corr=MATCHCASH (Reconciliador)

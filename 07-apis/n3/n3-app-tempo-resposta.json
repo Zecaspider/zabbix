@@ -1,0 +1,94 @@
+{
+  "type": "timeseries",
+  "title": "Velocidade de resposta — cada verificação",
+  "datasource": {
+    "type": "alexanderzobnin-zabbix-datasource",
+    "uid": "3_KgG43nz"
+  },
+  "transparent": true,
+  "targets": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "3_KgG43nz"
+      },
+      "functions": [],
+      "group": {
+        "filter": "BPC / APLICACOES / SINTETICOS"
+      },
+      "host": {
+        "filter": "${app}"
+      },
+      "item": {
+        "filter": "/Response time for step .* of scenario \"(L1-Disponibilidade|L2-Performance|L3-Conteudo)\"\\./"
+      },
+      "options": {
+        "showDisabledItems": false
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+    }
+  ],
+  "fieldConfig": {
+    "defaults": {
+      "unit": "s",
+      "custom": {
+        "drawStyle": "line",
+        "lineWidth": 2,
+        "fillOpacity": 10,
+        "pointSize": 4,
+        "showPoints": "never",
+        "spanNulls": true
+      }
+    },
+    "overrides": [
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "/.*L1-Disponibilidade.*/"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "Acesso à página"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "/.*L2-Performance.*/"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "Tempo de resposta"
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "id": "byRegexp",
+          "options": "/.*L3-Conteudo.*/"
+        },
+        "properties": [
+          {
+            "id": "displayName",
+            "value": "Validação de conteúdo"
+          }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+    },
+    "tooltip": {
+      "mode": "multi"
+    }
+  }
+}
