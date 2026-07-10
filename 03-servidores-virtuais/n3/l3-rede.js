@@ -7,8 +7,15 @@
   // ╚═══════════════════════════════════════════════════════════════════════════╝
 
   // ╔══════════════════════════════════════════════════════════════════════════╗
-  // ║  D5-Detalhe-VM · REDE  v1.0                                            ║
+  // ║  D5-Detalhe-VM · REDE  v1.1                                            ║
   // ║  Autor: BPC                                                              ║
+  // ║                                                                          ║
+  // ║  v1.1 (2026-07-10) — layout redesenhado para full-width (w24): erros/   ║
+  // ║  drops + ICMP (RTT/loss/jitter) fundidos numa só grelha uniforme         ║
+  // ║  (.nr-stat-cell, auto-fit) em vez do antigo par de grids 2-col           ║
+  // ║  desalinhadas (throughput 2col / erros 4col / icmp 50-50 assimétrico /  ║
+  // ║  disponibilidade 4col) que não usava a largura toda e ainda tinha        ║
+  // ║  scroll interno. Fontes também aumentadas (§ pedido do utilizador).     ║
   // ║                                                                          ║
   // ║  FONTES (fallback em cascata):                                           ║
   // ║    1. Agente Windows  → net.if.in/out + erros + drops + speed + status  ║
@@ -195,9 +202,9 @@
     renderErro: function (causa, accao) {
       return '<div style="background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);'
         + 'border-radius:6px;padding:12px 14px;font-family:\'IBM Plex Mono\',monospace;">'
-        + '<div style="color:' + CFG.colors.crit + ';font-size:11px;font-weight:700;margin-bottom:4px;">⚠ ERRO · REDE</div>'
-        + '<div style="color:' + CFG.colors.text + ';font-size:10px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
-        + '<div style="color:' + CFG.colors.sub + ';font-size:9px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
+        + '<div style="color:' + CFG.colors.crit + ';font-size:15.5px;font-weight:700;margin-bottom:4px;">⚠ ERRO · REDE</div>'
+        + '<div style="color:' + CFG.colors.text + ';font-size:14px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
+        + '<div style="color:' + CFG.colors.sub + ';font-size:12.5px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
         + '</div>';
     },
 
@@ -231,11 +238,11 @@
       // Header
       '#bt-kpi-rede .nr-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-shrink:0;}',
       '#bt-kpi-rede .nr-title-block{display:flex;flex-direction:column;gap:3px;}',
-      '#bt-kpi-rede .nr-panel-title{font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:' + C.sub + ';}',
-      '#bt-kpi-rede .nr-iface-name{font-size:10px;font-weight:600;color:' + C.text + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px;}',
-      '#bt-kpi-rede .nr-iface-meta{font-size:8.5px;color:' + C.sub + ';}',
+      '#bt-kpi-rede .nr-panel-title{font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:' + C.sub + ';}',
+      '#bt-kpi-rede .nr-iface-name{font-size:14px;font-weight:600;color:' + C.text + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px;}',
+      '#bt-kpi-rede .nr-iface-meta{font-size:12px;color:' + C.sub + ';}',
       '#bt-kpi-rede .nr-badges{display:flex;gap:4px;align-items:center;flex-shrink:0;}',
-      '#bt-kpi-rede .nr-badge{font-size:8px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:3px;white-space:nowrap;}',
+      '#bt-kpi-rede .nr-badge{font-size:11px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:3px;white-space:nowrap;}',
       '#bt-kpi-rede .nr-badge.agent{background:rgba(63,185,80,.15);border:1px solid rgba(63,185,80,.35);color:' + C.ok + ';}',
       '#bt-kpi-rede .nr-badge.icmp{background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.3);color:' + C.info + ';}',
       '#bt-kpi-rede .nr-badge.nodata{background:rgba(110,118,129,.12);border:1px solid rgba(110,118,129,.25);color:' + C.sub + ';}',
@@ -246,55 +253,44 @@
       '#bt-kpi-rede .nr-sep{height:1px;background:rgba(255,255,255,0.05);flex-shrink:0;}',
 
       // Section title
-      '#bt-kpi-rede .nr-section-title{font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:' + C.sub + ';margin-bottom:6px;}',
+      '#bt-kpi-rede .nr-section-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:' + C.sub + ';margin-bottom:6px;}',
 
       // Throughput block
       '#bt-kpi-rede .nr-throughput{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0;}',
       '#bt-kpi-rede .nr-thr-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:5px;padding:7px 9px 5px;}',
-      '#bt-kpi-rede .nr-thr-label{font-size:8px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}',
-      '#bt-kpi-rede .nr-thr-val{font-size:16px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:5px;}',
+      '#bt-kpi-rede .nr-thr-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}',
+      '#bt-kpi-rede .nr-thr-val{font-size:22.5px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-bottom:5px;}',
       '#bt-kpi-rede .nr-thr-val.rx{color:' + C.rx + ';}',
       '#bt-kpi-rede .nr-thr-val.tx{color:' + C.tx + ';}',
       '#bt-kpi-rede .nr-thr-spark{width:100%;overflow:hidden;}',
       '#bt-kpi-rede .nr-thr-spark svg{width:100%;height:28px;display:block;}',
 
-      // Erros & drops
-      '#bt-kpi-rede .nr-erros{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;flex-shrink:0;}',
-      '#bt-kpi-rede .nr-err-cell{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:4px;padding:5px 7px;}',
-      '#bt-kpi-rede .nr-err-label{font-size:7.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + C.sub + ';margin-bottom:3px;}',
-      '#bt-kpi-rede .nr-err-val{font-size:13px;font-weight:700;}',
-      '#bt-kpi-rede .nr-err-val.zero{color:' + C.ok + ';}',
-      '#bt-kpi-rede .nr-err-val.nonzero{color:' + C.crit + ';}',
+      // Grelha de estatísticas unificada — erros/drops, ICMP (RTT/loss/jitter) e
+      // disponibilidade usam TODOS a mesma célula (.nr-stat-cell), só o nº de
+      // colunas muda consoante quantas há para mostrar. auto-fit preenche
+      // sempre a largura toda do painel (w24), em vez de grids fixas de 2
+      // colunas que ficavam estreitas e desalinhadas entre si.
+      '#bt-kpi-rede .nr-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;flex-shrink:0;}',
+      '#bt-kpi-rede .nr-stat-cell{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:5px;padding:8px 10px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:60px;}',
+      '#bt-kpi-rede .nr-stat-label{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + C.sub + ';}',
+      '#bt-kpi-rede .nr-stat-val{font-size:18px;font-weight:700;color:' + C.text + ';line-height:1.15;}',
+      '#bt-kpi-rede .nr-stat-val.zero{color:' + C.ok + ';}',
+      '#bt-kpi-rede .nr-stat-val.nonzero{color:' + C.crit + ';}',
+      '#bt-kpi-rede .nr-stat-sub{font-size:10.5px;font-weight:700;}',
 
-      // ICMP block
-      '#bt-kpi-rede .nr-icmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0;}',
-      '#bt-kpi-rede .nr-icmp-left{display:flex;flex-direction:column;gap:5px;}',
-      '#bt-kpi-rede .nr-icmp-right{display:flex;flex-direction:column;gap:4px;}',
-
-      '#bt-kpi-rede .nr-icmp-stat{display:flex;align-items:baseline;justify-content:space-between;gap:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:4px;padding:5px 8px;}',
-      '#bt-kpi-rede .nr-icmp-stat-label{font-size:8px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + C.sub + ';}',
-      '#bt-kpi-rede .nr-icmp-stat-val{font-size:13px;font-weight:700;color:' + C.text + ';}',
-
-      '#bt-kpi-rede .nr-icmp-spark-wrap{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:4px;padding:6px 8px 5px;}',
-      '#bt-kpi-rede .nr-icmp-spark-label{font-size:7.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + C.sub + ';margin-bottom:3px;}',
-      '#bt-kpi-rede .nr-icmp-spark svg{width:100%;height:24px;display:block;}',
-
-      // Disponibilidade
-      '#bt-kpi-rede .nr-avail{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;flex-shrink:0;}',
-      '#bt-kpi-rede .nr-avail-cell{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:4px;padding:5px 7px;text-align:center;}',
-      '#bt-kpi-rede .nr-avail-period{font-size:7.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + C.sub + ';margin-bottom:3px;}',
-      '#bt-kpi-rede .nr-avail-pct{font-size:13px;font-weight:700;}',
-      '#bt-kpi-rede .nr-avail-lbl{font-size:8px;font-weight:700;}',
+      '#bt-kpi-rede .nr-icmp-spark-wrap{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:4px;padding:8px 10px 6px;}',
+      '#bt-kpi-rede .nr-icmp-spark-label{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:' + C.sub + ';margin-bottom:4px;}',
+      '#bt-kpi-rede .nr-icmp-spark svg{width:100%;height:30px;display:block;}',
 
       // Mensagem sem dados
-      '#bt-kpi-rede .nr-nodata{font-size:10px;color:' + C.sub + ';padding:20px 4px;text-align:center;flex:1;display:flex;align-items:center;justify-content:center;}',
+      '#bt-kpi-rede .nr-nodata{font-size:14px;color:' + C.sub + ';padding:20px 4px;text-align:center;flex:1;display:flex;align-items:center;justify-content:center;}',
 
       // Pulse
       '@keyframes nr-pulse{0%,100%{opacity:1;}50%{opacity:.4;}}',
       '#bt-kpi-rede .nr-pulse{animation:nr-pulse 2s ease-in-out infinite;}',
 
       // Timestamp
-      '#bt-kpi-rede .nr-timestamp{font-size:7.5px;color:' + C.sub + ';opacity:.5;text-align:right;flex-shrink:0;margin-top:auto;}',
+      '#bt-kpi-rede .nr-timestamp{font-size:10.5px;color:' + C.sub + ';opacity:.5;text-align:right;flex-shrink:0;margin-top:auto;}',
 
       '</style>',
     ].join('');
@@ -568,99 +564,101 @@
 
       html += '</div>'; // nr-throughput
 
-      // ── Erros & Drops ─────────────────────────────────────────────────────
+      // ── Erros, drops e ICMP — 1 só grelha uniforme, preenche a largura toda ──
       html += '<div class="nr-sep"></div>';
-      html += '<div class="nr-section-title">ERROS & DROPS</div>';
-      html += '<div class="nr-erros">';
+      html += '<div class="nr-section-title">ERROS, DROPS' + (Detect.hasIcmp(icmp) ? ' E CONECTIVIDADE (ICMP)' : '') + '</div>';
 
-      var errCells = [
-        { label: 'IN ERR',  item: ifc.items.in_err  },
-        { label: 'OUT ERR', item: ifc.items.out_err  },
-        { label: 'IN DROP', item: ifc.items.in_drop  },
-        { label: 'OUT DROP',item: ifc.items.out_drop },
-      ];
-      errCells.forEach(function (ec) {
+      var cells = [
+        { label: 'IN ERR',   item: ifc.items.in_err   },
+        { label: 'OUT ERR',  item: ifc.items.out_err  },
+        { label: 'IN DROP',  item: ifc.items.in_drop  },
+        { label: 'OUT DROP', item: ifc.items.out_drop },
+      ].map(function (ec) {
         var val = ec.item ? parseInt(ec.item.lastvalue, 10) : null;
         var cls = val === null ? '' : val === 0 ? 'zero' : 'nonzero';
         var str = val === null ? '—' : String(val);
-        html += '<div class="nr-err-cell">'
-          + '<div class="nr-err-label">' + ec.label + '</div>'
-          + '<div class="nr-err-val ' + cls + '">' + str + '</div>'
-          + '</div>';
+        return Render._statCell(ec.label, str, cls);
       });
-      html += '</div>'; // nr-erros
 
-      // ── ICMP se disponível ────────────────────────────────────────────────
       if (Detect.hasIcmp(icmp)) {
-        html += '<div class="nr-sep"></div>';
-        html += Render._icmpSection(icmp);
+        cells = cells.concat(Render._icmpStatCells(icmp));
+      }
+
+      html += '<div class="nr-stats-grid">' + cells.join('') + '</div>';
+
+      // ── ICMP: sparkline + disponibilidade ────────────────────────────────
+      if (Detect.hasIcmp(icmp)) {
+        html += Render._icmpSparkAndAvail(icmp);
       }
 
       return html;
     },
 
-    _icmpSection: function (icmp) {
-      var html = '';
-      html += '<div class="nr-section-title">ICMP · CONECTIVIDADE</div>';
-      html += '<div class="nr-icmp">';
+    // 1 célula da grelha uniforme (usada por erros/drops, ICMP e disponibilidade)
+    _statCell: function (label, valStr, cls, subHtml) {
+      return '<div class="nr-stat-cell">'
+        + '<div class="nr-stat-label">' + U.esc(label) + '</div>'
+        + '<div class="nr-stat-val' + (cls ? ' ' + cls : '') + '">' + U.esc(valStr) + '</div>'
+        + (subHtml ? subHtml : '')
+        + '</div>';
+    },
 
-      // Esquerda: stats
-      html += '<div class="nr-icmp-left">';
-
+    // RTT / LOSS / JITTER — 3 células, mesmo estilo dos erros/drops
+    _icmpStatCells: function (icmp) {
       var rttVal = icmp.rtt
         ? U.fmtMs(icmp.rtt.lastvalue)
         : (icmp.rtt_ms ? (parseFloat(icmp.rtt_ms.lastvalue) || 0).toFixed(2) + ' ms' : '—');
-
       var lossVal   = icmp.loss   ? U.fmtPct(icmp.loss.lastvalue)   : '—';
       var jitterVal = icmp.jitter ? (parseFloat(icmp.jitter.lastvalue) || 0).toFixed(2) + ' ms' : '—';
 
-      [
-        { label: 'RTT',    val: rttVal },
-        { label: 'LOSS',   val: lossVal },
-        { label: 'JITTER', val: jitterVal },
-      ].forEach(function (s) {
-        html += '<div class="nr-icmp-stat">'
-          + '<span class="nr-icmp-stat-label">' + s.label + '</span>'
-          + '<span class="nr-icmp-stat-val">' + U.esc(s.val) + '</span>'
-          + '</div>';
-      });
+      return [
+        Render._statCell('RTT', rttVal),
+        Render._statCell('LOSS', lossVal),
+        Render._statCell('JITTER', jitterVal),
+      ];
+    },
 
-      // Sparkline RTT
+    // Sparkline do RTT (tira largura toda) + disponibilidade (4 células, mesma grelha)
+    _icmpSparkAndAvail: function (icmp) {
+      var html = '';
       var rttItem = icmp.rtt || icmp.rtt_ms;
       if (rttItem) {
         var rttData = Render._sparkData(rttItem.itemid);
         html += '<div class="nr-icmp-spark-wrap">'
-          + '<div class="nr-icmp-spark-label">RTT histórico</div>'
+          + '<div class="nr-icmp-spark-label">RTT · histórico</div>'
           + '<div class="nr-icmp-spark">' + U.sparkline(rttData, CFG.colors.info) + '</div>'
           + '</div>';
       }
 
-      html += '</div>'; // nr-icmp-left
+      html += '<div class="nr-sep"></div>';
+      html += '<div class="nr-section-title">DISPONIBILIDADE</div>';
 
-      // Direita: disponibilidade
-      html += '<div class="nr-icmp-right">';
-      html += '<div class="nr-section-title" style="margin-bottom:4px;">DISPONIBILIDADE</div>';
-      html += '<div class="nr-avail">';
-
-      var availPeriods = [
+      var availCells = [
         { label: '1H',  item: icmp.avail1h  },
         { label: '24H', item: icmp.avail24h },
         { label: '7D',  item: icmp.avail7d  },
         { label: '30D', item: icmp.avail30d },
-      ];
-      availPeriods.forEach(function (ap) {
+      ].map(function (ap) {
         var pct = ap.item ? ap.item.lastvalue : null;
         var ab  = pct !== null ? U.availBar(pct) : { color: CFG.colors.sub, label: '—', pct: '—' };
-        html += '<div class="nr-avail-cell">'
-          + '<div class="nr-avail-period">' + ap.label + '</div>'
-          + '<div class="nr-avail-pct" style="color:' + ab.color + ';">' + ab.pct + '</div>'
-          + '<div class="nr-avail-lbl" style="color:' + ab.color + ';">' + ab.label + '</div>'
+        var sub = '<div class="nr-stat-sub" style="color:' + ab.color + ';">' + ab.label + '</div>';
+        return '<div class="nr-stat-cell">'
+          + '<div class="nr-stat-label">' + ap.label + '</div>'
+          + '<div class="nr-stat-val" style="color:' + ab.color + ';">' + ab.pct + '</div>'
+          + sub
           + '</div>';
       });
-      html += '</div>'; // nr-avail
-      html += '</div>'; // nr-icmp-right
 
-      html += '</div>'; // nr-icmp
+      html += '<div class="nr-stats-grid">' + availCells.join('') + '</div>';
+      return html;
+    },
+
+    // Modo só-ICMP (sem interface de agente) — mesma grelha uniforme
+    _icmpSection: function (icmp) {
+      var html = '';
+      html += '<div class="nr-section-title">CONECTIVIDADE (ICMP)</div>';
+      html += '<div class="nr-stats-grid">' + Render._icmpStatCells(icmp).join('') + '</div>';
+      html += Render._icmpSparkAndAvail(icmp);
       return html;
     },
 
@@ -774,11 +772,11 @@
   U.dbg('[REDE v1.0] hostRaw:', hostRaw, '→', hostName);
 
   if (!hostName) {
-    root.innerHTML = '<span style="color:#6E7681;font-size:11px;">Selecciona uma VM no selector acima.</span>';
+    root.innerHTML = '<span style="color:#6E7681;font-size:15.5px;">Selecciona uma VM no selector acima.</span>';
     return;
   }
 
-  root.innerHTML = '<span style="color:#6E7681;font-size:11px;">A carregar dados de rede…</span>';
+  root.innerHTML = '<span style="color:#6E7681;font-size:15.5px;">A carregar dados de rede…</span>';
 
   ZbxApi.getHostId(hostName)
     .then(function (hostid) {

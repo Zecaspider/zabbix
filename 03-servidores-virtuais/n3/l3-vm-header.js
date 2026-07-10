@@ -141,9 +141,9 @@
     renderErro: function (causa, accao) {
       return '<div style="background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);'
         + 'border-radius:6px;padding:12px 14px;font-family:monospace;">'
-        + '<div style="color:' + CFG.colors.crit + ';font-size:11px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; HEADER</div>'
-        + '<div style="color:' + CFG.colors.text + ';font-size:10px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
-        + '<div style="color:' + CFG.colors.sub + ';font-size:9px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
+        + '<div style="color:' + CFG.colors.crit + ';font-size:15.5px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; HEADER</div>'
+        + '<div style="color:' + CFG.colors.text + ';font-size:14px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
+        + '<div style="color:' + CFG.colors.sub + ';font-size:12.5px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
         + '</div>';
     },
 
@@ -251,7 +251,7 @@
     '#bt-vm-header .h-os{',
     '  flex-shrink:0;width:42px;height:42px;border-radius:5px;',
     '  display:flex;align-items:center;justify-content:center;',
-    '  font-size:10px;font-weight:700;letter-spacing:.05em;',
+    '  font-size:14px;font-weight:700;letter-spacing:.05em;',
     '}',
 
     '#bt-vm-header .h-id{display:flex;flex-direction:column;gap:2px;min-width:0;}',
@@ -261,14 +261,14 @@
     '}',
 
     '#bt-vm-header .h-tech{',
-    '  font-family:monospace;font-size:15px;font-weight:700;',
+    '  font-family:monospace;font-size:21px;font-weight:700;',
     '  color:' + CFG.colors.text + ';',
     '}',
 
-    '#bt-vm-header .h-name{font-size:13px;color:' + CFG.colors.sub + ';}',
+    '#bt-vm-header .h-name{font-size:18px;color:' + CFG.colors.sub + ';}',
 
     '#bt-vm-header .h-desc{',
-    '  font-size:10px;color:' + CFG.colors.mute + ';letter-spacing:.02em;',
+    '  font-size:14px;color:' + CFG.colors.mute + ';letter-spacing:.02em;',
     '}',
 
     '#bt-vm-header .h-pills{',
@@ -276,7 +276,7 @@
     '}',
 
     '#bt-vm-header .h-pill{',
-    '  font-size:10px;font-weight:700;letter-spacing:.07em;',
+    '  font-size:14px;font-weight:700;letter-spacing:.07em;',
     '  padding:2px 9px;border-radius:3px;white-space:nowrap;',
     '}',
 
@@ -294,12 +294,12 @@
     '}',
 
     '#bt-vm-header .h-kv-val{',
-    '  font-family:monospace;font-size:13px;font-weight:700;',
+    '  font-family:monospace;font-size:18px;font-weight:700;',
     '  color:' + CFG.colors.text + ';white-space:nowrap;',
     '}',
 
     '#bt-vm-header .h-kv-key{',
-    '  font-size:9px;color:' + CFG.colors.mute + ';',
+    '  font-size:12.5px;color:' + CFG.colors.mute + ';',
     '  text-transform:uppercase;letter-spacing:.08em;',
     '}',
 
@@ -498,13 +498,13 @@
 
     var backNav = '<div style="display:flex;gap:6px;margin-bottom:6px;align-items:center">'
       + '<a href="/d/' + CFG.dashN2sv + '/n2-servidores-virtuais" style="'
-      + 'font-family:\'IBM Plex Mono\',monospace;font-size:10px;font-weight:600;'
+      + 'font-family:\'IBM Plex Mono\',monospace;font-size:14px;font-weight:600;'
       + 'color:' + C.info + ';text-decoration:none;letter-spacing:.05em;'
       + 'padding:2px 8px;border:1px solid rgba(88,166,255,.25);border-radius:3px;'
       + 'background:rgba(88,166,255,.06);white-space:nowrap;">'
       + '← N2 · SERVIDORES VIRTUAIS</a>'
       + '<a href="/d/' + CFG.dashN2vmw + '/n2-infraestrutura-vmware" style="'
-      + 'font-family:\'IBM Plex Mono\',monospace;font-size:10px;font-weight:600;'
+      + 'font-family:\'IBM Plex Mono\',monospace;font-size:14px;font-weight:600;'
       + 'color:' + C.mute + ';text-decoration:none;letter-spacing:.05em;'
       + 'padding:2px 8px;border:1px solid rgba(110,118,129,.2);border-radius:3px;'
       + 'background:rgba(110,118,129,.05);white-space:nowrap;">'
@@ -568,13 +568,13 @@
 
   if (!hostName) {
     root.innerHTML = '<span style="color:' + CFG.colors.mute
-      + ';font-family:monospace;font-size:11px;">'
+      + ';font-family:monospace;font-size:15.5px;">'
       + 'Selecciona uma VM no selector acima.</span>';
     return;
   }
 
   root.innerHTML = '<span style="color:' + CFG.colors.mute
-    + ';font-family:monospace;font-size:11px;">A carregar...</span>';
+    + ';font-family:monospace;font-size:15.5px;">A carregar...</span>';
 
   fetchAll(hostName)
     .then(function (results) {

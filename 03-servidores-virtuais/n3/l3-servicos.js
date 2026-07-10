@@ -107,9 +107,9 @@
     renderErro: function (causa, accao) {
       return '<div style="background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);'
         + 'border-radius:6px;padding:12px 14px;font-family:monospace;">'
-        + '<div style="color:' + CFG.colors.crit + ';font-size:11px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; SERVIÇOS</div>'
-        + '<div style="color:' + CFG.colors.text + ';font-size:10px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
-        + '<div style="color:' + CFG.colors.sub + ';font-size:9px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
+        + '<div style="color:' + CFG.colors.crit + ';font-size:15.5px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; SERVIÇOS</div>'
+        + '<div style="color:' + CFG.colors.text + ';font-size:14px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
+        + '<div style="color:' + CFG.colors.sub + ';font-size:12.5px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
         + '</div>';
     },
 
@@ -148,7 +148,7 @@
     '}',
 
     '#bt-kpi-servicos .sv-title{',
-    '  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;',
+    '  font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;',
     '  color:' + CFG.colors.mute + ';margin-bottom:8px;',
     '}',
 
@@ -160,17 +160,17 @@
     '}',
 
     '#bt-kpi-servicos .sv-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}',
-    '#bt-kpi-servicos .sv-name{color:' + CFG.colors.text + ';font-family:monospace;font-size:11px;}',
-    '#bt-kpi-servicos .sv-state{color:' + CFG.colors.mute + ';font-size:9px;text-transform:uppercase;}',
-    '#bt-kpi-servicos .sv-empty{color:' + CFG.colors.mute + ';font-size:10px;font-style:italic;}',
+    '#bt-kpi-servicos .sv-name{color:' + CFG.colors.text + ';font-family:monospace;font-size:15.5px;}',
+    '#bt-kpi-servicos .sv-state{color:' + CFG.colors.mute + ';font-size:12.5px;text-transform:uppercase;}',
+    '#bt-kpi-servicos .sv-empty{color:' + CFG.colors.mute + ';font-size:14px;font-style:italic;}',
 
     // Identidade de negócio (tags servico/departamento/camada/ambiente) — mostrada
     // sempre que existir, mesmo sem serviços Windows explícitos (que dependem de
     // um template de discovery só aplicado a algumas VMs).
     '#bt-kpi-servicos .sv-identity{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid ' + CFG.colors.border + ';}',
     '#bt-kpi-servicos .sv-id-item{display:flex;flex-direction:column;gap:2px;}',
-    '#bt-kpi-servicos .sv-id-label{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' + CFG.colors.mute + ';}',
-    '#bt-kpi-servicos .sv-id-val{font-size:11px;color:' + CFG.colors.text + ';font-weight:600;}',
+    '#bt-kpi-servicos .sv-id-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' + CFG.colors.mute + ';}',
+    '#bt-kpi-servicos .sv-id-val{font-size:15.5px;color:' + CFG.colors.text + ';font-weight:600;}',
 
     '</style>',
   ].join('');
@@ -303,13 +303,13 @@
 
   if (!hostName) {
     root.innerHTML = '<span style="color:' + CFG.colors.mute
-      + ';font-family:monospace;font-size:11px;">'
+      + ';font-family:monospace;font-size:15.5px;">'
       + 'Selecciona uma VM no selector acima.</span>';
     return;
   }
 
   root.innerHTML = '<span style="color:' + CFG.colors.mute
-    + ';font-family:monospace;font-size:11px;">A carregar...</span>';
+    + ';font-family:monospace;font-size:15.5px;">A carregar...</span>';
 
   fetchAll(hostName)
     .then(function (result) {

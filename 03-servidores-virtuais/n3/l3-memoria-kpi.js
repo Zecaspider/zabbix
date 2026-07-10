@@ -345,17 +345,17 @@
       '#bt-memoria-kpi{font-family:\'IBM Plex Mono\',monospace;height:100%;}',
       '#bt-memoria-kpi .mm-wrap{display:flex;flex-direction:column;gap:4px;height:100%;padding:4px 0;}',
       '#bt-memoria-kpi .mm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}',
-      '#bt-memoria-kpi .mm-badge{font-size:9px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:3px;white-space:nowrap;}',
+      '#bt-memoria-kpi .mm-badge{font-size:12.5px;font-weight:700;letter-spacing:.06em;padding:2px 8px;border-radius:3px;white-space:nowrap;}',
       '#bt-memoria-kpi .mm-badge.agente{border:1px solid rgba(63,185,80,.3);background:rgba(63,185,80,.13);color:'+C.ok+';}',
       '#bt-memoria-kpi .mm-badge.vmware{border:1px solid rgba(88,166,255,.3);background:rgba(88,166,255,.13);color:'+C.info+';}',
       '#bt-memoria-kpi .mm-badge.none  {border:1px solid rgba(248,81,73,.3);background:rgba(248,81,73,.13);color:'+C.crit+';}',
-      '#bt-memoria-kpi .mm-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:'+C.sub+';}',
+      '#bt-memoria-kpi .mm-label{font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:'+C.sub+';}',
       '#bt-memoria-kpi .mm-rows{display:flex;flex-direction:column;gap:0;flex:1;}',
       '#bt-memoria-kpi .mm-row{display:grid;grid-template-columns:90px 1fr;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);}',
       '#bt-memoria-kpi .mm-row:last-child{border-bottom:none;}',
-      '#bt-memoria-kpi .mm-key{font-size:9px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;}',
-      '#bt-memoria-kpi .mm-val{font-size:13px;font-weight:700;}',
-      '#bt-memoria-kpi .mm-sub{font-size:9px;color:'+C.sub+';margin-top:1px;}',
+      '#bt-memoria-kpi .mm-key{font-size:12.5px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;}',
+      '#bt-memoria-kpi .mm-val{font-size:18px;font-weight:700;}',
+      '#bt-memoria-kpi .mm-sub{font-size:12.5px;color:'+C.sub+';margin-top:1px;}',
       '</style>',
     ].join('');
   })();
@@ -452,7 +452,7 @@
   }
 
   function renderErro(causa) {
-    return '<div style="color:' + CFG.colors.crit + ';font-family:monospace;font-size:10px;padding:8px;">'
+    return '<div style="color:' + CFG.colors.crit + ';font-family:monospace;font-size:14px;padding:8px;">'
       + '&#9888; ERRO · MEMÓRIA: ' + U.esc(causa) + '</div>';
   }
 
@@ -490,11 +490,11 @@
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
 
   if (!hostName) {
-    root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:11px;">Selecciona uma VM.</span>';
+    root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:15.5px;">Selecciona uma VM.</span>';
     return;
   }
 
-  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:11px;">A carregar memória…</span>';
+  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:15.5px;">A carregar memória…</span>';
 
   getHostId(hostName, signal)
     .then(function (hostInfo) {

@@ -134,9 +134,9 @@
     renderErro: function (causa, accao) {
       return '<div style="background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);'
         + 'border-radius:6px;padding:12px 14px;font-family:monospace;">'
-        + '<div style="color:' + CFG.colors.crit + ';font-size:11px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; FICHA DO SERVIDOR</div>'
-        + '<div style="color:' + CFG.colors.text + ';font-size:10px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
-        + '<div style="color:' + CFG.colors.sub + ';font-size:9px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
+        + '<div style="color:' + CFG.colors.crit + ';font-size:15.5px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; FICHA DO SERVIDOR</div>'
+        + '<div style="color:' + CFG.colors.text + ';font-size:14px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
+        + '<div style="color:' + CFG.colors.sub + ';font-size:12.5px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
         + '</div>';
     },
 
@@ -204,19 +204,19 @@
     '}',
 
     '#bt-ficha-servidor .fs-block-title{',
-    '  font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;',
+    '  font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;',
     '  color:' + CFG.colors.mute + ';margin-bottom:8px;display:flex;align-items:center;gap:6px;',
     '}',
 
     '#bt-ficha-servidor .fs-os-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}',
     '#bt-ficha-servidor .fs-os-logo{flex-shrink:0;width:28px;height:28px;}',
 
-    '#bt-ficha-servidor .fs-kv{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:11px;}',
+    '#bt-ficha-servidor .fs-kv{display:flex;justify-content:space-between;gap:8px;padding:3px 0;font-size:15.5px;}',
     '#bt-ficha-servidor .fs-kv-key{color:' + CFG.colors.mute + ';white-space:nowrap;}',
     '#bt-ficha-servidor .fs-kv-val{color:' + CFG.colors.text + ';font-family:monospace;text-align:right;overflow:hidden;text-overflow:ellipsis;}',
 
     '#bt-ficha-servidor .fs-tag{',
-    '  display:inline-block;font-size:9.5px;font-weight:600;padding:2px 8px;',
+    '  display:inline-block;font-size:13.5px;font-weight:600;padding:2px 8px;',
     '  border-radius:3px;margin:2px 3px 0 0;white-space:nowrap;',
     '}',
 
@@ -372,7 +372,7 @@
     return '<div class="fs-block">'
       + '<div class="fs-block-title">Sistema operativo</div>'
       + '<div class="fs-os-row">' + (ICONS[d.osFamily] || ICONS.vm)
-      + '<span style="font-size:13px;font-weight:700;color:' + CFG.colors.text + ';">' + U.esc(d.osLabel) + '</span></div>'
+      + '<span style="font-size:18px;font-weight:700;color:' + CFG.colors.text + ';">' + U.esc(d.osLabel) + '</span></div>'
       + kv('Arquitectura', d.arch)
       + kv('vCPUs', d.cores)
       + kv('RAM', d.ram)
@@ -443,13 +443,13 @@
 
   if (!hostName) {
     root.innerHTML = '<span style="color:' + CFG.colors.mute
-      + ';font-family:monospace;font-size:11px;">'
+      + ';font-family:monospace;font-size:15.5px;">'
       + 'Selecciona uma VM no selector acima.</span>';
     return;
   }
 
   root.innerHTML = '<span style="color:' + CFG.colors.mute
-    + ';font-family:monospace;font-size:11px;">A carregar...</span>';
+    + ';font-family:monospace;font-size:15.5px;">A carregar...</span>';
 
   fetchAll(hostName)
     .then(function (results) {

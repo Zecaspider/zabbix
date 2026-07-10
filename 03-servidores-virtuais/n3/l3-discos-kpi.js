@@ -168,9 +168,9 @@
     renderErro: function (causa, accao) {
       return '<div style="background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);'
         + 'border-radius:6px;padding:12px 14px;font-family:\'IBM Plex Mono\',monospace;">'
-        + '<div style="color:' + CFG.colors.crit + ';font-size:11px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; DISCO &amp; I/O</div>'
-        + '<div style="color:' + CFG.colors.text + ';font-size:10px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
-        + '<div style="color:' + CFG.colors.sub + ';font-size:9px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
+        + '<div style="color:' + CFG.colors.crit + ';font-size:15.5px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; DISCO &amp; I/O</div>'
+        + '<div style="color:' + CFG.colors.text + ';font-size:14px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
+        + '<div style="color:' + CFG.colors.sub + ';font-size:12.5px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
         + '</div>';
     },
 
@@ -462,11 +462,11 @@
       // ── Cabeçalho ─────────────────────────────────────────────────────────
       '#bt-kpi-disk2 .kd2-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:4px;flex-shrink:0;}',
       '#bt-kpi-disk2 .kd2-head-left{display:flex;align-items:center;gap:5px;min-width:0;}',
-      '#bt-kpi-disk2 .kd2-label{font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
-      '#bt-kpi-disk2 .kd2-signal{font-size:8px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:2px;white-space:nowrap;background:rgba(244,67,54,.15);color:'+C.io+';}',
+      '#bt-kpi-disk2 .kd2-label{font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
+      '#bt-kpi-disk2 .kd2-signal{font-size:11px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:2px;white-space:nowrap;background:rgba(244,67,54,.15);color:'+C.io+';}',
 
       // ── Badges de fonte (idêntico ao ROW 1) ───────────────────────────────
-      '#bt-kpi-disk2 .kd2-badge{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
+      '#bt-kpi-disk2 .kd2-badge{font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
       '#bt-kpi-disk2 .kd2-badge.agente  {border:1px solid rgba(63,185,80,.3);background:rgba(63,185,80,.13);color:'+C.ok+';}',
       '#bt-kpi-disk2 .kd2-badge.vmware  {border:1px solid rgba(88,166,255,.3);background:rgba(88,166,255,.13);color:'+C.info+';}',
       '#bt-kpi-disk2 .kd2-badge.no-agent{border:1px solid rgba(248,81,73,.3);background:rgba(248,81,73,.13);color:'+C.crit+';}',
@@ -475,12 +475,12 @@
       // Flexbox wrap: 1 a 6 donuts, adapta-se ao número real
       '#bt-kpi-disk2 .kd2-donuts{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-start;align-items:flex-start;flex:1;}',
       '#bt-kpi-disk2 .kd2-donut-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:90px;}',
-      '#bt-kpi-disk2 .kd2-donut-lbl{font-size:13px;font-weight:700;color:'+C.text+';letter-spacing:.04em;}',
-      '#bt-kpi-disk2 .kd2-donut-sub{font-size:9px;color:'+C.sub+';text-align:center;line-height:1.4;}',
-      '#bt-kpi-disk2 .kd2-donut-pct{font-size:11px;font-weight:700;margin-top:1px;}',
+      '#bt-kpi-disk2 .kd2-donut-lbl{font-size:18px;font-weight:700;color:'+C.text+';letter-spacing:.04em;}',
+      '#bt-kpi-disk2 .kd2-donut-sub{font-size:12.5px;color:'+C.sub+';text-align:center;line-height:1.4;}',
+      '#bt-kpi-disk2 .kd2-donut-pct{font-size:15.5px;font-weight:700;margin-top:1px;}',
 
       // ── Sem dados ─────────────────────────────────────────────────────────
-      '#bt-kpi-disk2 .kd2-nodata{color:'+C.sub+';font-size:10px;padding:8px 0;flex:1;display:flex;align-items:center;}',
+      '#bt-kpi-disk2 .kd2-nodata{color:'+C.sub+';font-size:14px;padding:8px 0;flex:1;display:flex;align-items:center;}',
 
       // ── Separador ─────────────────────────────────────────────────────────
       '#bt-kpi-disk2 .kd2-sep{height:1px;background:rgba(255,255,255,0.06);flex-shrink:0;margin:6px 0;}',
@@ -492,13 +492,13 @@
       // ── Badge I/O individual ──────────────────────────────────────────────
       // Design: valor grande no topo, badge colorido no meio, label pequeno em baixo
       '#bt-kpi-disk2 .kd2-io-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:6px 4px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:5px;}',
-      '#bt-kpi-disk2 .kd2-io-val{font-size:18px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;text-align:center;}',
-      '#bt-kpi-disk2 .kd2-io-badge{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:3px;text-align:center;line-height:1.3;}',
+      '#bt-kpi-disk2 .kd2-io-val{font-size:25px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;text-align:center;}',
+      '#bt-kpi-disk2 .kd2-io-badge{font-size:14px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:3px;text-align:center;line-height:1.3;}',
       '#bt-kpi-disk2 .kd2-io-badge.ok   {border:1px solid rgba(63,185,80,.35);background:rgba(63,185,80,.15);color:'+C.ok+';}',
       '#bt-kpi-disk2 .kd2-io-badge.warn {border:1px solid rgba(210,153,34,.35);background:rgba(210,153,34,.15);color:'+C.warn+';}',
       '#bt-kpi-disk2 .kd2-io-badge.crit {border:1px solid rgba(248,81,73,.35);background:rgba(248,81,73,.15);color:'+C.crit+';}',
       '#bt-kpi-disk2 .kd2-io-badge.muted{border:1px solid rgba(46,51,59,.8);background:rgba(46,51,59,.3);color:'+C.sub+';}',
-      '#bt-kpi-disk2 .kd2-io-key{font-size:8px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;text-align:center;}',
+      '#bt-kpi-disk2 .kd2-io-key{font-size:11px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;text-align:center;}',
 
       // ── Animação de pulso para crítico ────────────────────────────────────
       '@keyframes kd2-pulse{0%,100%{opacity:1;}50%{opacity:.55;}}',
@@ -634,9 +634,9 @@
           // Badge de aviso abaixo do sub (só se warn ou crit)
           var alertBadge = '';
           if (U.isValid(vol.pct) && vol.pct >= thr.crit) {
-            alertBadge = '<span style="font-size:8px;font-weight:700;color:'+C.crit+';">⚠ CRÍTICO</span>';
+            alertBadge = '<span style="font-size:11px;font-weight:700;color:'+C.crit+';">⚠ CRÍTICO</span>';
           } else if (U.isValid(vol.pct) && vol.pct >= thr.warn) {
-            alertBadge = '<span style="font-size:8px;font-weight:700;color:'+C.warn+';">⚠ ATENÇÃO</span>';
+            alertBadge = '<span style="font-size:11px;font-weight:700;color:'+C.warn+';">⚠ ATENÇÃO</span>';
           }
 
           donutsHtml += '<div class="kd2-donut-wrap">'
@@ -682,7 +682,7 @@
       // VMware fallback não tem I/O — mostra mensagem
       var ioGridHtml = '';
       if (d.source === 'VMware' || d.source === '—') {
-        ioGridHtml = '<div class="kd2-nodata" style="font-size:9px;">I/O não disponível<br>sem agente activo</div>';
+        ioGridHtml = '<div class="kd2-nodata" style="font-size:12.5px;">I/O não disponível<br>sem agente activo</div>';
       } else {
         ioGridHtml = '<div class="kd2-io-grid">'
           + ioItem(io.ioW,     'ioOps',   'ESCRITA',   'w/s',  function(v){ return v.toFixed(1)+' w/s'; })
@@ -697,7 +697,7 @@
       // Fonte dos dados I/O
       var srcNote = d.hasAgent
         ? ''
-        : '<span style="font-size:8px;color:'+C.sub+';margin-top:4px;">_Total · dados globais do disco</span>';
+        : '<span style="font-size:11px;color:'+C.sub+';margin-top:4px;">_Total · dados globais do disco</span>';
 
       return '<div class="kd2-card">'
         +'<div class="kd2-head">'
@@ -781,11 +781,11 @@
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
 
   if (!hostName) {
-    root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:11px;">Selecciona uma VM no selector acima.</span>';
+    root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:15.5px;">Selecciona uma VM no selector acima.</span>';
     return;
   }
 
-  root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:11px;">A carregar discos…</span>';
+  root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:15.5px;">A carregar discos…</span>';
 
   ZbxApi.getHostId(hostName)
     .then(function (hostInfo) {

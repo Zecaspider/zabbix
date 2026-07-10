@@ -219,9 +219,9 @@
   function renderErro(causa, accao) {
     return '<div style="background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);'
       + 'border-radius:6px;padding:12px 14px;font-family:\'IBM Plex Mono\',monospace;">'
-      + '<div style="color:' + CFG.colors.crit + ';font-size:11px;font-weight:700;margin-bottom:4px;">⚠ ERRO · KPI GOLDEN SIGNALS</div>'
-      + '<div style="color:' + CFG.colors.text + ';font-size:10px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
-      + '<div style="color:' + CFG.colors.sub + ';font-size:9px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
+      + '<div style="color:' + CFG.colors.crit + ';font-size:15.5px;font-weight:700;margin-bottom:4px;">⚠ ERRO · KPI GOLDEN SIGNALS</div>'
+      + '<div style="color:' + CFG.colors.text + ';font-size:14px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
+      + '<div style="color:' + CFG.colors.sub + ';font-size:12.5px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
       + '</div>';
   }
 
@@ -586,13 +586,13 @@
       '#bt-kpi-gs .ks-card.io::before  {background:'+C.io+'}',
       '#bt-kpi-gs .ks-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:4px;flex-shrink:0;}',
       '#bt-kpi-gs .ks-head-left{display:flex;align-items:center;gap:5px;min-width:0;}',
-      '#bt-kpi-gs .ks-label{font-size:12px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
-      '#bt-kpi-gs .ks-signal{font-size:11px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:2px;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-label{font-size:17px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
+      '#bt-kpi-gs .ks-signal{font-size:15.5px;font-weight:700;letter-spacing:.06em;padding:1px 5px;border-radius:2px;white-space:nowrap;}',
       '#bt-kpi-gs .ks-signal.cpu{background:rgba(232,160,32,.15);color:'+C.cpu+';}',
       '#bt-kpi-gs .ks-signal.mem{background:rgba(124,77,255,.15);color:'+C.mem+';}',
       '#bt-kpi-gs .ks-signal.net{background:rgba(0,188,212,.15);color:'+C.net+';}',
       '#bt-kpi-gs .ks-signal.io {background:rgba(244,67,54,.15); color:'+C.io+';}',
-      '#bt-kpi-gs .ks-badge{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
+      '#bt-kpi-gs .ks-badge{font-size:17px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
       '#bt-kpi-gs .ks-badge.agente  {border:1px solid rgba(63,185,80,.3);background:rgba(63,185,80,.13);color:'+C.ok+';}',
       '#bt-kpi-gs .ks-badge.vmware  {border:1px solid rgba(88,166,255,.3);background:rgba(88,166,255,.13);color:'+C.info+';}',
       '#bt-kpi-gs .ks-badge.icmp    {border:1px solid rgba(210,153,34,.3);background:rgba(210,153,34,.13);color:'+C.warn+';}',
@@ -604,67 +604,67 @@
       '#bt-kpi-gs .ks-spark svg{display:block;}',
       '#bt-kpi-gs .ks-info-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:4px;padding:5px 8px;flex-shrink:0;}',
       '#bt-kpi-gs .ks-ib-row{display:flex;justify-content:space-between;align-items:baseline;gap:6px;}',
-      '#bt-kpi-gs .ks-ib-key{font-size:11px;color:'+C.sub+';letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}',
-      '#bt-kpi-gs .ks-ib-val{font-family:\'IBM Plex Mono\',monospace;font-size:13px;font-weight:700;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
-      '#bt-kpi-gs .ks-uptime{font-size:31px;font-weight:700;color:'+C.hlth+';line-height:1;margin-bottom:2px;font-family:\'IBM Plex Mono\',monospace;}',
-      '#bt-kpi-gs .ks-uptime-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:'+C.sub+';margin-bottom:8px;}',
+      '#bt-kpi-gs .ks-ib-key{font-size:15.5px;color:'+C.sub+';letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;}',
+      '#bt-kpi-gs .ks-ib-val{font-family:\'IBM Plex Mono\',monospace;font-size:18px;font-weight:700;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-uptime{font-size:43.5px;font-weight:700;color:'+C.hlth+';line-height:1;margin-bottom:2px;font-family:\'IBM Plex Mono\',monospace;}',
+      '#bt-kpi-gs .ks-uptime-lbl{font-size:15.5px;text-transform:uppercase;letter-spacing:.08em;color:'+C.sub+';margin-bottom:8px;}',
       '#bt-kpi-gs .ks-kv-row{display:flex;justify-content:space-around;gap:6px;margin-top:6px;}',
       '#bt-kpi-gs .ks-kv{display:flex;flex-direction:column;align-items:center;gap:3px;}',
-      '#bt-kpi-gs .ks-kv-badge{font-size:17px;font-weight:700;padding:4px 10px;border-radius:4px;background:#0f1c2e;color:'+C.info+';border:1px solid rgba(88,166,255,.3);font-family:monospace;}',
-      '#bt-kpi-gs .ks-kv-key{font-size:11px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;}',
-      '#bt-kpi-gs .ks-net-val{font-size:31px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;margin-bottom:3px;}',
-      '#bt-kpi-gs .ks-net-sub{font-size:12px;color:'+C.sub+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px;}',
+      '#bt-kpi-gs .ks-kv-badge{font-size:24px;font-weight:700;padding:4px 10px;border-radius:4px;background:#0f1c2e;color:'+C.info+';border:1px solid rgba(88,166,255,.3);font-family:monospace;}',
+      '#bt-kpi-gs .ks-kv-key{font-size:15.5px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;}',
+      '#bt-kpi-gs .ks-net-val{font-size:43.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;margin-bottom:3px;}',
+      '#bt-kpi-gs .ks-net-sub{font-size:17px;color:'+C.sub+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:4px;}',
       '#bt-kpi-gs .ks-sep{height:1px;background:rgba(255,255,255,0.06);flex-shrink:0;margin:5px 0;}',
-      '#bt-kpi-gs .ks-delta{font-size:13px;margin-top:2px;}',
+      '#bt-kpi-gs .ks-delta{font-size:18px;margin-top:2px;}',
       '#bt-kpi-gs .ks-delta.flat{color:'+C.sub+'}',
       '#bt-kpi-gs .ks-delta.up  {color:'+C.crit+'}',
       '#bt-kpi-gs .ks-delta.down{color:'+C.ok+'}',
       '#bt-kpi-gs .ks-ping-row{display:flex;align-items:center;gap:8px;padding:6px 0 2px;}',
-      '#bt-kpi-gs .ks-ping-icon{font-size:22px;line-height:1;flex-shrink:0;}',
+      '#bt-kpi-gs .ks-ping-icon{font-size:31px;line-height:1;flex-shrink:0;}',
       '#bt-kpi-gs .ks-ping-info{display:flex;flex-direction:column;gap:2px;min-width:0;}',
-      '#bt-kpi-gs .ks-ping-status{font-size:16px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;}',
-      '#bt-kpi-gs .ks-ping-sub{font-size:12px;color:'+C.sub+';}',
+      '#bt-kpi-gs .ks-ping-status{font-size:22.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;}',
+      '#bt-kpi-gs .ks-ping-sub{font-size:17px;color:'+C.sub+';}',
       '#bt-kpi-gs .ks-vmw-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;}',
       '#bt-kpi-gs .ks-vmw-cell{display:flex;flex-direction:column;gap:1px;padding:3px 6px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:3px;min-width:0;}',
-      '#bt-kpi-gs .ks-vmw-k{font-size:10px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;}',
-      '#bt-kpi-gs .ks-vmw-v{font-size:13px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:'+C.text+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
-      '#bt-kpi-gs .ks-no-agent-warn{font-size:11px;font-weight:600;color:'+C.crit+';border:1px solid rgba(248,81,73,.2);background:rgba(248,81,73,.07);border-radius:3px;padding:3px 6px;margin-top:5px;flex-shrink:0;}',
+      '#bt-kpi-gs .ks-vmw-k{font-size:14px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-vmw-v{font-size:18px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:'+C.text+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-no-agent-warn{font-size:15.5px;font-weight:600;color:'+C.crit+';border:1px solid rgba(248,81,73,.2);background:rgba(248,81,73,.07);border-radius:3px;padding:3px 6px;margin-top:5px;flex-shrink:0;}',
       '@keyframes ks-pulse{0%,100%{opacity:1;}50%{opacity:.4;}}',
       '#bt-kpi-gs .ks-pulse{animation:ks-pulse 1.5s ease-in-out infinite;}',
       '#bt-kpi-gs .ks-dk-rows{display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-bottom:5px;}',
       '#bt-kpi-gs .ks-dk-row{display:grid;grid-template-columns:20px 1fr 32px;align-items:center;gap:5px;}',
-      '#bt-kpi-gs .ks-dk-lbl{font-size:14px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
+      '#bt-kpi-gs .ks-dk-lbl{font-size:19.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
       '#bt-kpi-gs .ks-dk-bar-bg{height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}',
       '#bt-kpi-gs .ks-dk-bar-fg{height:5px;border-radius:3px;}',
-      '#bt-kpi-gs .ks-dk-pct{font-size:13px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;text-align:right;line-height:1;}',
+      '#bt-kpi-gs .ks-dk-pct{font-size:18px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;text-align:right;line-height:1;}',
       '#bt-kpi-gs .ks-dk-sep{height:1px;background:rgba(255,255,255,0.06);flex-shrink:0;margin:5px 0;}',
       '#bt-kpi-gs .ks-dk-io{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;flex:1;align-content:center;}',
       '#bt-kpi-gs .ks-dk-kv{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 2px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.055);border-radius:4px;}',
-      '#bt-kpi-gs .ks-dk-val{font-size:16px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;text-align:center;}',
-      '#bt-kpi-gs .ks-dk-badge{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 4px;border-radius:2px;text-align:center;line-height:1.3;white-space:nowrap;}',
+      '#bt-kpi-gs .ks-dk-val{font-size:22.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;text-align:center;}',
+      '#bt-kpi-gs .ks-dk-badge{font-size:15.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 4px;border-radius:2px;text-align:center;line-height:1.3;white-space:nowrap;}',
       '#bt-kpi-gs .ks-dk-badge.ok   {border:1px solid rgba(63,185,80,.35);background:rgba(63,185,80,.13);color:'+C.ok+';}',
       '#bt-kpi-gs .ks-dk-badge.warn {border:1px solid rgba(210,153,34,.35);background:rgba(210,153,34,.13);color:'+C.warn+';}',
       '#bt-kpi-gs .ks-dk-badge.crit {border:1px solid rgba(248,81,73,.35);background:rgba(248,81,73,.13);color:'+C.crit+';}',
       '#bt-kpi-gs .ks-dk-badge.muted{border:1px solid rgba(46,51,59,.8);background:rgba(46,51,59,.3);color:'+C.sub+';}',
-      '#bt-kpi-gs .ks-dk-unit{font-size:10px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.06em;text-align:center;}',
+      '#bt-kpi-gs .ks-dk-unit{font-size:14px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.06em;text-align:center;}',
       '#bt-kpi-gs .ks-card.al::before{background:'+C.sub+'}',
       '#bt-kpi-gs .ks-card.al.trig::before{background:'+C.crit+'}',
       '#bt-kpi-gs .ks-al-ok{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:2px;}',
-      '#bt-kpi-gs .ks-al-ok-icon{font-size:22px;line-height:1;}',
-      '#bt-kpi-gs .ks-al-ok-lbl{font-size:12px;font-weight:700;color:'+C.ok+';}',
-      '#bt-kpi-gs .ks-al-ok-sub{font-size:8px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}',
+      '#bt-kpi-gs .ks-al-ok-icon{font-size:31px;line-height:1;}',
+      '#bt-kpi-gs .ks-al-ok-lbl{font-size:17px;font-weight:700;color:'+C.ok+';}',
+      '#bt-kpi-gs .ks-al-ok-sub{font-size:11px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}',
       '#bt-kpi-gs .ks-al-pills{display:flex;flex-direction:column;gap:5px;flex:1;justify-content:center;}',
       '#bt-kpi-gs .ks-al-pill{display:flex;align-items:center;justify-content:space-between;padding:5px 8px;border-radius:4px;gap:6px;}',
       '#bt-kpi-gs .ks-al-pill.crit{background:rgba(248,81,73,.12);border:1px solid rgba(248,81,73,.35);}',
       '#bt-kpi-gs .ks-al-pill.warn{background:rgba(210,153,34,.12);border:1px solid rgba(210,153,34,.35);}',
       '#bt-kpi-gs .ks-al-pill.info{background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.35);}',
       '#bt-kpi-gs .ks-al-pill.muted{background:rgba(110,118,129,.08);border:1px solid rgba(110,118,129,.25);}',
-      '#bt-kpi-gs .ks-al-sev{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}',
+      '#bt-kpi-gs .ks-al-sev{font-size:15.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}',
       '#bt-kpi-gs .ks-al-pill.crit .ks-al-sev{color:'+C.crit+';}',
       '#bt-kpi-gs .ks-al-pill.warn .ks-al-sev{color:'+C.warn+';}',
       '#bt-kpi-gs .ks-al-pill.info .ks-al-sev{color:'+C.info+';}',
       '#bt-kpi-gs .ks-al-pill.muted .ks-al-sev{color:'+C.sub+';}',
-      '#bt-kpi-gs .ks-al-cnt{font-size:19px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
+      '#bt-kpi-gs .ks-al-cnt{font-size:26.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
       '#bt-kpi-gs .ks-al-pill.crit .ks-al-cnt{color:'+C.crit+';}',
       '#bt-kpi-gs .ks-al-pill.warn .ks-al-cnt{color:'+C.warn+';}',
       '#bt-kpi-gs .ks-al-pill.info .ks-al-cnt{color:'+C.info+';}',
@@ -744,8 +744,8 @@
         if(!problems||problems.length===0) {
           return '<div class="ks-sep"></div>'
             +'<div style="display:flex;align-items:center;gap:4px;margin-top:2px;">'
-            +'<span style="color:'+C.ok+';font-size:10px;font-weight:700;">✓ OK</span>'
-            +'<span style="color:'+C.sub+';font-size:9px;">Sem triggers activos</span>'
+            +'<span style="color:'+C.ok+';font-size:14px;font-weight:700;">✓ OK</span>'
+            +'<span style="color:'+C.sub+';font-size:12.5px;">Sem triggers activos</span>'
             +'</div>';
         }
         var sev=parseInt(problems[0].priority,10);
@@ -753,13 +753,13 @@
         var lbl=SEV_LABEL[sev]||'WARN';
         return '<div class="ks-sep"></div>'
           +'<div style="display:flex;align-items:center;gap:4px;margin-top:2px;">'
-          +'<span style="color:'+col+';font-size:10px;font-weight:700;">⚠ '+problems.length+' TRIGGER'+(problems.length>1?'S':'')+'</span>'
-          +'<span style="background:'+col+';color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:2px;">'+lbl+'</span>'
+          +'<span style="color:'+col+';font-size:14px;font-weight:700;">⚠ '+problems.length+' TRIGGER'+(problems.length>1?'S':'')+'</span>'
+          +'<span style="background:'+col+';color:#fff;font-size:11px;font-weight:700;padding:1px 4px;border-radius:2px;">'+lbl+'</span>'
           +'</div>';
       }
       if(d.hasAgent){
         var upStr=U.fmtUptime(d.uptimeSecs);
-        var rebootHtml=(U.isValid(d.uptimeSecs)&&d.uptimeSecs<3600)?'<span style="color:'+C.crit+';font-size:8px;font-weight:700;margin-left:6px;">REBOOT RECENTE</span>':'';
+        var rebootHtml=(U.isValid(d.uptimeSecs)&&d.uptimeSecs<3600)?'<span style="color:'+C.crit+';font-size:11px;font-weight:700;margin-left:6px;">REBOOT RECENTE</span>':'';
         return '<div class="ks-card hlth">'
           +'<div class="ks-head"><div class="ks-head-left"><span class="ks-label">SAÚDE DO SISTEMA</span></div>'+SVG.sourceBadge(d.source,d.hasAgent)+'</div>'
           +'<div class="ks-uptime">'+upStr+rebootHtml+'</div>'
@@ -786,7 +786,7 @@
         pingHtml='<div class="ks-ping-row"><span class="ks-ping-icon" style="opacity:.3;">⚪</span><span class="ks-ping-sub">Ping não disponível</span></div>';
       }
       var powerHtml='';
-      if(d.powerOn!==null){var pwIcon=d.powerOn?'⚡':'💤',pwLabel=d.powerOn?'poweredOn':'poweredOff',pwColor=d.powerOn?C.ok:C.warn;powerHtml='<div style="margin-bottom:4px;"><span style="font-size:9px;font-weight:700;color:'+pwColor+';">'+pwIcon+' '+pwLabel+'</span></div>';}
+      if(d.powerOn!==null){var pwIcon=d.powerOn?'⚡':'💤',pwLabel=d.powerOn?'poweredOn':'poweredOff',pwColor=d.powerOn?C.ok:C.warn;powerHtml='<div style="margin-bottom:4px;"><span style="font-size:12.5px;font-weight:700;color:'+pwColor+';">'+pwIcon+' '+pwLabel+'</span></div>';}
       var vmwRows=[];
       if(d.hvShort)    vmwRows.push(['HYPERVISOR', U.trunc(d.hvShort,16)]);
       if(d.cluster)    vmwRows.push(['CLUSTER',    U.trunc(d.cluster,16)]);
@@ -806,7 +806,7 @@
       var warnHtml='<div class="ks-no-agent-warn">⚠ Agente Zabbix não activo — métricas limitadas</div>';
       return '<div class="ks-card hlth">'
         +'<div class="ks-head"><div class="ks-head-left"><span class="ks-label">SAÚDE DO SISTEMA</span></div>'+SVG.sourceBadge(d.source,d.hasAgent)+'</div>'
-        +(U.isValid(d.uptimeSecs)?'<div class="ks-uptime">'+upStr2+'</div><div class="ks-uptime-lbl">Uptime · '+uptimeSrc+'</div>':'<div class="ks-uptime" style="color:'+C.sub+';font-size:18px;">—</div><div class="ks-uptime-lbl">Uptime indisponível</div>')
+        +(U.isValid(d.uptimeSecs)?'<div class="ks-uptime">'+upStr2+'</div><div class="ks-uptime-lbl">Uptime · '+uptimeSrc+'</div>':'<div class="ks-uptime" style="color:'+C.sub+';font-size:25px;">—</div><div class="ks-uptime-lbl">Uptime indisponível</div>')
         +powerHtml+'<div class="ks-sep"></div>'+pingHtml
         +(vmwHtml?'<div class="ks-sep"></div>'+vmwHtml:'')+warnHtml
         +trigBadge(d.triggers)+'</div>';
@@ -855,7 +855,7 @@
 
       var rowsHtml='';
       if(d.disks.length===0){
-        rowsHtml='<div style="color:'+C.sub+';font-size:10px;padding:4px 0;">Sem dados de disco</div>';
+        rowsHtml='<div style="color:'+C.sub+';font-size:14px;padding:4px 0;">Sem dados de disco</div>';
       } else {
         for(var i=0;i<d.disks.length;i++){
           var vol=d.disks[i];
@@ -870,7 +870,7 @@
           +'<span class="ks-dk-lbl" style="color:'+barColor+';">'+U.esc(vol.label)+'</span>'
           +'<div class="ks-dk-bar-bg"><div class="ks-dk-bar-fg" style="width:'+Math.min(100,pct).toFixed(1)+'%;background:linear-gradient(90deg,rgba('+barRgb+',.5),'+barColor+');"></div></div>'
           +'<span class="ks-dk-pct" style="color:'+barColor+';">'+pct.toFixed(0)+'%</span>'
-          +'<span style="font-size:9px;color:'+CFG.colors.sub+';font-family:\'IBM Plex Mono\',monospace;white-space:nowrap;">'+U.esc(diskCtx)+'</span>'
+          +'<span style="font-size:12.5px;color:'+CFG.colors.sub+';font-family:\'IBM Plex Mono\',monospace;white-space:nowrap;">'+U.esc(diskCtx)+'</span>'
           +'</div>';
         }
       }
@@ -1080,11 +1080,11 @@
 
   if (!hostName) {
     console.log('[KPI-GS v18.1] limpando DOM para', hostName, '| sou current:', _isCurrent());
-    root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:11px;">Selecciona uma VM no selector acima.</span>';
+    root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:15.5px;">Selecciona uma VM no selector acima.</span>';
     return;
   }
 
-  root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:11px;">A carregar métricas…</span>';
+  root.innerHTML = '<span style="color:'+CFG.colors.sub+';font-size:15.5px;">A carregar métricas…</span>';
 
   ZbxApi.getHostId(hostName, signal)
     .then(function (hostInfo) {

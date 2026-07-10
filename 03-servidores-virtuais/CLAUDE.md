@@ -4,7 +4,7 @@
 > **excepto a tabela de thresholds da secção 7**, onde `documentacao/engenharia-do-sistema.md`
 > §6.2 é a única fonte de verdade (decisão do utilizador, 2026-07-02, após auditoria
 > completa de lógica de estado ter encontrado desvio entre as duas tabelas).
-> Última revisão: 2026-07-09 (auditoria de dashboards de VMs — ver §13)
+> Última revisão: 2026-07-10 (Versão A — fontes maiores + títulos de row — ver §13.7)
 
 ---
 
@@ -884,3 +884,21 @@ Continuação da avaliação, de volta à Versão A depois da B (§13.5). Três 
 **3. Triggers deixou de ser Business Text, passou a nativo, e moveu-se para o fim (antes da Ficha).** `l3-triggers.js` **não foi apagado** (ficheiro partilhado — a Versão B continua a usá-lo como um dos seus 4 painéis BT, `manifest-versao-b.json`); só saiu do `manifest.json`/dashboard da Versão A. Novo painel nativo `n3-vm-triggers.json` (mesmo padrão do domínio de APIs — `alexanderzobnin-zabbix-triggers-panel`, `group:$groupid`, `host:$hostid`, `hostField:false` porque já está scoped a 1 VM). Simples de fazer porque `$hostid` já resolve para o nome visível completo (confirmado no §13.4) — nenhuma variável regex extra necessária, ao contrário do `${hostRegex:raw}` que a Fase 7 (APIs) precisou. Reordenado para ficar logo antes da Ficha (era o 2º painel, a seguir ao KPI).
 
 Layout final (topo→fundo): Header → KPI → **Serviços** (full-width, com identidade) → CPU / Memória (lado a lado) → **Disco** (full-width) → **Rede** (full-width, sem scroll) → **Triggers nativo** → Ficha. Validado ao vivo com `VS8000345`: Rede sem scroll, Serviços mostra a identidade + estado real, Triggers nativo mostra "Page 1 of 0" (0 problemas, consistente com o header "Sem triggers activos"), Ficha no fim. Snapshots locais actualizados (`n3/dashboard-completo.json` a partir do dashboard ao vivo, 9 painéis — mesma contagem que antes, só trocou 1 BT por 1 nativo).
+
+### 13.7 Versão A (BT) — fontes maiores, títulos de row, e correcção do overflow que o próprio aumento de fonte introduziu (2026-07-10)
+
+Terceiro pedido consecutivo do utilizador sobre a Versão A (depois de §13.6), com 3 partes:
+
+1. **Aumentar o tamanho da fonte**, "principalmente a ficha do servidor e outras todas na verdade". **Fix**: `bump_fonts.py` (scratchpad) aplicou um multiplicador ×1.4 a todos os `font-size:Npx` dos 8 ficheiros L3 da Versão A (`l3-vm-header.js`, `l3-vm-kpi.js`, `l3-cpu-kpi.js`, `l3-memoria-kpi.js`, `l3-discos-kpi.js`, `l3-rede.js`, `l3-servicos.js`, `l3-ficha-servidor.js`), arredondado a 0.5px — só regex sobre a CSS, nenhuma outra lógica tocada.
+2. **Título antes de cada row**, "para saber do que se trata". **Fix**: painéis nativos `type:"row"` (h=1, w=24, `collapsed:false`) inseridos antes de cada grupo — "Estado geral", "Serviços", "CPU & Memória", "Disco", "Rede", "Problemas", "Ficha do servidor" — via `fix_n3_bt2.py`. Rows não têm ficheiro `.js` próprio (são estrutura pura do dashboard JSON), por isso não entram no `manifest.json`.
+3. **Redistribuir a row da Rede**, que "ainda tem scroll interno e a distribuição dos itens dentro não está uniforme, está disforme" — este pedido specific já tinha CSS pronta de §13.6 (`.nr-stats-grid`/`.nr-stat-cell` uniformes), mas o utilizador reportou que continuava insuficiente.
+
+**Achado na validação ao vivo (não no pedido original, mas causado directamente por ele)**: o aumento de fonte do ponto 1 tornou o conteúdo de 2 painéis mais alto do que a caixa (`gridPos.h`) permitia — reintroduzindo exactamente o tipo de scroll interno que o ponto 3 pedia para eliminar, desta vez por causa da própria fonte maior em vez de CSS desigual:
+- **Rede** (painel 105): conteúdo real 578px vs caixa 408px (h=11) → overflow 170px. **Fix**: `gridPos.h` 11→17 (+6), reposicionando Problemas/Triggers/Ficha para baixo (`fix_rede_height.py`).
+- **Ficha do servidor** (painel 108): conteúdo real 290px vs caixa 218px (h=6) → overflow 72px. **Fix**: `gridPos.h` 6→10 (+4) (`fix_ficha_height.py`).
+
+Ambas as correcções pedidas e confirmadas individualmente pelo utilizador antes do push (regra de confirmação por escrita distinta). Validado ao vivo com `VS8000345` via `scrollHeight - clientHeight` medido por JS em cada painel: Rede e Ficha ficaram com overflow `0`. `n3/dashboard-completo.json` re-sincronizado a partir do dashboard ao vivo (16 entradas — 9 painéis + 7 rows).
+
+**Pendente (overflow residual, não reportado pelo utilizador, não corrigido nesta ronda)**: 3 painéis ficaram com overflow pequeno (Header identidade ~48px, KPI/Estado geral ~26px, CPU · Tempos & Saturação ~21px) — provavelmente o mesmo efeito do bump de fonte, mas bem menor que os 2 casos acima (cortam no máximo meia linha) e fora do que foi pedido. Corrigir numa próxima ronda se o utilizador voltar a notar.
+
+**Lição para o futuro**: qualquer aumento de `font-size` num painel L3 desta pasta deve ser seguido de uma verificação de `scrollHeight` vs `clientHeight` ao vivo (via JS, não só screenshot) antes de dar o layout por fechado — o overflow pode não ser visível no primeiro ecrã do painel se o conteúdo cortado ficar just abaixo da dobra visível do card.

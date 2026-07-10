@@ -200,9 +200,9 @@
     renderErro: function (causa, accao) {
       return '<div style="background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);'
         + 'border-radius:6px;padding:12px 14px;font-family:\'IBM Plex Mono\',monospace;">'
-        + '<div style="color:' + CFG.colors.crit + ';font-size:11px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; CPU</div>'
-        + '<div style="color:' + CFG.colors.text + ';font-size:10px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
-        + '<div style="color:' + CFG.colors.sub + ';font-size:9px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
+        + '<div style="color:' + CFG.colors.crit + ';font-size:15.5px;font-weight:700;margin-bottom:4px;">&#9888; ERRO &middot; CPU</div>'
+        + '<div style="color:' + CFG.colors.text + ';font-size:14px;margin-bottom:3px;">' + U.esc(causa) + '</div>'
+        + '<div style="color:' + CFG.colors.sub + ';font-size:12.5px;">' + U.esc(accao || 'Verificar conectividade ao proxy Zabbix.') + '</div>'
         + '</div>';
     },
 
@@ -412,17 +412,17 @@
       // Cabeçalho
       '#bt-kpi-cpu3 .kc3-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:4px;flex-shrink:0;}',
       '#bt-kpi-cpu3 .kc3-head-left{display:flex;align-items:center;gap:5px;min-width:0;}',
-      '#bt-kpi-cpu3 .kc3-label{font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
+      '#bt-kpi-cpu3 .kc3-label{font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:'+C.sub+';white-space:nowrap;}',
 
       // Badges de fonte
-      '#bt-kpi-cpu3 .kc3-badge{font-size:9.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
+      '#bt-kpi-cpu3 .kc3-badge{font-size:13.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 7px;border-radius:3px;white-space:nowrap;line-height:1.3;}',
       '#bt-kpi-cpu3 .kc3-badge.agente  {border:1px solid rgba(63,185,80,.3);background:rgba(63,185,80,.13);color:'+C.ok+';}',
       '#bt-kpi-cpu3 .kc3-badge.vmware  {border:1px solid rgba(88,166,255,.3);background:rgba(88,166,255,.13);color:'+C.info+';}',
       '#bt-kpi-cpu3 .kc3-badge.no-agent{border:1px solid rgba(248,81,73,.3);background:rgba(248,81,73,.13);color:'+C.crit+';}',
 
       // ── COL A · BREAKDOWN DE TEMPOS ───────────────────────────────────────
       // Título de secção
-      '#bt-kpi-cpu3 .kc3-section-title{font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:'+C.sub+';margin-bottom:7px;flex-shrink:0;}',
+      '#bt-kpi-cpu3 .kc3-section-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:'+C.sub+';margin-bottom:7px;flex-shrink:0;}',
 
       // Cada linha de breakdown: barra horizontal + label + valor
       '#bt-kpi-cpu3 .kc3-bk-list{display:flex;flex-direction:column;gap:4px;flex-shrink:0;margin-bottom:10px;}',
@@ -430,24 +430,24 @@
       '#bt-kpi-cpu3 .kc3-bk-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0;}',
       '#bt-kpi-cpu3 .kc3-bk-bar-wrap{flex:1;height:7px;background:rgba(255,255,255,0.07);border-radius:4px;overflow:hidden;}',
       '#bt-kpi-cpu3 .kc3-bk-bar-fill{height:100%;border-radius:4px;transition:width .3s;}',
-      '#bt-kpi-cpu3 .kc3-bk-name{font-size:9px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.06em;width:68px;flex-shrink:0;}',
-      '#bt-kpi-cpu3 .kc3-bk-sub{font-size:8px;color:'+C.sub+';opacity:.7;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
-      '#bt-kpi-cpu3 .kc3-bk-val{font-size:11px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:'+C.text+';width:38px;text-align:right;flex-shrink:0;}',
+      '#bt-kpi-cpu3 .kc3-bk-name{font-size:12.5px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.06em;width:68px;flex-shrink:0;}',
+      '#bt-kpi-cpu3 .kc3-bk-sub{font-size:11px;color:'+C.sub+';opacity:.7;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
+      '#bt-kpi-cpu3 .kc3-bk-val{font-size:15.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:'+C.text+';width:38px;text-align:right;flex-shrink:0;}',
 
       // Separador
       '#bt-kpi-cpu3 .kc3-sep{height:1px;background:rgba(255,255,255,0.06);flex-shrink:0;margin:6px 0 8px;}',
 
       // ── COL A · SATURAÇÃO DO PROCESSADOR ─────────────────────────────────
-      '#bt-kpi-cpu3 .kc3-sat-title{font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:'+C.sub+';margin-bottom:7px;flex-shrink:0;}',
+      '#bt-kpi-cpu3 .kc3-sat-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:'+C.sub+';margin-bottom:7px;flex-shrink:0;}',
       '#bt-kpi-cpu3 .kc3-sat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex-shrink:0;}',
       '#bt-kpi-cpu3 .kc3-sat-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px 7px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:5px;}',
-      '#bt-kpi-cpu3 .kc3-sat-val{font-size:24px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
-      '#bt-kpi-cpu3 .kc3-sat-badge{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;line-height:1.3;}',
+      '#bt-kpi-cpu3 .kc3-sat-val{font-size:33.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
+      '#bt-kpi-cpu3 .kc3-sat-badge{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:3px;line-height:1.3;}',
       '#bt-kpi-cpu3 .kc3-sat-badge.ok   {border:1px solid rgba(63,185,80,.35);background:rgba(63,185,80,.15);color:'+C.ok+';}',
       '#bt-kpi-cpu3 .kc3-sat-badge.warn {border:1px solid rgba(210,153,34,.35);background:rgba(210,153,34,.15);color:'+C.warn+';}',
       '#bt-kpi-cpu3 .kc3-sat-badge.crit {border:1px solid rgba(248,81,73,.35);background:rgba(248,81,73,.15);color:'+C.crit+';}',
       '#bt-kpi-cpu3 .kc3-sat-badge.muted{border:1px solid rgba(46,51,59,.8);background:rgba(46,51,59,.3);color:'+C.sub+';}',
-      '#bt-kpi-cpu3 .kc3-sat-key{font-size:8px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;text-align:center;line-height:1.3;}',
+      '#bt-kpi-cpu3 .kc3-sat-key{font-size:11px;color:'+C.sub+';text-transform:uppercase;letter-spacing:.07em;text-align:center;line-height:1.3;}',
 
       // ── COL B · VMWARE CONTENÇÃO NO HOST ─────────────────────────────────
       // Cada métrica VMware: linha com label + valor grande + badge + texto descritivo
@@ -455,18 +455,18 @@
       '#bt-kpi-cpu3 .kc3-vmw-item{display:flex;flex-direction:column;padding:8px 0 10px;border-bottom:1px solid rgba(255,255,255,0.06);}',
       '#bt-kpi-cpu3 .kc3-vmw-item:last-child{border-bottom:none;}',
       '#bt-kpi-cpu3 .kc3-vmw-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;}',
-      '#bt-kpi-cpu3 .kc3-vmw-metric-name{font-size:9.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:'+C.sub+';}',
-      '#bt-kpi-cpu3 .kc3-vmw-metric-val{font-size:16px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
+      '#bt-kpi-cpu3 .kc3-vmw-metric-name{font-size:13.5px;font-weight:600;letter-spacing:.10em;text-transform:uppercase;color:'+C.sub+';}',
+      '#bt-kpi-cpu3 .kc3-vmw-metric-val{font-size:22.5px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;line-height:1;}',
       '#bt-kpi-cpu3 .kc3-vmw-mid{display:flex;align-items:center;gap:8px;margin-bottom:5px;}',
       '#bt-kpi-cpu3 .kc3-vmw-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:3px;overflow:hidden;}',
       '#bt-kpi-cpu3 .kc3-vmw-bar-fill{height:100%;border-radius:3px;transition:width .3s;}',
-      '#bt-kpi-cpu3 .kc3-vmw-badge{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;line-height:1.3;flex-shrink:0;}',
+      '#bt-kpi-cpu3 .kc3-vmw-badge{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:3px;line-height:1.3;flex-shrink:0;}',
       '#bt-kpi-cpu3 .kc3-vmw-badge.ok   {border:1px solid rgba(63,185,80,.35);background:rgba(63,185,80,.12);color:'+C.ok+';}',
       '#bt-kpi-cpu3 .kc3-vmw-badge.warn {border:1px solid rgba(210,153,34,.35);background:rgba(210,153,34,.12);color:'+C.warn+';}',
       '#bt-kpi-cpu3 .kc3-vmw-badge.crit {border:1px solid rgba(248,81,73,.35);background:rgba(248,81,73,.12);color:'+C.crit+';}',
       '#bt-kpi-cpu3 .kc3-vmw-badge.muted{border:1px solid rgba(46,51,59,.8);background:rgba(46,51,59,.3);color:'+C.sub+';}',
-      '#bt-kpi-cpu3 .kc3-vmw-desc{font-size:9px;color:'+C.sub+';line-height:1.4;}',
-      '#bt-kpi-cpu3 .kc3-vmw-nodata{font-size:10px;color:'+C.sub+';padding:12px 0;text-align:center;}',
+      '#bt-kpi-cpu3 .kc3-vmw-desc{font-size:12.5px;color:'+C.sub+';line-height:1.4;}',
+      '#bt-kpi-cpu3 .kc3-vmw-nodata{font-size:14px;color:'+C.sub+';padding:12px 0;text-align:center;}',
 
       // Pulso crítico
       '@keyframes kc3-pulse{0%,100%{opacity:1;}50%{opacity:.5;}}',
@@ -762,11 +762,11 @@
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
 
   if (!hostName) {
-    root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:11px;">Selecciona uma VM no selector acima.</span>';
+    root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:15.5px;">Selecciona uma VM no selector acima.</span>';
     return;
   }
 
-  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:11px;">A carregar CPU…</span>';
+  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:15.5px;">A carregar CPU…</span>';
 
   ZbxApi.getHostId(hostName)
     .then(function (hostInfo) {
