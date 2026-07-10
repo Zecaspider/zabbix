@@ -212,7 +212,7 @@ function l3kpiTile(opts) {
   const cardSt = state === 'crit' || state === 'down' ? 'down' : state
   const valueColor = state === 'mute' ? 'var(--bpc-mute)' : accent
   const sub = opts.sub
-    ? '<div style="font-size:1.0rem;color:var(--bpc-mute);line-height:1.35">' + opts.sub + '</div>'
+    ? '<div style="font-size:1.15rem;color:var(--bpc-mute);line-height:1.35">' + opts.sub + '</div>'
     : ''
   const extra = opts.extra || ''
   const icon = opts.icon
@@ -220,10 +220,10 @@ function l3kpiTile(opts) {
     : ''
   return '<div class="bpc bpc-card state-' + cardSt + '"'
     + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px 20px">'
-    + '<span class="bpc-label" style="font-size:1.05rem;letter-spacing:.02em;text-transform:none;font-weight:700;color:#CDD9E5">' + icon + opts.label + '</span>'
+    + '<span class="bpc-label" style="font-size:1.2rem;letter-spacing:.02em;text-transform:none;font-weight:700;color:#CDD9E5">' + icon + opts.label + '</span>'
     + '<div class="bpc-flex" style="align-items:baseline;gap:10px">'
-    +   '<span style="font-size:2.3rem;font-weight:800;line-height:1.05;color:' + valueColor + '">' + opts.value + '</span>'
-    +   (opts.valueSuffix ? '<span style="font-size:1.05rem;color:var(--bpc-mute)">' + opts.valueSuffix + '</span>' : '')
+    +   '<span style="font-size:2.9rem;font-weight:800;line-height:1.05;color:' + valueColor + '">' + opts.value + '</span>'
+    +   (opts.valueSuffix ? '<span style="font-size:1.2rem;color:var(--bpc-mute)">' + opts.valueSuffix + '</span>' : '')
     + '</div>'
     + extra
     + sub
@@ -236,8 +236,8 @@ function l3kpiTile(opts) {
 // diferentes (site fora do ar vs disco a 89%). Ver documentacao/mapa-apps-vms.md §1.8.
 function l3kpiDualStat(label, value, color) {
   return '<div style="flex:1;text-align:center;min-width:0">'
-    + '<div style="font-size:1.6rem;font-weight:800;line-height:1.1;color:' + color + '">' + value + '</div>'
-    + '<div style="font-size:.78rem;color:var(--bpc-mute);margin-top:2px;white-space:nowrap">' + label + '</div>'
+    + '<div style="font-size:2.9rem;font-weight:800;line-height:1.05;color:' + color + '">' + value + '</div>'
+    + '<div style="font-size:1.0rem;color:var(--bpc-mute);margin-top:4px;white-space:nowrap">' + label + '</div>'
     + '</div>'
 }
 
@@ -247,13 +247,13 @@ function l3kpiProblemsTile(opts) {
   const icon = '<span style="display:inline-flex;color:' + accent + ';margin-right:6px;vertical-align:-1px">' + L3KPI_ICONS.bell + '</span>'
   return '<div class="bpc bpc-card state-' + cardSt + '"'
     + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px 14px">'
-    + '<span class="bpc-label" style="font-size:1.05rem;letter-spacing:.02em;text-transform:none;font-weight:700;color:#CDD9E5">' + icon + 'Problemas activos</span>'
+    + '<span class="bpc-label" style="font-size:1.2rem;letter-spacing:.02em;text-transform:none;font-weight:700;color:#CDD9E5">' + icon + 'Problemas activos</span>'
     + '<div style="display:flex;align-items:stretch">'
     +   l3kpiDualStat('externo', opts.extValue, opts.extColor)
     +   '<div style="width:1px;background:rgba(255,255,255,.12);margin:1px 10px"></div>'
     +   l3kpiDualStat('infra (VMs)', opts.infraValue, opts.infraColor)
     + '</div>'
-    + '<div style="font-size:.85rem;color:var(--bpc-mute);text-align:center;line-height:1.3">' + opts.sub + '</div>'
+    + '<div style="font-size:1.0rem;color:var(--bpc-mute);text-align:center;line-height:1.3">' + opts.sub + '</div>'
     + '</div>'
 }
 
@@ -269,7 +269,7 @@ function l3kpiMiniBar(buckets) {
     return '<div style="flex:1;height:10px;border-radius:1px;background:' + colorOf(b) + '"></div>'
   }).join('')
   return '<div style="display:flex;gap:1.5px;margin-top:2px">' + bars + '</div>'
-    + '<div style="font-size:.85rem;color:#5f5e5a;margin-top:2px">últimas 24h</div>'
+    + '<div style="font-size:.95rem;color:#5f5e5a;margin-top:2px">últimas 24h</div>'
 }
 
 function l3kpiRender(el, data) {
@@ -305,7 +305,7 @@ function l3kpiRender(el, data) {
     : vmCount === 1 ? '1 VM ligada' : vmCount + ' VMs ligadas'
   const card0 = l3kpiTile({
     label: 'Aplicação', icon: L3KPI_ICONS.app,
-    value: '<span style="font-size:1.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:280px">' + nome + '</span>',
+    value: '<span style="font-size:1.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;max-width:280px">' + nome + '</span>',
     state: 'ok',
     sub: (servico ? 'Serviço: ' + esc(servico) : '') + (servico && vmSub ? ' · ' : '') + vmSub,
   })
