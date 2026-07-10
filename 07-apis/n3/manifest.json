@@ -52,7 +52,7 @@
       "file": "n3-app-vms-tabela.json",
       "id": 102,
       "role": "content",
-      "title": "VMs de hospedagem (tabela nativa MySQL)"
+      "title": "VMs de hospedagem — alertas de infraestrutura"
     },
     {
       "file": "n3-app-triggers.json",

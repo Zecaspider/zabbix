@@ -395,6 +395,47 @@ para estes hosts. Solução: os defaults do template ficam **hardcoded** em
 ao vivo pelo próprio `window.BPC.rpc`: SACC → conteúdo "BPC-SACC", tempo 5s/8s,
 alerta 3 falhas, 4 VMs, níveis L1/L2/L3 activos. Push apis-n3 v41.
 
+## 1.8 N3 — aviso cruzado entre "Problemas activos" (card 4) e a tabela de VMs (2026-07-10)
+
+Achado do utilizador ao testar o SACC e o eBankit: o card 4 "Problemas activos"
+(e o painel nativo de triggers, id 105) mostravam **0 problemas / "No problems
+found"**, enquanto a tabela "VMs de hospedagem" (id 102, §1.6) tinha uma linha
+com triggers activos — lido à primeira vista como contradição ("o topo diz que
+está tudo bem, a tabela diz que não").
+
+**Não é bug de dados — são dois escopos diferentes, por design**: o card 4 e o
+painel 105 filtram só pelo host sintético `${app}` (checks externos L1-L4 —
+disponibilidade/velocidade/conteúdo/autenticação); a tabela de VMs filtra pelas
+VMs por trás (triggers de infra — agente/ICMP/CPU/RAM/disco/serviços).
+Confirmado ao vivo com dois casos reais:
+- **SACC**: `app-sacc` → 0 triggers; VM `VS8000789` → 1 trigger activo
+  ("Apache: Failed to fetch status page").
+- **eBankit**: `app-internet-bank` → 0 triggers; VM `VS9000358` ("eBanking
+  Audit System Prod") → **2 triggers activos** ("Unavailable by ICMP ping" +
+  "Zabbix agent is not available") — esta VM está genuinamente inacessível há
+  meses (já conhecido do 7.0.6), só visível na tabela.
+
+**Correcção aplicada (opção escolhida pelo utilizador: manter os 2 escopos
+separados, não fundir numa métrica só — fundir misturaria severidades muito
+diferentes, ex. site fora do ar vs disco a 89%)**:
+1. **Rótulo explícito**: card 4 passa de "Problemas activos" para "Problemas
+   activos (externo)"; sub-texto do estado saudável passa de "nenhum — tudo
+   saudável" (frase que sugeria segurança total) para "nenhum nos checks
+   externos". Título da tabela de VMs passa de "VMs de hospedagem" para "VMs
+   de hospedagem — alertas de infraestrutura".
+2. **Aviso cruzado**: `l3-app-kpi.js` ganhou `l3kpiFetchVmInfo` (substitui
+   `l3kpiFetchVmCount`), que além do nº de VMs já existente também conta
+   triggers activos nas VMs (`trigger.get` sobre os hostids das VMs, mesma
+   descoberta por tag `servico=` do card 0). Quando `problemCount > 0`, o
+   card 4 mostra uma linha extra em âmbar "⚠ +N alerta(s) de infra na(s)
+   VM(s) ↓" — este número **nunca** entra na contagem principal do card
+   (que continua só L1-L4), só sinaliza que a tabela abaixo tem algo.
+
+Validado ao vivo (browser, ambos os apps): SACC e eBankit mostram "0
+problemas · nenhum nos checks externos" + aviso "⚠ +N alertas de infra"
+consistente com a tabela. Push apis-n3 (painéis 101 e 102, manifest
+actualizado com o título novo do painel 102).
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já

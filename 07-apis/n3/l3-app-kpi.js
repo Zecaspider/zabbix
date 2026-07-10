@@ -1,5 +1,5 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · CARTÕES DE ESTADO  v3.0         ║
+// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · CARTÕES DE ESTADO  v3.1         ║
 // ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║
 // ║                                                                          ║
 // ║  VARIÁVEIS GRAFANA REQUERIDAS                                           ║
@@ -11,7 +11,14 @@
 // ║    1. Está no ar?          (acesso à página — cenário L1) + mini-24h    ║
 // ║    2. Velocidade           (tempo de resposta + sparkline 6h — L2)      ║
 // ║    3. Conteúdo da página   (texto esperado — mostra a string real)      ║
-// ║    4. Problemas activos    (contagem + idade do mais antigo)            ║
+// ║    4. Problemas activos (externo) (contagem + idade do mais antigo)     ║
+// ║                                                                          ║
+// ║  v3.1 — card 4 é explicitamente SÓ os checks externos (L1-L4 do host    ║
+// ║  sintético); NUNCA inclui triggers de infra das VMs (escopo diferente   ║
+// ║  do painel nativo "VMs de hospedagem — alertas de infraestrutura").     ║
+// ║  Quando essas VMs têm algo activo, mostra um aviso cruzado "⚠ +N        ║
+// ║  alerta(s) de infra ↓" no próprio card, para não depender do utilizador ║
+// ║  reparar ao descer a página. Ver documentacao/mapa-apps-vms.md §1.8.    ║
 // ║                                                                          ║
 // ║  VMs ligadas: host.get filtrado por tags servico=<mesmo valor do app>,  ║
 // ║  excluindo o próprio host app-* — funciona para sistemas multi-VM       ║
@@ -162,15 +169,29 @@ async function l3kpiFetchDayBuckets(rpc, itemid) {
   return buckets
 }
 
-// Nº de VMs ligadas a este serviço — todos os hosts com a mesma tag servico=,
-// excluindo o próprio host app-* (que é o monitor sintético, não uma VM).
-async function l3kpiFetchVmCount(rpc, servico, ownHost) {
-  if (!servico) return 0
+// VMs ligadas a este serviço (mesma tag servico=, excluindo o próprio host
+// app-* que é o monitor sintético) + quantos problemas de infra (triggers)
+// essas VMs têm activos agora — usado para avisar no card 4 que a tabela
+// "VMs de hospedagem" tem algo, mesmo quando os checks externos (L1-L4)
+// estão todos OK. São escopos diferentes de propósito (ver
+// documentacao/mapa-apps-vms.md §1.8) — este count nunca entra na contagem
+// do próprio card 4, só acciona o aviso cruzado.
+async function l3kpiFetchVmInfo(rpc, servico, ownHost) {
+  if (!servico) return { count: 0, problemCount: 0 }
   const hosts = await rpc('host.get', {
-    output: ['host'],
+    output: ['hostid', 'host'],
     tags: [{ tag: 'servico', value: servico, operator: 1 }],
   })
-  return hosts.filter(function (h) { return h.host !== ownHost && h.host.indexOf('app-') !== 0 }).length
+  const vms = hosts.filter(function (h) { return h.host !== ownHost && h.host.indexOf('app-') !== 0 })
+  if (!vms.length) return { count: 0, problemCount: 0 }
+  const trigs = await rpc('trigger.get', {
+    hostids: vms.map(function (h) { return h.hostid }),
+    filter: { value: 1 },
+    output: ['triggerid'],
+    monitored: true,
+    only_true: true,
+  })
+  return { count: vms.length, problemCount: trigs.length }
 }
 
 async function l3kpiFetchStringCheck(rpc, hostid) {
@@ -251,7 +272,7 @@ function l3kpiRender(el, data) {
   // ── 0. Aplicação (identidade) ──
   const servico = l3kpiTagVal(host.tags, 'servico')
   const nome = esc(String(host.name || '').replace(' - Monitor da URL', ''))
-  const vmCount = data.vmCount
+  const vmCount = data.vmInfo.count
   const vmSub = vmCount === 0 ? 'sem VM interna (externo/parceiro)'
     : vmCount === 1 ? '1 VM ligada' : vmCount + ' VMs ligadas'
   const card0 = l3kpiTile({
@@ -344,25 +365,35 @@ function l3kpiRender(el, data) {
     })
   }
 
-  // ── 4. Problemas activos ──
+  // ── 4. Problemas activos (checks externos — L1-L4, escopo = só o host
+  // sintético) ──
   // Nota: trigger.value continua 1 mesmo com o host em manutenção (supressão
   // silencia notificações/painel nativo, não o valor do trigger) — por isso
   // este card trata a manutenção à parte, para não contradizer os cards 1-3.
+  // Deliberadamente NÃO inclui triggers das VMs (escopo diferente, ver
+  // documentacao/mapa-apps-vms.md §1.8) — em vez disso avisa via vmWarning
+  // quando a tabela "VMs de hospedagem" (infra) tem algo activo.
   const total = trigs.length
   const oldest = total > 0 ? Math.min.apply(null, trigs.map(function (t) { return parseInt(t.lastchange, 10) })) : null
+  const vmProblems = data.vmInfo.problemCount
+  const vmWarning = vmProblems > 0
+    ? '<div style="font-size:.85rem;color:' + window.BPC.state.color('warn') + ';margin-top:4px;font-weight:600">'
+      + '⚠ +' + vmProblems + (vmProblems === 1 ? ' alerta de infra na VM ↓' : ' alertas de infra nas VMs ↓') + '</div>'
+    : ''
   let card4
   if (inMaintenance) {
     card4 = l3kpiTile({
-      label: 'Problemas activos', icon: L3KPI_ICONS.bell, value: String(total), valueSuffix: total === 1 ? 'suprimido' : 'suprimidos',
-      state: 'mute', sub: 'host em manutenção — notificações silenciadas',
+      label: 'Problemas activos (externo)', icon: L3KPI_ICONS.bell, value: String(total), valueSuffix: total === 1 ? 'suprimido' : 'suprimidos',
+      state: 'mute', sub: 'host em manutenção — notificações silenciadas', extra: vmWarning,
     })
   } else {
     card4 = l3kpiTile({
-      label: 'Problemas activos', icon: L3KPI_ICONS.bell,
+      label: 'Problemas activos (externo)', icon: L3KPI_ICONS.bell,
       value: String(total),
       valueSuffix: total === 1 ? 'problema' : 'problemas',
       state: l1Fail ? 'down' : total > 0 ? 'warn' : 'ok',
-      sub: total > 0 ? 'o mais antigo começou ' + l3kpiAgeLabel(oldest) : 'nenhum — tudo saudável',
+      sub: total > 0 ? 'o mais antigo começou ' + l3kpiAgeLabel(oldest) : 'nenhum nos checks externos',
+      extra: vmWarning,
     })
   }
 
@@ -402,10 +433,10 @@ function l3kpiLoad(rpc) {
     return Promise.all([
       l3kpiFetchItems(rpc, host.hostid),
       l3kpiFetchTriggers(rpc, host.hostid),
-      l3kpiFetchVmCount(rpc, servico, host.host),
+      l3kpiFetchVmInfo(rpc, servico, host.host),
       l3kpiFetchStringCheck(rpc, host.hostid),
     ]).then(function (r) {
-      const items = r[0], trigs = r[1], vmCount = r[2], stringCheck = r[3]
+      const items = r[0], trigs = r[1], vmInfo = r[2], stringCheck = r[3]
       const l2Item = items.find(function (i) {
         return i.key_ === 'web.test.time[L2-Performance,Medir tempo de resposta,resp]'
       })
@@ -418,7 +449,7 @@ function l3kpiLoad(rpc) {
       ]).then(function (r2) {
         l3kpiRender(el, {
           items: items, trigs: trigs, spark: r2[0], buckets: r2[1],
-          vmCount: vmCount, stringCheck: stringCheck, host: host,
+          vmInfo: vmInfo, stringCheck: stringCheck, host: host,
         })
       })
     })
