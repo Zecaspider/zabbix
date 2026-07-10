@@ -1,17 +1,14 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · FICHA COMPLETA  v1.0             ║
+// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · FICHA DA APLICAÇÃO  v2.0         ║
 // ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║
 // ║                                                                          ║
 // ║  VARIÁVEIS GRAFANA REQUERIDAS                                           ║
 // ║    var-app — visible name do host app-* seleccionado (dropdown)        ║
 // ║                                                                          ║
-// ║  Nome, URL ({$URL}), VMs ligadas (tag servico= partilhada — mesmo       ║
-// ║  método do l3-app-vm.js) e serviços monitorizados por VM                ║
-// ║  (item service.info["X",state], 0=a correr — só mostra o que existe,   ║
-// ║  nunca inventa; muitas VMs não têm nenhum item deste tipo).             ║
-// ║                                                                          ║
-// ║  CAVEAT: colisão de sigla conhecida em "servico" (ex. SGC) — ver         ║
-// ║  documentacao/reconciliacao-50-sistemas-excel.md §3-bis.                 ║
+// ║  v2 — cartão de identidade da APLICAÇÃO (não das VMs — essas vivem na    ║
+// ║  tabela "VMs de hospedagem"). Identidade + endpoint + configuração de    ║
+// ║  monitoria (conteúdo esperado, limiares de tempo, regra de alerta,       ║
+// ║  níveis de verificação activos). Sem a lista de serviços por VM da v1.   ║
 // ║                                                                          ║
 // ║  [1] CFG   [2] HELPERS   [3] FETCH   [4] RENDER   [5] BOOTSTRAP        ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
@@ -24,6 +21,21 @@
 const CFG_L3FICHA = {
   elementId: 'bpc-app-ficha',
   refreshMs: 120000,
+  // Defaults do template BPC Web Monitoring v2 (14715), usados quando o host
+  // não os sobrepõe (sistemas internos). O proxy BPC.rpc bloqueia template.get,
+  // por isso não se lêem ao vivo — manter em sincronia se o template mudar.
+  // Sistemas externos sobrepõem estes valores por macro de host.
+  templateDefaults: {
+    '{$FAILS.BEFORE.ALERT}': '3',
+    '{$TEMPO.NORMAL}': '5s',
+    '{$TEMPO.LENTO}': '8s',
+  },
+  niveis: [
+    { key: 'L1', label: 'Disponibilidade' },
+    { key: 'L2', label: 'Performance' },
+    { key: 'L3', label: 'Conteúdo' },
+    { key: 'L4', label: 'Autenticação' },
+  ],
 }
 
 
@@ -40,10 +52,8 @@ function l3fichaTagVal(tags, key) {
   return t ? t.value : ''
 }
 
-// Extrai o nome do serviço da chave service.info["X",state]
-function l3fichaServiceName(key) {
-  const m = /service\.info\["(.+?)",state\]/.exec(key)
-  return m ? m[1] : key
+function l3fichaMacro(map, name) {
+  return (map && map[name] != null) ? map[name] : ''
 }
 
 
@@ -60,34 +70,34 @@ async function l3fichaFetchHost(rpc, appName) {
   return hosts[0] || null
 }
 
-async function l3fichaFetchUrl(rpc, hostid) {
-  const macros = await rpc('usermacro.get', { hostids: [hostid], output: ['macro', 'value'] })
-  const m = macros.find(function (x) { return x.macro === '{$URL}' })
-  return m ? m.value : ''
-}
+async function l3fichaFetchAll(rpc, host) {
+  const servico = l3fichaTagVal(host.tags, 'servico')
+  const r = await Promise.all([
+    rpc('usermacro.get', { hostids: [host.hostid], output: ['macro', 'value'] }),
+    servico
+      ? rpc('host.get', { output: ['host'], tags: [{ tag: 'servico', value: servico, operator: 1 }] })
+      : Promise.resolve([]),
+    rpc('item.get', {
+      hostids: [host.hostid], webitems: true,
+      search: { key_: 'web.test.fail[' },
+      output: ['key_', 'status'],
+    }),
+  ])
+  // Macro efectiva = default do template (hardcoded, ver CFG), sobreposto pela
+  // macro de host. (template.get está bloqueado pelo proxy BPC.rpc → 500.)
+  const map = Object.assign({}, CFG_L3FICHA.templateDefaults)
+  ;(r[0] || []).forEach(function (m) { map[m.macro] = m.value })
 
-async function l3fichaFetchVmNames(rpc, servico, ownHost) {
-  if (!servico) return []
-  const hosts = await rpc('host.get', {
-    output: ['host'],
-    tags: [{ tag: 'servico', value: servico, operator: 1 }],
+  const vmCount = (r[1] || []).filter(function (h) {
+    return h.host !== host.host && h.host.indexOf('app-') !== 0
+  }).length
+  // nivel activo = existe item web.test.fail[LN-...] com status=0 (habilitado)
+  const activos = {}
+  ;(r[2] || []).forEach(function (i) {
+    const m = /web\.test\.fail\[(L\d)/.exec(i.key_)
+    if (m && i.status === '0') activos[m[1]] = true
   })
-  return hosts
-    .filter(function (h) { return h.host !== ownHost && h.host.indexOf('app-') !== 0 })
-    .map(function (h) { return h.host })
-}
-
-async function l3fichaFetchVmDetail(rpc, vmName) {
-  const hosts = await rpc('host.get', { filter: { host: [vmName] }, output: ['hostid', 'host', 'name'] })
-  if (!hosts[0]) return null
-  const host = hosts[0]
-  const items = await rpc('item.get', {
-    hostids: [host.hostid], output: ['key_', 'lastvalue'], search: { key_: 'service.info' },
-  })
-  const services = items.map(function (i) {
-    return { name: l3fichaServiceName(i.key_), running: i.lastvalue === '0' }
-  })
-  return { host: host.host, name: host.name, services: services }
+  return { macros: map, vmCount: vmCount, activos: activos }
 }
 
 
@@ -95,66 +105,99 @@ async function l3fichaFetchVmDetail(rpc, vmName) {
 // [4] RENDER
 // ────────────────────────────────────────────────────────────────────────────
 
-function l3fichaServiceBadge(svc) {
-  const esc = window.BPC_SHARED.esc
-  const color = svc.running ? window.BPC.state.color('ok') : window.BPC.state.color('warn')
-  return '<span style="display:inline-flex;align-items:center;gap:4px;font-size:.82rem;color:var(--bpc-mute);'
-    + 'border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:2px 8px;margin:2px 4px 2px 0">'
-    + '<span style="width:6px;height:6px;border-radius:50%;background:' + color + ';flex-shrink:0"></span>'
-    + esc(svc.name) + '</span>'
+function l3fichaPill(label, active) {
+  const color = active ? window.BPC.state.color('ok') : 'var(--bpc-mute)'
+  const bg = active ? 'rgba(63,185,80,.12)' : 'rgba(255,255,255,.04)'
+  const bd = active ? 'rgba(63,185,80,.35)' : 'rgba(255,255,255,.10)'
+  const dot = '<span style="width:6px;height:6px;border-radius:50%;background:' + color + ';flex:none"></span>'
+  return '<span style="display:inline-flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;'
+    + 'color:' + (active ? '#CDD9E5' : 'var(--bpc-mute)') + ';background:' + bg + ';border:1px solid ' + bd + ';'
+    + 'border-radius:20px;padding:3px 11px;margin:0 6px 0 0">' + dot + label + '</span>'
 }
 
-function l3fichaVmBlock(vm, isPrimary) {
-  const esc = window.BPC_SHARED.esc
-  const iconVm = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7F77DD" stroke-width="2" style="margin-top:2px;flex-shrink:0">'
-    + '<rect x="3" y="4" width="18" height="7" rx="1"/><rect x="3" y="13" width="18" height="7" rx="1"/>'
-    + '<circle cx="7" cy="7.5" r=".6" fill="#7F77DD"/><circle cx="7" cy="16.5" r=".6" fill="#7F77DD"/></svg>'
-  const servicesHtml = vm.services.length
-    ? vm.services.map(l3fichaServiceBadge).join('')
-    : '<span style="font-size:.85rem;color:var(--bpc-mute)">sem items de serviço monitorizados nesta VM</span>'
-  return '<div style="border:1px solid rgba(255,255,255,.10);border-radius:6px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start;margin-bottom:8px">'
-    + iconVm
-    + '<div style="min-width:0;flex:1">'
-    +   '<div style="font-size:.95rem;color:#E6EDF3;font-weight:700">' + esc(vm.host)
-    +     (isPrimary ? '<span style="color:var(--bpc-mute);font-weight:400"> — principal</span>' : '') + '</div>'
-    +   '<div style="font-size:.82rem;color:var(--bpc-mute);margin:2px 0 6px">' + esc(vm.name) + '</div>'
-    +   '<div>' + servicesHtml + '</div>'
-    + '</div>'
+function l3fichaFact(label, valueHtml) {
+  return '<div style="min-width:0">'
+    + '<div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--bpc-mute);margin-bottom:3px">' + label + '</div>'
+    + '<div style="font-size:.98rem;color:#E6EDF3;line-height:1.35">' + valueHtml + '</div>'
     + '</div>'
 }
 
-function l3fichaFieldBlock(iconSvg, label, value, isLink) {
-  const esc = window.BPC_SHARED.esc
-  const valHtml = isLink && value
-    ? '<a href="' + esc(value) + '" target="_blank" class="bpc-link">' + esc(value) + '</a>'
-    : esc(value || '—')
-  return '<div style="display:flex;gap:8px;align-items:flex-start">'
-    + '<span style="margin-top:2px;flex-shrink:0;color:var(--bpc-mute)">' + iconSvg + '</span>'
-    + '<div><span style="font-size:.8rem;color:var(--bpc-mute)">' + label + '</span><br>'
-    +   '<span style="font-size:.95rem;color:#E6EDF3">' + valHtml + '</span></div>'
-    + '</div>'
-}
-
-function l3fichaRender(el, host, url, vms) {
+function l3fichaRender(el, host, data) {
   const esc = window.BPC_SHARED.esc
   const nome = String(host.name || '').replace(' - Monitor da URL', '')
   const servico = l3fichaTagVal(host.tags, 'servico')
-  const iconApp = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/></svg>'
-  const iconUrl = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 14a4 4 0 006 0l3-3a4 4 0 00-6-6l-1 1"/><path d="M14 10a4 4 0 00-6 0l-3 3a4 4 0 006 6l1-1"/></svg>'
+  const tipo = l3fichaTagVal(host.tags, 'tipo') || 'sistema'
+  const vmTag = l3fichaTagVal(host.tags, 'vm')
+  const url = l3fichaMacro(data.macros, '{$URL}')
+  const conteudo = l3fichaMacro(data.macros, '{$STRING.CHECK}')
+  const tNormal = l3fichaMacro(data.macros, '{$TEMPO.NORMAL}')
+  const tLento = l3fichaMacro(data.macros, '{$TEMPO.LENTO}')
+  const fails = l3fichaMacro(data.macros, '{$FAILS.BEFORE.ALERT}')
 
-  const vmsHtml = vms.length
-    ? vms.map(function (vm, i) { return l3fichaVmBlock(vm, i === 0) }).join('')
-    : '<div style="font-size:.9rem;color:var(--bpc-mute)">Sistema externo/parceiro — sem VM interna associada.</div>'
+  const isParceiro = /parceiro/i.test(tipo)
+  const tipoColor = isParceiro ? '#B48EE8' : '#58C4DC'
+  const tipoLabel = isParceiro ? 'PARCEIRO' : 'SISTEMA INTERNO'
 
-  el.innerHTML = '<div class="bpc bpc-card" style="height:100%;overflow-y:auto;padding:16px 20px">'
-    + '<div style="font-size:1.15rem;font-weight:700;color:#E6EDF3;margin-bottom:12px">Ficha da aplicação</div>'
-    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 24px;margin-bottom:16px">'
-    +   l3fichaFieldBlock(iconApp, 'Nome', nome + (servico ? '  ·  Serviço: ' + esc(servico) : ''), false)
-    +   l3fichaFieldBlock(iconUrl, 'URL', url, true)
+  const iconApp = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="' + tipoColor + '" stroke-width="1.7">'
+    + '<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><circle cx="6.4" cy="6.5" r=".7" fill="' + tipoColor + '"/><circle cx="8.8" cy="6.5" r=".7" fill="' + tipoColor + '"/></svg>'
+  const iconUrl = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#58C4DC" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 000 18M12 3a14 14 0 010 18"/></svg>'
+
+  // ── Header ──
+  const header = '<div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">'
+    + iconApp
+    + '<div style="min-width:0;flex:1">'
+    +   '<div style="font-size:1.35rem;font-weight:800;color:#F0F6FC;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(nome) + '</div>'
+    +   '<div style="font-size:.9rem;color:var(--bpc-mute);margin-top:2px">Serviço · <span style="color:#CDD9E5;font-weight:600">' + esc(servico || '—') + '</span></div>'
     + '</div>'
-    + '<div style="font-size:.8rem;color:var(--bpc-mute);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">'
-    +   'VMs ligadas' + (vms.length ? ' (' + vms.length + ')' : '') + '</div>'
-    + vmsHtml
+    + '<span style="flex:none;font-size:.74rem;font-weight:800;letter-spacing:.06em;color:' + tipoColor + ';'
+    +   'border:1px solid ' + tipoColor + '55;background:' + tipoColor + '18;border-radius:20px;padding:5px 13px">' + tipoLabel + '</span>'
+    + '</div>'
+
+  // ── URL row ──
+  const urlRow = '<div style="display:flex;align-items:center;gap:11px;background:rgba(88,196,220,.06);'
+    + 'border:1px solid rgba(88,196,220,.18);border-radius:8px;padding:11px 14px;margin-bottom:18px">'
+    + iconUrl
+    + '<div style="flex:1;min-width:0;font-size:.95rem;color:#CDD9E5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(url || 'sem URL definido') + '</div>'
+    + (url
+        ? '<a href="' + esc(url) + '" target="_blank" style="flex:none;text-decoration:none;font-size:.85rem;font-weight:700;color:#58C4DC;'
+          + 'border:1px solid rgba(88,196,220,.4);border-radius:6px;padding:5px 12px">Abrir ↗</a>'
+        : '')
+    + '</div>'
+
+  // ── Facts ──
+  const conteudoHtml = conteudo
+    ? '<span style="font-family:monospace;color:#9FE0A6">&ldquo;' + esc(conteudo) + '&rdquo;</span>'
+    : '<span style="color:var(--bpc-mute)">não verificado</span>'
+  const respostaHtml = (tNormal || tLento)
+    ? 'normal ≤ <b>' + esc(tNormal || '—') + '</b> · lento &gt; <b>' + esc(tLento || '—') + '</b>'
+    : '<span style="color:var(--bpc-mute)">—</span>'
+  const alertaHtml = fails
+    ? '<b>' + esc(fails) + '</b> falhas consecutivas'
+    : '<span style="color:var(--bpc-mute)">—</span>'
+  const vmHtml = data.vmCount
+    ? '<b>' + data.vmCount + '</b> ' + (data.vmCount === 1 ? 'máquina' : 'máquinas')
+      + (vmTag ? ' <span style="color:var(--bpc-mute)">· principal ' + esc(vmTag) + '</span>' : '')
+    : '<span style="color:var(--bpc-mute)">sem VM interna (externo)</span>'
+  const nActivos = Object.keys(data.activos).length
+  const niveisHtml = CFG_L3FICHA.niveis.map(function (n) {
+    return l3fichaPill(n.key + ' · ' + n.label, !!data.activos[n.key])
+  }).join('')
+
+  const facts = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px 28px;margin-bottom:20px">'
+    + l3fichaFact('Conteúdo esperado', conteudoHtml)
+    + l3fichaFact('VMs de hospedagem', vmHtml)
+    + l3fichaFact('Tempo de resposta', respostaHtml)
+    + l3fichaFact('Alerta após', alertaHtml)
+    + '</div>'
+
+  const niveis = '<div>'
+    + '<div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--bpc-mute);margin-bottom:8px">'
+    +   'Níveis de verificação <span style="color:#8fa6bd">· ' + nActivos + ' de 4 activos</span></div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:6px 0">' + niveisHtml + '</div>'
+    + '</div>'
+
+  el.innerHTML = '<div class="bpc bpc-card" style="height:100%;padding:18px 22px;box-sizing:border-box;overflow:hidden">'
+    + header + urlRow + facts + niveis
     + '</div>'
 }
 
@@ -185,15 +228,8 @@ function l3fichaLoad(rpc) {
 
   l3fichaFetchHost(rpc, appName).then(function (host) {
     if (!host) { l3fichaRenderError(el, 'app "' + appName + '" não encontrada'); return null }
-    const servico = l3fichaTagVal(host.tags, 'servico')
-    return Promise.all([
-      l3fichaFetchUrl(rpc, host.hostid),
-      l3fichaFetchVmNames(rpc, servico, host.host),
-    ]).then(function (r) {
-      const url = r[0], vmNames = r[1]
-      return Promise.all(vmNames.map(function (vn) { return l3fichaFetchVmDetail(rpc, vn) })).then(function (vms) {
-        l3fichaRender(el, host, url, vms.filter(Boolean))
-      })
+    return l3fichaFetchAll(rpc, host).then(function (data) {
+      l3fichaRender(el, host, data)
     })
   }).catch(function (err) { l3fichaRenderError(el, err.message || String(err)) })
 

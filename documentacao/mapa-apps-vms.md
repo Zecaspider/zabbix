@@ -96,8 +96,9 @@ essa string** (1 host, não bloqueia). O `app-sap` usa o subdomínio `ahh6kcgnj`
 por confirmar se aparece na página.
 
 **Pendências relacionadas** (não bloqueiam):
-1. `{$STRING.CHECK}` do `app-bpcao` é lixo — corrigir para conteúdo real ou
-   desligar L3 nesse host.
+1. ~~`{$STRING.CHECK}` do `app-bpcao` é lixo — corrigir para conteúdo real ou
+   desligar L3 nesse host.~~ **RESOLVIDO 2026-07-10** — macro posto a vazio (L3
+   off), ver §1.6.
 2. Os 6 triggers do template **não aparecem no `configuration.export`** (só
    httptests + macros) — se o template for reimportado do export, os triggers
    perdem-se; recriar como parte exportável quando se tocar no template.
@@ -312,10 +313,87 @@ resto do projecto; (3) o agrupamento por departamento vem de parse do nome, não
 de uma tag — se um dia existir uma tag `camada`/`papel` real (app/bd/gateway),
 migrar a fonte para essa tag.
 
-**Pendências herdadas confirmadas ainda abertas:** `{$STRING.CHECK}` do
-`app-bpcao` continua lixo (GUID, 1 host — corrigir ou desligar L3 nesse host);
-os 6 triggers do template `BPC Web Monitoring v2` não saem no
-`configuration.export` (recriar como exportáveis quando se tocar no template).
+**Pendências herdadas:** o `{$STRING.CHECK}` lixo do `app-bpcao` foi **resolvido**
+(ver §1.6). Ainda aberto: os 6 triggers do template `BPC Web Monitoring v2` não
+saem no `configuration.export` (recriar como exportáveis quando se tocar no
+template).
+
+## 1.6 Ajustes de seguimento (2026-07-10) — macro bpcao + tabela de VMs do N3
+
+Dois pedidos directos após a validação da §1.5:
+
+**1. `{$STRING.CHECK}` do `app-bpcao` limpo.** O macro de host (hostmacroid
+`16937`) tinha um GUID lixo (`0666e2b2-dc1b-4bc8-885d-909a3a3df2ec`), que
+aparecia até na descrição do trigger L3 (`[L3] Conteudo "0666e2b2…" ausente`).
+Posto a **vazio** (`usermacro.update`), o que **desliga o L3 de conteúdo** neste
+host — mesma configuração dos outros 15 externos que têm o macro vazio (§1.1). A
+descrição do trigger passou a `[L3] Conteudo "" ausente`, dormente. **Sem risco
+de notificação**: o item L3 estava a `0`, o host está em manutenção, e o
+mediatype `Email` continua OFF (verificado). Quando a saída de rede do DC abrir e
+se souber uma string de conteúdo real de `www.bpc.ao`, preencher o macro para
+reactivar o L3.
+
+**2. Painel "VMs de Hospedagem" do N3 — cards → TABELA NATIVA MySQL
+(`n3-app-vms-tabela.json`).** Substituídos os cards com gauges radiais por uma
+**tabela nativa Grafana** (mesmo padrão das tabelas do N2, datasource `MYSQL -
+INFRA ZABBIX` `afor1g5862fb4c`), 1 linha por VM: **VM · Nome · IP · CPU · RAM ·
+Disco · Triggers**. As colunas de métrica usam o cell type nativo **gauge/basic
+bar** com thresholds 70/90 (verde/âmbar/vermelho); a coluna Triggers é
+`color-background` (fundo âmbar quando ≥1, `✓` verde quando 0); a coluna VM tem
+`dataLink` de **drill-down** para o N3 Servidores Virtuais
+(`?var-hostid=${__data.fields["VM"]}`). Ordena **pior-primeiro** (`ORDER BY`
+Triggers desc, depois `GREATEST(CPU,RAM,Disco)` desc) e as colunas ficam
+sortáveis/filtráveis nativamente.
+
+*Detalhe técnico importante (SQL):* nesta versão do Zabbix (7.4) a coluna
+`items.lastvalue` **já não existe** (`Unknown column 'lastvalue'`) — os valores
+actuais dos items vivem nas tabelas de `history`. A query obtém o último valor de
+cada métrica por **subquery correlacionada** `(SELECT value FROM history hh WHERE
+hh.itemid=i.itemid ORDER BY clock DESC LIMIT 1)` — o índice PK `(itemid,clock)`
+torna isto rápido (SACC, 4 VMs → 0.83s; escala bem porque o nº de items por VM é
+pequeno). CPU=`system.cpu.util`, RAM=`vm.memory.util`, Disco=`MAX` dos
+`vfs.fs.size[%,pused]`, IP da tabela `interface` (main=1,type=1), nº de triggers
+por subquery `triggers⋈functions⋈items value=1`. Como é MySQL nativo, **não sofre
+a cache de ~30min do proxy RPC** (é ao vivo), tal como as tabelas do N2. O host
+sintético (`${app}`) resolve a tag `servico` e a query traz todas as VMs com essa
+tag (excluindo `app-*`). Push apis-n3 v37, validado ao vivo com o SACC (VS8000789
+no topo por ter 1 trigger + Disco 89%). A versão intermédia em Business Text
+(`l3-app-vm.js`, tabela HTML custom) foi **descartada** a favor desta nativa.
+
+## 1.7 N3 — coluna "Problema" na tabela de VMs + ficha da app redesenhada (2026-07-10)
+
+Segunda ronda de melhorias ao N3, por pedido directo:
+
+**1. Tabela de VMs — coluna "Problema" (nome do trigger activo).** A tabela
+nativa (§1.6) ocupava só metade da largura; acrescentada uma coluna final
+**Problema** que mostra a descrição do trigger activo mais grave da VM
+(subquery `triggers⋈functions⋈items value=1 ORDER BY priority DESC LIMIT 1`),
+em texto âmbar, ou `—` quando não há alerta. Enche a largura e dá o contexto
+("Apache: Failed to fetch status page" na VS8000789 do SACC). As descrições dos
+triggers de VM vêm limpas do Zabbix (sem macros por expandir). Push apis-n3 v38.
+
+**2. Ficha da aplicação redesenhada (`l3-app-ficha.js` v2).** A v1 repetia a
+lista de VMs + serviços por VM (redundante agora que a tabela mostra as VMs).
+A v2 é um **cartão de identidade da aplicação**: header com nome + serviço +
+badge de tipo (SISTEMA INTERNO/PARCEIRO, cor por tipo), linha de **URL**
+destacada e clicável (`{$URL}`), grelha 2×2 de factos (Conteúdo esperado
+`{$STRING.CHECK}` · VMs de hospedagem + principal · Tempo de resposta
+normal/lento · Alerta após N falhas) e **pills de níveis de verificação**
+(L1/L2/L3/L4, verde=activo por existir o item `web.test.fail[LN]` com status=0).
+Sem a parafernália de serviços por VM da v1.
+
+**Achado (proxy BPC.rpc):** a config de monitoria (`{$TEMPO.*}`,
+`{$FAILS.BEFORE.ALERT}`) está por **host** só nos sistemas **externos**; os
+**internos** herdam os defaults do template `BPC Web Monitoring v2`
+(`{$FAILS.BEFORE.ALERT}=3`, `{$TEMPO.NORMAL}=5s`, `{$TEMPO.LENTO}=8s`). A 1ª
+tentativa lia o template ao vivo com `template.get(selectMacros)` — mas **o proxy
+`BPC.rpc` bloqueia `template.get` (HTTP 500)**, tal como já se sabia de
+`httptest.get`/`action.get`. Também `host.get selectInheritedMacros` devolve vazio
+para estes hosts. Solução: os defaults do template ficam **hardcoded** em
+`CFG.templateDefaults` (comentado para manter em sync se o template mudar) e são
+**sobrepostos** pelas macros de host (`usermacro.get`, que funciona). Confirmado
+ao vivo pelo próprio `window.BPC.rpc`: SACC → conteúdo "BPC-SACC", tempo 5s/8s,
+alerta 3 falhas, 4 VMs, níveis L1/L2/L3 activos. Push apis-n3 v41.
 
 ## 2. Schema de tags (decisão 2026-07-08)
 

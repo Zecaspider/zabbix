@@ -49,11 +49,10 @@
       "title": ""
     },
     {
-      "file": "l3-app-vm.js",
+      "file": "n3-app-vms-tabela.json",
       "id": 102,
       "role": "content",
-      "title": "VMs de Hospedagem",
-      "content": "<div id=\"bpc-app-vm\"></div>"
+      "title": "VMs de hospedagem (tabela nativa MySQL)"
     },
     {
       "file": "n3-app-triggers.json",
