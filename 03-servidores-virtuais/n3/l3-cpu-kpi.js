@@ -7,15 +7,23 @@
   // ╚═══════════════════════════════════════════════════════════════════════════╝
 
   // ╔══════════════════════════════════════════════════════════════════════════╗
-  // ║  D5-Detalhe-VM · ROW 3 · CPU DETALHADO  v2.0                           ║
+  // ║  D5-Detalhe-VM · ROW 3 · CPU DETALHADO  v2.1                           ║
   // ║  Autor: BPC                                                              ║
+  // ║                                                                          ║
+  // ║  v2.1 (2026-07-10) — CPU READY corrigido: o Zabbix só expõe este item   ║
+  // ║  em ms ("VMware: CPU ready", sem variante "in percents"); o código lia  ║
+  // ║  esse valor em ms e mostrava-o como se fosse já uma percentagem (ex.    ║
+  // ║  93ms → "93.00% CRÍTICO"), gerando falsos CRÍTICO em VMs saudáveis.     ║
+  // ║  Agora mostra "93 ms" com threshold próprio em ms (fallback, não        ║
+  // ║  calibrado por trigger). READINESS LATENCY deixou de reutilizar por     ║
+  // ║  engano o threshold do CPU READY (tem o seu próprio, vmwRdyLat).        ║
   // ║                                                                          ║
   // ║  LAYOUT (Imagem 1):                                                     ║
   // ║  ┌──────────────────────────────┬──────────────────────────────────┐   ║
   // ║  │  Col A · CPU TEMPOS & SAT.   │  Col B · VMWARE CONTENÇÃO        │   ║
   // ║  │                              │                                   │   ║
   // ║  │  [AGENTE badge]              │  [AGENTE badge]                   │   ║
-  // ║  │  BREAKDOWN DE TEMPOS         │  CPU READY     47.00%  [CRÍTICO]  │   ║
+  // ║  │  BREAKDOWN DE TEMPOS         │  CPU READY     93 ms   [NORMAL]   │   ║
   // ║  │  ████████░░░░ USER  0.4%     │  texto explicativo                │   ║
   // ║  │  ████████░░░░ PRIV  5.5%     │  ──────────────────────────────   │   ║
   // ║  │  ░░░░░░░░░░░░ DPC   0.0%     │  CPU LATENCY   0.06%   [NORMAL]   │   ║
@@ -57,7 +65,16 @@
       queue:    { warn: 2,   crit: 8   },
       ctx:      { warn: 5000, crit: 15000 },
       vmwLat:   { warn: 5,   crit: 20  },
-      vmwReady: { warn: 5,   crit: 20  },
+      // FALLBACK — o Zabbix só expõe "VMware: CPU ready" em ms (sem variante
+      // "in percents"; confirmado ao vivo, 2026-07-10 — item_get só devolve
+      // 1 item para esta chave, units='ms'). Threshold aproximado, não
+      // calibrado contra trigger Zabbix — ajustar se necessário.
+      vmwReady: { warn: 1000, crit: 3000 },
+      // Readiness Latency TEM item real em % ("VMware: CPU readiness latency
+      // in percents") — usava por engano o threshold de vmwReady acima
+      // (funcionava por coincidência, ambos eram %). Agora que vmwReady
+      // passou a ms, precisa do seu próprio threshold em %.
+      vmwRdyLat: { warn: 5,  crit: 20  },
     },
 
     colors: {
@@ -90,7 +107,8 @@
       vmwCpuPct: 'VMware: CPU usage in percents',
       vmwCpuMhz: 'VMware: CPU usage',
       vmwLat:    'VMware: CPU latency in percents',
-      vmwReady:  'VMware: CPU ready in percents',
+      // Só existe em ms neste ambiente (ver comentário em CFG.thresholds.vmwReady)
+      vmwReady:  'VMware: CPU ready',
       vmwRdyLat: 'VMware: CPU readiness latency in percents',
       vmwNumCPU: 'VMware: Number of virtual CPUs',
     },
@@ -614,9 +632,10 @@
               'CPU READY',
               d.vmwReady,
               CFG.thresholds.vmwReady,
-              20, // escala da barra: 0-20% cobre warn+crit
+              4000, // escala da barra em ms — cobre warn(1000)+crit(3000) com folga
               'VM aguardou por core físico',
-              'Métrica principal de contenção. Acima de 5% impacta performance.'
+              'Tempo de espera por CPU física no último intervalo. Zabbix só expõe este item em ms.',
+              'ms'
             )
           + Card._vmwRow(
               'CPU LATENCY',
@@ -629,7 +648,7 @@
           + Card._vmwRow(
               'READINESS LATENCY',
               d.vmwRdyLt,
-              CFG.thresholds.vmwReady,
+              CFG.thresholds.vmwRdyLat,
               20,
               'Variante granular do CPU Ready',
               'Monitoriza espera acumulada por intervalo de amostragem.'
@@ -648,10 +667,12 @@
         + '</div>';
     },
 
-    // Linha individual de métrica VMware
-    _vmwRow: function (name, val, thr, barScale, subtitle, desc) {
+    // Linha individual de métrica VMware. unit: '%' (omitir) ou 'ms'.
+    _vmwRow: function (name, val, thr, barScale, subtitle, desc, unit) {
       var C      = CFG.colors;
-      var vStr   = U.isValid(val) ? val.toFixed(2) + '%' : '—';
+      var vStr   = !U.isValid(val) ? '—'
+        : unit === 'ms' ? Math.round(val) + ' ms'
+        : val.toFixed(2) + '%';
       var color  = U.thrColor(val, thr);
       var cls    = U.thrClass(val, thr);
       var label  = U.thrLabel(val, thr);
