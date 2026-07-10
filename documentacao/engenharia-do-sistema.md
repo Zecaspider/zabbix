@@ -398,9 +398,14 @@ segmento (N3→N4→N5→N6).
 | `04-rede/` | `04 · Rede` | `bfpm0sdxiclxcf` |
 | `05-seguranca/` | `05 · Segurança` | `afpm0se1lombkb` |
 | `06-bases-dados/` | `06 · Bases de Dados` | `afpm0se5rij28d` |
-| `07-apis/` | `07 · APIs e Serviços` | `bfpm0sedbpgqob` |
-| `08-servicos-negocio/` | `08 · Serviços de Negócio` | `dfpm0sej5gxs0f` |
+| `07-apis/` | `07 · APIs e Serviços de Negócio` | `bfpm0sedbpgqob` |
 | `99-arquivo/` | `99 · Arquivo` | `dfpm0sey9ut4wb` |
+
+> **`08 · Serviços de Negócio` apagada (2026-07-10)** — estava vazia (a Fase 8/eBankit
+> nunca chegou a arrancar como domínio próprio; o eBankit já vive dentro da Fase 7
+> como mais uma app sintética) e redundante com `07`. A pasta `07` foi renomeada de
+> "APIs e Serviços" para "APIs e Serviços de Negócio" para reflectir a fusão dos
+> dois conceitos, sem obrigar a renomear os títulos dos dashboards existentes.
 
 **Subpastas de segmento dentro de `04-rede/` ↔ `04 · Rede` (2026-07-01):**
 
@@ -444,8 +449,7 @@ cronograma e as pastas de domínio do disco (§4.1) 1-para-1:
 📁 04 · Rede                   N2 · Rede · N3 · DC Core / Edifícios / WAN / WAN—Carriers · N4 · WAN Router / DC Switch  [rede/]
 📁 05 · Segurança              (Fase 5 — vazia)                          [seguranca/]
 📁 06 · Bases de Dados         (Fase 6 — vazia)                          [bases-dados/]
-📁 07 · APIs e Serviços        (vazia)                                   [apis/]
-📁 08 · Serviços de Negócio    (vazia)                                   [servicos-negocio/]
+📁 07 · APIs e Serviços de Negócio  N2 · KPI+tabelas · N3 · App · N4 · Sistema  [apis/]
 📁 09 · Agências               (vazia)                                   [agencias/]
 📁 99 · Arquivo                TODO o legado consolidado aqui (destino decidido no fim)
 ```
