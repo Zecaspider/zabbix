@@ -54,6 +54,12 @@
       "id": 200,
       "role": "content",
       "title": "Problemas Activos — APIs e Serviços"
+    },
+    {
+      "file": "n2-api-infra-vms.json",
+      "id": 202,
+      "role": "content",
+      "title": "Alertas de Infraestrutura — VMs de hospedagem"
     }
   ]
 }

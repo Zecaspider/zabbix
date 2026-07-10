@@ -7,7 +7,10 @@
 // ║    1. Apps monitorizados        (grupo 663, hosts app-* activos)       ║
 // ║    2. Disponíveis               (sem trigger [L1] activo)              ║
 // ║    3. Indisponíveis/Degradados  (trigger L1 ou L2/L3 activo)           ║
-// ║    4. Alertas activos           (crit / aviso, todos os níveis)        ║
+// ║    4. Alertas activos           (2 contagens: externo=crit/aviso dos   ║
+// ║       checks L1-L4; infra=triggers activos nas VMs por trás de todas   ║
+// ║       as apps, tag servico=. Nunca somadas — escopos diferentes, ver   ║
+// ║       documentacao/mapa-apps-vms.md §1.8/§1.10)                        ║
 // ║                                                                          ║
 // ║  Estado vem de trigger.get (Zabbix já avaliou) — nunca recalcular       ║
 // ║  thresholds em JS (contrato §4A, mesmo padrão do domínio Rede/VMs).     ║
@@ -57,13 +60,43 @@ function kpiApiHostState(hostid, byHost) {
 // ────────────────────────────────────────────────────────────────────────────
 
 // Total de apps (hosts activos do grupo) — inclui maintenance_status para
-// distinguir hosts suprimidos (ex.: sem acesso de saida do DC) de indisponiveis
+// distinguir hosts suprimidos (ex.: sem acesso de saida do DC) de indisponiveis.
+// selectTags: usado depois por kpiApiFetchInfra para descobrir as VMs de todas
+// as apps de uma vez, sem 2ª chamada a host.get.
 async function kpiApiFetchTotal(rpc) {
   return rpc('host.get', {
     groupids: [CFG_KPI_API.groupId],
     filter: { status: 0 },
     output: ['hostid', 'host', 'maintenance_status'],
+    selectTags: ['tag', 'value'],
   })
+}
+
+// Triggers activos nas VMs por trás de TODAS as apps do domínio (tag servico=
+// de cada app, excluindo os próprios hosts app-*) — contagem agregada para o
+// card 4, escopo "infra". Ver documentacao/mapa-apps-vms.md §1.10.
+async function kpiApiFetchInfra(rpc, hosts) {
+  const servicos = []
+  hosts.forEach(function (h) {
+    (h.tags || []).forEach(function (t) {
+      if (t.tag === 'servico' && servicos.indexOf(t.value) === -1) servicos.push(t.value)
+    })
+  })
+  if (!servicos.length) return 0
+  const vms = await rpc('host.get', {
+    output: ['hostid', 'host'],
+    tags: servicos.map(function (v) { return { tag: 'servico', value: v, operator: 1 } }),
+  })
+  const vmIds = vms.filter(function (h) { return h.host.indexOf('app-') !== 0 }).map(function (h) { return h.hostid })
+  if (!vmIds.length) return 0
+  const trigs = await rpc('trigger.get', {
+    hostids: vmIds,
+    filter: { value: 1 },
+    output: ['triggerid'],
+    monitored: true,
+    only_true: true,
+  })
+  return trigs.length
 }
 
 // Triggers activos do grupo (raw) — a contagem crit/warn e o estado por host
@@ -101,6 +134,32 @@ function kpiApiTile(opts) {
     +   (opts.unit ? '<span class="bpc-value-sm bpc-mute" style="font-size:1.1rem">' + opts.unit + '</span>' : '')
     + '</div>'
     + sub
+    + '</div>'
+}
+
+// Card 4 "Alertas activos" — 2 contagens lado a lado, mesmo peso visual:
+// externo (crit/aviso dos checks L1-L4 do grupo 663) e infra (triggers das
+// VMs por trás de todas as apps, tag servico=). Nunca somadas — escopos
+// diferentes. Ver documentacao/mapa-apps-vms.md §1.8/§1.10.
+function kpiApiDualStat(label, value, color) {
+  return '<div style="flex:1;text-align:center;min-width:0">'
+    + '<div style="font-size:2.6rem;font-weight:800;line-height:1.05;color:' + color + '">' + value + '</div>'
+    + '<div style="font-size:1.0rem;color:var(--bpc-mute);margin-top:4px;white-space:nowrap">' + label + '</div>'
+    + '</div>'
+}
+
+function kpiApiProblemsTile(opts) {
+  const accent = window.BPC.state.color(opts.cardState)
+  const cardSt = opts.cardState === 'crit' || opts.cardState === 'down' ? 'down' : opts.cardState
+  return '<div class="bpc bpc-card state-' + cardSt + '"'
+    + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:18px 22px">'
+    + '<span class="bpc-label" style="font-size:1.35rem;letter-spacing:.03em;text-transform:none;font-weight:700;color:#CDD9E5">Alertas activos</span>'
+    + '<div style="display:flex;align-items:stretch">'
+    +   kpiApiDualStat('externo', opts.extValue, opts.extColor)
+    +   '<div style="width:1px;background:rgba(255,255,255,.12);margin:1px 12px"></div>'
+    +   kpiApiDualStat('infra (VMs)', opts.infraValue, opts.infraColor)
+    + '</div>'
+    + '<div style="font-size:1.05rem;color:var(--bpc-mute);line-height:1.35">' + opts.sub + '</div>'
     + '</div>'
 }
 
@@ -161,11 +220,11 @@ function kpiApiRender(el, data) {
         valueColor: (down + degraded) > 0 ? window.BPC.state.color(devState) : '#E6EDF3',
         sub: down + ' indisponível · ' + degraded + ' degradado' + semAcessoSub,
       })
-    + kpiApiTile({
-        label: 'Alertas activos', value: crit + warn, unit: 'alertas',
-        state: alrtSt,
-        valueColor: (crit + warn) > 0 ? window.BPC.state.color(alrtSt) : '#E6EDF3',
-        sub: crit + ' crítico · ' + warn + ' aviso',
+    + kpiApiProblemsTile({
+        extValue: crit + warn, extColor: (crit + warn) > 0 ? window.BPC.state.color(alrtSt) : window.BPC.state.color('ok'),
+        infraValue: data.infra, infraColor: data.infra > 0 ? window.BPC.state.color('warn') : window.BPC.state.color('ok'),
+        cardState: (crit + warn) > 0 ? alrtSt : data.infra > 0 ? 'warn' : 'ok',
+        sub: crit + ' crítico · ' + warn + ' aviso (externo) · ' + data.infra + ' nas VMs (infra)',
       })
     + '</div>'
 }
@@ -193,7 +252,10 @@ function kpiApiLoad(rpc) {
     kpiApiFetchTriggers(rpc),
   ])
   .then(function (r) {
-    kpiApiRender(el, { hosts: r[0], trg: r[1] })
+    const hosts = r[0], trg = r[1]
+    return kpiApiFetchInfra(rpc, hosts).then(function (infra) {
+      kpiApiRender(el, { hosts: hosts, trg: trg, infra: infra })
+    })
   })
   .catch(function (err) { kpiApiRenderError(el, err.message || String(err)) })
 

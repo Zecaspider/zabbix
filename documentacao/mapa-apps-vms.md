@@ -485,6 +485,65 @@ essa supressão), intencional — cada painel tem o seu papel: o nativo mostra
 "o que o NOC precisa de ver/fazer ack", os outros dois mostram "quantos
 problemas existem".
 
+## 1.10 N2 — mesmo problema de escopo, à escala de 40 apps: coluna Infra + tabela nova (2026-07-10)
+
+Auditoria ao N2 (pedido do utilizador para continuar a refactoração dos
+outros dashboards de APIs e Serviços) confirmou o **mesmo problema do
+§1.8**, mas a 40 apps em simultâneo: o KPI (`l2-kpi.js`), o painel nativo de
+triggers (`n2-api-triggers.json`) e as 2 tabelas (internos/parceiros) só
+liam o grupo `663` (BPC/APLICACOES/SINTETICOS, os hosts `app-*`) — nenhum
+tinha visibilidade sobre as VMs por trás. O N4 (Sistema) **já estava
+correcto** (descobre VMs por tag `servico=` desde a construção original,
+`l4-sys-problemas.js`), não precisou de alteração.
+
+**Bloqueio técnico encontrado antes de implementar**: a ideia inicial era
+replicar o padrão do N3 (variável `${hostRegex:raw}` a alimentar o painel
+nativo de triggers) — mas a esta escala (40 apps + 66 VMs = 106 hosts) o
+`GROUP_CONCAT` do MySQL **corta em 1024 bytes por omissão** (confirmado ao
+vivo: `CHAR_LENGTH(...)` bateu exactamente em 1024, sintoma clássico de
+corte silencioso). Testado `SET SESSION group_concat_max_len=...` antes do
+`SELECT` na mesma query — falha, o datasource MySQL do Grafana liga em modo
+single-statement (`Error 1064`). Sem forma de aumentar o limite a partir do
+painel. **Decisão**: não estender o painel de triggers nativo (fica como
+está, continua correcto para o que já cobre — externos); em vez disso,
+**tabela nativa MySQL nova** (`n2-api-infra-vms.json`, sem `GROUP_CONCAT` de
+lista grande — só `GROUP_CONCAT` pequeno por VM das suas próprias tags
+`servico`, sem risco de corte).
+
+**Implementado**:
+1. **`Infra`** — nova coluna nas 2 tabelas (internos/parceiros): conta
+   triggers activos em todas as VMs com a mesma tag `servico=` do host
+   `app-*` da linha (subquery correlacionada, mesmo padrão de
+   `n3-app-vms-tabela.json`).
+2. **Card 4 "Alertas activos"** (`l2-kpi.js`) — 2 contagens lado a lado:
+   externo (crit/aviso dos checks L1-L4, como já era) e infra (soma de
+   triggers activos nas VMs de todas as 40 apps, `kpiApiFetchInfra`).
+3. **Painel novo "Alertas de Infraestrutura — VMs de hospedagem"**
+   (`n2-api-infra-vms.json`) — tabela nativa MySQL, 1 linha por trigger
+   activo em qualquer VM ligada a uma das 40 apps (VM · Nome · Serviço ·
+   Problema · Severidade · Idade), ordenada por severidade. Substitui a
+   ideia de estender o painel nativo de triggers.
+
+**Achado ao testar (números altos são reais, não bug)**: `SWIFT` mostrou
+Infra=17 — confirmado ao vivo, **19 VMs** com essa tag, **15 com o agente
+Zabbix parado**. Isto é uma condição já conhecida e não-accionável (VMs
+SWIFT numa rede segregada — `CLAUDE.md` já regista "não insistir com mais
+credenciais, escalar via canal próprio"), só nunca tinha sido **visível**
+neste dashboard. `VS8000305` (10 tags `servico` diferentes, tensão N:M já
+documentada) faz com que apps como SGC/CONTIF/LIVE/ABC/Forgest/etc. tenham
+números de Infra diferentes mas sobrepostos — reflecte correctamente que
+partilham infra-estrutura, não é erro de contagem (confirmado: SGC puxa
+`VS8000305`+`VS9000309`+`VS8000475`+`VS8000476`, CONTIF puxa só
+`VS8000305`+`VS9000359` — conjuntos de VMs diferentes, números diferentes
+por design). **Decisão do utilizador**: mostrar o número real, sem filtrar
+ruído conhecido — consistente com a filosofia do projecto de sinais
+honestos em vez de esconder dados desconfortáveis.
+
+Validado ao vivo: KPI mostra "3 externo · 40 infra (VMs)"; tabela nova lista
+alertas reais e accionáveis (`VS8000789`/SACC "Apache: Failed to fetch
+status page", discos críticos em `VS8000820`/BankTrade, etc.). Push apis-n2
+(painéis 101/102/201, painel novo 202).
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já
