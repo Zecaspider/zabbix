@@ -21,6 +21,17 @@
       "gap": "sem app-* e sem VM clara — precisa input de negocio",
       "sem-url": "parceiro sem URL no relatorio diario",
       "sem-vm": "tem app-* mas VM nunca registada no Zabbix"
+    },
+    "pendencia_saida_dc": {
+      "descricao": "6 monitores externos dao falso-DOWN (L1) porque o servidor Zabbix NAO consegue sair para estes destinos publicos — allow-list de saida do banco. Confirmado 2026-07-10: TCP:443 abre mas o handshake TLS e fechado apos o ClientHello (SSL_ERROR_ZERO_RETURN); Google/Microsoft HTTPS funcionam, logo nao e bloqueio geral, e allow-list por destino. Nao e bug do Zabbix nem do web scenario. Fix = rede autorizar a saida do IP do Zabbix para estes 6; ate la, hosts postos em manutencao com nota.",
+      "destinos_a_autorizar": {
+        "app-bpcao": "www.bpc.ao (Azure Front Door, 13.107.0.0/16)",
+        "app-sap": "*.accounts.ondemand.com",
+        "app-inss": "inss.gov.ao",
+        "app-mundial-seguro": "mundial.rtcom.pt",
+        "app-pumangol": "pumangol-aeonfrotamais.gasodata.pt",
+        "app-emp": "213.131.67.206"
+      }
     }
   },
   "sistemas": [

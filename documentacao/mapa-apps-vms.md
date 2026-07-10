@@ -105,6 +105,43 @@ por confirmar se aparece na página.
    são conectividade de saída real, não bug de config — investigação
    operacional à parte.
 
+## 1.2 Falhas externas = bloqueio de saída de rede do DC (2026-07-10)
+
+Depois de o L1 passar a disparar correctamente (§1.1), 6 monitores **externos**
+ficaram em DOWN persistente com `SSL_ERROR_ZERO_RETURN`: `app-bpcao`, `app-sap`,
+`app-inss`, `app-mundial-seguro`, `app-pumangol`, `app-emp`. **Não é falso
+positivo do trigger nem bug do web scenario — é a rede.**
+
+Diagnóstico ao vivo a partir do **próprio servidor Zabbix** (curl/openssl/nc):
+- `nc www.bpc.ao 443` → **TCP abre** (não é bloqueio de porta).
+- `openssl s_client` → `written 335 bytes, read 0 bytes` + `unexpected eof`: o
+  servidor **fecha a ligação logo após o ClientHello**, sem responder nada.
+- Todas as variantes de curl (`--http1.1`, `--tlsv1.2/1.3`, `--ciphers`,
+  user-agent) falham **exactamente igual** → não é negociação TLS/cipher/ALPN.
+- **`curl https://www.google.com` → HTTP/2 200** e `www.microsoft.com` → 404
+  (TLS OK). Logo o servidor **tem** saída HTTPS pública; só **estes destinos**
+  estão bloqueados. Confirmação por contraste: `inss.gov.ao` bloqueado mas
+  `bpc.inss.gov.ao` e `www6.minfin.gov.ao` passam (mesmo `.gov.ao`).
+
+**Conclusão:** allow-list de saída do banco por destino. O servidor Zabbix não
+está autorizado a alcançar estes 6 destinos externos. **Nenhuma opção do Zabbix
+contorna um bloqueio de rede** (o `http_proxy` só ajudaria se existisse proxy —
+não existe; a saída é directa).
+
+**Fix real (rede):** autorizar a saída HTTPS (443) do IP do servidor Zabbix
+para os 6 destinos — ver `documentacao/catalogo-50-sistemas.json`
+`_meta.pendencia_saida_dc`. Assim que a rede abrir, os web scenarios funcionam
+sem mexer no Zabbix. Os restantes externos (BNA `*.bna.ao`/`172.20.x`, minfin,
+inss-bpc) já passam por já estarem autorizados.
+
+**Acção provisória no Zabbix:** os 6 hosts postos em **manutenção** com nota
+"Sem acesso de saída do DC — pendente allow-list de rede", para o NOC não
+perseguir um não-incidente. **Nota importante:** a manutenção suprime os
+eventos/notificações e o painel nativo de problemas, mas **não repinta a coluna
+Estado do N2/N3** — essas tabelas derivam de `triggers.value=1` directo (MySQL/
+RPC), que **não** é suppression-aware; para a vista custom reflectir "sem acesso"
+é preciso, à parte, filtrar problemas suprimidos ou uma tag de estado própria.
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já
