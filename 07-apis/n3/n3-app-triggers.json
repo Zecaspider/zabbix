@@ -14,10 +14,10 @@
       },
       "queryType": "5",
       "group": {
-        "filter": "BPC / APLICACOES / SINTETICOS"
+        "filter": "/.*/"
       },
       "host": {
-        "filter": "${app}"
+        "filter": "/${hostRegex:raw}/"
       },
       "application": {
         "filter": ""

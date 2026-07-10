@@ -6,6 +6,17 @@
   "groupIds": [
     "663"
   ],
+  "templating": [
+    {
+      "name": "hostRegex",
+      "label": "Host regex (interno — app + VMs)",
+      "hide": 2,
+      "type": "query",
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "query": "SELECT GROUP_CONCAT(h.host SEPARATOR '|') AS __value, GROUP_CONCAT(h.host SEPARATOR '|') AS __text FROM hosts h JOIN host_tag ht ON ht.hostid=h.hostid AND ht.tag='servico' WHERE ht.value = (SELECT ht2.value FROM hosts h2 JOIN host_tag ht2 ON ht2.hostid=h2.hostid AND ht2.tag='servico' WHERE h2.name='$app' LIMIT 1) AND h.status=0",
+      "refresh": 1
+    }
+  ],
   "anchor": {
     "datasource": {
       "type": "alexanderzobnin-zabbix-datasource",
@@ -58,7 +69,7 @@
       "file": "n3-app-triggers.json",
       "id": 105,
       "role": "content",
-      "title": ""
+      "title": "Problemas activos — app e VMs de hospedagem"
     },
     {
       "file": "l3-app-ficha.js",

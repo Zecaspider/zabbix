@@ -1,5 +1,5 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · CARTÕES DE ESTADO  v3.1         ║
+// ║  BPC NOC — N3 · APIS E SERVIÇOS · APP · CARTÕES DE ESTADO  v3.2         ║
 // ║  Framework: BPC-UI v9 · waitForBPC bootstrap                           ║
 // ║                                                                          ║
 // ║  VARIÁVEIS GRAFANA REQUERIDAS                                           ║
@@ -13,12 +13,13 @@
 // ║    3. Conteúdo da página   (texto esperado — mostra a string real)      ║
 // ║    4. Problemas activos (externo) (contagem + idade do mais antigo)     ║
 // ║                                                                          ║
-// ║  v3.1 — card 4 é explicitamente SÓ os checks externos (L1-L4 do host    ║
-// ║  sintético); NUNCA inclui triggers de infra das VMs (escopo diferente   ║
-// ║  do painel nativo "VMs de hospedagem — alertas de infraestrutura").     ║
-// ║  Quando essas VMs têm algo activo, mostra um aviso cruzado "⚠ +N        ║
-// ║  alerta(s) de infra ↓" no próprio card, para não depender do utilizador ║
-// ║  reparar ao descer a página. Ver documentacao/mapa-apps-vms.md §1.8.    ║
+// ║  v3.2 — card 4 mostra 2 contagens lado a lado, mesmo peso visual:       ║
+// ║  "externo" (checks L1-L4 do host sintético) e "infra (VMs)" (triggers   ║
+// ║  das VMs por trás, tag servico=). NUNCA somadas na mesma contagem —     ║
+// ║  severidades diferentes (site fora do ar vs disco a 89%). Painel        ║
+// ║  nativo de triggers (id 105) também passou a incluir ambos os escopos   ║
+// ║  via variável ${hostRegex} (host sintético + VMs). Ver                  ║
+// ║  documentacao/mapa-apps-vms.md §1.8/§1.9.                               ║
 // ║                                                                          ║
 // ║  VMs ligadas: host.get filtrado por tags servico=<mesmo valor do app>,  ║
 // ║  excluindo o próprio host app-* — funciona para sistemas multi-VM       ║
@@ -229,6 +230,33 @@ function l3kpiTile(opts) {
     + '</div>'
 }
 
+// Card 4 "Problemas activos" — 2 contagens lado a lado, mesmo peso visual:
+// externo (checks L1-L4 do host sintético) e infra (triggers das VMs por
+// trás, mesma tag servico=). Nunca somadas na mesma contagem — severidades
+// diferentes (site fora do ar vs disco a 89%). Ver documentacao/mapa-apps-vms.md §1.8.
+function l3kpiDualStat(label, value, color) {
+  return '<div style="flex:1;text-align:center;min-width:0">'
+    + '<div style="font-size:1.6rem;font-weight:800;line-height:1.1;color:' + color + '">' + value + '</div>'
+    + '<div style="font-size:.78rem;color:var(--bpc-mute);margin-top:2px;white-space:nowrap">' + label + '</div>'
+    + '</div>'
+}
+
+function l3kpiProblemsTile(opts) {
+  const accent = window.BPC.state.color(opts.cardState)
+  const cardSt = opts.cardState === 'crit' || opts.cardState === 'down' ? 'down' : opts.cardState
+  const icon = '<span style="display:inline-flex;color:' + accent + ';margin-right:6px;vertical-align:-1px">' + L3KPI_ICONS.bell + '</span>'
+  return '<div class="bpc bpc-card state-' + cardSt + '"'
+    + ' style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;justify-content:center;gap:8px;padding:16px 14px">'
+    + '<span class="bpc-label" style="font-size:1.05rem;letter-spacing:.02em;text-transform:none;font-weight:700;color:#CDD9E5">' + icon + 'Problemas activos</span>'
+    + '<div style="display:flex;align-items:stretch">'
+    +   l3kpiDualStat('externo', opts.extValue, opts.extColor)
+    +   '<div style="width:1px;background:rgba(255,255,255,.12);margin:1px 10px"></div>'
+    +   l3kpiDualStat('infra (VMs)', opts.infraValue, opts.infraColor)
+    + '</div>'
+    + '<div style="font-size:.85rem;color:var(--bpc-mute);text-align:center;line-height:1.3">' + opts.sub + '</div>'
+    + '</div>'
+}
+
 // Mini-barra de 8 segmentos (24h) — usada no card "Está no ar?"
 function l3kpiMiniBar(buckets) {
   if (!buckets.length) return ''
@@ -365,37 +393,43 @@ function l3kpiRender(el, data) {
     })
   }
 
-  // ── 4. Problemas activos (checks externos — L1-L4, escopo = só o host
-  // sintético) ──
+  // ── 4. Problemas activos — 2 contagens paralelas, mesmo peso: externo
+  // (checks L1-L4 do host sintético) e infra (triggers das VMs por trás,
+  // tag servico=). Nunca somadas na mesma contagem — severidades diferentes
+  // (site fora do ar vs disco a 89%). Ver documentacao/mapa-apps-vms.md §1.8.
   // Nota: trigger.value continua 1 mesmo com o host em manutenção (supressão
   // silencia notificações/painel nativo, não o valor do trigger) — por isso
-  // este card trata a manutenção à parte, para não contradizer os cards 1-3.
-  // Deliberadamente NÃO inclui triggers das VMs (escopo diferente, ver
-  // documentacao/mapa-apps-vms.md §1.8) — em vez disso avisa via vmWarning
-  // quando a tabela "VMs de hospedagem" (infra) tem algo activo.
+  // "externo" trata a manutenção à parte, para não contradizer os cards 1-3;
+  // "infra" (as VMs) não está em manutenção do app, por isso mantém-se vivo.
   const total = trigs.length
   const oldest = total > 0 ? Math.min.apply(null, trigs.map(function (t) { return parseInt(t.lastchange, 10) })) : null
   const vmProblems = data.vmInfo.problemCount
-  const vmWarning = vmProblems > 0
-    ? '<div style="font-size:.85rem;color:' + window.BPC.state.color('warn') + ';margin-top:4px;font-weight:600">'
-      + '⚠ +' + vmProblems + (vmProblems === 1 ? ' alerta de infra na VM ↓' : ' alertas de infra nas VMs ↓') + '</div>'
-    : ''
-  let card4
+  const infraColor = vmProblems > 0 ? window.BPC.state.color('warn') : window.BPC.state.color('ok')
+  let extValue, extColor, sub, cardState
   if (inMaintenance) {
-    card4 = l3kpiTile({
-      label: 'Problemas activos (externo)', icon: L3KPI_ICONS.bell, value: String(total), valueSuffix: total === 1 ? 'suprimido' : 'suprimidos',
-      state: 'mute', sub: 'host em manutenção — notificações silenciadas', extra: vmWarning,
-    })
+    extValue = String(total)
+    extColor = 'var(--bpc-mute)'
+    cardState = vmProblems > 0 ? 'warn' : 'mute'
+    sub = 'externo suprimido (manutenção)' + (vmProblems > 0
+      ? ' · ' + vmProblems + (vmProblems === 1 ? ' alerta de infra ↓' : ' alertas de infra ↓')
+      : '')
   } else {
-    card4 = l3kpiTile({
-      label: 'Problemas activos (externo)', icon: L3KPI_ICONS.bell,
-      value: String(total),
-      valueSuffix: total === 1 ? 'problema' : 'problemas',
-      state: l1Fail ? 'down' : total > 0 ? 'warn' : 'ok',
-      sub: total > 0 ? 'o mais antigo começou ' + l3kpiAgeLabel(oldest) : 'nenhum nos checks externos',
-      extra: vmWarning,
-    })
+    extValue = String(total)
+    extColor = l1Fail ? window.BPC.state.color('down') : total > 0 ? window.BPC.state.color('warn') : window.BPC.state.color('ok')
+    cardState = l1Fail ? 'down' : (total > 0 || vmProblems > 0) ? 'warn' : 'ok'
+    if (total > 0) {
+      sub = 'externo: o mais antigo começou ' + l3kpiAgeLabel(oldest)
+    } else if (vmProblems > 0) {
+      sub = 'nenhum externo · ' + vmProblems + (vmProblems === 1 ? ' alerta de infra ↓' : ' alertas de infra ↓')
+    } else {
+      sub = 'nenhum problema, externo ou infra'
+    }
   }
+  const card4 = l3kpiProblemsTile({
+    extValue: extValue, extColor: extColor,
+    infraValue: String(vmProblems), infraColor: infraColor,
+    cardState: cardState, sub: sub,
+  })
 
   el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;height:100%">'
     + card0 + card1 + card2 + card3 + card4 + '</div>'

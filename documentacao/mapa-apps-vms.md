@@ -436,6 +436,55 @@ problemas · nenhum nos checks externos" + aviso "⚠ +N alertas de infra"
 consistente com a tabela. Push apis-n3 (painéis 101 e 102, manifest
 actualizado com o título novo do painel 102).
 
+## 1.9 N3 — card 4 com 2 contagens paralelas + painel de triggers passa a app+VMs (2026-07-10)
+
+Depois de validar o §1.8 (aviso cruzado como linha pequena), o utilizador
+reformulou o pedido depois de perceber melhor o problema: "faz sentido ter 2
+alertas... quero resolver na tabela de triggers, que só mostra triggers da
+app e não da infra". Duas perguntas de design (card só 1 vs 2, e como estender
+o painel de triggers) resolvidas assim:
+
+**1. Card 4 — 2 contagens lado a lado, mesmo peso** (em vez de 6º card, que
+apertaria a grelha de 5 já no limite de largura do NOC). `l3kpiProblemsTile`
+substitui o `l3kpiTile` genérico para este card: "externo" (cor por
+severidade dos checks L1-L4) e "infra (VMs)" (verde/âmbar pelos triggers das
+VMs) lado a lado, com sub-linha contextual conforme qual dos dois tem
+problema. O card continua a nunca somar os dois números — só o estado
+agregado (borda/cor do card) reflecte o pior dos dois.
+
+**2. Painel nativo de triggers (id 105) passa a cobrir app + VMs.** Antes só
+filtrava `host: ${app}` (só o host sintético). Replicado o padrão já usado na
+Borda DC (`documentacao/engenharia-do-sistema.md`, variável `$provider` como
+alternação regex): nova variável de dashboard **`hostRegex`** (escondida,
+`hide:2`, datasource MySQL `afor1g5862fb4c`), cuja query resolve — para o
+`$app` seleccionado — `GROUP_CONCAT(h.host SEPARATOR '|')` de todos os hosts
+com a mesma tag `servico=` (inclui o próprio host `app-*`, que também tem
+essa tag, + todas as VMs). O target do painel passa a `group.filter: "/.*/"`
+(span todos os grupos, já que as VMs não estão no grupo SINTETICOS) e
+`host.filter: "/${hostRegex:raw}/"` (a forma `:raw` é obrigatória — sem ela o
+Grafana escapa caracteres regex ao mudar de app via dropdown, mesmo bug já
+documentado na Borda DC). Título do painel passa a "Problemas activos — app
+e VMs de hospedagem".
+
+**Novo script `push_variable.py`** (raiz do projecto, mesmo padrão de
+`push_panel.py`/`push_native.py`): lê a chave `"templating"` do
+`manifest.json` e cria/actualiza variáveis do dashboard via
+`dashboards/db`. Necessário porque nenhum dos scripts existentes tocava em
+`dashboard.templating.list` — só em `panels`.
+
+**Validado ao vivo com eBankit** (caso real, `VS9000358` com 2 triggers):
+card 4 mostra "0 externo · 2 infra (VMs)"; painel de triggers deixou de
+mostrar "No problems found" e passou a mostrar `APP - Compute - VS9000358`,
+severidade High, "Unavailable by ICMP ping", idade 3 meses. **Achado, não
+bug**: o painel só mostra esta e não a 2ª trigger da mesma VM (`Zabbix agent
+is not available`) — comportamento nativo de **dependência entre triggers**
+do Zabbix (a trigger de agente indisponível depende da de ICMP, por isso o
+Zabbix oculta o sintoma e mostra só a causa-raiz, igual ao ecrã de Problemas
+nativo). O card 4 e a tabela de VMs continuam a contar as 2 em bruto (sem
+essa supressão), intencional — cada painel tem o seu papel: o nativo mostra
+"o que o NOC precisa de ver/fazer ack", os outros dois mostram "quantos
+problemas existem".
+
 ## 2. Schema de tags (decisão 2026-07-08)
 
 Decisão: **tags**, não macros nem inventário — é o único mecanismo já
