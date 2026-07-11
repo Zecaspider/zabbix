@@ -12,3 +12,4 @@ tok3n
 
 # relatorios operacionais confidenciais - nunca versionar
 documentacao/RELATORIO*
+relatorios/*/saida/
