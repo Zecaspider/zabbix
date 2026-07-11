@@ -1,0 +1,37 @@
+{
+  "dashboardUid": "apis-r1-relatorio-diario",
+  "dashboardTitle": "R1 · APIs e Serviços de Negócio — Relatório Diário",
+  "folderUid": "bfpm0sedbpgqob",
+  "datasource": "3_KgG43nz",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "BPC / INFRAESTRUTURA / STORAGE"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l2-relatorio-diario.js",
+      "id": 101,
+      "role": "content",
+      "title": "Relatório Diário — Documento",
+      "content": "<div id=\"bpc-relatorio-diario-root\"></div>"
+    }
+  ]
+}
