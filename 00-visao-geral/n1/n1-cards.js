@@ -180,21 +180,22 @@ function fetchProblemsNetwork(groupids) {
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 
-// Skeleton de loading (8 cards)
+// Skeleton de loading (8 cards) — 4x2, mesma grelha do render final
 function renderSkeleton() {
   var cards = '';
   for (var i = 0; i < 8; i++) {
-    cards += '<div class="bpc bpc-card" style="--card-accent:var(--bpc-mute);display:flex;flex-direction:column;gap:10px;">'
-      + '<div class="bpc-skeleton" style="height:10px;width:55%"></div>'
-      + '<div class="bpc-skeleton" style="height:8px;width:70%;margin-top:2px"></div>'
-      + '<div class="bpc-skeleton" style="height:22px;width:40%;margin-top:6px"></div>'
-      + '<div class="bpc-skeleton" style="height:10px;width:55%;margin-top:auto"></div>'
+    cards += '<div class="bpc bpc-card" style="--card-accent:var(--bpc-mute);display:flex;flex-direction:column;gap:16px;padding:26px 24px;">'
+      + '<div class="bpc-skeleton" style="height:18px;width:65%"></div>'
+      + '<div class="bpc-skeleton" style="height:12px;width:80%;margin-top:2px"></div>'
+      + '<div class="bpc-skeleton" style="height:42px;width:45%;margin-top:10px"></div>'
+      + '<div class="bpc-skeleton" style="height:14px;width:40%;margin-top:auto"></div>'
       + '</div>';
   }
-  return '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:4px 0;">' + cards + '</div>';
+  return '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:4px 0;height:100%">' + cards + '</div>';
 }
 
-// Card de um domínio com dados reais
+// Card de um domínio com dados reais — dimensionado para leitura à
+// distância num ecrã de NOC (parede), não para consulta ao perto.
 function renderDomainCard(domain, result) {
   var classified = classifyProblems(result.problems || []);
   var state = classified.state;
@@ -202,38 +203,38 @@ function renderDomainCard(domain, result) {
   var hasN2 = !!domain.dashUid;
 
   var headerBadge = hasN2
-    ? '<span class="bpc-pill ' + pillClass(state) + '">' + pillLabel(state) + '</span>'
-    : '<span style="font-size:.60rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:8px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.30);border:1px solid rgba(255,255,255,0.10);">Em Construção</span>';
+    ? '<span class="bpc-pill ' + pillClass(state) + '" style="font-size:.90rem;padding:5px 14px;border-radius:12px;">' + pillLabel(state) + '</span>'
+    : '<span style="font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border-radius:12px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.30);border:1px solid rgba(255,255,255,0.10);">Em Construção</span>';
 
   var counters = hasN2
-    ? '<div style="display:flex;gap:16px;margin-top:10px;">'
-        + '<div style="display:flex;flex-direction:column;gap:3px;">'
-        +   '<span style="font-size:1.50rem;font-weight:700;color:#E6EDF3;line-height:1;">' + classified.nCrit + '</span>'
-        +   '<span class="bpc-label bpc-crit">Crít.</span>'
+    ? '<div style="display:flex;gap:36px;margin-top:18px;">'
+        + '<div style="display:flex;flex-direction:column;gap:6px;">'
+        +   '<span style="font-size:3.1rem;font-weight:700;color:#E6EDF3;line-height:1;">' + classified.nCrit + '</span>'
+        +   '<span class="bpc-label bpc-crit" style="font-size:.85rem;">Crít.</span>'
         + '</div>'
-        + '<div style="display:flex;flex-direction:column;gap:3px;">'
-        +   '<span style="font-size:1.50rem;font-weight:700;color:#E6EDF3;line-height:1;">' + classified.nWarn + '</span>'
-        +   '<span class="bpc-label bpc-warn">Aviso</span>'
+        + '<div style="display:flex;flex-direction:column;gap:6px;">'
+        +   '<span style="font-size:3.1rem;font-weight:700;color:#E6EDF3;line-height:1;">' + classified.nWarn + '</span>'
+        +   '<span class="bpc-label bpc-warn" style="font-size:.85rem;">Aviso</span>'
         + '</div>'
       + '</div>'
-    : '<div style="margin-top:10px;font-size:.72rem;color:rgba(255,255,255,0.22);">Dashboard em desenvolvimento</div>';
+    : '<div style="margin-top:18px;font-size:1.05rem;color:rgba(255,255,255,0.22);">Dashboard em desenvolvimento</div>';
 
   var footer = hasN2
     ? '<a href="/d/' + domain.dashUid + '/' + domain.dashSlug + '" '
-        + 'style="font-size:.70rem;color:var(--bpc-cyan);text-decoration:none;margin-top:auto;padding-top:8px;display:block;">'
+        + 'style="font-size:1.00rem;font-weight:600;color:var(--bpc-cyan);text-decoration:none;margin-top:auto;padding-top:16px;display:block;">'
         + esc(domain.linkLabel || 'Ver N2 →') + '</a>'
-    : '<span style="font-size:.70rem;color:rgba(255,255,255,0.15);margin-top:auto;padding-top:8px;display:block;">—</span>';
+    : '<span style="font-size:1.00rem;color:rgba(255,255,255,0.15);margin-top:auto;padding-top:16px;display:block;">—</span>';
 
   var errorNote = result.error
-    ? '<div style="font-size:.62rem;color:rgba(239,68,68,0.70);margin-top:4px;">Erro ao carregar dados</div>'
+    ? '<div style="font-size:.80rem;color:rgba(239,68,68,0.70);margin-top:6px;">Erro ao carregar dados</div>'
     : '';
 
   var cardInner = '<div class="bpc bpc-card ' + cardClass(state) + '" '
-    + 'style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;">'
-    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'
+    + 'style="--card-accent:' + accent + ';height:100%;display:flex;flex-direction:column;padding:28px 26px;">'
+    + '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">'
     +   '<div>'
-    +     '<div style="font-size:.95rem;font-weight:700;color:#E6EDF3;line-height:1.2;">' + esc(domain.label) + '</div>'
-    +     '<div style="font-size:.68rem;color:rgba(255,255,255,0.35);margin-top:2px;">' + esc(domain.sublabel) + '</div>'
+    +     '<div style="font-size:1.55rem;font-weight:700;color:#E6EDF3;line-height:1.2;">' + esc(domain.label) + '</div>'
+    +     '<div style="font-size:.92rem;color:rgba(255,255,255,0.40);margin-top:5px;">' + esc(domain.sublabel) + '</div>'
     +   '</div>'
     +   headerBadge
     + '</div>'
@@ -249,21 +250,22 @@ function renderDomainCard(domain, result) {
 
 // Card de erro (quando o fetch falha completamente)
 function renderErrorCard(domain) {
-  return '<div class="bpc bpc-card state-ok" style="--card-accent:var(--bpc-mute);height:100%;display:flex;flex-direction:column;">'
-    + '<div style="font-size:.90rem;font-weight:700;color:#E6EDF3;">' + esc(domain.label) + '</div>'
-    + '<div style="font-size:.68rem;color:rgba(255,255,255,0.30);margin-top:2px;">' + esc(domain.sublabel) + '</div>'
-    + '<div class="bpc-error-msg" style="margin-top:10px;">Sem dados</div>'
+  return '<div class="bpc bpc-card state-ok" style="--card-accent:var(--bpc-mute);height:100%;display:flex;flex-direction:column;padding:28px 26px;">'
+    + '<div style="font-size:1.45rem;font-weight:700;color:#E6EDF3;">' + esc(domain.label) + '</div>'
+    + '<div style="font-size:.92rem;color:rgba(255,255,255,0.30);margin-top:5px;">' + esc(domain.sublabel) + '</div>'
+    + '<div class="bpc-error-msg" style="margin-top:18px;font-size:1.0rem;">Sem dados</div>'
     + '</div>';
 }
 
-// Grid final com todos os cards
+// Grid final com todos os cards — 4 colunas x 2 linhas (8 domínios exactos,
+// sem linha incompleta), a esticar para preencher toda a altura do painel
 function renderGrid(results) {
   var cards = CFG.domains.map(function(domain, i) {
     var r = results[i];
     if (!r) return renderErrorCard(domain);
     return renderDomainCard(domain, r);
   });
-  return '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:4px 0;">'
+  return '<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:18px;padding:4px 0;height:100%">'
     + cards.join('')
     + '</div>';
 }
