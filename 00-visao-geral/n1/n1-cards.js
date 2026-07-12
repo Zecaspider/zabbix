@@ -1,18 +1,28 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  N1 · Portal NOC — Cards de Área                              v2.0       ║
+// ║  N1 · Portal NOC — Cards de Área                              v2.1       ║
 // ║                                                                          ║
-// ║  8 cards (3 colunas × 3 linhas, última incompleta) com estado de saúde   ║
-// ║  por área. Estado calculado via problem.get (triggers activos) por       ║
-// ║  groupids. Áreas sem N2 mostram badge "Em Construção" e sem link.        ║
+// ║  7 cards (4 colunas x 2 linhas, ultima incompleta com 3) com estado de   ║
+// ║  saude por dominio. 1 card = 1 pasta Grafana real (confirmado por        ║
+// ║  folders.get ao vivo, 2026-07-12) - nunca inventar dominios que nao      ║
+// ║  batam certo com a estrutura de pastas. Estado calculado via             ║
+// ║  problem.get (triggers activos) por groupids. Dominios sem N2 mostram    ║
+// ║  badge "Em Construcao" e sem link.                                       ║
 // ║                                                                          ║
-// ║  Ordem = modelo em camadas, chão de fábrica → aplicações enduser:        ║
-// ║  Virtualização/Físico → Compute/Storage → Rede → Dados → APIs →          ║
-// ║  Serviços de Negócio, com Segurança à parte (camada transversal).        ║
-// ║  Agências deixou de ter card próprio — é segmento de Rede (CLAUDE.md,    ║
-// ║  ver 04·Rede › 04.1·Agências); continua acessível via Rede → N2 → N3.    ║
+// ║  v2.1 (2026-07-12): "APIs & Servicos" e "Servicos de Negocio" fundidos   ║
+// ║  num so card - a pasta "08 Servicos de Negocio" foi apagada em           ║
+// ║  2026-07-10 (estava vazia) e fundida na "07 APIs e Servicos de           ║
+// ║  Negocio" (CLAUDE.md); os cards nunca tinham sido actualizados para      ║
+// ║  reflectir isso, e "APIs & Servicos" continuava "Em Construcao" apesar   ║
+// ║  do dashboard N2 real (apis-n2) ja existir - corrigido tambem.           ║
+// ║                                                                          ║
+// ║  Ordem = modelo em camadas, chao de fabrica -> aplicacoes enduser:       ║
+// ║  Virtualizacao/Fisico -> Compute/Storage -> Rede -> Dados -> APIs e      ║
+// ║  Servicos de Negocio, com Seguranca a parte (camada transversal).       ║
+// ║  Agencias deixou de ter card proprio - e segmento de Rede (CLAUDE.md,    ║
+// ║  ver 04·Rede › 04.1·Agencias); continua acessivel via Rede -> N2 -> N3.  ║
 // ║                                                                          ║
 // ║  DATASOURCES                                                             ║
-// ║  Infra  (3_KgG43nz)         → VMware, VMs, Storage, Seg, BD, APIs, SN  ║
+// ║  Infra  (3_KgG43nz)         → VMware, VMs, Storage, Seg, BD, APIs/SN   ║
 // ║  Network (ffo8sp8zllog0e)   → Rede (fetch directo)                       ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
 
@@ -25,8 +35,10 @@ var CFG = {
   // Proxy para o Zabbix Network (usado directamente nas 2 chamadas de rede/agências)
   networkProxy: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
 
-  // Definição das 8 áreas. Ordem = modelo em camadas (chão de fábrica → enduser),
-  // posição no grid esq→dir, cima→baixo. dashUid: null → área em construção.
+  // Definição das 7 áreas = 7 pastas reais do Grafana (00·Visão Geral e
+  // 99·Arquivo não contam; 09·Agências está vazia, ver nota acima).
+  // Ordem = modelo em camadas (chão de fábrica → enduser), posição no grid
+  // esq→dir, cima→baixo. dashUid: null → área em construção.
   domains: [
     {
       id: 'vmware',
@@ -74,22 +86,13 @@ var CFG = {
       dashSlug: null,
     },
     {
-      id: 'apis',
-      label: 'APIs & Serviços',
-      sublabel: 'Endpoints técnicos · Sintéticos',
-      groupids: ['663', '345'],
+      id: 'apis-negocio',
+      label: 'APIs e Serviços de Negócio',
+      sublabel: 'Endpoints técnicos · Sintéticos · eBankit',
+      groupids: ['663', '345', '391'],
       datasource: 'infra',
-      dashUid: null,
-      dashSlug: null,
-    },
-    {
-      id: 'negocio',
-      label: 'Serviços de Negócio (Aplicações)',
-      sublabel: 'eBankit · Jornadas de utilizador final',
-      groupids: ['391'],
-      datasource: 'infra',
-      dashUid: null,
-      dashSlug: null,
+      dashUid: 'apis-n2',
+      dashSlug: 'n2-apis-servicos-negocio',
     },
     {
       id: 'seguranca',
@@ -180,10 +183,11 @@ function fetchProblemsNetwork(groupids) {
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 
-// Skeleton de loading (8 cards) — 4x2, mesma grelha do render final
+// Skeleton de loading (7 cards) — 4x2 (ultima linha incompleta), mesma
+// grelha do render final
 function renderSkeleton() {
   var cards = '';
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < 7; i++) {
     cards += '<div class="bpc bpc-card" style="--card-accent:var(--bpc-mute);display:flex;flex-direction:column;gap:16px;padding:26px 24px;">'
       + '<div class="bpc-skeleton" style="height:18px;width:65%"></div>'
       + '<div class="bpc-skeleton" style="height:12px;width:80%;margin-top:2px"></div>'
@@ -257,8 +261,12 @@ function renderErrorCard(domain) {
     + '</div>';
 }
 
-// Grid final com todos os cards — 4 colunas x 2 linhas (8 domínios exactos,
-// sem linha incompleta), a esticar para preencher toda a altura do painel
+// Grid final com todos os cards — 4 colunas x 2 linhas (7 domínios reais,
+// última linha com 3 e uma célula em branco), a esticar para preencher
+// toda a altura do painel. A quebra 4+3 bate certo com o estado real:
+// os 4 primeiros (VMware/VMs/Storage/Rede) já têm N2; os 3 últimos
+// (BD/APIs+SN/Segurança) estão "Em Construção" - não é coincidência de
+// código, é o estado actual dos dashboards.
 function renderGrid(results) {
   var cards = CFG.domains.map(function(domain, i) {
     var r = results[i];
