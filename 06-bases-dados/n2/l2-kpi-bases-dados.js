@@ -36,6 +36,39 @@
     failedJobs: { warn: 1, crit: 5 },
   };
 
+  // ── COBERTURA DE MONITORIZAÇÃO (tier) ──────────────────────────
+  // Mesma classificação de 4 níveis do l2-tabela-hosts.js, aqui só para contagem
+  // (não precisa dos valores por host, só de saber quantos hosts em cada tier).
+  async function getCoverage(rpc, hostIds) {
+    const [odbcItems, perfItems, svcItems, procItems] = await Promise.all([
+      rpc('item.get', { hostids: hostIds, search: { key_: CFG.itemKeyPrefix }, filter: { status: 0 }, output: ['hostid', 'lastvalue', 'lastclock', 'error'] }),
+      rpc('item.get', { hostids: hostIds, search: { name: 'MSSQL ' }, filter: { status: 0 }, output: ['hostid', 'name', 'lastvalue', 'error'] }),
+      rpc('item.get', { hostids: hostIds, search: { key_: 'service.info[' }, searchWildcardsEnabled: true, filter: { status: 0 }, output: ['hostid'] }),
+      rpc('item.get', { hostids: hostIds, search: { key_: 'proc.num[' }, searchWildcardsEnabled: true, filter: { status: 0 }, output: ['hostid'] }),
+    ]);
+
+    const odbcByHost = {};
+    odbcItems.forEach(it => { odbcByHost[it.hostid] = it; });
+    const perfHostIds = new Set(perfItems.filter(it => !it.error && it.lastvalue !== '').map(it => it.hostid));
+    const svcHostIds = new Set(svcItems.concat(procItems).map(it => it.hostid));
+
+    let odbc = 0, perfmon = 0, servico = 0, semSinal = 0;
+    hostIds.forEach(hid => {
+      const it = odbcByHost[hid];
+      let odbcOk = false;
+      if (it && !it.error && it.lastvalue) {
+        const raw = it.lastvalue.trim();
+        odbcOk = raw.endsWith('}') || raw.endsWith(']');
+      }
+      if (odbcOk) odbc++;
+      else if (perfHostIds.has(hid)) perfmon++;
+      else if (svcHostIds.has(hid)) servico++;
+      else semSinal++;
+    });
+
+    return { odbc, perfmon, servico, semSinal, total: hostIds.length };
+  }
+
   // ── FETCH & AGREGAÇÃO ──────────────────────────────────────────
   async function getData(rpc) {
     const hosts = await rpc('host.get', {
@@ -50,6 +83,7 @@
     }
 
     const hostIds = hosts.map(h => h.hostid);
+    const coverage = await getCoverage(rpc, hostIds);
 
     const items = await rpc('item.get', {
       hostids: hostIds,
@@ -58,7 +92,11 @@
       output: ['hostid', 'lastvalue', 'lastclock'],
     });
 
-    if (!items.length) return _empty('Item JSON não encontrado nos hosts');
+    if (!items.length) {
+      const empty = _empty('Item JSON não encontrado nos hosts');
+      empty.coverage = coverage;
+      return empty;
+    }
 
     const agg = {
       dbOnline: 0, dbSuspect: 0, ple: [], userConns: 0, activeRequests: 0,
@@ -102,7 +140,7 @@
       blocked: agg.blocked, failedJobs: agg.failedJobs, backups24h: agg.backups24h,
       deadlocks: agg.deadlocks, totalDataMb: agg.totalDataMb, totalLogMb: agg.totalLogMb,
       hostsOk: agg.hostsOk, hostsError: agg.hostsError, lastClock: agg.lastClock,
-      hostsTotal: hosts.length, error: null,
+      hostsTotal: hosts.length, error: null, coverage,
     };
   }
 
@@ -112,14 +150,36 @@
       userConns: 0, activeRequests: 0, blocked: 0, failedJobs: 0,
       backups24h: 0, deadlocks: 0, totalDataMb: 0, totalLogMb: 0,
       hostsOk: 0, hostsError: 0, hostsTotal: 0, lastClock: 0, error: reason,
+      coverage: null,
     };
   }
 
   // ── RENDER ─────────────────────────────────────────────────────
+  function coverageCard(cardFn, coverage) {
+    if (!coverage) return '';
+    const label = coverage.odbc + ' ODBC · ' + coverage.perfmon + ' Perfmon · '
+      + coverage.servico + ' Serviço · ' + coverage.semSinal + ' sem sinal';
+    const state = coverage.odbc + coverage.perfmon + coverage.servico > 0 ? 'ok' : 'down';
+    return cardFn(state, 'Cobertura de monitorização', coverage.total, 'hosts', label);
+  }
+
   function render(el, d) {
     const u = window.BPC.utils;
 
     if (!d.ok && d.error) {
+      // Mesmo sem dados ODBC agregados, a cobertura por tier continua útil de mostrar
+      if (d.coverage) {
+        const cardFn = (state, label, value, unit, sub) =>
+          '<div class="bpc-card state-' + state + '" style="min-width:220px">'
+          + '<div class="bpc-label">' + label + '</div>'
+          + '<div class="bpc-flex bpc-gap-4" style="margin-top:6px;align-items:baseline;">'
+          + '<span class="bpc-value-lg ' + u.stateClass(state) + '">' + value + '</span>'
+          + '<span style="font-size:.75rem;color:#8B949E;margin-left:3px">' + unit + '</span>'
+          + '</div><div class="bpc-label" style="margin-top:4px;font-size:.62rem">' + sub + '</div></div>';
+        el.innerHTML = '<div class="bpc" style="display:flex;gap:8px">' + coverageCard(cardFn, d.coverage) + '</div>'
+          + '<div style="margin-top:8px">' + u.buildError('Bases de Dados — KPI', d.error, '#F59E0B') + '</div>';
+        return;
+      }
       el.innerHTML = u.buildError('Bases de Dados — KPI', d.error, '#F59E0B');
       return;
     }
@@ -169,6 +229,8 @@
 
     el.innerHTML =
       '<div class="bpc" style="' + wrapStyle + '">'
+      + coverageCard(card, d.coverage)
+      + divider
       + card('ok', 'Bases online', d.dbOnline, '', d.hostsOk + '/' + d.hostsTotal + ' servidor(es)')
       + card(susState, 'Suspect', d.dbSuspect, '', susState !== 'ok' ? '⚠ ATENÇÃO' : 'Nenhuma')
       + divider
