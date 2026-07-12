@@ -150,8 +150,9 @@
 ## Fase 6 · Bases de Dados (anchor 355, Infra)
 | # | Tarefa | Estado | Data | Nota |
 |---|---|---|---|---|
-| 6.1 | N2 + N3 (MSSQL/Oracle/DB2) | ☐ | | |
-| 6.2 | Navegação + teste + commit | ☐ | | |
+| 6.1 | N2 (MSSQL, KPI agregado + tabela por host) | ◐ | 2026-07-12 | **N2 criado** (`bd-n2`, pasta `06·Bases de Dados`) — migrado do dashboard arquivado `D03 - Bases de dados - Nivel 2` (`adcxx9v`, 99·Arquivo, última alteração 2026-06-19). Só o painel de KPI agregado (PLE/ligações/bloqueados/deadlocks/jobs/backups) foi portado tal-e-qual (já usava a API pública `window.BPC.*` correcta, só `fmtTs`→`fmtTime` mudou de nome) — o 3º painel do arquivo era um card genérico copiado de VMware/ESXi, **zero métricas reais de BD** (confirmado por grep no código), por isso não foi portado. Em vez disso, painel novo `l2-tabela-hosts.js` (estado por host + motivo exacto da falha, usando o campo `error` do Zabbix). **N3 e Oracle/DB2 continuam por fazer** — só MSSQL está coberto (era tudo o que o dashboard arquivado cobria) |
+| 6.1.1 | Achado: cobertura real de dados | ☐ | 2026-07-12 | Tag `camada=base de dados` está em **47 hosts** (sem filtro de grupo — mais do que os 4 hosts do grupo 355 isolado, achado inicial que subestimava o âmbito). **Só 2/47 têm dados reais.** 3 causas distintas confirmadas por auditoria ao vivo (`item.get` com campo `error`): (a) template `BPC MSSQL by ODBC` nunca aplicado (ex. `VS8000368`); (b) agente Windows inteiro silencioso, nem CPU reporta (ex. `VS8000491`); (c) agente saudável mas SQL Server recusa ligação ODBC — `Login timeout`/`TCP Provider error` (ex. `VS9000423`) ou credencial errada — `Login failed for user 'zbx_monitor'` (ex. host Banktrade `VS8000431`). Painel `l2-tabela-hosts.js` mostra o erro exacto por host — usar como ponto de partida para a próxima auditoria (verificar VMs de bases de dados no Zabbix, aplicar/corrigir templates) |
+| 6.2 | N3 (detalhe por instância) | ☐ | | Não iniciado |
 
 ## Fase 7 · APIs & Serviços (anchor 663 + 345, Infra)
 | # | Tarefa | Estado | Data | Nota |
