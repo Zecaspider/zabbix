@@ -46,6 +46,13 @@
       "id": 200,
       "role": "content",
       "title": "Problemas Activos — DC Fabric"
+    },
+    {
+      "file": "l3-fab-tabela.js",
+      "id": 103,
+      "role": "content",
+      "title": "Tabela Backbone — 7 Switches",
+      "content": "<div id=\"bpc-n3fab-tabela\"></div>"
     }
   ]
 }

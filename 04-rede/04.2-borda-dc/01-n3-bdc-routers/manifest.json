@@ -45,6 +45,13 @@
       "id": 200,
       "role": "content",
       "title": "Problemas Activos — Borda DC"
+    },
+    {
+      "file": "l3-bdc-routers-tabela.js",
+      "id": 103,
+      "role": "content",
+      "title": "Tabela Backbone — 5 Routers",
+      "content": "<div id=\"bpc-n3bdc-tabela\"></div>"
     }
   ]
 }
