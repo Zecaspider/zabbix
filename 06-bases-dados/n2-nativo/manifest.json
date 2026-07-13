@@ -1,0 +1,58 @@
+{
+  "dashboardUid": "bd-n2-nativo",
+  "dashboardTitle": "N2 · Bases de Dados — Proposta nativa",
+  "folderUid": "afpm0se5rij28d",
+  "notas": "Proposta B do DESIGN-N2-N3-20260712.md §4 — 100% painéis nativos, zero Business Text. Inteligência (tier/tags/erros ODBC) via MySQL ds/query (item_rtdata.error + history_uint p/ valores — items.lastvalue não existe no Zabbix 7.4); séries e problemas via datasource Zabbix com variável escondida bd_hosts (regex de hosts técnicos gerada por tag, interpolada com :raw). Coexiste com bd-n2 (BT) para comparação lado a lado. Limitação assumida: não faz parsing do JSON master ODBC (27 bases/backups do VS8000413 só no BT/N3) nem achados em linguagem natural.",
+  "panels": [
+    {
+      "nativo": "stat",
+      "id": 101,
+      "title": "Hosts Produção"
+    },
+    {
+      "nativo": "stat",
+      "id": 102,
+      "title": "Instâncias"
+    },
+    {
+      "nativo": "stat",
+      "id": 103,
+      "title": "Bases de dados"
+    },
+    {
+      "nativo": "stat",
+      "id": 104,
+      "title": "Tamanho"
+    },
+    {
+      "nativo": "stat",
+      "id": 105,
+      "title": "Sem credencial"
+    },
+    {
+      "nativo": "bargauge",
+      "id": 106,
+      "title": "Cobertura por fonte"
+    },
+    {
+      "nativo": "table",
+      "id": 107,
+      "title": "Hosts"
+    },
+    {
+      "nativo": "timeseries",
+      "id": 108,
+      "title": "CPU (%)"
+    },
+    {
+      "nativo": "timeseries",
+      "id": 109,
+      "title": "Memória (%)"
+    },
+    {
+      "nativo": "alexanderzobnin-zabbix-triggers-panel",
+      "id": 110,
+      "title": "Problemas"
+    }
+  ]
+}

@@ -176,6 +176,24 @@ pesquisa de KPIs em `DESIGN-N2-N3-20260712.md`):
   (era exactamente o objectivo do desenho §2). Achado novo que ele revelou:
   70+ jobs SQL Agent falhados/dia e 0 backups nas últimas 24h.
 
+### Proposta B (nativa) também construída — `bd-n2-nativo` (2026-07-13)
+
+A pedido do utilizador, a Proposta B do design foi construída para comparação
+lado a lado com o BT (`06-bases-dados/n2-nativo/`): **100% painéis nativos,
+zero Business Text**. Como: a inteligência (tier/tags/erros) vive em SQL no
+datasource **MySQL** (`item_rtdata.error` para os erros ODBC, `history_uint`
+para valores — `items.lastvalue` não existe no Zabbix 7.4), e as séries/
+problemas usam o datasource Zabbix com uma **variável escondida `bd_hosts`**
+(regex `VS...|VS...` de hosts técnicos gerada por `GROUP_CONCAT` a partir da
+tag, interpolada com `:raw`) — o filtro de host do datasource faz match por
+substring do nome visível, por isso os códigos técnicos chegam. Números
+batem 1:1 com o BT (25 hosts, tiers 1/3/8/13, 2.61 TiB). O painel de
+problemas nativo revelou achados extra (disco crítico há 2 meses nos ToBe,
+swap alto no FENIX). **Limitações assumidas** (a razão de o BT continuar a
+ser o principal): não faz parsing do JSON master ODBC (as 27 bases/backups
+do `VS8000413` só existem no BT/N3), não distingue "serviço PARADO" dentro
+do tier Serviço, e não gera achados em linguagem natural.
+
 ### Lições novas (2026-07-13) — não repetir
 
 1. **`proc.num[]` sem argumentos (template Windows) conta TODOS os

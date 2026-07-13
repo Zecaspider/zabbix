@@ -1,0 +1,770 @@
+{
+ "dashboard": {
+  "editable": true,
+  "graphTooltip": 1,
+  "id": 382096151298048,
+  "panels": [
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 0
+    },
+    "id": 200,
+    "panels": [],
+    "title": "Contexto operacional",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "mysql",
+     "uid": "afor1g5862fb4c"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "blue",
+         "value": null
+        }
+       ]
+      }
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 5,
+     "w": 4,
+     "x": 0,
+     "y": 1
+    },
+    "id": 101,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "none",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "auto"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "mysql",
+       "uid": "afor1g5862fb4c"
+      },
+      "format": "table",
+      "rawSql": "SELECT COUNT(*) AS value FROM hosts h WHERE h.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%')",
+      "refId": "A"
+     }
+    ],
+    "title": "Hosts Produção",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "mysql",
+     "uid": "afor1g5862fb4c"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "blue",
+         "value": null
+        }
+       ]
+      }
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 5,
+     "w": 5,
+     "x": 4,
+     "y": 1
+    },
+    "id": 102,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "none",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "auto"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "mysql",
+       "uid": "afor1g5862fb4c"
+      },
+      "format": "table",
+      "rawSql": "SELECT COUNT(*) AS value FROM items i JOIN hosts h ON h.hostid=i.hostid WHERE i.status=0 AND (i.key_ LIKE 'service.info[\"MSSQLSERVER\",%' OR i.key_ LIKE 'service.info[MSSQLSERVER,%' OR i.key_ LIKE 'service.info[MSSQL$%' OR i.key_ LIKE 'service.info[\"MSSQL$%' OR (i.key_ LIKE 'service.info[%OracleService%' AND i.key_ NOT LIKE '%RMAN%' AND i.key_ NOT LIKE '%Backup%')) AND h.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%')",
+      "refId": "A"
+     }
+    ],
+    "title": "Instâncias (serviços de motor descobertos)",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "mysql",
+     "uid": "afor1g5862fb4c"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "green",
+         "value": null
+        }
+       ]
+      }
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 5,
+     "w": 5,
+     "x": 9,
+     "y": 1
+    },
+    "id": 103,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "none",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "auto"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "mysql",
+       "uid": "afor1g5862fb4c"
+      },
+      "format": "table",
+      "rawSql": "SELECT (SELECT COUNT(*) FROM items i JOIN hosts h ON h.hostid=i.hostid WHERE i.status=0 AND i.name LIKE 'MSSQL DB %: Tamanho dados%' AND h.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%')) + COALESCE((SELECT SUM(hu.value) FROM history_uint hu JOIN  (SELECT hu2.itemid, MAX(hu2.clock) mc FROM history_uint hu2 JOIN items i2 ON i2.itemid=hu2.itemid JOIN hosts h2 ON h2.hostid=i2.hostid   WHERE i2.key_='mssql.business_db.online' AND hu2.clock>UNIX_TIMESTAMP()-7200 AND h2.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h2.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h2.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%') GROUP BY hu2.itemid) t  ON hu.itemid=t.itemid AND hu.clock=t.mc),0) AS value",
+      "refId": "A"
+     }
+    ],
+    "title": "Bases de dados (medidas)",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "mysql",
+     "uid": "afor1g5862fb4c"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "orange",
+         "value": null
+        }
+       ]
+      },
+      "unit": "bytes"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 5,
+     "w": 5,
+     "x": 14,
+     "y": 1
+    },
+    "id": 104,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "none",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "auto"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "mysql",
+       "uid": "afor1g5862fb4c"
+      },
+      "format": "table",
+      "rawSql": "SELECT SUM(v) AS value FROM ( SELECT hu.value AS v FROM history_uint hu JOIN   (SELECT hu2.itemid, MAX(hu2.clock) mc FROM history_uint hu2 JOIN items i2 ON i2.itemid=hu2.itemid JOIN hosts h2 ON h2.hostid=i2.hostid    WHERE i2.key_ IN ('mssql.data_files_size','mssql.log_files_size') AND hu2.clock>UNIX_TIMESTAMP()-7200 AND h2.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h2.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h2.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%') GROUP BY hu2.itemid) t   ON hu.itemid=t.itemid AND hu.clock=t.mc  UNION ALL  SELECT hu.value*1024 FROM history_uint hu JOIN   (SELECT hu2.itemid, MAX(hu2.clock) mc FROM history_uint hu2 JOIN items i2 ON i2.itemid=hu2.itemid JOIN hosts h2 ON h2.hostid=i2.hostid    WHERE i2.name LIKE 'MSSQL DB %: Tamanho%' AND hu2.clock>UNIX_TIMESTAMP()-7200 AND h2.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h2.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h2.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%') GROUP BY hu2.itemid) t   ON hu.itemid=t.itemid AND hu.clock=t.mc) x",
+      "refId": "A"
+     }
+    ],
+    "title": "Tamanho (dados + log medidos)",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "mysql",
+     "uid": "afor1g5862fb4c"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "green",
+         "value": null
+        },
+        {
+         "color": "red",
+         "value": 1
+        }
+       ]
+      }
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 5,
+     "w": 5,
+     "x": 19,
+     "y": 1
+    },
+    "id": 105,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "none",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "auto"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "mysql",
+       "uid": "afor1g5862fb4c"
+      },
+      "format": "table",
+      "rawSql": "SELECT COUNT(DISTINCT i.hostid) AS value FROM items i JOIN item_rtdata rt ON rt.itemid=i.itemid JOIN hosts h ON h.hostid=i.hostid WHERE i.key_ LIKE 'db.odbc.select[mssql.business.master%' AND (rt.error LIKE '%28000%' OR rt.error LIKE '%Login failed%') AND h.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%')",
+      "refId": "A"
+     }
+    ],
+    "title": "Hosts sem credencial zbx_monitor",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 6
+    },
+    "id": 201,
+    "panels": [],
+    "title": "Cobertura por fonte de dados",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "mysql",
+     "uid": "afor1g5862fb4c"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "continuous-GrYlRd"
+      },
+      "max": 25,
+      "min": 0,
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "blue",
+         "value": null
+        }
+       ]
+      }
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 6,
+     "w": 24,
+     "x": 0,
+     "y": 7
+    },
+    "id": 106,
+    "options": {
+     "displayMode": "gradient",
+     "orientation": "horizontal",
+     "reduceOptions": {
+      "calcs": [],
+      "fields": "/^n$/",
+      "values": true
+     },
+     "showUnfilled": true,
+     "valueMode": "color"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "mysql",
+       "uid": "afor1g5862fb4c"
+      },
+      "format": "table",
+      "rawSql": "SELECT CASE WHEN EXISTS(SELECT 1 FROM items i JOIN item_rtdata rt ON rt.itemid=i.itemid WHERE i.hostid=h.hostid AND i.status=0 AND rt.state=0 AND i.key_ LIKE 'db.odbc.select[mssql.business.master%') THEN '1 · ODBC completo' WHEN EXISTS(SELECT 1 FROM items i JOIN item_rtdata rt ON rt.itemid=i.itemid WHERE i.hostid=h.hostid AND i.status=0 AND rt.state=0 AND (i.name IN ('MSSQL Page life expectancy','MSSQL User Connections','MSSQL Number of Deadlocks/sec') OR i.name LIKE 'MSSQL DB %')) THEN '2 · Perfmon local' WHEN EXISTS(SELECT 1 FROM items i WHERE i.hostid=h.hostid AND i.status=0 AND (i.key_ LIKE 'service.info[\"MSSQLSERVER\",%' OR i.key_ LIKE 'service.info[MSSQLSERVER,%' OR i.key_ LIKE 'service.info[MSSQL$%' OR i.key_ LIKE 'service.info[\"MSSQL$%' OR (i.key_ LIKE 'service.info[%OracleService%' AND i.key_ NOT LIKE '%RMAN%' AND i.key_ NOT LIKE '%Backup%'))) THEN '3 · Serviço' ELSE '4 · Sem sinal' END AS fonte, COUNT(*) AS n FROM hosts h WHERE h.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%') GROUP BY fonte ORDER BY fonte",
+      "refId": "A"
+     }
+    ],
+    "title": "",
+    "transparent": true,
+    "type": "bargauge"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 13
+    },
+    "id": 202,
+    "panels": [],
+    "title": "Hosts",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "mysql",
+     "uid": "afor1g5862fb4c"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "custom": {
+       "align": "auto",
+       "cellOptions": {
+        "type": "auto"
+       },
+       "filterable": true
+      }
+     },
+     "overrides": [
+      {
+       "matcher": {
+        "id": "byName",
+        "options": "Fonte"
+       },
+       "properties": [
+        {
+         "id": "mappings",
+         "value": [
+          {
+           "options": {
+            "1 · ODBC completo": {
+             "color": "green",
+             "index": 0
+            },
+            "2 · Perfmon local": {
+             "color": "blue",
+             "index": 1
+            },
+            "3 · Serviço": {
+             "color": "yellow",
+             "index": 2
+            },
+            "4 · Sem sinal": {
+             "color": "text",
+             "index": 3
+            }
+           },
+           "type": "value"
+          }
+         ]
+        },
+        {
+         "id": "custom.cellOptions",
+         "value": {
+          "type": "color-text"
+         }
+        }
+       ]
+      },
+      {
+       "matcher": {
+        "id": "byName",
+        "options": "Erro ODBC"
+       },
+       "properties": [
+        {
+         "id": "custom.width",
+         "value": 420
+        }
+       ]
+      }
+     ]
+    },
+    "gridPos": {
+     "h": 32,
+     "w": 24,
+     "x": 0,
+     "y": 14
+    },
+    "id": 107,
+    "options": {
+     "showHeader": true,
+     "sortBy": []
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "mysql",
+       "uid": "afor1g5862fb4c"
+      },
+      "format": "table",
+      "rawSql": "SELECT h.host AS `Host`, COALESCE((SELECT t.value FROM host_tag t WHERE t.hostid=h.hostid AND t.tag='servico' LIMIT 1),'—') AS `Sistema`, COALESCE((SELECT t.value FROM host_tag t WHERE t.hostid=h.hostid AND t.tag='departamento' LIMIT 1),'—') AS `Dept`, CASE  WHEN EXISTS(SELECT 1 FROM items i WHERE i.hostid=h.hostid AND i.status=0 AND i.key_ LIKE 'service.info[%OracleService%') THEN 'Oracle'  WHEN EXISTS(SELECT 1 FROM items i WHERE i.hostid=h.hostid AND i.status=0 AND (i.key_ LIKE 'service.info[%MSSQL%' OR i.key_ LIKE 'db.odbc.select[mssql.business.master%')) THEN 'MSSQL'  ELSE '?' END AS `Motor`, CASE WHEN EXISTS(SELECT 1 FROM items i JOIN item_rtdata rt ON rt.itemid=i.itemid WHERE i.hostid=h.hostid AND i.status=0 AND rt.state=0 AND i.key_ LIKE 'db.odbc.select[mssql.business.master%') THEN '1 · ODBC completo' WHEN EXISTS(SELECT 1 FROM items i JOIN item_rtdata rt ON rt.itemid=i.itemid WHERE i.hostid=h.hostid AND i.status=0 AND rt.state=0 AND (i.name IN ('MSSQL Page life expectancy','MSSQL User Connections','MSSQL Number of Deadlocks/sec') OR i.name LIKE 'MSSQL DB %')) THEN '2 · Perfmon local' WHEN EXISTS(SELECT 1 FROM items i WHERE i.hostid=h.hostid AND i.status=0 AND (i.key_ LIKE 'service.info[\"MSSQLSERVER\",%' OR i.key_ LIKE 'service.info[MSSQLSERVER,%' OR i.key_ LIKE 'service.info[MSSQL$%' OR i.key_ LIKE 'service.info[\"MSSQL$%' OR (i.key_ LIKE 'service.info[%OracleService%' AND i.key_ NOT LIKE '%RMAN%' AND i.key_ NOT LIKE '%Backup%'))) THEN '3 · Serviço' ELSE '4 · Sem sinal' END AS `Fonte`, COALESCE((SELECT LEFT(rt.error,90) FROM items i JOIN item_rtdata rt ON rt.itemid=i.itemid  WHERE i.hostid=h.hostid AND i.key_ LIKE 'db.odbc.select[mssql.business.master%' LIMIT 1),'') AS `Erro ODBC` FROM hosts h WHERE h.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%') ORDER BY `Fonte`, `Host`",
+      "refId": "A"
+     }
+    ],
+    "title": "",
+    "transparent": true,
+    "type": "table"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 46
+    },
+    "id": 203,
+    "panels": [],
+    "title": "Recursos do SO — todos os hosts BD (via variável de tag)",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 0,
+       "lineWidth": 1,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 47
+    },
+    "id": 108,
+    "options": {
+     "legend": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "displayMode": "table",
+      "placement": "right",
+      "showLegend": true,
+      "sortBy": "Last *",
+      "sortDesc": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${bd_hosts:raw}/"
+      },
+      "item": {
+       "filter": "/CPU utilization/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "CPU (%)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 0,
+       "lineWidth": 1,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 47
+    },
+    "id": 109,
+    "options": {
+     "legend": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "displayMode": "table",
+      "placement": "right",
+      "showLegend": true,
+      "sortBy": "Last *",
+      "sortDesc": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${bd_hosts:raw}/"
+      },
+      "item": {
+       "filter": "/Memory utilization/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Memória (%)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 55
+    },
+    "id": 204,
+    "panels": [],
+    "title": "Problemas (todos os hosts BD)",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 9,
+     "w": 24,
+     "x": 0,
+     "y": 56
+    },
+    "id": 110,
+    "options": {
+     "ackField": true,
+     "ageField": true,
+     "descriptionField": true,
+     "fontSize": "100%",
+     "highlightNewerThan": "1h",
+     "hostField": true,
+     "hostTechNameField": false,
+     "limit": 100,
+     "problemTimeline": true,
+     "severityField": true,
+     "showTags": true,
+     "sortProblems": "lastchange",
+     "statusField": true
+    },
+    "targets": [
+     {
+      "application": {
+       "filter": ""
+      },
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${bd_hosts:raw}/"
+      },
+      "options": {
+       "acknowledged": 2,
+       "hostsInMaintenance": false,
+       "minSeverity": 0,
+       "sortProblems": "default"
+      },
+      "proxy": {
+       "filter": ""
+      },
+      "queryType": "5",
+      "refId": "A",
+      "tags": {
+       "filter": ""
+      },
+      "trigger": {
+       "filter": ""
+      }
+     }
+    ],
+    "title": "",
+    "transparent": true,
+    "type": "alexanderzobnin-zabbix-triggers-panel"
+   }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": [
+   "bpc",
+   "bases-dados",
+   "n2",
+   "nativo"
+  ],
+  "templating": {
+   "list": [
+    {
+     "current": {},
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "hide": 2,
+     "label": "Hosts BD (regex)",
+     "name": "bd_hosts",
+     "options": [],
+     "query": "SELECT GROUP_CONCAT(h.host SEPARATOR '|') FROM hosts h WHERE h.status=0 AND EXISTS(SELECT 1 FROM host_tag bt1 WHERE bt1.hostid=h.hostid AND bt1.tag='camada' AND bt1.value='base de dados') AND EXISTS(SELECT 1 FROM host_tag bt2 WHERE bt2.hostid=h.hostid AND bt2.tag='ambiente' AND LOWER(bt2.value) LIKE 'produ%')",
+     "refresh": 1,
+     "regex": "",
+     "sort": 0,
+     "type": "query"
+    }
+   ]
+  },
+  "time": {
+   "from": "now-6h",
+   "to": "now"
+  },
+  "timezone": "browser",
+  "title": "N2 · Bases de Dados — Proposta nativa",
+  "uid": "bd-n2-nativo",
+  "version": 2
+ },
+ "folderUid": "afpm0se5rij28d",
+ "overwrite": true
+}
