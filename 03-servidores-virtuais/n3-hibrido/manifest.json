@@ -5,6 +5,13 @@
   "notas": "Alternativa híbrida ao N3 A (all-BT) e B (nativo): fluxo top-down de observabilidade. 1·HERO BT (identidade + farol de problemas + tags + factos) → 2·Golden signals nativos (disponibilidade/latência/perda/CPU/RAM/swap, thresholds do catálogo §6.2, pintam em ~2s sem esperar pelo proxy BT) → 3-6·USE/RED por recurso em timeseries nativos (CPU util+queue+ready, RAM util+swap+balloon, disco espaço+I/O, rede tráfego+perda) → 7·Problemas nativo → 8·FICHA BT (3 cartões: identidade/virtualização/negócio+monitorização). Os 2 BT usam padrão standalone ES5 + guard (copiar de _l3-base.js).",
   "panels": [
     {
+      "file": "l3h-header.js",
+      "id": 100,
+      "role": "utils",
+      "rootId": "bt-vmh-header",
+      "title": "Header BPC NOC (lite)"
+    },
+    {
       "file": "l3h-hero.js",
       "id": 101,
       "role": "content",

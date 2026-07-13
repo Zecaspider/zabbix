@@ -5,6 +5,13 @@
   "notas": "Proposta B do DESIGN-N2-N3-20260712.md §4 — 100% painéis nativos, zero Business Text. Inteligência (tier/tags/erros ODBC) via MySQL ds/query (item_rtdata.error + history_uint p/ valores — items.lastvalue não existe no Zabbix 7.4); séries e problemas via datasource Zabbix com variável escondida bd_hosts (regex de hosts técnicos gerada por tag, interpolada com :raw). Coexiste com bd-n2 (BT) para comparação lado a lado. Limitação assumida: não faz parsing do JSON master ODBC (27 bases/backups do VS8000413 só no BT/N3) nem achados em linguagem natural.",
   "panels": [
     {
+      "file": "header-lite.js",
+      "id": 100,
+      "role": "utils",
+      "rootId": "bt-bd2n-header",
+      "title": "Header BPC NOC (lite)"
+    },
+    {
       "nativo": "stat",
       "id": 101,
       "title": "Hosts Produção"

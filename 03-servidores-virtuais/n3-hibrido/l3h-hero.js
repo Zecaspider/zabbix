@@ -47,6 +47,7 @@
     extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\s*-\s*/); return p[p.length - 1].trim(); },
     tag: function (tags, k) { for (var i = 0; i < (tags || []).length; i++) if (tags[i].tag === k) return tags[i].value; return ''; },
     byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },
+    byName: function (items, name) { for (var i = 0; i < items.length; i++) if (items[i].name === name && items[i].lastvalue !== '') return items[i]; return null; },
     fresh: function (it, maxAge) { if (!it) return false; var c = parseInt(it.lastclock) || 0; return c > 0 && (Date.now() / 1000 - c) <= maxAge; },
     upt: function (secs) {
       if (secs == null || isNaN(secs)) return '—';
@@ -95,6 +96,10 @@
     var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');
     var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');
     var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');
+    // portado da Versão A (2026-07-13): processos/threads + CPU ready
+    var procs = U.byName(items, 'Number of processes');
+    var threads = U.byName(items, 'Number of threads');
+    var cpuReady = U.byKeyPrefix(items, 'vmware.vm.cpu.ready');
 
     var agentAlive = U.fresh(upt, CFG.maxAgeSec.agent);
     var powerOn = power ? parseFloat(power.lastvalue) === 1 : null;
@@ -138,6 +143,9 @@
       +   fact('Uptime', U.upt(upt ? parseFloat(upt.lastvalue) : null))
       +   fact('Hypervisor', hv ? U.esc(hv.lastvalue) : '—')
       +   fact('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')
+      +   fact('Processos', procs ? Math.round(parseFloat(procs.lastvalue)) : '—')
+      +   fact('Threads', threads ? Math.round(parseFloat(threads.lastvalue)) : '—')
+      +   fact('CPU ready (VMware)', cpuReady ? Math.round(parseFloat(cpuReady.lastvalue)) + ' ms' : '—')
       + '</div>'
       + '</div>';
   }
@@ -169,9 +177,11 @@
         zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),
         zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue', 'lastclock'], filter: { key_: ['vm.memory.size[total]'] } }),
         zbx('problem.get', { hostids: [host.hostid], output: ['severity'], suppressed: false }),
+        // portado da Versão A: processos + threads (por nome — keys têm escaping chato)
+        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], filter: { name: ['Number of processes', 'Number of threads'] } }),
       ]).then(function (res) {
         if (!_isCurrent()) return;
-        var items = (res[0] || []).concat(res[1] || []).concat(res[2] || []);
+        var items = (res[0] || []).concat(res[1] || []).concat(res[2] || []).concat(res[4] || []);
         root.innerHTML = render(host, items, res[3] || []);
       });
     })

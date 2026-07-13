@@ -5,12 +5,77 @@
   "id": 382096151298048,
   "panels": [
    {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 3,
+     "w": 24,
+     "x": 0,
+     "y": 0
+    },
+    "id": 100,
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — HEADER-LITE (fonte canónica)                        v1 · ES5   ║\n// ║                                                                          ║\n// ║  Versão leve e STANDALONE do header global: logo + título + relógio,      ║\n// ║  ZERO chamadas à API — pinta instantaneamente, nunca espera pelo proxy.   ║\n// ║  Para dashboards híbridos/nativos que não carregam o BPC Runtime          ║\n// ║  (utils.js). Mesma identidade visual do header global (navy/cyan/gold,    ║\n// ║  logo /public/img/bpc-logo.png com fallback textual).                    ║\n// ║                                                                          ║\n// ║  USO: copiar para a pasta do dashboard e editar só CFG.rootId (único      ║\n// ║  por dashboard) e CFG.nocLabel. Melhorias fazem-se AQUI primeiro e        ║\n// ║  propagam-se às cópias — nunca divergir uma cópia à mão.                 ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-bd2n-header',\n    nocLabel: 'BASES DE DADOS - NIVEL 2 · NATIVO',\n    title: 'BPC NOC',\n    subtitle: 'BANCO DE POUPANÇA E CRÉDITO · CENTRO DE OPERAÇÕES DE REDE',\n    logoUrl: '/public/img/bpc-logo.png',\n    colors: { navy: '#0B1341', navy2: '#0E1A52', cyan: '#00B4D8', gold: '#F0A500' },\n  };\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var c = CFG.colors;\n\n  var logoHTML = '<img src=\"' + CFG.logoUrl + '\" height=\"36\" style=\"height:36px;flex-shrink:0\" '\n    + 'onerror=\"this.style.display=\\'none\\';this.nextElementSibling.style.display=\\'flex\\'\">'\n    + '<div style=\"display:none;height:36px;width:52px;flex-shrink:0;background:rgba(255,255,255,.04);'\n    + 'border:1px dashed rgba(255,255,255,.12);border-radius:7px;align-items:center;justify-content:center;'\n    + 'font-size:10px;font-weight:800;color:rgba(255,255,255,.28);letter-spacing:1px\">' + CFG.title + '</div>';\n\n  root.innerHTML =\n    '<div style=\"display:flex;align-items:center;gap:18px;'\n    + 'background:linear-gradient(90deg,' + c.navy + ' 0%,' + c.navy2 + ' 50%,' + c.navy + ' 100%);'\n    + 'border:1px solid rgba(0,180,216,.14);border-top:2px solid rgba(0,180,216,.40);'\n    + 'border-radius:10px;padding:8px 22px;height:100%;box-sizing:border-box;'\n    + 'font-family:Inter,\\'Segoe UI\\',sans-serif\">'\n    +   logoHTML\n    +   '<div style=\"flex:1;text-align:center\">'\n    +     '<div style=\"font-size:17px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;color:#fff;line-height:1\">'\n    +       CFG.title + ' &nbsp;|&nbsp; <em style=\"color:' + c.gold + ';font-style:normal\">' + CFG.nocLabel + '</em>'\n    +     '</div>'\n    +     '<div style=\"font-size:8px;color:rgba(255,255,255,.22);letter-spacing:.14em;text-transform:uppercase;margin-top:4px\">'\n    +       CFG.subtitle + '</div>'\n    +   '</div>'\n    +   '<div style=\"text-align:right;flex-shrink:0\">'\n    +     '<span id=\"' + CFG.rootId + '-time\" style=\"font-size:22px;font-weight:800;color:' + c.cyan + ';'\n    +       'letter-spacing:3px;display:block;font-variant-numeric:tabular-nums;line-height:1\">--:--:--</span>'\n    +     '<div id=\"' + CFG.rootId + '-date\" style=\"font-size:8.5px;color:rgba(255,255,255,.22);margin-top:3px;text-transform:capitalize\">…</div>'\n    +   '</div>'\n    + '</div>';\n\n  // relógio — 1 timer por rootId (limpa o anterior em re-render)\n  var tKey = '_bpc_hdrlite_' + CFG.rootId;\n  if (window[tKey]) clearInterval(window[tKey]);\n  function tick() {\n    var el = document.getElementById(CFG.rootId + '-time');\n    var ed = document.getElementById(CFG.rootId + '-date');\n    if (!el) { clearInterval(window[tKey]); return; }\n    var n = new Date();\n    function p(x) { return (x < 10 ? '0' : '') + x; }\n    el.textContent = p(n.getHours()) + ':' + p(n.getMinutes()) + ':' + p(n.getSeconds());\n    if (ed) ed.textContent = n.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });\n  }\n  tick();\n  window[tKey] = setInterval(tick, 1000);\n\n})();\n",
+     "content": "<div id=\"bt-bd2n-header\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "pluginVersion": "6.2.0",
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "",
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
+    "transparent": true,
+    "type": "marcusolsson-dynamictext-panel"
+   },
+   {
     "collapsed": false,
     "gridPos": {
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 0
+     "y": 3
     },
     "id": 200,
     "panels": [],
@@ -44,7 +109,7 @@
      "h": 5,
      "w": 4,
      "x": 0,
-     "y": 1
+     "y": 4
     },
     "id": 101,
     "options": {
@@ -103,7 +168,7 @@
      "h": 5,
      "w": 5,
      "x": 4,
-     "y": 1
+     "y": 4
     },
     "id": 102,
     "options": {
@@ -162,7 +227,7 @@
      "h": 5,
      "w": 5,
      "x": 9,
-     "y": 1
+     "y": 4
     },
     "id": 103,
     "options": {
@@ -222,7 +287,7 @@
      "h": 5,
      "w": 5,
      "x": 14,
-     "y": 1
+     "y": 4
     },
     "id": 104,
     "options": {
@@ -285,7 +350,7 @@
      "h": 5,
      "w": 5,
      "x": 19,
-     "y": 1
+     "y": 4
     },
     "id": 105,
     "options": {
@@ -323,7 +388,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 6
+     "y": 9
     },
     "id": 201,
     "panels": [],
@@ -358,7 +423,7 @@
      "h": 6,
      "w": 24,
      "x": 0,
-     "y": 7
+     "y": 10
     },
     "id": 106,
     "options": {
@@ -393,7 +458,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 13
+     "y": 16
     },
     "id": 202,
     "panels": [],
@@ -471,10 +536,10 @@
      ]
     },
     "gridPos": {
-     "h": 32,
+     "h": 13,
      "w": 24,
      "x": 0,
-     "y": 14
+     "y": 17
     },
     "id": 107,
     "options": {
@@ -502,7 +567,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 46
+     "y": 30
     },
     "id": 203,
     "panels": [],
@@ -536,7 +601,7 @@
      "h": 8,
      "w": 12,
      "x": 0,
-     "y": 47
+     "y": 31
     },
     "id": 108,
     "options": {
@@ -606,7 +671,7 @@
      "h": 8,
      "w": 12,
      "x": 12,
-     "y": 47
+     "y": 31
     },
     "id": 109,
     "options": {
@@ -655,7 +720,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 55
+     "y": 39
     },
     "id": 204,
     "panels": [],
@@ -671,7 +736,7 @@
      "h": 9,
      "w": 24,
      "x": 0,
-     "y": 56
+     "y": 40
     },
     "id": 110,
     "options": {
@@ -763,7 +828,7 @@
   "timezone": "browser",
   "title": "N2 · Bases de Dados — Proposta nativa",
   "uid": "bd-n2-nativo",
-  "version": 2
+  "version": 3
  },
  "folderUid": "afpm0se5rij28d",
  "overwrite": true

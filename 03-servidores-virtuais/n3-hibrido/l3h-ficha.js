@@ -91,8 +91,13 @@
     var vmwMem = U.byKeyPrefix(items, 'vmware.vm.memory.size[');
     var vmwUpt = U.byKeyPrefix(items, 'vmware.vm.uptime');
 
-    var ips = [];
-    for (var i = 0; i < (host.interfaces || []).length; i++) if (host.interfaces[i].ip) ips.push(host.interfaces[i].ip);
+    var ips = [], dnss = [];
+    for (var i = 0; i < (host.interfaces || []).length; i++) {
+      if (host.interfaces[i].ip) ips.push(host.interfaces[i].ip);
+      if (host.interfaces[i].dns && dnss.indexOf(host.interfaces[i].dns) === -1) dnss.push(host.interfaces[i].dns);
+    }
+    // portado da Versão A (2026-07-13): inventário Zabbix (localização/notas)
+    var inv = host.inventory && !Array.isArray(host.inventory) ? host.inventory : {};
 
     var tags = {};
     for (var t = 0; t < (host.tags || []).length; t++) tags[host.tags[t].tag] = host.tags[t].value;
@@ -115,11 +120,14 @@
       kv('Host técnico', U.esc(host.host), true)
       + kv('Nome completo', U.esc(host.name))
       + kv('Endereço(s) IP', ips.length ? U.esc(ips.join(' · ')) : '—', true)
+      + (dnss.length ? kv('DNS', U.esc(dnss.join(' · ')), true) : '')
       + kv('Sistema operativo', os ? U.esc(String(os.lastvalue).slice(0, 60)) : '—')
       + kv('Arquitectura', arch ? U.esc(arch.lastvalue) : '—')
       + (cpuN ? kv('CPUs lógicos', U.esc(cpuN.lastvalue)) : '')
       + kv('Memória total', U.gb(memT ? memT.lastvalue : null))
-      + kv('Uptime (SO)', U.upt(upt ? parseFloat(upt.lastvalue) : null));
+      + kv('Uptime (SO)', U.upt(upt ? parseFloat(upt.lastvalue) : null))
+      + (inv.location ? kv('Localização (inventário)', U.esc(inv.location)) : '')
+      + (inv.notes ? kv('Notas (inventário)', U.esc(String(inv.notes).slice(0, 90))) : '');
 
     var virt =
       kv('Estado de energia', powerTxt)
@@ -169,8 +177,9 @@
 
   zbx('host.get', {
     output: ['hostid', 'host', 'name'],
-    selectTags: 'extend', selectInterfaces: ['ip'],
+    selectTags: 'extend', selectInterfaces: ['ip', 'dns'],
     selectParentTemplates: ['name'], selectHostGroups: ['name'],
+    selectInventory: ['location', 'notes'],
     filter: { host: [hostName] },
   })
     .then(function (hosts) {
