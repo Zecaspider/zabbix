@@ -172,11 +172,16 @@
       if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);
       var hid = hosts[0].hostid;
       return Promise.all([
-        zbx('item.get', { hostids: [hid], search: { key_: 'proc.get' }, filter: { status: 0 }, output: ['itemid', 'lastvalue', 'lastclock'] }),
+        // preferir a variante TRIMMED (bpc.proc.top12, ~2KB) com fallback ao
+        // proc.get completo (~15KB) — permite migrar host a host sem partir nada
+        zbx('item.get', { hostids: [hid], filter: { status: 0, key_: ['bpc.proc.top12', 'proc.get[,,,summary]'] }, output: ['itemid', 'key_', 'lastvalue', 'lastclock'] }),
         zbx('item.get', { hostids: [hid], filter: { name: ['Number of logical processors', 'Number of CPUs', 'Total memory'] }, output: ['name', 'lastvalue'] }),
       ]).then(function (res) {
         if (!_isCurrent()) return;
-        var pg = (res[0] || [])[0];
+        var cand = res[0] || [];
+        var pg = null;
+        for (var ci = 0; ci < cand.length; ci++) if (cand[ci].key_ === 'bpc.proc.top12' && cand[ci].lastvalue) { pg = cand[ci]; break; }
+        if (!pg) for (var cj = 0; cj < cand.length; cj++) if (cand[cj].lastvalue) { pg = cand[cj]; break; }
         if (!pg || !pg.lastvalue) { root.innerHTML = renderPilotNote(); return; }
         var nCores = null, totalRamKb = null;
         for (var i = 0; i < (res[1] || []).length; i++) {
