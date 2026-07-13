@@ -21,7 +21,7 @@
 const CFG_S4VMS = {
   elementId: 'bpc-sys-vms',
   refreshMs: 60000,
-  svN3Url: 'http://10.10.126.22:3000/d/0ae673a3-44c8-41e0-98f5-f5c53473ad54/n3-sv-versao-a-bt',
+  svN3Url: 'http://10.10.126.22:3000/d/vm-n3-ficha/n3-vm-ficha-hibrido',
   thresholds: { warn: 70, crit: 90 }, // FALLBACK visual das barras — estado do card vem dos triggers
   sparkWindowSecs: 21600, // 6h de histórico de CPU para a sparkline de cada VM
   sparkMaxPoints: 48,

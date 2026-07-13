@@ -26,7 +26,7 @@
               {
                 "targetBlank": true,
                 "title": "Detalhe da VM — N3 Servidores Virtuais",
-                "url": "http://10.10.126.22:3000/d/0ae673a3-44c8-41e0-98f5-f5c53473ad54/n3-sv-versao-a-bt?var-hostid=${__data.fields[\"VM\"]}&${__url_time_range}"
+                "url": "http://10.10.126.22:3000/d/vm-n3-ficha/n3-vm-ficha-hibrido?var-hostid=${__data.fields[\"VM\"]}&${__url_time_range}"
               }
             ]
           }
