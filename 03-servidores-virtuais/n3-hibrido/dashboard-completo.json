@@ -1,0 +1,1329 @@
+{
+ "dashboard": {
+  "editable": true,
+  "graphTooltip": 1,
+  "id": 389517687013376,
+  "panels": [
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 6,
+     "w": 24,
+     "x": 0,
+     "y": 0
+    },
+    "id": 101,
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — HERO de identidade (topo do fluxo top-down)             ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid (nome visível da VM)             ║\n// ║  Standalone ES5 + guard anti-double-fire (padrão _l3-base.js).             ║\n// ║  Responde a \"QUE máquina é esta e está viva?\" num relance: nome grande,    ║\n// ║  farol de estado (pior severidade de problema activo), badges de power/    ║\n// ║  agente, chips de tags de negócio e factos rápidos (IP·SO·RAM·uptime·      ║\n// ║  hypervisor·cluster). O detalhe numérico vive nos painéis nativos abaixo.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-hero',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    maxAgeSec: { agent: 7200, vmware: 600 },\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128', mute: '#2D333B',\n      chipBg: 'rgba(88,166,255,.10)',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    tag: function (tags, k) { for (var i = 0; i < (tags || []).length; i++) if (tags[i].tag === k) return tags[i].value; return ''; },\n    byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },\n    fresh: function (it, maxAge) { if (!it) return false; var c = parseInt(it.lastclock) || 0; return c > 0 && (Date.now() / 1000 - c) <= maxAge; },\n    upt: function (secs) {\n      if (secs == null || isNaN(secs)) return '—';\n      var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);\n      return d > 0 ? d + 'd ' + h + 'h' : h + 'h ' + Math.floor((secs % 3600) / 60) + 'm';\n    },\n    gb: function (b) { var n = parseFloat(b); return isNaN(n) ? '—' : (n / 1073741824).toFixed(0) + ' GB'; },\n    renderErro: function (causa) {\n      return '<div style=\"background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);border-radius:8px;padding:12px 16px;font-family:monospace\">'\n        + '<span style=\"color:' + CFG.colors.crit + ';font-size:12px;font-weight:700\">&#9888; </span>'\n        + '<span style=\"color:' + CFG.colors.text + ';font-size:12px\">' + U.esc(causa) + '</span></div>';\n    },\n  };\n\n  var SEV_STATE = { 5: 'crit', 4: 'crit', 3: 'warn', 2: 'warn', 1: 'info', 0: 'info' };\n\n  function chip(label, value, color) {\n    if (!value) return '';\n    return '<span style=\"display:inline-flex;align-items:center;gap:6px;background:' + CFG.colors.chipBg + ';'\n      + 'border:1px solid rgba(88,166,255,.25);border-radius:999px;padding:3px 12px;margin:0 6px 6px 0\">'\n      + '<span style=\"font-size:10px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em\">' + label + '</span>'\n      + '<span style=\"font-size:12px;color:' + (color || CFG.colors.text) + ';font-weight:600\">' + U.esc(value) + '</span></span>';\n  }\n  function badge(text, color) {\n    return '<span style=\"background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44;'\n      + 'font-size:11px;font-weight:700;padding:3px 12px;border-radius:6px;letter-spacing:.03em;white-space:nowrap\">' + text + '</span>';\n  }\n  function fact(label, value) {\n    return '<div style=\"min-width:0\">'\n      + '<div style=\"font-size:9.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px\">' + label + '</div>'\n      + '<div style=\"font-size:13px;color:' + CFG.colors.text + ';font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">' + value + '</div></div>';\n  }\n\n  function render(host, items, problems) {\n    var c = CFG.colors;\n    // farol = pior severidade activa\n    var worst = -1;\n    for (var i = 0; i < problems.length; i++) { var s = parseInt(problems[i].severity) || 0; if (s > worst) worst = s; }\n    var farolColor = worst < 0 ? c.ok : (worst >= 4 ? c.crit : (worst >= 2 ? c.warn : c.info));\n    var farolText = worst < 0 ? 'SAUDÁVEL' : (problems.length + ' PROBLEMA' + (problems.length > 1 ? 'S' : '') + ' ACTIVO' + (problems.length > 1 ? 'S' : ''));\n\n    var os = U.byKeyPrefix(items, 'system.sw.os');\n    var arch = U.byKeyPrefix(items, 'system.sw.arch');\n    var upt = U.byKeyPrefix(items, 'system.uptime');\n    var mem = U.byKeyPrefix(items, 'vm.memory.size[total]');\n    var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');\n    var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');\n    var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');\n\n    var agentAlive = U.fresh(upt, CFG.maxAgeSec.agent);\n    var powerOn = power ? parseFloat(power.lastvalue) === 1 : null;\n\n    var badges = '';\n    if (powerOn === true) badges += badge('⏻ LIGADA', c.ok) + ' ';\n    else if (powerOn === false) badges += badge('⏻ DESLIGADA', c.crit) + ' ';\n    badges += agentAlive ? badge('AGENTE OK', c.ok) : badge('SEM AGENTE', c.warn);\n\n    var ip = (host.interfaces && host.interfaces.length) ? host.interfaces[0].ip : '—';\n    var osTxt = os ? String(os.lastvalue).slice(0, 44) : '—';\n    if (arch && osTxt !== '—') osTxt += ' · ' + arch.lastvalue;\n    else if (arch && osTxt === '—') osTxt = arch.lastvalue;\n\n    var sysTag = U.tag(host.tags, 'servico'), deptTag = U.tag(host.tags, 'departamento');\n    var ambTag = U.tag(host.tags, 'ambiente'), camTag = U.tag(host.tags, 'camada');\n\n    return ''\n      + '<div style=\"display:flex;flex-direction:column;gap:12px;font-family:Inter,-apple-system,\\'Segoe UI\\',sans-serif\">'\n\n      // linha 1: farol + nome + badges\n      + '<div style=\"display:flex;align-items:center;gap:14px;flex-wrap:wrap\">'\n      +   '<span style=\"width:14px;height:14px;border-radius:50%;background:' + farolColor + ';box-shadow:0 0 12px ' + farolColor + '88;flex:none\"></span>'\n      +   '<span style=\"font-size:26px;font-weight:800;color:#E6EDF3;font-family:\\'JetBrains Mono\\',Consolas,monospace;letter-spacing:.01em\">' + U.esc(host.host) + '</span>'\n      +   '<span style=\"font-size:12px;font-weight:700;color:' + farolColor + ';letter-spacing:.04em\">' + farolText + '</span>'\n      +   '<span style=\"flex:1\"></span>'\n      +   '<span style=\"display:flex;gap:8px\">' + badges + '</span>'\n      + '</div>'\n\n      // linha 2: chips de negócio\n      + '<div style=\"display:flex;flex-wrap:wrap\">'\n      +   chip('Sistema', sysTag, c.info) + chip('Dept', deptTag) + chip('Ambiente', ambTag) + chip('Camada', camTag)\n      + '</div>'\n\n      // linha 3: factos rápidos\n      + '<div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 22px;'\n      +   'background:rgba(255,255,255,.015);border:1px solid ' + c.brd + ';border-radius:10px;padding:12px 18px\">'\n      +   fact('Endereço IP', U.esc(ip))\n      +   fact('Sistema operativo', U.esc(osTxt))\n      +   fact('Memória', U.gb(mem ? mem.lastvalue : null))\n      +   fact('Uptime', U.upt(upt ? parseFloat(upt.lastvalue) : null))\n      +   fact('Hypervisor', hv ? U.esc(hv.lastvalue) : '—')\n      +   fact('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')\n      + '</div>'\n      + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM no selector acima.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar identidade…</span>';\n\n  zbx('host.get', { output: ['hostid', 'host', 'name'], selectTags: 'extend', selectInterfaces: ['ip'], filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0];\n      return Promise.all([\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], searchByAny: true, search: { key_: 'system.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue', 'lastclock'], filter: { key_: ['vm.memory.size[total]'] } }),\n        zbx('problem.get', { hostids: [host.hostid], output: ['severity'], suppressed: false }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        var items = (res[0] || []).concat(res[1] || []).concat(res[2] || []);\n        root.innerHTML = render(host, items, res[3] || []);\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
+     "content": "<div id=\"bt-vmh-hero\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "pluginVersion": "6.2.0",
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "",
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
+    "transparent": true,
+    "type": "marcusolsson-dynamictext-panel"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 6
+    },
+    "id": 200,
+    "panels": [],
+    "title": "Sinais vitais — disponibilidade · latência · erros · saturação",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "mappings": [
+       {
+        "options": {
+         "0": {
+          "index": 0,
+          "text": "EM BAIXO"
+         },
+         "1": {
+          "index": 1,
+          "text": "ONLINE"
+         }
+        },
+        "type": "value"
+       }
+      ],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "red",
+         "value": null
+        },
+        {
+         "color": "green",
+         "value": 1
+        }
+       ]
+      },
+      "unit": "none"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 4,
+     "w": 4,
+     "x": 0,
+     "y": 7
+    },
+    "id": 102,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "area",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "value"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Disponibilidade (ICMP)",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "decimals": 3,
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "green",
+         "value": null
+        },
+        {
+         "color": "yellow",
+         "value": 0.01
+        },
+        {
+         "color": "red",
+         "value": 0.05
+        }
+       ]
+      },
+      "unit": "s"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 4,
+     "w": 4,
+     "x": 4,
+     "y": 7
+    },
+    "id": 103,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "area",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "value"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "ICMP response time"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Latência (RTT)",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "decimals": 1,
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "green",
+         "value": null
+        },
+        {
+         "color": "yellow",
+         "value": 1
+        },
+        {
+         "color": "red",
+         "value": 10
+        }
+       ]
+      },
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 4,
+     "w": 4,
+     "x": 8,
+     "y": 7
+    },
+    "id": 104,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "area",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "value"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/ICMP (packet )?loss/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Perda de pacotes",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "decimals": 1,
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "green",
+         "value": null
+        },
+        {
+         "color": "yellow",
+         "value": 70
+        },
+        {
+         "color": "red",
+         "value": 90
+        }
+       ]
+      },
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 4,
+     "w": 4,
+     "x": 12,
+     "y": 7
+    },
+    "id": 105,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "area",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "value"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "CPU utilization"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "CPU",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "decimals": 1,
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "green",
+         "value": null
+        },
+        {
+         "color": "yellow",
+         "value": 70
+        },
+        {
+         "color": "red",
+         "value": 85
+        }
+       ]
+      },
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 4,
+     "w": 4,
+     "x": 16,
+     "y": 7
+    },
+    "id": 106,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "area",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "value"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "Memory utilization"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Memória",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "thresholds"
+      },
+      "decimals": 1,
+      "mappings": [],
+      "thresholds": {
+       "mode": "absolute",
+       "steps": [
+        {
+         "color": "green",
+         "value": null
+        },
+        {
+         "color": "yellow",
+         "value": 10
+        },
+        {
+         "color": "red",
+         "value": 50
+        }
+       ]
+      },
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 4,
+     "w": 4,
+     "x": 20,
+     "y": 7
+    },
+    "id": 107,
+    "options": {
+     "colorMode": "value",
+     "graphMode": "area",
+     "justifyMode": "auto",
+     "orientation": "auto",
+     "reduceOptions": {
+      "calcs": [
+       "lastNotNull"
+      ],
+      "fields": "",
+      "values": false
+     },
+     "textMode": "value"
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/Used swap space/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Swap usado",
+    "transparent": true,
+    "type": "stat"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 11
+    },
+    "id": 201,
+    "panels": [],
+    "title": "CPU — utilização & saturação",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 12
+    },
+    "id": 108,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/CPU utilization|VMware: CPU usage in percents/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Utilização (%) — agente + VMware",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": null,
+      "min": 0,
+      "unit": "none"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 12
+    },
+    "id": 109,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/CPU queue length|VMware: CPU ready/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Saturação — fila de execução & CPU ready (VMware, ms)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 20
+    },
+    "id": 202,
+    "panels": [],
+    "title": "Memória — utilização & saturação",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 21
+    },
+    "id": 110,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/Memory utilization|VMware: Guest memory usage|VMware: Host memory usage in percents/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Utilização (%) — agente + VMware",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": null,
+      "min": 0,
+      "unit": "none"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 21
+    },
+    "id": 111,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/Used swap space|VMware: Ballooned memory/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Saturação — swap (%) & balloon",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 29
+    },
+    "id": 203,
+    "panels": [],
+    "title": "Disco — espaço & débito",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 30
+    },
+    "id": 112,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/: Space utilization/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Espaço utilizado por volume (%)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": null,
+      "min": 0,
+      "unit": "iops"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 30
+    },
+    "id": 113,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/_Total: Disk (read|write) rate/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Débito de I/O (leitura/escrita)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 38
+    },
+    "id": 204,
+    "panels": [],
+    "title": "Rede — tráfego & erros",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": null,
+      "min": 0,
+      "unit": "bps"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 39
+    },
+    "id": 114,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/Bits (received|sent)/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Tráfego por interface (bps)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 8,
+       "lineWidth": 1.5,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 39
+    },
+    "id": 115,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "item": {
+       "filter": "/ICMP (packet )?loss/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Erros — perda ICMP (%)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 47
+    },
+    "id": 205,
+    "panels": [],
+    "title": "Problemas activos",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 7,
+     "w": 24,
+     "x": 0,
+     "y": 48
+    },
+    "id": 116,
+    "options": {
+     "ackField": true,
+     "ageField": true,
+     "descriptionField": true,
+     "fontSize": "100%",
+     "highlightNewerThan": "1h",
+     "hostField": false,
+     "hostTechNameField": false,
+     "limit": 50,
+     "problemTimeline": true,
+     "severityField": true,
+     "showTags": true,
+     "sortProblems": "lastchange",
+     "statusField": true
+    },
+    "targets": [
+     {
+      "application": {
+       "filter": ""
+      },
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "options": {
+       "acknowledged": 2,
+       "hostsInMaintenance": false,
+       "minSeverity": 0,
+       "sortProblems": "default"
+      },
+      "proxy": {
+       "filter": ""
+      },
+      "queryType": "5",
+      "refId": "A",
+      "tags": {
+       "filter": ""
+      },
+      "trigger": {
+       "filter": ""
+      }
+     }
+    ],
+    "title": "",
+    "transparent": true,
+    "type": "alexanderzobnin-zabbix-triggers-panel"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 55
+    },
+    "id": 206,
+    "panels": [],
+    "title": "Ficha da VM — contexto & inventário",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 11,
+     "w": 24,
+     "x": 0,
+     "y": 56
+    },
+    "id": 117,
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — FICHA completa (contexto + inventário, fim do fluxo)    ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid                                  ║\n// ║  Standalone ES5 + guard. 3 cartões lado a lado: IDENTIDADE (SO/IP/HW),     ║\n// ║  VIRTUALIZAÇÃO (datacenter/cluster/hypervisor/power/consumo) e NEGÓCIO &   ║\n// ║  MONITORIZAÇÃO (tags, grupos, templates). Tipografia limpa, key-value      ║\n// ║  alinhado, sem ruído — o \"bilhete de identidade\" da VM para handover/NOC.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-ficha',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    groupsIgnore: ['Linux servers', 'Windows servers', 'Discovered hosts', 'Virtual machines', 'Zabbix servers', 'Applications'],\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128',\n      cardBg: 'rgba(255,255,255,.015)',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },\n    upt: function (secs) {\n      if (secs == null || isNaN(secs)) return '—';\n      var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);\n      return d > 0 ? d + ' dias ' + h + 'h' : h + 'h ' + Math.floor((secs % 3600) / 60) + 'm';\n    },\n    gb: function (b) { var n = parseFloat(b); return isNaN(n) ? '—' : (n / 1073741824).toFixed(1) + ' GB'; },\n    renderErro: function (causa) {\n      return '<div style=\"color:' + CFG.colors.crit + ';font-size:12px;font-family:monospace\">&#9888; ' + U.esc(causa) + '</div>';\n    },\n  };\n\n  function kv(label, value, mono) {\n    return '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.045)\">'\n      + '<span style=\"font-size:10.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em;flex:none\">' + label + '</span>'\n      + '<span style=\"font-size:12.5px;color:' + CFG.colors.text + ';text-align:right;' + (mono ? 'font-family:Consolas,monospace;' : '') + 'min-width:0;overflow-wrap:anywhere\">' + value + '</span></div>';\n  }\n  function card(title, accent, inner) {\n    return '<div style=\"flex:1;min-width:280px;background:' + CFG.colors.cardBg + ';border:1px solid ' + CFG.colors.brd + ';'\n      + 'border-top:2px solid ' + accent + ';border-radius:10px;padding:14px 18px 10px\">'\n      + '<div style=\"font-size:11px;font-weight:700;color:' + accent + ';text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px\">' + title + '</div>'\n      + inner + '</div>';\n  }\n  function pillList(arr, color) {\n    if (!arr || !arr.length) return '<span style=\"color:' + CFG.colors.sub + '\">—</span>';\n    var out = '';\n    for (var i = 0; i < arr.length; i++) {\n      out += '<span style=\"display:inline-block;background:' + color + '18;color:' + color + ';border:1px solid ' + color + '33;'\n        + 'font-size:11px;padding:2px 9px;border-radius:999px;margin:0 5px 5px 0\">' + U.esc(arr[i]) + '</span>';\n    }\n    return out;\n  }\n\n  function render(host, items) {\n    var c = CFG.colors;\n    var os = U.byKeyPrefix(items, 'system.sw.os');\n    var arch = U.byKeyPrefix(items, 'system.sw.arch');\n    var upt = U.byKeyPrefix(items, 'system.uptime');\n    var memT = U.byKeyPrefix(items, 'vm.memory.size[total]');\n    var cpuN = U.byKeyPrefix(items, 'system.cpu.num') || U.byKeyPrefix(items, 'wmi.get[root/cimv2,select NumberOfLogicalProcessors');\n    var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');\n    var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');\n    var dc = U.byKeyPrefix(items, 'vmware.vm.datacenter.name');\n    var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');\n    var vmwMem = U.byKeyPrefix(items, 'vmware.vm.memory.size[');\n    var vmwUpt = U.byKeyPrefix(items, 'vmware.vm.uptime');\n\n    var ips = [];\n    for (var i = 0; i < (host.interfaces || []).length; i++) if (host.interfaces[i].ip) ips.push(host.interfaces[i].ip);\n\n    var tags = {};\n    for (var t = 0; t < (host.tags || []).length; t++) tags[host.tags[t].tag] = host.tags[t].value;\n\n    var groups = [];\n    for (var g = 0; g < (host.hostgroups || host.groups || []).length; g++) {\n      var gn = (host.hostgroups || host.groups)[g].name;\n      var ignore = false;\n      for (var x = 0; x < CFG.groupsIgnore.length; x++) if (gn.toLowerCase().indexOf(CFG.groupsIgnore[x].toLowerCase()) === 0) { ignore = true; break; }\n      if (!ignore) groups.push(gn);\n    }\n    var templates = [];\n    for (var p = 0; p < (host.parentTemplates || []).length; p++) templates.push(host.parentTemplates[p].name);\n\n    var powerTxt = power == null ? '—'\n      : (parseFloat(power.lastvalue) === 1 ? '<span style=\"color:' + c.ok + ';font-weight:700\">Ligada</span>'\n        : '<span style=\"color:' + c.crit + ';font-weight:700\">Desligada</span>');\n\n    var ident =\n      kv('Host técnico', U.esc(host.host), true)\n      + kv('Nome completo', U.esc(host.name))\n      + kv('Endereço(s) IP', ips.length ? U.esc(ips.join(' · ')) : '—', true)\n      + kv('Sistema operativo', os ? U.esc(String(os.lastvalue).slice(0, 60)) : '—')\n      + kv('Arquitectura', arch ? U.esc(arch.lastvalue) : '—')\n      + (cpuN ? kv('CPUs lógicos', U.esc(cpuN.lastvalue)) : '')\n      + kv('Memória total', U.gb(memT ? memT.lastvalue : null))\n      + kv('Uptime (SO)', U.upt(upt ? parseFloat(upt.lastvalue) : null));\n\n    var virt =\n      kv('Estado de energia', powerTxt)\n      + kv('Datacenter', dc ? U.esc(dc.lastvalue) : '—')\n      + kv('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')\n      + kv('Hypervisor', hv ? U.esc(hv.lastvalue) : '—', true)\n      + (vmwMem ? kv('Memória atribuída (vSphere)', U.gb(vmwMem.lastvalue)) : '')\n      + (vmwUpt && parseFloat(vmwUpt.lastvalue) > 0 ? kv('Uptime (vSphere)', U.upt(parseFloat(vmwUpt.lastvalue))) : '');\n\n    var negTags = [];\n    if (tags.servico) negTags.push('servico: ' + tags.servico);\n    if (tags.departamento) negTags.push('departamento: ' + tags.departamento);\n    if (tags.ambiente) negTags.push('ambiente: ' + tags.ambiente);\n    if (tags.camada) negTags.push('camada: ' + tags.camada);\n    for (var k in tags) if (tags.hasOwnProperty(k) && ['servico', 'departamento', 'ambiente', 'camada'].indexOf(k) === -1) negTags.push(k + ': ' + tags[k]);\n\n    var neg =\n      '<div style=\"margin-bottom:6px\">' + pillList(negTags, c.info) + '</div>'\n      + '<div style=\"font-size:10.5px;color:' + c.sub + ';text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px\">Grupos Zabbix</div>'\n      + '<div>' + pillList(groups.slice(0, 6), c.warn) + '</div>'\n      + '<div style=\"font-size:10.5px;color:' + c.sub + ';text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px\">Templates (' + templates.length + ')</div>'\n      + '<div style=\"font-size:11.5px;color:' + c.text + ';line-height:1.7\">' + U.esc(templates.join('  ·  ')) + '</div>';\n\n    return '<div style=\"display:flex;gap:14px;flex-wrap:wrap;font-family:Inter,-apple-system,\\'Segoe UI\\',sans-serif;align-items:stretch\">'\n      + card('Identidade', c.info, ident)\n      + card('Virtualização', '#7C4DFF', virt)\n      + card('Negócio & monitorização', c.ok, neg)\n      + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar ficha…</span>';\n\n  zbx('host.get', {\n    output: ['hostid', 'host', 'name'],\n    selectTags: 'extend', selectInterfaces: ['ip'],\n    selectParentTemplates: ['name'], selectHostGroups: ['name'],\n    filter: { host: [hostName] },\n  })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0];\n      return Promise.all([\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], searchByAny: true, search: { key_: 'system.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue'], filter: { key_: ['vm.memory.size[total]'] } }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        root.innerHTML = render(host, (res[0] || []).concat(res[1] || []).concat(res[2] || []));\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
+     "content": "<div id=\"bt-vmh-ficha\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "pluginVersion": "6.2.0",
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "",
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
+    "transparent": true,
+    "type": "marcusolsson-dynamictext-panel"
+   }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": [
+   "bpc",
+   "servidores-virtuais",
+   "n3",
+   "hibrido"
+  ],
+  "templating": {
+   "list": [
+    {
+     "current": {},
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "label": "VM",
+     "name": "hostid",
+     "options": [],
+     "query": "SELECT h.name AS __text, h.host AS __value FROM hosts h JOIN hosts_groups hg ON hg.hostid=h.hostid WHERE hg.groupid=609 AND h.status=0 ORDER BY h.name",
+     "refresh": 1,
+     "regex": "",
+     "sort": 1,
+     "type": "query"
+    }
+   ]
+  },
+  "time": {
+   "from": "now-6h",
+   "to": "now"
+  },
+  "timezone": "browser",
+  "title": "N3 · Servidores Virtuais · VM — Ficha (híbrido)",
+  "uid": "vm-n3-ficha",
+  "version": 3
+ },
+ "folderUid": "cfpm0sdsxjb40c",
+ "overwrite": true
+}

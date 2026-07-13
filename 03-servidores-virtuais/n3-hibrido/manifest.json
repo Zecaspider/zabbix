@@ -1,0 +1,37 @@
+{
+  "dashboardUid": "vm-n3-ficha",
+  "dashboardTitle": "N3 · Servidores Virtuais · VM — Ficha (híbrido)",
+  "folderUid": "cfpm0sdsxjb40c",
+  "notas": "Alternativa híbrida ao N3 A (all-BT) e B (nativo): fluxo top-down de observabilidade. 1·HERO BT (identidade + farol de problemas + tags + factos) → 2·Golden signals nativos (disponibilidade/latência/perda/CPU/RAM/swap, thresholds do catálogo §6.2, pintam em ~2s sem esperar pelo proxy BT) → 3-6·USE/RED por recurso em timeseries nativos (CPU util+queue+ready, RAM util+swap+balloon, disco espaço+I/O, rede tráfego+perda) → 7·Problemas nativo → 8·FICHA BT (3 cartões: identidade/virtualização/negócio+monitorização). Os 2 BT usam padrão standalone ES5 + guard (copiar de _l3-base.js).",
+  "panels": [
+    {
+      "file": "l3h-hero.js",
+      "id": 101,
+      "role": "content",
+      "rootId": "bt-vmh-hero",
+      "title": "Hero — identidade"
+    },
+    {
+      "nativo": "stat",
+      "id": "102-107",
+      "title": "Golden signals (6 stats)"
+    },
+    {
+      "nativo": "timeseries",
+      "id": "108-115",
+      "title": "USE/RED CPU·RAM·Disco·Rede (8 ts)"
+    },
+    {
+      "nativo": "alexanderzobnin-zabbix-triggers-panel",
+      "id": 116,
+      "title": "Problemas"
+    },
+    {
+      "file": "l3h-ficha.js",
+      "id": 117,
+      "role": "content",
+      "rootId": "bt-vmh-ficha",
+      "title": "Ficha — contexto & inventário"
+    }
+  ]
+}

@@ -811,6 +811,32 @@ Sequência obrigatória para qualquer alteração a um painel existente ou cria�
 
 ## 13. Auditoria de dashboards de VMs (2026-07-09)
 
+### 13.0 TERCEIRA versão N3 — híbrida (`vm-n3-ficha`, 2026-07-13)
+
+Pedido do utilizador: "uma verdadeira ficha da VM com fluxo de observabilidade
+top-down, golden signals/USE, e ficha de contexto/inventário elegante".
+Nova pasta `n3-hibrido/` (manifest próprio, coexiste com A e B):
+
+1. **HERO BT** (`l3h-hero.js`) — farol de pior severidade + nome grande +
+   badges LIGADA/AGENTE + chips de tags + factos (IP·SO·RAM·uptime·HV·cluster)
+2. **Golden signals nativos** — 6 stats (disponibilidade/RTT/perda/CPU/RAM/
+   swap) com thresholds do catálogo §6.2; pintam em ~2s sem esperar pelo proxy
+3. **USE/RED por recurso** — 8 timeseries nativos (CPU util+queue+ready,
+   RAM util+swap+balloon, disco espaço+I/O, rede tráfego+perda ICMP)
+4. **Problemas nativo** → 5. **FICHA BT** (`l3h-ficha.js`) — 3 cartões com
+   acento de cor (Identidade/Virtualização/Negócio & monitorização), kv
+   alinhado, pills de tags e grupos.
+
+**Lição CRÍTICA de variável (2026-07-13, generaliza a §13.4)**: nos targets
+de MÉTRICAS (queryType 0) do datasource Zabbix, o filtro de host só faz match
+fiável contra o **nome técnico** e em **forma regex** — o nome visível
+completo falha como string simples E como regex escapado (`${var:regex}`),
+confirmado por `ds/query` directo (0 pontos vs 60 com `/VS8000345/`).
+Solução canónica: variável `hostid` via **MySQL** com `__text`=nome visível
+(dropdown legível) e `__value`=host técnico, filtros `/${hostid}/`. O plano
+`$hostid`=nome visível da Versão A/B continua a funcionar APENAS no painel de
+triggers (queryType 5) e nos BT — não copiar esse padrão para métricas novas.
+
 ### 13.1 Duas versões N3 em produção (decisão do utilizador)
 
 O **N3 · VM Detalhe** existe em **duas versões, ambas em produção**. Partilham os
