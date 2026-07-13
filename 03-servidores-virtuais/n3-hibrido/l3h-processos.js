@@ -141,12 +141,21 @@
       + '</div>';
   }
 
-  function renderPilotNote() {
+  function renderPilotNote(itemExists) {
     var c = CFG.colors;
+    if (itemExists) {
+      // template aplicado mas ainda sem 1º valor (recolha 5m + refresh do
+      // agente activo) — não confundir com "sem recolha"
+      return '<div style="font-size:12px;color:' + c.sub + ';padding:4px 0;font-family:Inter,\'Segoe UI\',sans-serif">'
+        + 'Template <b style="color:' + c.text + '">BPC Top Processos</b> aplicado — '
+        + '<b style="color:' + c.warn + '">primeira recolha pendente</b> (intervalo 5 min + refresh do agente). '
+        + 'Se persistir &gt;15 min, verificar o estado do item no Zabbix.</div>';
+    }
     return '<div style="font-size:12px;color:' + c.sub + ';padding:4px 0;font-family:Inter,\'Segoe UI\',sans-serif">'
-      + 'Sem recolha por processo nesta VM. <b style="color:' + c.text + '">Piloto activo só na VS8000345</b> '
-      + '(item <code style="color:' + c.text + '">proc.get[,,,summary]</code>, 1 item de texto, sem triggers). '
-      + 'Para alargar: aprovar a criação do mesmo item aqui — decisão registada em 03-servidores-virtuais/CLAUDE.md.</div>';
+      + 'Sem recolha por processo nesta VM. O template <b style="color:' + c.text + '">BPC Top Processos</b> '
+      + 'está aplicado às VMs de <b>Produção com agente activo</b> (2026-07-13); esta VM ficou de fora '
+      + '(sem agente vivo na altura, QA, ou entrou depois). Para incluir: ligar o template ao host '
+      + '(sem triggers — decisão registada em 03-servidores-virtuais/CLAUDE.md).</div>';
   }
 
   // ── bootstrap ──
@@ -182,7 +191,7 @@
         var pg = null;
         for (var ci = 0; ci < cand.length; ci++) if (cand[ci].key_ === 'bpc.proc.top12' && cand[ci].lastvalue) { pg = cand[ci]; break; }
         if (!pg) for (var cj = 0; cj < cand.length; cj++) if (cand[cj].lastvalue) { pg = cand[cj]; break; }
-        if (!pg || !pg.lastvalue) { root.innerHTML = renderPilotNote(); return; }
+        if (!pg || !pg.lastvalue) { root.innerHTML = renderPilotNote(cand.length > 0); return; }
         var nCores = null, totalRamKb = null;
         for (var i = 0; i < (res[1] || []).length; i++) {
           var it = res[1][i], v = parseFloat(it.lastvalue);
