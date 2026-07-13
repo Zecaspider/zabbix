@@ -50,6 +50,12 @@
       "title": "Problemas"
     },
     {
+      "file": "n3h-eventos-7d.json",
+      "id": 120,
+      "role": "content",
+      "title": "Histórico de eventos — 7 dias (tabela MySQL, activos+resolvidos+ack)"
+    },
+    {
       "file": "l3h-ficha.js",
       "id": 117,
       "role": "content",
