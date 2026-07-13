@@ -154,10 +154,48 @@ WHERE ht.tag = 'camada' AND ht.value = 'base de dados' AND h.status = 0
 ORDER BY h.name
 ```
 
-## 6. Pendente
+## 5-bis. IMPLEMENTADO (2026-07-13) — N2 v4 + N3 novo, testados ao vivo
 
-- Implementação do N2 redesenhado e do N3 (mockup aprovado, código por
-  fazer — ver `cronograma.md` Fase 6.1.9+)
+O desenho do §5 foi implementado e validado no Grafana (detalhe completo e
+pesquisa de KPIs em `DESIGN-N2-N3-20260712.md`):
+
+- **N2 (`bd-n2`)**: `l2-resumo-bases-dados.js` v2 (novo bloco CONTEXTO
+  OPERACIONAL: hosts/instâncias/bases/tamanho/motores) + `l2-tabela-hosts.js`
+  v4 (colunas Motor/Bases/Tamanho, só Produção). Layout fechado sem scroll
+  interno (h: 3/16/39, overflow medido = 0).
+- **N3 (`bd-n3`)**: dashboard novo, híbrido — 3 painéis BT standalone
+  (`n3/l3-instancia.js`, `n3/l3-bases.js`, `n3/l3-ficha.js`) + 3 timeseries
+  nativos (CPU/RAM/disco por volume) + painel nativo de problemas. Variável
+  `hostid` via MySQL (`__text`=host técnico, `__value`=nome visível — os
+  nativos filtram pelo nome visível, os BT extraem o código curto).
+  Testado com os 3 tiers reais: `VS8000413` (ODBC completo, 27 bases),
+  `VS8000601` (perfmon+WMI, DWDiagnostics 81% log), `VS8000759` (Oracle
+  PARADO ×2 em vermelho).
+- **`VS8000413` subiu sozinho ao tier `odbc`** — a credencial `zbx_monitor`
+  foi criada pela infra e o mecanismo de tier funcionou sem tocar em código
+  (era exactamente o objectivo do desenho §2). Achado novo que ele revelou:
+  70+ jobs SQL Agent falhados/dia e 0 backups nas últimas 24h.
+
+### Lições novas (2026-07-13) — não repetir
+
+1. **`proc.num[]` sem argumentos (template Windows) conta TODOS os
+   processos** — nunca usar `proc.num > 0` como sinal de motor sem filtrar o
+   key por processo de BD (`sqlservr|oracle|sqlbrowser|mysqld|postgres`).
+   Sem o filtro, 12 hosts viraram tier "serviço" falso (apanhado no teste ao
+   vivo; helper `isDbProcItem` nos 3 ficheiros).
+2. **Serviço primário vs auxiliar**: `SQLBrowser`/`OLAP`/`FDLauncher`/
+   `Launchpad`/`RMAN` parados NÃO são "motor parado" (RMAN é backup!).
+   Primários: `MSSQLSERVER`, `MSSQL$<inst>`, `OracleService<SID>` excepto
+   `*RMAN*`. Sem esta distinção, `VS9000404` (Oracle ok, RMAN parado) seria
+   falso crítico — era o bug do v3 da tabela.
+3. **Filtro de ambiente tem de ser case-insensitive por prefixo**
+   (`produ...`) — a tag tem "Produção"/"Producao"/"Produção" misturados;
+   match exacto perde hosts (25 activos hoje, não 23).
+4. O service discovery do template Windows **já cria**
+   `service.info["MSSQLSERVER",state]` em 8 hosts de produção — dá coluna
+   Motor + estado up/down sem nenhum template custom.
+
+## 6. Pendente
 - Tag `motor` (mssql/oracle/nenhum) ainda não criada no Zabbix
 - Credencial `zbx_monitor` nos 17 hosts confirmados MSSQL
 - `VS8000759`: confirmar com o dono do sistema Finantech se o Oracle

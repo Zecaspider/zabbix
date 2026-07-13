@@ -1,0 +1,565 @@
+{
+ "dashboard": {
+  "editable": true,
+  "graphTooltip": 0,
+  "id": 372744891809792,
+  "panels": [
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 0
+    },
+    "id": 200,
+    "panels": [],
+    "title": "Instância",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 12,
+     "w": 24,
+     "x": 0,
+     "y": 1
+    },
+    "id": 101,
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 · BASES DE DADOS — Instância (header + contexto + saúde tiered)        ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid (host Zabbix seleccionado)       ║\n// ║  Standalone (ES5, eval) — padrão _l3-base.js. Reage a var-hostid sem       ║\n// ║  estado residual. Muda de conteúdo consoante o tier da fonte de dados      ║\n// ║  (ver 06-bases-dados/CLAUDE.md §2). Sobe sozinho para \"ODBC completo\"      ║\n// ║  quando a credencial zbx_monitor for criada no host.                      ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-bd-instancia',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    odbcKeyPrefix: 'db.odbc.select[mssql.business.master',\n    logUsadoAlertPct: 90,\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      mssql: '#A371F7', oracle: '#F0883E',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128',\n    },\n    thr: { ple: { warn: 300, crit: 100 }, cacheHit: { warn: 95, crit: 90 } },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  // ── guard anti-double-fire ──\n  var _sig = null, _myToken = null;\n  function _isCurrent() {\n    return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken;\n  }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= 2) throw err;\n        return new Promise(function (res) { setTimeout(res, 1000 * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(method, params) {\n    return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: method, params: params }, _sig)\n      .then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; });\n  }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    num: function (it) { return it ? parseFloat(it.lastvalue) : null; },\n    fmtSize: function (mb) {\n      if (mb == null || isNaN(mb) || mb === 0) return '—';\n      if (mb >= 1048576) return (mb / 1048576).toFixed(1) + ' TB';\n      if (mb >= 1024) return (mb / 1024).toFixed(0) + ' GB';\n      return Math.round(mb) + ' MB';\n    },\n    tag: function (tags, k) { for (var i = 0; i < (tags || []).length; i++) if (tags[i].tag === k) return tags[i].value; return ''; },\n    renderErro: function (causa) {\n      return '<div style=\"background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);border-radius:6px;padding:12px 14px;font-family:monospace\">'\n        + '<div style=\"color:' + CFG.colors.crit + ';font-size:12px;font-weight:700;margin-bottom:4px\">&#9888; ERRO</div>'\n        + '<div style=\"color:' + CFG.colors.text + ';font-size:11px\">' + U.esc(causa) + '</div></div>';\n    },\n  };\n\n  function svcName(key) { var m = (key || '').match(/service\\.info\\[\\s*\"?([^\",\\]]+)\"?/); return m ? m[1] : (key || ''); }\n  function isPrimaryEngineSvc(name) {\n    if (/RMAN|Backup/i.test(name)) return false;\n    if (/^OracleService/i.test(name)) return true;\n    if (/^MSSQLSERVER$/i.test(name)) return true;\n    if (/^MSSQL\\$/i.test(name)) return true;\n    return false;\n  }\n  function isAuxSvc(name) { return /FDLauncher|Launchpad|OLAPService|SQLBrowser|SQLSERVERAGENT|SQLAgent|RMAN|Reporting|IntegrationServices/i.test(name); }\n  // proc.num[] sem args (template Windows) conta TODOS os processos — só é\n  // sinal de motor se o key nomear um processo de BD (fix 2026-07-13)\n  function isDbProcItem(it) {\n    return /proc\\.num\\[[^\\]]*(sqlservr|oracle|sqlbrowser|mysqld|postgres)/i.test(it.key_ || '')\n      || /^Processo .+ activo$/.test(it.name || '');\n  }\n  function motorFrom(names, hasOdbc) {\n    for (var i = 0; i < names.length; i++) if (/oracle/i.test(names[i])) return 'Oracle';\n    for (var j = 0; j < names.length; j++) if (/mssql|sqlserver/i.test(names[j])) return 'MSSQL';\n    return hasOdbc ? 'MSSQL' : '?';\n  }\n  function findByName(items, name) { for (var i = 0; i < items.length; i++) if (items[i].name === name && !items[i].error && items[i].lastvalue !== '') return items[i]; return null; }\n\n  // ── classificação de tier ──\n  function classify(host, odbcItem, perf, svcAll, procAll) {\n    var svcNames = []; for (var i = 0; i < svcAll.length; i++) svcNames.push(svcName(svcAll[i].key_));\n    var hasOdbc = !!odbcItem;\n    var motor = motorFrom(svcNames, hasOdbc);\n\n    // ODBC completo\n    if (odbcItem && !odbcItem.error && odbcItem.lastvalue) {\n      var raw = odbcItem.lastvalue.trim();\n      if (raw.charAt(raw.length - 1) === '}' || raw.charAt(raw.length - 1) === ']') {\n        var d = null; try { d = JSON.parse(raw); } catch (e) { d = null; }\n        if (d) return { tier: 'odbc', motor: motor === '?' ? 'MSSQL' : motor, odbc: d };\n      }\n    }\n    // Perfmon + WMI\n    var pPle = findByName(perf, 'MSSQL Page life expectancy');\n    var pConn = findByName(perf, 'MSSQL User Connections');\n    var pDead = findByName(perf, 'MSSQL Number of Deadlocks/sec');\n    var pCache = findByName(perf, 'MSSQL Buffer cache hit ratio') || findByName(perf, 'MSSQL Cache hit ratio');\n    var wmiData = perf.filter(function (i) { return /^MSSQL DB .+: Tamanho dados/.test(i.name); });\n    if (pPle || pConn || pDead || wmiData.length) {\n      return { tier: 'perfmon', motor: motor === '?' ? 'MSSQL' : motor, perf: { pPle: pPle, pConn: pConn, pDead: pDead, pCache: pCache, wmiData: wmiData }, svcAll: svcAll };\n    }\n    // Serviço\n    var primary = svcAll.filter(function (i) { return isPrimaryEngineSvc(svcName(i.key_)); });\n    if (primary.length) return { tier: 'servico', motor: motor, primary: primary, svcAll: svcAll };\n    var procFound = procAll.filter(function (i) { return isDbProcItem(i) && (U.num(i) || 0) > 0; });\n    if (procFound.length) return { tier: 'servico', motor: motor, procFound: procFound };\n    // Sem sinal (com erro ODBC = motivo)\n    return { tier: 'nd', motor: motor === '?' ? (hasOdbc ? 'MSSQL' : '?') : motor, odbcError: odbcItem ? odbcItem.error : null };\n  }\n\n  // ── render ──\n  var TIER_BADGE = {\n    odbc: ['#3FB950', '● ODBC completo'],\n    perfmon: ['#58A6FF', '◐ Perfmon local'],\n    servico: ['#D29922', '◑ Serviço'],\n    nd: ['#8B949E', '○ Sem sinal'],\n  };\n  function motorBadge(m) {\n    if (!m || m === '?') return '<span style=\"color:' + CFG.colors.sub + '\">—</span>';\n    var c = /oracle/i.test(m) ? CFG.colors.oracle : CFG.colors.mssql;\n    return '<span style=\"color:' + c + ';font-weight:700\">' + U.esc(m) + '</span>';\n  }\n  function kpi(label, value, color) {\n    return '<div style=\"flex:1;min-width:90px;text-align:center;padding:8px 6px\">'\n      + '<div style=\"font-size:1.25rem;font-weight:700;color:' + (color || CFG.colors.text) + '\">' + value + '</div>'\n      + '<div style=\"font-size:.6rem;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.03em;margin-top:2px\">' + label + '</div></div>';\n  }\n  function pleColor(v) { if (v == null) return CFG.colors.sub; if (v <= CFG.thr.ple.crit) return CFG.colors.crit; if (v <= CFG.thr.ple.warn) return CFG.colors.warn; return CFG.colors.ok; }\n\n  function render(host, c) {\n    var tb = TIER_BADGE[c.tier] || TIER_BADGE.nd;\n    var sistema = U.tag(host.tags, 'servico') || '—';\n    var dept = U.tag(host.tags, 'departamento') || '—';\n    var amb = U.tag(host.tags, 'ambiente') || '—';\n\n    // HEADER\n    var html = '<div style=\"display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px\">'\n      + '<div><div style=\"font-size:1.3rem;font-weight:700;color:#E6EDF3;font-family:monospace\">' + U.esc(host.host) + '</div>'\n      + '<div style=\"font-size:.78rem;color:' + CFG.colors.sub + ';margin-top:2px\">' + U.esc(sistema) + ' · ' + U.esc(dept) + ' · ' + U.esc(amb) + '</div></div>'\n      + '<div style=\"display:flex;gap:8px;align-items:center\">'\n      + '<span style=\"font-size:.85rem\">Motor: ' + motorBadge(c.motor) + '</span>'\n      + '<span style=\"background:' + tb[0] + '22;color:' + tb[0] + ';font-size:.75rem;font-weight:700;padding:3px 12px;border-radius:999px\">' + tb[1] + '</span>'\n      + '</div></div>';\n\n    var sect = function (t) { return '<div style=\"font-size:.66rem;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em;margin:14px 0 6px\">' + t + '</div>'; };\n    var row = function (inner) { return '<div style=\"display:flex;gap:4px;flex-wrap:wrap;background:rgba(255,255,255,.02);border:1px solid ' + CFG.colors.brd + ';border-radius:8px;padding:6px 4px\">' + inner + '</div>'; };\n\n    if (c.tier === 'odbc') {\n      var d = c.odbc;\n      var nb = d.db_online != null ? d.db_online : (d.databases ? d.databases.length : '—');\n      html += sect('Contexto') + row(\n        kpi('Bases online', nb, CFG.colors.info)\n        + kpi('Tamanho', U.fmtSize((d.total_data_mb || 0) + (d.total_log_mb || 0)), CFG.colors.text)\n        + kpi('Ligações', d.user_connections != null ? d.user_connections : '—', CFG.colors.text)\n        + kpi('Pedidos activos', d.active_requests != null ? d.active_requests : '—', CFG.colors.text)\n      );\n      html += sect('Saúde da instância') + row(\n        kpi('PLE', d.ple != null ? d.ple + 's' : '—', pleColor(d.ple))\n        + kpi('Bases suspect', d.db_suspect != null ? d.db_suspect : '—', d.db_suspect > 0 ? CFG.colors.crit : CFG.colors.ok)\n        + kpi('Bloqueados', d.blocked_processes != null ? d.blocked_processes : '—', d.blocked_processes > 0 ? CFG.colors.warn : CFG.colors.text)\n        + kpi('Deadlocks/s', d.deadlocks_per_sec != null ? d.deadlocks_per_sec : '—', d.deadlocks_per_sec > 0 ? CFG.colors.warn : CFG.colors.text)\n        + kpi('Jobs falhados', d.failed_jobs_today != null ? d.failed_jobs_today : '—', d.failed_jobs_today > 0 ? CFG.colors.warn : CFG.colors.ok)\n        + kpi('Backups 24h', d.backups_24h != null ? d.backups_24h : '—', d.backups_24h === 0 ? CFG.colors.warn : CFG.colors.ok)\n      );\n    } else if (c.tier === 'perfmon') {\n      var p = c.perf;\n      var ple = U.num(p.pPle), conn = U.num(p.pConn), dead = U.num(p.pDead), cache = U.num(p.pCache);\n      html += sect('Contexto') + row(\n        kpi('Bases (WMI)', p.wmiData.length || '—', CFG.colors.info)\n        + kpi('Ligações', conn != null ? conn : '—', CFG.colors.text)\n        + kpi('Fonte', 'perfmon local', CFG.colors.sub)\n      );\n      html += sect('Saúde da instância (sem credencial SQL — contador de desempenho)') + row(\n        kpi('PLE', ple != null ? ple + 's' : '—', pleColor(ple))\n        + kpi('Cache hit', cache != null ? cache + '%' : '—', cache != null && cache < CFG.thr.cacheHit.crit ? CFG.colors.warn : CFG.colors.ok)\n        + kpi('Deadlocks/s', dead != null ? dead : '—', dead > 0 ? CFG.colors.warn : CFG.colors.text)\n      );\n    } else if (c.tier === 'servico') {\n      var svcHtml = '';\n      if (c.primary) {\n        for (var i = 0; i < c.primary.length; i++) {\n          var running = U.num(c.primary[i]) === 0;\n          var nm = svcName(c.primary[i].key_);\n          svcHtml += kpi(nm, running ? 'A correr' : 'PARADO', running ? CFG.colors.ok : CFG.colors.crit);\n        }\n      } else if (c.procFound) {\n        for (var k = 0; k < c.procFound.length; k++) svcHtml += kpi(c.procFound[k].name.replace(/^Processo /, ''), 'presente', CFG.colors.warn);\n      }\n      html += sect('Estado do motor (só serviço — sem métricas SQL)') + row(svcHtml || kpi('Estado', '—', CFG.colors.sub));\n      // Auxiliares como contexto\n      if (c.svcAll) {\n        var aux = c.svcAll.filter(function (x) { return isAuxSvc(svcName(x.key_)); });\n        if (aux.length) {\n          var auxHtml = '';\n          for (var a = 0; a < aux.length; a++) {\n            var r2 = U.num(aux[a]) === 0;\n            auxHtml += '<span style=\"font-size:.72rem;color:' + (r2 ? CFG.colors.sub : CFG.colors.warn) + ';margin-right:10px\">' + U.esc(svcName(aux[a].key_)) + (r2 ? '' : ' (parado)') + '</span>';\n          }\n          html += sect('Serviços auxiliares') + '<div style=\"padding:4px 2px\">' + auxHtml + '</div>';\n        }\n      }\n    } else {\n      var motivo = 'Sem sinal do motor.';\n      if (c.odbcError) {\n        if (/login failed|28000|18456/i.test(c.odbcError)) motivo = 'Motor responde mas falta a credencial zbx_monitor (login failed). Pedir criação à infra.';\n        else if (/HYT00|timeout/i.test(c.odbcError)) motivo = 'Instância nomeada / porta dinâmica — o template ODBC não liga. Usar perfmon local.';\n        else motivo = 'Erro ODBC: ' + c.odbcError.slice(0, 120);\n      }\n      html += sect('Estado') + '<div style=\"background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.4);border-radius:8px;padding:12px 14px;color:' + CFG.colors.text + ';font-size:.85rem\">' + U.esc(motivo) + '</div>';\n    }\n\n    return html;\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController();\n  _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma instância no selector acima.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar…</span>';\n\n  zbx('host.get', { output: ['hostid', 'host', 'name'], selectTags: 'extend', filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0], hid = host.hostid;\n      return Promise.all([\n        zbx('item.get', { hostids: [hid], search: { key_: CFG.odbcKeyPrefix }, output: ['lastvalue', 'lastclock', 'error'] }),\n        zbx('item.get', { hostids: [hid], search: { name: 'MSSQL ' }, output: ['name', 'lastvalue', 'lastclock', 'error'] }),\n        zbx('item.get', { hostids: [hid], search: { key_: 'service.info' }, output: ['name', 'key_', 'lastvalue', 'lastclock', 'error'] }),\n        zbx('item.get', { hostids: [hid], search: { key_: 'proc.num' }, output: ['name', 'key_', 'lastvalue', 'error'] }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        var c = classify(host, res[0][0], res[1] || [], res[2] || [], res[3] || []);\n        root.innerHTML = render(host, c);\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
+     "content": "<div id=\"bt-bd-instancia\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "pluginVersion": "6.2.0",
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "",
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
+    "transparent": true,
+    "type": "marcusolsson-dynamictext-panel"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 13
+    },
+    "id": 201,
+    "panels": [],
+    "title": "Bases de dados",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 12,
+     "w": 24,
+     "x": 0,
+     "y": 14
+    },
+    "id": 102,
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 · BASES DE DADOS — Tabela por base de dados                            ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid                                  ║\n// ║  Standalone ES5. Mostra cada base do host — via ODBC databases[] (nome,    ║\n// ║  estado, recovery, tamanho, último backup) OU via WMI (nome, tamanho,      ║\n// ║  % log usado). Ordena por % log usado / tamanho para apanhar cedo casos    ║\n// ║  tipo PRISIGEP/DWDiagnostics. Se o host não tem bases mensuráveis, explica ║\n// ║  porquê em vez de aparecer vazio.                                          ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-bd-bases',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    odbcKeyPrefix: 'db.odbc.select[mssql.business.master',\n    logUsadoWarn: 75, logUsadoCrit: 90,\n    colors: { ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF', text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128' },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) { if (err.name === 'AbortError') throw err; if (attempt >= 2) throw err;\n        return new Promise(function (res) { setTimeout(res, 1000 * Math.pow(2, attempt)); }).then(function () { return fetchWithRetry(url, body, signal, attempt + 1); }); });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    num: function (it) { return it ? parseFloat(it.lastvalue) : null; },\n    fmtMb: function (mb) { if (mb == null || isNaN(mb)) return '—'; if (mb >= 1048576) return (mb / 1048576).toFixed(1) + ' TB'; if (mb >= 1024) return (mb / 1024).toFixed(1) + ' GB'; return Math.round(mb) + ' MB'; },\n    renderErro: function (c) { return '<div style=\"background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);border-radius:6px;padding:12px 14px;font-family:monospace;color:' + CFG.colors.crit + ';font-size:11px\">&#9888; ' + U.esc(c) + '</div>'; },\n    note: function (msg) { return '<div style=\"color:' + CFG.colors.sub + ';font-size:.82rem;padding:10px 4px\">' + U.esc(msg) + '</div>'; },\n  };\n\n  function logColor(pct) { if (pct == null) return CFG.colors.text; if (pct >= CFG.logUsadoCrit) return CFG.colors.crit; if (pct >= CFG.logUsadoWarn) return CFG.colors.warn; return CFG.colors.text; }\n\n  function table(headers, rows) {\n    var th = 'text-align:left;padding:6px 9px;font-size:.66rem;text-transform:uppercase;letter-spacing:.03em;color:' + CFG.colors.sub + ';border-bottom:1px solid rgba(255,255,255,.12)';\n    var h = '<thead><tr>';\n    for (var i = 0; i < headers.length; i++) h += '<th style=\"' + th + (headers[i].r ? ';text-align:right' : '') + '\">' + headers[i].t + '</th>';\n    h += '</tr></thead>';\n    return '<div style=\"overflow-x:auto\"><table style=\"width:100%;border-collapse:collapse\">' + h + '<tbody>' + rows.join('') + '</tbody></table></div>';\n  }\n  function td(v, extra) { return '<td style=\"padding:6px 9px;border-bottom:1px solid rgba(255,255,255,.06);font-size:.78rem;color:' + CFG.colors.text + (extra || '') + '\">' + v + '</td>'; }\n\n  // ODBC databases[]\n  function renderOdbc(dbs) {\n    dbs.sort(function (a, b) { return ((b.data_mb || 0) + (b.log_mb || 0)) - ((a.data_mb || 0) + (a.log_mb || 0)); });\n    var rows = dbs.map(function (db) {\n      var stateOk = /online/i.test(db.state || '');\n      var bk = db.last_full_backup || '—';\n      var bkOld = /never|null/i.test(bk) || bk === '—';\n      return '<tr>'\n        + td(U.esc(db.db_name), ';font-family:monospace;color:#E6EDF3')\n        + td('<span style=\"color:' + (stateOk ? CFG.colors.ok : CFG.colors.crit) + '\">' + U.esc(db.state || '?') + '</span>')\n        + td(U.esc(db.recovery_model || '—'), ';color:' + CFG.colors.sub)\n        + td(U.fmtMb(db.data_mb), ';text-align:right')\n        + td(U.fmtMb(db.log_mb), ';text-align:right')\n        + td(db.active_connections != null ? db.active_connections : '—', ';text-align:right;color:' + CFG.colors.sub)\n        + td('<span style=\"color:' + (bkOld ? CFG.colors.warn : CFG.colors.sub) + '\">' + U.esc(String(bk)) + '</span>', ';font-size:.72rem')\n        + '</tr>';\n    });\n    return '<div style=\"font-size:.7rem;color:' + CFG.colors.sub + ';margin-bottom:6px\">' + dbs.length + ' bases · ordenadas por tamanho</div>'\n      + table([{ t: 'Base' }, { t: 'Estado' }, { t: 'Recovery' }, { t: 'Dados', r: 1 }, { t: 'Log', r: 1 }, { t: 'Lig', r: 1 }, { t: 'Último backup full' }], rows);\n  }\n\n  // WMI items → agrupar por base\n  function renderWmi(items) {\n    var byDb = {};\n    items.forEach(function (it) {\n      var m = it.name.match(/^MSSQL DB (.+): (Tamanho dados|Tamanho log|Percent log usado)/);\n      if (!m) return;\n      var name = m[1];\n      byDb[name] = byDb[name] || { name: name };\n      var v = U.num(it);\n      if (/Tamanho dados/.test(m[2])) byDb[name].dataMb = v / 1024;\n      else if (/Tamanho log/.test(m[2])) byDb[name].logMb = v / 1024;\n      else if (/Percent log/.test(m[2])) byDb[name].logPct = v;\n    });\n    var list = Object.keys(byDb).map(function (k) { return byDb[k]; });\n    if (!list.length) return null;\n    list.sort(function (a, b) { return (b.logPct || 0) - (a.logPct || 0); });\n    var rows = list.map(function (db) {\n      return '<tr>'\n        + td(U.esc(db.name), ';font-family:monospace;color:#E6EDF3')\n        + td(U.fmtMb(db.dataMb), ';text-align:right')\n        + td(U.fmtMb(db.logMb), ';text-align:right')\n        + td('<span style=\"color:' + logColor(db.logPct) + ';font-weight:600\">' + (db.logPct != null ? db.logPct + '%' : '—') + '</span>', ';text-align:right')\n        + '</tr>';\n    });\n    return '<div style=\"font-size:.7rem;color:' + CFG.colors.sub + ';margin-bottom:6px\">' + list.length + ' bases (via WMI) · ordenadas por % log usado</div>'\n      + table([{ t: 'Base' }, { t: 'Dados', r: 1 }, { t: 'Log', r: 1 }, { t: '% Log usado', r: 1 }], rows);\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = U.note('Selecciona uma instância no selector acima.'); return; }\n  root.innerHTML = U.note('A carregar…');\n\n  zbx('host.get', { output: ['hostid', 'host'], filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var hid = hosts[0].hostid;\n      return Promise.all([\n        zbx('item.get', { hostids: [hid], search: { key_: CFG.odbcKeyPrefix }, output: ['lastvalue', 'error'] }),\n        zbx('item.get', { hostids: [hid], search: { name: 'MSSQL DB ' }, output: ['name', 'lastvalue', 'error'] }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        // ODBC primeiro\n        var odbc = res[0][0];\n        if (odbc && !odbc.error && odbc.lastvalue) {\n          var raw = odbc.lastvalue.trim();\n          if (raw.charAt(raw.length - 1) === '}') {\n            var d = null; try { d = JSON.parse(raw); } catch (e) { d = null; }\n            if (d && d.databases && d.databases.length) { root.innerHTML = renderOdbc(d.databases); return; }\n          }\n        }\n        // WMI\n        var wmi = renderWmi(res[1] || []);\n        if (wmi) { root.innerHTML = wmi; return; }\n        root.innerHTML = U.note('Sem detalhe por base neste host. A lista de bases só existe com credencial SQL (ODBC) ou descoberta WMI (instância nomeada). Ver a secção Estado da instância para o motivo.');\n      });\n    })\n    .catch(function (e) { if (e.name === 'AbortError' || !_isCurrent()) return; root.innerHTML = U.renderErro(e.message); });\n\n})();\n",
+     "content": "<div id=\"bt-bd-bases\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "pluginVersion": "6.2.0",
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "",
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
+    "transparent": true,
+    "type": "marcusolsson-dynamictext-panel"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 26
+    },
+    "id": 202,
+    "panels": [],
+    "title": "Recursos do sistema operativo",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 10,
+       "lineWidth": 1,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 27
+    },
+    "id": 103,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "$hostid"
+      },
+      "item": {
+       "filter": "/CPU utilization/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "CPU (%)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 10,
+       "lineWidth": 1,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 27
+    },
+    "id": 104,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "$hostid"
+      },
+      "item": {
+       "filter": "/Memory utilization/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Memória (%)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {
+      "color": {
+       "mode": "palette-classic"
+      },
+      "custom": {
+       "drawStyle": "line",
+       "fillOpacity": 10,
+       "lineWidth": 1,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "max": 100,
+      "min": 0,
+      "unit": "percent"
+     },
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 24,
+     "x": 0,
+     "y": 35
+    },
+    "id": 105,
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "$hostid"
+      },
+      "item": {
+       "filter": "/Space utilization/"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "Disco — utilização por volume (%)",
+    "transparent": true,
+    "type": "timeseries"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 43
+    },
+    "id": 203,
+    "panels": [],
+    "title": "Problemas",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 24,
+     "x": 0,
+     "y": 44
+    },
+    "id": 106,
+    "options": {
+     "ackField": true,
+     "ageField": true,
+     "descriptionField": true,
+     "fontSize": "100%",
+     "highlightNewerThan": "1h",
+     "hostField": false,
+     "hostTechNameField": false,
+     "limit": 50,
+     "problemTimeline": true,
+     "severityField": true,
+     "showTags": true,
+     "sortProblems": "lastchange",
+     "statusField": true
+    },
+    "targets": [
+     {
+      "application": {
+       "filter": ""
+      },
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "$hostid"
+      },
+      "options": {
+       "acknowledged": 2,
+       "hostsInMaintenance": false,
+       "minSeverity": 0,
+       "sortProblems": "default"
+      },
+      "proxy": {
+       "filter": ""
+      },
+      "queryType": "5",
+      "refId": "A",
+      "tags": {
+       "filter": ""
+      },
+      "trigger": {
+       "filter": ""
+      }
+     }
+    ],
+    "title": "",
+    "transparent": true,
+    "type": "alexanderzobnin-zabbix-triggers-panel"
+   },
+   {
+    "collapsed": false,
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 52
+    },
+    "id": 204,
+    "panels": [],
+    "title": "Ficha do servidor",
+    "type": "row"
+   },
+   {
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    },
+    "gridPos": {
+     "h": 9,
+     "w": 24,
+     "x": 0,
+     "y": 53
+    },
+    "id": 107,
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 · BASES DE DADOS — Ficha do servidor (identidade)                      ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid                                  ║\n// ║  Standalone ES5. Única secção que aparece SEMPRE, independente do tier:    ║\n// ║  SO, IP, uptime, cluster/hypervisor (VMware), e templates Zabbix ligados   ║\n// ║  (mostra que fonte de dados de BD o host tem hoje).                        ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-bd-ficha',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    colors: { text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128', info: '#58A6FF', ok: '#3FB950' },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) { if (err.name === 'AbortError') throw err; if (attempt >= 2) throw err;\n        return new Promise(function (res) { setTimeout(res, 1000 * Math.pow(2, attempt)); }).then(function () { return fetchWithRetry(url, body, signal, attempt + 1); }); });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    findVal: function (items, name) { for (var i = 0; i < items.length; i++) if (items[i].name === name && items[i].lastvalue !== '') return items[i].lastvalue; return null; },\n    findByKeySub: function (items, sub) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(sub) === 0 && items[i].lastvalue !== '') return items[i].lastvalue; return null; },\n    upt: function (secs) { if (secs == null) return '—'; var d = Math.floor(secs / 86400); return d + 'd'; },\n    renderErro: function (c) { return '<div style=\"color:#F85149;font-size:11px;font-family:monospace\">&#9888; ' + U.esc(c) + '</div>'; },\n  };\n\n  function rowKV(k, v) {\n    return '<div style=\"display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05)\">'\n      + '<span style=\"font-size:.74rem;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.02em\">' + k + '</span>'\n      + '<span style=\"font-size:.82rem;color:' + CFG.colors.text + ';text-align:right;max-width:65%\">' + v + '</span></div>';\n  }\n\n  function render(host, items, tpls) {\n    var os = U.findByKeySub(items, 'system.sw.os') || U.findVal(items, 'Operating system') || '—';\n    var arch = U.findByKeySub(items, 'system.sw.arch') || '';\n    var uptime = U.findByKeySub(items, 'system.uptime');\n    var totMem = U.findByKeySub(items, 'vm.memory.size[total]');\n    var hv = U.findByKeySub(items, 'vmware.vm.hv.name') || null;\n    var cluster = U.findByKeySub(items, 'vmware.vm.cluster.name') || null;\n    var ip = (host.interfaces && host.interfaces.length) ? host.interfaces[0].ip : '—';\n\n    var tplNames = (tpls || []).map(function (t) { return t.name; });\n    var dbTpls = tplNames.filter(function (n) { return /MSSQL|Oracle|MySQL|DB Engine|Perfmon/i.test(n); });\n\n    var html = rowKV('Sistema operativo', U.esc(os) + (arch ? ' · ' + U.esc(arch) : ''));\n    html += rowKV('Endereço IP', U.esc(ip));\n    if (totMem) html += rowKV('Memória total', (parseFloat(totMem) / 1073741824).toFixed(1) + ' GB');\n    html += rowKV('Uptime', U.upt(uptime ? parseFloat(uptime) : null));\n    if (hv) html += rowKV('Hypervisor', U.esc(hv));\n    if (cluster) html += rowKV('Cluster', U.esc(cluster));\n    html += rowKV('Templates de BD', dbTpls.length\n      ? dbTpls.map(function (n) { return '<span style=\"color:' + CFG.colors.info + '\">' + U.esc(n) + '</span>'; }).join('<br>')\n      : '<span style=\"color:' + CFG.colors.sub + '\">nenhum específico de BD</span>');\n    return html;\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma instância.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar…</span>';\n\n  zbx('host.get', { output: ['hostid', 'host'], selectInterfaces: ['ip'], selectParentTemplates: ['name'], filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0], hid = host.hostid;\n      return zbx('item.get', {\n        hostids: [hid],\n        search: { key_: 'system.' }, searchByAny: true,\n        output: ['name', 'key_', 'lastvalue'],\n      }).then(function (sysItems) {\n        // + itens VMware e memória por chave\n        return zbx('item.get', { hostids: [hid], output: ['name', 'key_', 'lastvalue'],\n          filter: { key_: ['vm.memory.size[total]'] } }).then(function (memItems) {\n          return zbx('item.get', { hostids: [hid], search: { key_: 'vmware.vm.' }, searchByAny: true, output: ['name', 'key_', 'lastvalue'] })\n            .then(function (vmwItems) {\n              if (!_isCurrent()) return;\n              var all = (sysItems || []).concat(memItems || []).concat(vmwItems || []);\n              root.innerHTML = render(host, all, host.parentTemplates);\n            });\n        });\n      });\n    })\n    .catch(function (e) { if (e.name === 'AbortError' || !_isCurrent()) return; root.innerHTML = U.renderErro(e.message); });\n\n})();\n",
+     "content": "<div id=\"bt-bd-ficha\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "pluginVersion": "6.2.0",
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "title": "",
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
+    "transparent": true,
+    "type": "marcusolsson-dynamictext-panel"
+   }
+  ],
+  "refresh": "1m",
+  "schemaVersion": 39,
+  "tags": [
+   "bpc",
+   "bases-dados",
+   "n3"
+  ],
+  "templating": {
+   "list": [
+    {
+     "current": {},
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "label": "Instância",
+     "name": "hostid",
+     "options": [],
+     "query": "SELECT h.host AS __text, h.name AS __value FROM hosts h INNER JOIN host_tag ht ON h.hostid=ht.hostid AND ht.tag='camada' AND ht.value='base de dados' WHERE h.status=0 AND EXISTS (SELECT 1 FROM host_tag ht2 WHERE ht2.hostid=h.hostid AND ht2.tag='ambiente' AND LOWER(ht2.value) LIKE 'produ%') ORDER BY h.host",
+     "refresh": 1,
+     "regex": "",
+     "sort": 1,
+     "type": "query"
+    }
+   ]
+  },
+  "time": {
+   "from": "now-6h",
+   "to": "now"
+  },
+  "timezone": "browser",
+  "title": "N3 · Bases de Dados · Instância — Detalhe",
+  "uid": "bd-n3",
+  "version": 2
+ },
+ "folderUid": "afpm0se5rij28d",
+ "overwrite": true
+}

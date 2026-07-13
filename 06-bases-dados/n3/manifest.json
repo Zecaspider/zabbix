@@ -1,0 +1,51 @@
+{
+  "dashboardUid": "bd-n3",
+  "dashboardTitle": "N3 · Bases de Dados · Instância — Detalhe",
+  "folderUid": "afpm0se5rij28d",
+  "datasource": "3_KgG43nz",
+  "variavel_hostid": "MySQL afor1g5862fb4c (tag camada=base de dados + ambiente≈Produção)",
+  "notas": "N3 híbrido: 3 painéis BT standalone (instancia/bases/ficha, reagem a var-hostid) + 3 timeseries nativos (CPU/RAM/disco) + 1 painel nativo de problemas. Ver 06-bases-dados/DESIGN-N2-N3-20260712.md.",
+  "panels": [
+    {
+      "file": "l3-instancia.js",
+      "id": 101,
+      "role": "content",
+      "rootId": "bt-bd-instancia",
+      "title": "Instância — header + contexto + saúde tiered"
+    },
+    {
+      "file": "l3-bases.js",
+      "id": 102,
+      "role": "content",
+      "rootId": "bt-bd-bases",
+      "title": "Bases de dados (tabela por base)"
+    },
+    {
+      "file": "l3-ficha.js",
+      "id": 107,
+      "role": "content",
+      "rootId": "bt-bd-ficha",
+      "title": "Ficha do servidor"
+    },
+    {
+      "nativo": "timeseries",
+      "id": 103,
+      "title": "CPU (%)"
+    },
+    {
+      "nativo": "timeseries",
+      "id": 104,
+      "title": "Memória (%)"
+    },
+    {
+      "nativo": "timeseries",
+      "id": 105,
+      "title": "Disco — utilização por volume"
+    },
+    {
+      "nativo": "alexanderzobnin-zabbix-triggers-panel",
+      "id": 106,
+      "title": "Problemas"
+    }
+  ]
+}

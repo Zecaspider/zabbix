@@ -21,7 +21,7 @@
       "filter": "ICMP ping"
     }
   },
-  "notas": "Migrado do dashboard arquivado 'D03 - Bases de dados - Nivel 2' (adcxx9v, 99·Arquivo, 2026-07-12). Só o painel de KPI agregado (PLE/ligações/bloqueios/deadlocks/jobs/backups) foi portado - o painel 3 original era um card genérico copiado de VMware/ESXi sem nenhuma métrica real de BD. Painel de tabela por host é novo, construído para mostrar qual host tem problema e porquê (3 dos 4 hosts com tag camada=base de dados não têm dados reais - ver cronograma.md).",
+  "notas": "v4 (2026-07-13, cronograma 6.2): foco Produção (ambiente≈produ*, case-insensitive), bloco CONTEXTO OPERACIONAL novo no resumo (hosts/instâncias/bases/tamanho/motores), colunas Motor/Bases/Tamanho na tabela, distinção serviço primário vs auxiliar (RMAN/OLAP/Browser parados já não são falso 'motor parado'), proc.num filtrado a processos de BD. Layout fechado h=3/16/39 (overflow medido 0). Drill por linha para bd-n3. Design e KPIs em ../DESIGN-N2-N3-20260712.md; lições em ../CLAUDE.md §5-bis.",
   "panels": [
     {
       "file": "utils.js",
@@ -31,11 +31,11 @@
       "content": "<div id=\"bpc-header-root\"></div>"
     },
     {
-      "file": "l2-kpi-bases-dados.js",
+      "file": "l2-resumo-bases-dados.js",
       "id": 101,
       "role": "content",
-      "title": "KPI Agregado — Bases de Dados",
-      "content": "<div id=\"bpc-kpi-bases-de-dados\"></div>"
+      "title": "Resumo — Bases de Dados",
+      "content": "<div id=\"bpc-resumo-bases-de-dados\"></div>"
     },
     {
       "file": "l2-tabela-hosts.js",
