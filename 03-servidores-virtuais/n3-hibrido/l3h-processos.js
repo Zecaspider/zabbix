@@ -173,7 +173,10 @@
   var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
   if (!hostName) { root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">Selecciona uma VM.</span>'; return; }
-  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">A carregar processos…</span>';
+  // stale-while-revalidate: repinta o último render deste host (sem piscar);
+  // skeleton só na 1ª carga ou quando muda de VM (_l3-base.js, Bloco C)
+  if (_ns.html && _ns.htmlHost === hostName) { root.innerHTML = _ns.html; }
+  else { root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">A carregar processos…</span>'; }
 
   zbx('host.get', { output: ['hostid', 'host'], filter: { host: [hostName] } })
     .then(function (hosts) {
@@ -191,7 +194,11 @@
         var pg = null;
         for (var ci = 0; ci < cand.length; ci++) if (cand[ci].key_ === 'bpc.proc.top12' && cand[ci].lastvalue) { pg = cand[ci]; break; }
         if (!pg) for (var cj = 0; cj < cand.length; cj++) if (cand[cj].lastvalue) { pg = cand[cj]; break; }
-        if (!pg || !pg.lastvalue) { root.innerHTML = renderPilotNote(cand.length > 0); return; }
+        if (!pg || !pg.lastvalue) {
+          root.innerHTML = renderPilotNote(cand.length > 0);
+          _ns.html = root.innerHTML; _ns.htmlHost = hostName;
+          return;
+        }
         var nCores = null, totalRamKb = null;
         for (var i = 0; i < (res[1] || []).length; i++) {
           var it = res[1][i], v = parseFloat(it.lastvalue);
@@ -211,6 +218,7 @@
           var dt = (h && h[0] && h[1]) ? (parseInt(h[0].clock) - parseInt(h[1].clock)) : null;
           if (!sNew) { root.innerHTML = U.renderErro('JSON do proc.get inválido'); return; }
           root.innerHTML = render(sNew, sOld, dt, nCores, totalRamKb);
+          _ns.html = root.innerHTML; _ns.htmlHost = hostName;
         });
       });
     })

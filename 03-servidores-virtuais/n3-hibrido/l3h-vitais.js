@@ -217,7 +217,10 @@
   var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
   if (!hostName) { root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">Selecciona uma VM.</span>'; return; }
-  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">A carregar sinais vitais…</span>';
+  // stale-while-revalidate: repinta o último render deste host (sem piscar);
+  // skeleton só na 1ª carga ou quando muda de VM (_l3-base.js, Bloco C)
+  if (_ns.html && _ns.htmlHost === hostName) { root.innerHTML = _ns.html; }
+  else { root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">A carregar sinais vitais…</span>'; }
 
   var NAMES = ['ICMP ping', 'ICMP response time', 'ICMP loss', 'ICMP packet loss',
     'CPU utilization', 'CPU queue length', 'Number of logical processors', 'Number of CPUs',
@@ -238,6 +241,7 @@
       ]).then(function (res) {
         if (!_isCurrent()) return;
         root.innerHTML = render(res[0] || [], res[1] || [], res[2] || [], res[3] || [], effThr(res[4] || []));
+        _ns.html = root.innerHTML; _ns.htmlHost = hostName;
       });
     })
     .catch(function (e) {

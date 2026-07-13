@@ -181,7 +181,10 @@
   var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';
   var hostName = hostRaw ? U.extractHostName(hostRaw) : '';
   if (!hostName) { root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">Selecciona uma VM.</span>'; return; }
-  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">A procurar serviços servidos por esta VM…</span>';
+  // stale-while-revalidate: repinta o último render deste host (sem piscar);
+  // skeleton só na 1ª carga ou quando muda de VM (_l3-base.js, Bloco C)
+  if (_ns.html && _ns.htmlHost === hostName) { root.innerHTML = _ns.html; }
+  else { root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:12px">A procurar serviços servidos por esta VM…</span>'; }
 
   zbx('host.get', { output: ['hostid', 'host'], selectTags: 'extend', filter: { host: [hostName] } })
     .then(function (hosts) {
@@ -234,6 +237,7 @@
       html += '<div>' + winSvcBlock(d.winSvcs) + '</div>';
 
       root.innerHTML = '<div style="font-family:Inter,\'Segoe UI\',sans-serif">' + html + '</div>';
+      _ns.html = root.innerHTML; _ns.htmlHost = hostName;
     })
     .catch(function (e) {
       if (e.name === 'AbortError' || !_isCurrent()) return;

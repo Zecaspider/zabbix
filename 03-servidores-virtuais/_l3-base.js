@@ -143,7 +143,17 @@
     return;
   }
 
-  root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:11px;">A carregar…</span>';
+  // ── Stale-while-revalidate: o refresh do dashboard destrói o DOM do BT e
+  //    re-executa este script do zero. Em vez de piscar o skeleton a cada
+  //    ciclo, repinta o último render bem-sucedido DESTE host (guardado na
+  //    namespace, que sobrevive ao re-render) enquanto os dados frescos
+  //    chegam. Skeleton só na primeira carga ou quando muda de VM.
+  //    Erros nunca são cacheados (política de erro explícito, §4C.5).
+  if (_ns.html && _ns.htmlHost === hostName) {
+    root.innerHTML = _ns.html;
+  } else {
+    root.innerHTML = '<span style="color:' + CFG.colors.sub + ';font-size:11px;">A carregar…</span>';
+  }
 
   // ── Padrão de consumo: guardar CADA escrita ao DOM com _isCurrent() ──
   zbx('host.get', { output: ['hostid'], filter: { host: [hostName] } }, _sig)
@@ -151,7 +161,10 @@
       if (!_isCurrent()) return;                       // descarta resultado obsoleto
       if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);
       // ... fetch de items/history/triggers, sempre passando _sig ...
-      // if (_isCurrent()) root.innerHTML = render(...);
+      // if (_isCurrent()) {
+      //   root.innerHTML = render(...);
+      //   _ns.html = root.innerHTML; _ns.htmlHost = hostName;   // alimenta o SWR
+      // }
     })
     .catch(function (e) {
       if (e.name === 'AbortError' || !_isCurrent()) return;   // ignora abort e execuções obsoletas

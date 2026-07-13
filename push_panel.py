@@ -117,7 +117,9 @@ def push_panels(domain_level, only_file=None):
     manifest_changed = False
 
     for entry in manifest.get('panels', []):
-        fname = entry['file']
+        fname = entry.get('file')
+        if not fname:
+            continue  # entradas sem ficheiro (ex: paineis nativos declarados por "nativo")
         if only_file and fname != only_file:
             continue
 
