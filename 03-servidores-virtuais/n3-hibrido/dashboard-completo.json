@@ -146,7 +146,7 @@
      }
     ],
     "options": {
-     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — HERO de identidade (topo do fluxo top-down)             ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid (nome visível da VM)             ║\n// ║  Standalone ES5 + guard anti-double-fire (padrão _l3-base.js).             ║\n// ║  Responde a \"QUE máquina é esta e está viva?\" num relance: nome grande,    ║\n// ║  farol de estado (pior severidade de problema activo), badges de power/    ║\n// ║  agente, chips de tags de negócio e factos rápidos (IP·SO·RAM·uptime·      ║\n// ║  hypervisor·cluster). O detalhe numérico vive nos painéis nativos abaixo.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-hero',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    maxAgeSec: { agent: 7200, vmware: 600 },\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128', mute: '#2D333B',\n      chipBg: 'rgba(88,166,255,.10)',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    tag: function (tags, k) { for (var i = 0; i < (tags || []).length; i++) if (tags[i].tag === k) return tags[i].value; return ''; },\n    byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },\n    byName: function (items, name) { for (var i = 0; i < items.length; i++) if (items[i].name === name && items[i].lastvalue !== '') return items[i]; return null; },\n    fresh: function (it, maxAge) { if (!it) return false; var c = parseInt(it.lastclock) || 0; return c > 0 && (Date.now() / 1000 - c) <= maxAge; },\n    upt: function (secs) {\n      if (secs == null || isNaN(secs)) return '—';\n      var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);\n      return d > 0 ? d + 'd ' + h + 'h' : h + 'h ' + Math.floor((secs % 3600) / 60) + 'm';\n    },\n    gb: function (b) { var n = parseFloat(b); return isNaN(n) ? '—' : (n / 1073741824).toFixed(0) + ' GB'; },\n    renderErro: function (causa) {\n      return '<div style=\"background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);border-radius:8px;padding:12px 16px;font-family:monospace\">'\n        + '<span style=\"color:' + CFG.colors.crit + ';font-size:12px;font-weight:700\">&#9888; </span>'\n        + '<span style=\"color:' + CFG.colors.text + ';font-size:12px\">' + U.esc(causa) + '</span></div>';\n    },\n  };\n\n  var SEV_STATE = { 5: 'crit', 4: 'crit', 3: 'warn', 2: 'warn', 1: 'info', 0: 'info' };\n\n  function chip(label, value, color) {\n    if (!value) return '';\n    return '<span style=\"display:inline-flex;align-items:center;gap:6px;background:' + CFG.colors.chipBg + ';'\n      + 'border:1px solid rgba(88,166,255,.25);border-radius:999px;padding:3px 12px;margin:0 6px 6px 0\">'\n      + '<span style=\"font-size:10px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em\">' + label + '</span>'\n      + '<span style=\"font-size:12px;color:' + (color || CFG.colors.text) + ';font-weight:600\">' + U.esc(value) + '</span></span>';\n  }\n  function badge(text, color) {\n    return '<span style=\"background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44;'\n      + 'font-size:11px;font-weight:700;padding:3px 12px;border-radius:6px;letter-spacing:.03em;white-space:nowrap\">' + text + '</span>';\n  }\n  function fact(label, value) {\n    return '<div style=\"min-width:0\">'\n      + '<div style=\"font-size:9.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px\">' + label + '</div>'\n      + '<div style=\"font-size:13px;color:' + CFG.colors.text + ';font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">' + value + '</div></div>';\n  }\n\n  function render(host, items, problems) {\n    var c = CFG.colors;\n    // farol = pior severidade activa\n    var worst = -1;\n    for (var i = 0; i < problems.length; i++) { var s = parseInt(problems[i].severity) || 0; if (s > worst) worst = s; }\n    var farolColor = worst < 0 ? c.ok : (worst >= 4 ? c.crit : (worst >= 2 ? c.warn : c.info));\n    var farolText = worst < 0 ? 'SAUDÁVEL' : (problems.length + ' PROBLEMA' + (problems.length > 1 ? 'S' : '') + ' ACTIVO' + (problems.length > 1 ? 'S' : ''));\n\n    var os = U.byKeyPrefix(items, 'system.sw.os');\n    var arch = U.byKeyPrefix(items, 'system.sw.arch');\n    var upt = U.byKeyPrefix(items, 'system.uptime');\n    var mem = U.byKeyPrefix(items, 'vm.memory.size[total]');\n    var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');\n    var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');\n    var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');\n    // portado da Versão A (2026-07-13): processos/threads + CPU ready\n    var procs = U.byName(items, 'Number of processes');\n    var threads = U.byName(items, 'Number of threads');\n    var cpuReady = U.byKeyPrefix(items, 'vmware.vm.cpu.ready');\n\n    var agentAlive = U.fresh(upt, CFG.maxAgeSec.agent);\n    var powerOn = power ? parseFloat(power.lastvalue) === 1 : null;\n\n    var badges = '';\n    if (powerOn === true) badges += badge('⏻ LIGADA', c.ok) + ' ';\n    else if (powerOn === false) badges += badge('⏻ DESLIGADA', c.crit) + ' ';\n    badges += agentAlive ? badge('AGENTE OK', c.ok) : badge('SEM AGENTE', c.warn);\n\n    var ip = (host.interfaces && host.interfaces.length) ? host.interfaces[0].ip : '—';\n    var osTxt = os ? String(os.lastvalue).slice(0, 44) : '—';\n    if (arch && osTxt !== '—') osTxt += ' · ' + arch.lastvalue;\n    else if (arch && osTxt === '—') osTxt = arch.lastvalue;\n\n    var sysTag = U.tag(host.tags, 'servico'), deptTag = U.tag(host.tags, 'departamento');\n    var ambTag = U.tag(host.tags, 'ambiente'), camTag = U.tag(host.tags, 'camada');\n\n    return ''\n      + '<div style=\"display:flex;flex-direction:column;gap:12px;font-family:Inter,-apple-system,\\'Segoe UI\\',sans-serif\">'\n\n      // linha 1: farol + nome + badges\n      + '<div style=\"display:flex;align-items:center;gap:14px;flex-wrap:wrap\">'\n      +   '<span style=\"width:14px;height:14px;border-radius:50%;background:' + farolColor + ';box-shadow:0 0 12px ' + farolColor + '88;flex:none\"></span>'\n      +   '<span style=\"font-size:26px;font-weight:800;color:#E6EDF3;font-family:\\'JetBrains Mono\\',Consolas,monospace;letter-spacing:.01em\">' + U.esc(host.host) + '</span>'\n      +   '<span style=\"font-size:12px;font-weight:700;color:' + farolColor + ';letter-spacing:.04em\">' + farolText + '</span>'\n      +   '<span style=\"flex:1\"></span>'\n      +   '<span style=\"display:flex;gap:8px\">' + badges + '</span>'\n      + '</div>'\n\n      // linha 2: chips de negócio\n      + '<div style=\"display:flex;flex-wrap:wrap\">'\n      +   chip('Sistema', sysTag, c.info) + chip('Dept', deptTag) + chip('Ambiente', ambTag) + chip('Camada', camTag)\n      + '</div>'\n\n      // linha 3: factos rápidos\n      + '<div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 22px;'\n      +   'background:rgba(255,255,255,.015);border:1px solid ' + c.brd + ';border-radius:10px;padding:12px 18px\">'\n      +   fact('Endereço IP', U.esc(ip))\n      +   fact('Sistema operativo', U.esc(osTxt))\n      +   fact('Memória', U.gb(mem ? mem.lastvalue : null))\n      +   fact('Uptime', U.upt(upt ? parseFloat(upt.lastvalue) : null))\n      +   fact('Hypervisor', hv ? U.esc(hv.lastvalue) : '—')\n      +   fact('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')\n      +   fact('Processos', procs ? Math.round(parseFloat(procs.lastvalue)) : '—')\n      +   fact('Threads', threads ? Math.round(parseFloat(threads.lastvalue)) : '—')\n      +   fact('CPU ready (VMware)', cpuReady ? Math.round(parseFloat(cpuReady.lastvalue)) + ' ms' : '—')\n      + '</div>'\n      + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM no selector acima.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar identidade…</span>';\n\n  zbx('host.get', { output: ['hostid', 'host', 'name'], selectTags: 'extend', selectInterfaces: ['ip'], filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0];\n      return Promise.all([\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], searchByAny: true, search: { key_: 'system.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue', 'lastclock'], filter: { key_: ['vm.memory.size[total]'] } }),\n        zbx('problem.get', { hostids: [host.hostid], output: ['severity'], suppressed: false }),\n        // portado da Versão A: processos + threads (por nome — keys têm escaping chato)\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], filter: { name: ['Number of processes', 'Number of threads'] } }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        var items = (res[0] || []).concat(res[1] || []).concat(res[2] || []).concat(res[4] || []);\n        root.innerHTML = render(host, items, res[3] || []);\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — HERO de identidade (topo do fluxo top-down)             ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid (nome visível da VM)             ║\n// ║  Standalone ES5 + guard anti-double-fire (padrão _l3-base.js).             ║\n// ║  Responde a \"QUE máquina é esta e está viva?\" num relance: nome grande,    ║\n// ║  farol de estado (pior severidade de problema activo), badges de power/    ║\n// ║  agente, chips de tags de negócio e factos rápidos (IP·SO·RAM·uptime·      ║\n// ║  hypervisor·cluster). O detalhe numérico vive nos painéis nativos abaixo.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-hero',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    maxAgeSec: { agent: 7200, vmware: 600 },\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128', mute: '#2D333B',\n      chipBg: 'rgba(88,166,255,.10)',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    tag: function (tags, k) { for (var i = 0; i < (tags || []).length; i++) if (tags[i].tag === k) return tags[i].value; return ''; },\n    byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },\n    byName: function (items, name) { for (var i = 0; i < items.length; i++) if (items[i].name === name && items[i].lastvalue !== '') return items[i]; return null; },\n    fresh: function (it, maxAge) { if (!it) return false; var c = parseInt(it.lastclock) || 0; return c > 0 && (Date.now() / 1000 - c) <= maxAge; },\n    upt: function (secs) {\n      if (secs == null || isNaN(secs)) return '—';\n      var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);\n      return d > 0 ? d + 'd ' + h + 'h' : h + 'h ' + Math.floor((secs % 3600) / 60) + 'm';\n    },\n    gb: function (b) { var n = parseFloat(b); return isNaN(n) ? '—' : (n / 1073741824).toFixed(0) + ' GB'; },\n    renderErro: function (causa) {\n      return '<div style=\"background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);border-radius:8px;padding:12px 16px;font-family:monospace\">'\n        + '<span style=\"color:' + CFG.colors.crit + ';font-size:12px;font-weight:700\">&#9888; </span>'\n        + '<span style=\"color:' + CFG.colors.text + ';font-size:12px\">' + U.esc(causa) + '</span></div>';\n    },\n  };\n\n  var SEV_STATE = { 5: 'crit', 4: 'crit', 3: 'warn', 2: 'warn', 1: 'info', 0: 'info' };\n\n  function chip(label, value, color) {\n    if (!value) return '';\n    return '<span style=\"display:inline-flex;align-items:center;gap:6px;background:' + CFG.colors.chipBg + ';'\n      + 'border:1px solid rgba(88,166,255,.25);border-radius:999px;padding:3px 12px;margin:0 6px 6px 0\">'\n      + '<span style=\"font-size:10px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em\">' + label + '</span>'\n      + '<span style=\"font-size:12px;color:' + (color || CFG.colors.text) + ';font-weight:600\">' + U.esc(value) + '</span></span>';\n  }\n  function badge(text, color) {\n    return '<span style=\"background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44;'\n      + 'font-size:11px;font-weight:700;padding:3px 12px;border-radius:6px;letter-spacing:.03em;white-space:nowrap\">' + text + '</span>';\n  }\n  function fact(label, value) {\n    return '<div style=\"min-width:0\">'\n      + '<div style=\"font-size:9.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px\">' + label + '</div>'\n      + '<div style=\"font-size:13px;color:' + CFG.colors.text + ';font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">' + value + '</div></div>';\n  }\n\n  function render(host, items, problems) {\n    var c = CFG.colors;\n    // farol = pior severidade activa\n    var worst = -1;\n    for (var i = 0; i < problems.length; i++) { var s = parseInt(problems[i].severity) || 0; if (s > worst) worst = s; }\n    var farolColor = worst < 0 ? c.ok : (worst >= 4 ? c.crit : (worst >= 2 ? c.warn : c.info));\n    var farolText = worst < 0 ? 'SAUDÁVEL' : (problems.length + ' PROBLEMA' + (problems.length > 1 ? 'S' : '') + ' ACTIVO' + (problems.length > 1 ? 'S' : ''));\n\n    var os = U.byKeyPrefix(items, 'system.sw.os');\n    var arch = U.byKeyPrefix(items, 'system.sw.arch');\n    var upt = U.byKeyPrefix(items, 'system.uptime');\n    var mem = U.byKeyPrefix(items, 'vm.memory.size[total]');\n    var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');\n    var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');\n    var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');\n    // portado da Versão A (2026-07-13): processos/threads + CPU ready\n    var procs = U.byName(items, 'Number of processes');\n    var threads = U.byName(items, 'Number of threads');\n    var cpuReady = U.byKeyPrefix(items, 'vmware.vm.cpu.ready');\n\n    var agentAlive = U.fresh(upt, CFG.maxAgeSec.agent);\n    // powerstate só é fiável se o poller VMware estiver a coletar (fresco);\n    // um lastvalue=0 antigo NÃO significa desligada (falso positivo apanhado\n    // ao vivo em VS8000813: agente OK + ping ONLINE mas badge \"DESLIGADA\")\n    var powerOn = (power && U.fresh(power, CFG.maxAgeSec.vmware)) ? parseFloat(power.lastvalue) === 1 : null;\n\n    var badges = '';\n    if (powerOn === true) badges += badge('⏻ LIGADA', c.ok) + ' ';\n    else if (powerOn === false) badges += badge('⏻ DESLIGADA', c.crit) + ' ';\n    badges += agentAlive ? badge('AGENTE OK', c.ok) : badge('SEM AGENTE', c.warn);\n\n    var ip = (host.interfaces && host.interfaces.length) ? host.interfaces[0].ip : '—';\n    var osTxt = os ? String(os.lastvalue).slice(0, 44) : '—';\n    if (arch && osTxt !== '—') osTxt += ' · ' + arch.lastvalue;\n    else if (arch && osTxt === '—') osTxt = arch.lastvalue;\n\n    var sysTag = U.tag(host.tags, 'servico'), deptTag = U.tag(host.tags, 'departamento');\n    var ambTag = U.tag(host.tags, 'ambiente'), camTag = U.tag(host.tags, 'camada');\n\n    return ''\n      + '<div style=\"display:flex;flex-direction:column;gap:12px;font-family:Inter,-apple-system,\\'Segoe UI\\',sans-serif\">'\n\n      // linha 1: farol + nome + badges\n      + '<div style=\"display:flex;align-items:center;gap:14px;flex-wrap:wrap\">'\n      +   '<span style=\"width:14px;height:14px;border-radius:50%;background:' + farolColor + ';box-shadow:0 0 12px ' + farolColor + '88;flex:none\"></span>'\n      +   '<span style=\"font-size:26px;font-weight:800;color:#E6EDF3;font-family:\\'JetBrains Mono\\',Consolas,monospace;letter-spacing:.01em\">' + U.esc(host.host) + '</span>'\n      +   '<span style=\"font-size:12px;font-weight:700;color:' + farolColor + ';letter-spacing:.04em\">' + farolText + '</span>'\n      +   '<span style=\"flex:1\"></span>'\n      +   '<span style=\"display:flex;gap:8px\">' + badges + '</span>'\n      + '</div>'\n\n      // linha 2: chips de negócio\n      + '<div style=\"display:flex;flex-wrap:wrap\">'\n      +   chip('Sistema', sysTag, c.info) + chip('Dept', deptTag) + chip('Ambiente', ambTag) + chip('Camada', camTag)\n      + '</div>'\n\n      // linha 3: factos rápidos\n      + '<div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 22px;'\n      +   'background:rgba(255,255,255,.015);border:1px solid ' + c.brd + ';border-radius:10px;padding:12px 18px\">'\n      +   fact('Endereço IP', U.esc(ip))\n      +   fact('Sistema operativo', U.esc(osTxt))\n      +   fact('Memória', U.gb(mem ? mem.lastvalue : null))\n      +   fact('Uptime', U.upt(upt ? parseFloat(upt.lastvalue) : null))\n      +   fact('Hypervisor', hv ? U.esc(hv.lastvalue) : '—')\n      +   fact('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')\n      +   fact('Processos', procs ? Math.round(parseFloat(procs.lastvalue)) : '—')\n      +   fact('Threads', threads ? Math.round(parseFloat(threads.lastvalue)) : '—')\n      +   fact('CPU ready (VMware)', cpuReady ? Math.round(parseFloat(cpuReady.lastvalue)) + ' ms' : '—')\n      + '</div>'\n      + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM no selector acima.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar identidade…</span>';\n\n  zbx('host.get', { output: ['hostid', 'host', 'name'], selectTags: 'extend', selectInterfaces: ['ip'], filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0];\n      return Promise.all([\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], searchByAny: true, search: { key_: 'system.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue', 'lastclock'], filter: { key_: ['vm.memory.size[total]'] } }),\n        zbx('problem.get', { hostids: [host.hostid], output: ['severity'], suppressed: false }),\n        // portado da Versão A: processos + threads (por nome — keys têm escaping chato)\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], filter: { name: ['Number of processes', 'Number of threads'] } }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        var items = (res[0] || []).concat(res[1] || []).concat(res[2] || []).concat(res[4] || []);\n        root.innerHTML = render(host, items, res[3] || []);\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
      "content": "<div id=\"bt-vmh-hero\"></div>",
      "contentPartials": [],
      "defaultContent": "The query didn't return any results.",
@@ -249,13 +249,91 @@
    {
     "type": "row",
     "collapsed": false,
+    "id": 207,
+    "title": "Serviços servidos por esta VM — estado real",
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 16
+    },
+    "panels": []
+   },
+   {
+    "type": "marcusolsson-dynamictext-panel",
+    "pluginVersion": "6.2.0",
+    "id": 118,
+    "title": "",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 7,
+     "w": 24,
+     "x": 0,
+     "y": 17
+    },
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — SERVIÇOS SERVIDOS POR ESTA VM (estado real)             ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid (host técnico)                   ║\n// ║  Standalone ES5 + guard. Fecha o ciclo máquina→serviço:                    ║\n// ║   A) SINTÉTICOS: hosts app-* com tag vm=<host técnico> (elo da Fase 7).    ║\n// ║      Estado REAL do web scenario (BPC Web Monitoring v2): LEDs             ║\n// ║      L1-Disponibilidade / L2-Performance / L3-Conteúdo via                 ║\n// ║      web.test.fail (0=ok), tempo de resposta, código HTTP, erro e          ║\n// ║      frescura. IMPORTANTE: item.get precisa de webitems:true — sem isso    ║\n// ║      os items de web scenario vêm VAZIOS (apanhado na sondagem).           ║\n// ║   B) SERVIÇOS WINDOWS na própria VM (discovery \"... service is running\",   ║\n// ║      aplicado só a um subconjunto — estado honesto quando não há).         ║\n// ║  Link \"Ver serviço →\" para o N4 do domínio 07 (var-servico).               ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-servicos',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    n4Uid: 'apis-n4-sistema',\n    n4Slug: 'n4-apis-sistema',\n    staleSec: 900,                 // web scenario sem valor há >15min = SEM DADOS\n    respTimeWarnS: 3, respTimeCritS: 8,\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    tag: function (tags, k) { for (var i = 0; i < (tags || []).length; i++) if (tags[i].tag === k) return tags[i].value; return ''; },\n    num: function (it) { if (!it) return null; var n = parseFloat(it.lastvalue); return isNaN(n) ? null : n; },\n    age: function (it) { if (!it || !it.lastclock) return null; var c = parseInt(it.lastclock); return c > 0 ? (Date.now() / 1000 - c) : null; },\n    agoTxt: function (s) { if (s == null) return 'nunca'; if (s < 90) return 'há ' + Math.round(s) + 's'; if (s < 5400) return 'há ' + Math.round(s / 60) + 'm'; return 'há ' + (s / 3600).toFixed(1) + 'h'; },\n    renderErro: function (c) { return '<div style=\"color:' + CFG.colors.crit + ';font-size:12px;font-family:monospace\">&#9888; ' + U.esc(c) + '</div>'; },\n  };\n  function stColor(st) { return st === 'crit' ? CFG.colors.crit : (st === 'warn' ? CFG.colors.warn : (st === 'ok' ? CFG.colors.ok : CFG.colors.sub)); }\n\n  var PULSE_CSS =\n    '<style>'\n    + '@keyframes bpcSvcCrit{0%,100%{box-shadow:0 0 2px 0 rgba(248,81,73,.25)}50%{box-shadow:0 0 18px 4px rgba(248,81,73,.65)}}'\n    + '.bpc-svc-pulse{animation:bpcSvcCrit 1.1s ease-in-out infinite}'\n    + '</style>';\n\n  // ── 1 card por sintético app-* ─────────────────────────────────\n  var SCEN = [\n    { id: 'L1-Disponibilidade', label: 'Disponibilidade' },\n    { id: 'L2-Performance', label: 'Performance' },\n    { id: 'L3-Conteudo', label: 'Conteúdo' },\n  ];\n  function findItem(items, keyPrefix) {\n    for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(keyPrefix) === 0) return items[i];\n    return null;\n  }\n\n  function appCard(app, items, problems) {\n    var c = CFG.colors;\n    var svc = U.tag(app.tags, 'servico') || app.host.replace(/^app-/, '').toUpperCase();\n    var worst = 'ok', anyData = false;\n\n    var leds = '';\n    var errMsg = '';\n    for (var s = 0; s < SCEN.length; s++) {\n      var sc = SCEN[s];\n      var fail = findItem(items, 'web.test.fail[' + sc.id + ']');\n      var fresh = U.age(fail) != null && U.age(fail) <= CFG.staleSec;\n      var st;\n      if (!fail || !fresh) st = 'nd';\n      else if (U.num(fail) > 0) { st = 'crit'; worst = 'crit'; }\n      else { st = 'ok'; anyData = true; }\n      if (st === 'crit') {\n        var er = findItem(items, 'web.test.error[' + sc.id + ']');\n        if (er && er.lastvalue) errMsg = er.lastvalue;\n      }\n      leds += '<span title=\"' + sc.label + '\" style=\"display:inline-flex;align-items:center;gap:5px;margin-right:12px\">'\n        + '<span style=\"width:10px;height:10px;border-radius:50%;background:' + stColor(st) + ';'\n        + 'box-shadow:0 0 7px ' + stColor(st) + (st === 'nd' ? '00' : '88') + '\"></span>'\n        + '<span style=\"font-size:10.5px;color:' + (st === 'nd' ? c.sub : c.text) + '\">' + sc.label + '</span></span>';\n    }\n\n    // tempo de resposta (L2 primeiro; senão L1) + código\n    var tItem = findItem(items, 'web.test.time[L2-Performance') || findItem(items, 'web.test.time[L1-Disponibilidade');\n    var rt = U.num(tItem);\n    var rtSt = rt == null ? 'nd' : (rt >= CFG.respTimeCritS ? 'crit' : (rt >= CFG.respTimeWarnS ? 'warn' : 'ok'));\n    var code = findItem(items, 'web.test.rspcode[L1-Disponibilidade') || findItem(items, 'web.test.rspcode[L2-Performance');\n    var codeV = code ? code.lastvalue : null;\n    var codeSt = codeV == null ? 'nd' : (String(codeV).charAt(0) === '2' || String(codeV).charAt(0) === '3' ? 'ok' : 'crit');\n    if (codeSt === 'crit') worst = 'crit';\n    if (worst !== 'crit' && rtSt === 'crit') worst = 'warn';\n    if (!anyData && worst === 'ok') worst = 'nd';\n    // problemas activos do host sintético mandam no estado\n    if (problems.length) worst = 'crit';\n\n    var stateTxt = worst === 'crit' ? 'FALHA' : (worst === 'warn' ? 'DEGRADADO' : (worst === 'nd' ? 'SEM DADOS' : 'OPERACIONAL'));\n    var freshest = null;\n    for (var i = 0; i < items.length; i++) { var a = U.age(items[i]); if (a != null && (freshest == null || a < freshest)) freshest = a; }\n\n    var link = CFG.grafanaUrl + '/d/' + CFG.n4Uid + '/' + CFG.n4Slug + '?var-servico=' + encodeURIComponent(svc);\n\n    return '<div class=\"' + (worst === 'crit' ? 'bpc-svc-pulse' : '') + '\" style=\"flex:1;min-width:300px;max-width:480px;'\n      + 'background:rgba(255,255,255,.015);border:1px solid ' + (worst === 'crit' ? c.crit + '66' : c.brd) + ';'\n      + 'border-left:3px solid ' + stColor(worst) + ';border-radius:10px;padding:12px 16px\">'\n      +  '<div style=\"display:flex;align-items:baseline;gap:10px;flex-wrap:wrap\">'\n      +    '<span style=\"font-size:16px;font-weight:800;color:#E6EDF3\">' + U.esc(svc) + '</span>'\n      +    '<span style=\"font-size:10.5px;color:' + c.sub + ';font-family:monospace\">' + U.esc(app.host) + '</span>'\n      +    '<span style=\"flex:1\"></span>'\n      +    '<span style=\"font-size:11px;font-weight:800;color:' + stColor(worst) + ';letter-spacing:.05em\">' + stateTxt + '</span>'\n      +  '</div>'\n      +  '<div style=\"margin-top:8px\">' + leds + '</div>'\n      +  '<div style=\"margin-top:8px;font-size:11.5px;color:' + c.sub + '\">'\n      +    'resposta <b style=\"color:' + stColor(rtSt) + '\">' + (rt != null ? (rt * 1000).toFixed(0) + ' ms' : '—') + '</b>'\n      +    ' · HTTP <b style=\"color:' + stColor(codeSt) + '\">' + (codeV != null ? U.esc(String(codeV)) : '—') + '</b>'\n      +    ' · verificado ' + U.agoTxt(freshest)\n      +  '</div>'\n      +  (errMsg ? '<div style=\"margin-top:6px;font-size:11px;color:' + c.crit + ';font-family:monospace\">' + U.esc(String(errMsg).slice(0, 90)) + '</div>' : '')\n      +  '<div style=\"margin-top:8px\"><a href=\"' + link + '\" style=\"color:' + c.info + ';font-size:11px;text-decoration:none\">Ver serviço no domínio 07 →</a></div>'\n      + '</div>';\n  }\n\n  // ── serviços Windows na VM (discovery \"... service is running\") ─\n  function winSvcBlock(svcItems) {\n    var c = CFG.colors;\n    if (!svcItems.length) {\n      return '<span style=\"font-size:11.5px;color:' + c.sub + '\">Sem discovery de serviços Windows aplicado a esta VM '\n        + '(existe só num subconjunto — ex. as VMs do eBankit).</span>';\n    }\n    var out = '';\n    for (var i = 0; i < Math.min(svcItems.length, 14); i++) {\n      var it = svcItems[i];\n      var running = U.num(it) === 0;\n      var nm = it.name.replace(/ service is running.*$/i, '').replace(/^[\"']|[\"']$/g, '');\n      out += '<span style=\"display:inline-block;margin:0 6px 6px 0;padding:3px 11px;border-radius:999px;'\n        + 'font-size:11px;font-weight:600;background:' + (running ? c.ok : c.crit) + '18;'\n        + 'color:' + (running ? c.ok : c.crit) + ';border:1px solid ' + (running ? c.ok : c.crit) + '44\">'\n        + U.esc(nm) + (running ? '' : ' — PARADO') + '</span>';\n    }\n    if (svcItems.length > 14) out += '<span style=\"font-size:11px;color:' + c.sub + '\">+' + (svcItems.length - 14) + '</span>';\n    return out;\n  }\n\n  function sect(t) {\n    return '<div style=\"font-size:10.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.07em;margin:12px 0 8px\">' + t + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A procurar serviços servidos por esta VM…</span>';\n\n  zbx('host.get', { output: ['hostid', 'host'], selectTags: 'extend', filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var vm = hosts[0];\n      return Promise.all([\n        // sintéticos ligados pela tag vm=<host técnico> (elo canónico da Fase 7)\n        zbx('host.get', { output: ['hostid', 'host', 'name'], selectTags: 'extend', filter: { status: 0 }, tags: [{ tag: 'vm', value: vm.host, operator: '0' }] }),\n        // serviços Windows descobertos na própria VM\n        zbx('item.get', { hostids: [vm.hostid], output: ['name', 'lastvalue', 'lastclock'], search: { name: 'service is running' }, filter: { status: 0 } }),\n      ]).then(function (r1) {\n        if (!_isCurrent()) return null;\n        var apps = (r1[0] || []).filter(function (a) { return a.host.indexOf('app-') === 0; });\n        var winSvcs = r1[1] || [];\n        if (!apps.length) return { vm: vm, apps: [], appData: [], winSvcs: winSvcs };\n        var appIds = apps.map(function (a) { return a.hostid; });\n        return Promise.all([\n          // webitems:true OBRIGATÓRIO — sem isso os items web.test vêm vazios\n          zbx('item.get', { hostids: appIds, webitems: true, output: ['hostid', 'name', 'key_', 'lastvalue', 'lastclock'], filter: { status: 0 } }),\n          zbx('problem.get', { hostids: appIds, output: ['severity'], suppressed: false }),\n        ]).then(function (r2) {\n          return { vm: vm, apps: apps, items: r2[0] || [], problems: r2[1] || [], winSvcs: winSvcs };\n        });\n      });\n    })\n    .then(function (d) {\n      if (!d || !_isCurrent()) return;\n      var c = CFG.colors;\n      var html = PULSE_CSS;\n\n      html += sect('Serviços de negócio servidos por esta VM (sintéticos app-*, elo tag vm=' + U.esc(d.vm.host) + ')');\n      if (!d.apps.length) {\n        html += '<div style=\"font-size:12px;color:' + c.sub + ';padding:2px 0 4px\">'\n          + 'Nenhum sintético <code style=\"color:' + c.text + '\">app-*</code> mapeado a esta VM. '\n          + 'Ou a VM não serve um sistema do relatório diário, ou o mapeamento está por fazer '\n          + '(ver reconciliação dos 50 sistemas, <code style=\"color:' + c.text + '\">documentacao/reconciliacao-50-sistemas-excel.md</code>).</div>';\n      } else {\n        var cards = '';\n        for (var i = 0; i < d.apps.length; i++) {\n          var app = d.apps[i];\n          var its = [];\n          for (var j = 0; j < d.items.length; j++) if (d.items[j].hostid === app.hostid) its.push(d.items[j]);\n          cards += appCard(app, its, d.problems);\n        }\n        html += '<div style=\"display:flex;gap:12px;flex-wrap:wrap\">' + cards + '</div>';\n      }\n\n      html += sect('Serviços Windows monitorizados nesta VM');\n      html += '<div>' + winSvcBlock(d.winSvcs) + '</div>';\n\n      root.innerHTML = '<div style=\"font-family:Inter,\\'Segoe UI\\',sans-serif\">' + html + '</div>';\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
+     "content": "<div id=\"bt-vmh-servicos\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    }
+   },
+   {
+    "type": "row",
+    "collapsed": false,
     "id": 201,
     "title": "CPU — utilização & saturação",
     "gridPos": {
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 16
+     "y": 24
     },
     "panels": []
    },
@@ -272,7 +350,7 @@
      "h": 8,
      "w": 12,
      "x": 0,
-     "y": 17
+     "y": 25
     },
     "targets": [
      {
@@ -337,7 +415,7 @@
      "h": 8,
      "w": 12,
      "x": 12,
-     "y": 17
+     "y": 25
     },
     "targets": [
      {
@@ -398,7 +476,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 25
+     "y": 33
     },
     "panels": []
    },
@@ -415,7 +493,7 @@
      "h": 8,
      "w": 12,
      "x": 0,
-     "y": 26
+     "y": 34
     },
     "targets": [
      {
@@ -480,7 +558,7 @@
      "h": 8,
      "w": 12,
      "x": 12,
-     "y": 26
+     "y": 34
     },
     "targets": [
      {
@@ -541,7 +619,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 34
+     "y": 42
     },
     "panels": []
    },
@@ -558,7 +636,7 @@
      "h": 8,
      "w": 12,
      "x": 0,
-     "y": 35
+     "y": 43
     },
     "targets": [
      {
@@ -623,7 +701,7 @@
      "h": 8,
      "w": 12,
      "x": 12,
-     "y": 35
+     "y": 43
     },
     "targets": [
      {
@@ -684,7 +762,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 43
+     "y": 51
     },
     "panels": []
    },
@@ -701,7 +779,7 @@
      "h": 8,
      "w": 12,
      "x": 0,
-     "y": 44
+     "y": 52
     },
     "targets": [
      {
@@ -766,7 +844,7 @@
      "h": 8,
      "w": 12,
      "x": 12,
-     "y": 44
+     "y": 52
     },
     "targets": [
      {
@@ -827,7 +905,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 52
+     "y": 60
     },
     "panels": []
    },
@@ -844,7 +922,7 @@
      "h": 7,
      "w": 24,
      "x": 0,
-     "y": 53
+     "y": 61
     },
     "targets": [
      {
@@ -905,7 +983,7 @@
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 60
+     "y": 68
     },
     "panels": []
    },
@@ -923,7 +1001,7 @@
      "h": 11,
      "w": 24,
      "x": 0,
-     "y": 61
+     "y": 69
     },
     "targets": [
      {

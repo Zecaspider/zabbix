@@ -26,6 +26,13 @@
       "title": "Sinais vitais (donuts + thresholds Zabbix + pulso)"
     },
     {
+      "file": "l3h-servicos.js",
+      "id": 118,
+      "role": "content",
+      "rootId": "bt-vmh-servicos",
+      "title": "Serviços servidos pela VM (sintéticos + Windows)"
+    },
+    {
       "nativo": "timeseries",
       "id": "108-115",
       "title": "USE/RED CPU·RAM·Disco·Rede (8 ts)"

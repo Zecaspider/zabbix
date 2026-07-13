@@ -102,7 +102,10 @@
     var cpuReady = U.byKeyPrefix(items, 'vmware.vm.cpu.ready');
 
     var agentAlive = U.fresh(upt, CFG.maxAgeSec.agent);
-    var powerOn = power ? parseFloat(power.lastvalue) === 1 : null;
+    // powerstate só é fiável se o poller VMware estiver a coletar (fresco);
+    // um lastvalue=0 antigo NÃO significa desligada (falso positivo apanhado
+    // ao vivo em VS8000813: agente OK + ping ONLINE mas badge "DESLIGADA")
+    var powerOn = (power && U.fresh(power, CFG.maxAgeSec.vmware)) ? parseFloat(power.lastvalue) === 1 : null;
 
     var badges = '';
     if (powerOn === true) badges += badge('⏻ LIGADA', c.ok) + ' ';
