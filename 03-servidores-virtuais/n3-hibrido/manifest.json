@@ -33,6 +33,13 @@
       "title": "Serviços servidos pela VM (sintéticos + Windows)"
     },
     {
+      "file": "l3h-processos.js",
+      "id": 119,
+      "role": "content",
+      "rootId": "bt-vmh-processos",
+      "title": "Top processos (piloto proc.get, VS8000345)"
+    },
+    {
       "nativo": "timeseries",
       "id": "108-115",
       "title": "USE/RED CPU·RAM·Disco·Rede (8 ts)"

@@ -732,7 +732,7 @@ Estado a 2026-06-16. Ordenado por prioridade.
 - [ ] Nos painéis L3 que mostram estado (saúde, CPU card, RAM card): substituir comparação com `CFG.thresholds` por leitura de `problem.get` com tags de componente (secção 4A)
 - [x] Skeleton de loading consistente em todos os painéis L3 (texto "A carregar…" durante o fetch)
 - [x] Card de erro consistente em todos os painéis L3 — `renderErro(causa, accao)` substituiu os spans vermelhos inline
-- [ ] Criar painel L3 de top processos por CPU/RAM (requer Zabbix Agent com `proc.get` ou `proc.cpu.util`)
+- [x] Criar painel L3 de top processos por CPU/RAM — **PILOTO 2026-07-13** (host nomeado e aprovado pelo utilizador): item `proc.get[,,,summary]` criado na `VS8000345` (itemid 542814, texto, 2m, history 3d, SEM triggers → zero risco de flood) + painel `n3-hibrido/l3h-processos.js` na ficha híbrida. CPU% por processo = Δ(cputime_user+system) entre as 2 últimas amostras do histórico (`history.get` com `history:4` — o item é texto) / Δt / nCores; RAM = wkset (KB). Campos Windows confirmados ao vivo: name, processes, threads, handles, wkset, vmsize, cputime_user/system, io_*, page_faults. Validado: top CPU (svchost 3.7%, WmiPrvSE 3.2%) e top RAM (svchost 1.1 GB = 13.9% de 8 GB). Limitação conhecida: `VS8000345` não tem item de nº de cores → rodapé diz honestamente "% de 1 core". **Alargar a outras VMs = criar o mesmo item lá (aprovação por host, ou template próprio `BPC Top Processos` se generalizado) — nunca mexer no template Windows partilhado**
 - [ ] Adicionar drill-down de VM no painel L2 list (link para D5-Detalhe-VM com `var-hostid` preenchido)
 - [ ] Rever `l3-cpu-kpi.js` v2 — confirmar VMware CPU Ready e CPU Latency com os novos `maxAgeSec`
 
