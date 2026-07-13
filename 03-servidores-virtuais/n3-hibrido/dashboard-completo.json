@@ -1,17 +1,52 @@
 {
  "dashboard": {
+  "uid": "vm-n3-ficha",
+  "title": "N3 · Servidores Virtuais · VM — Ficha (híbrido)",
+  "tags": [
+   "bpc",
+   "servidores-virtuais",
+   "n3",
+   "hibrido"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 0,
+  "refresh": "1m",
+  "time": {
+   "from": "now-6h",
+   "to": "now"
+  },
   "editable": true,
   "graphTooltip": 1,
-  "id": 389517687013376,
+  "templating": {
+   "list": [
+    {
+     "current": {},
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "label": "VM",
+     "name": "hostid",
+     "options": [],
+     "refresh": 1,
+     "sort": 1,
+     "regex": "",
+     "type": "query",
+     "query": "SELECT h.name AS __text, h.host AS __value FROM hosts h JOIN hosts_groups hg ON hg.hostid=h.hostid WHERE hg.groupid=609 AND h.status=0 ORDER BY h.name"
+    }
+   ]
+  },
   "panels": [
    {
+    "type": "marcusolsson-dynamictext-panel",
+    "pluginVersion": "6.2.0",
+    "id": 100,
+    "title": "",
+    "transparent": true,
     "datasource": {
      "type": "alexanderzobnin-zabbix-datasource",
      "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {},
-     "overrides": []
     },
     "gridPos": {
      "h": 3,
@@ -19,7 +54,32 @@
      "x": 0,
      "y": 0
     },
-    "id": 100,
+    "targets": [
+     {
+      "datasource": {
+       "type": "alexanderzobnin-zabbix-datasource",
+       "uid": "3_KgG43nz"
+      },
+      "group": {
+       "filter": "BPC / INFRAESTRUTURA / STORAGE"
+      },
+      "host": {
+       "filter": "Storage - IBM FS9500"
+      },
+      "item": {
+       "filter": "ICMP ping"
+      },
+      "queryType": "0",
+      "refId": "A",
+      "resultFormat": "time_series"
+     }
+    ],
+    "transformations": [
+     {
+      "id": "reduce",
+      "options": {}
+     }
+    ],
     "options": {
      "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — HEADER-LITE (fonte canónica)                        v1 · ES5   ║\n// ║                                                                          ║\n// ║  Versão leve e STANDALONE do header global: logo + título + relógio,      ║\n// ║  ZERO chamadas à API — pinta instantaneamente, nunca espera pelo proxy.   ║\n// ║  Para dashboards híbridos/nativos que não carregam o BPC Runtime          ║\n// ║  (utils.js). Mesma identidade visual do header global (navy/cyan/gold,    ║\n// ║  logo /public/img/bpc-logo.png com fallback textual).                    ║\n// ║                                                                          ║\n// ║  USO: copiar para a pasta do dashboard e editar só CFG.rootId (único      ║\n// ║  por dashboard) e CFG.nocLabel. Melhorias fazem-se AQUI primeiro e        ║\n// ║  propagam-se às cópias — nunca divergir uma cópia à mão.                 ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-header',\n    nocLabel: 'SERVIDORES VIRTUAIS - FICHA DA VM',\n    title: 'BPC NOC',\n    subtitle: 'BANCO DE POUPANÇA E CRÉDITO · CENTRO DE OPERAÇÕES DE REDE',\n    logoUrl: '/public/img/bpc-logo.png',\n    colors: { navy: '#0B1341', navy2: '#0E1A52', cyan: '#00B4D8', gold: '#F0A500' },\n  };\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var c = CFG.colors;\n\n  var logoHTML = '<img src=\"' + CFG.logoUrl + '\" height=\"36\" style=\"height:36px;flex-shrink:0\" '\n    + 'onerror=\"this.style.display=\\'none\\';this.nextElementSibling.style.display=\\'flex\\'\">'\n    + '<div style=\"display:none;height:36px;width:52px;flex-shrink:0;background:rgba(255,255,255,.04);'\n    + 'border:1px dashed rgba(255,255,255,.12);border-radius:7px;align-items:center;justify-content:center;'\n    + 'font-size:10px;font-weight:800;color:rgba(255,255,255,.28);letter-spacing:1px\">' + CFG.title + '</div>';\n\n  root.innerHTML =\n    '<div style=\"display:flex;align-items:center;gap:18px;'\n    + 'background:linear-gradient(90deg,' + c.navy + ' 0%,' + c.navy2 + ' 50%,' + c.navy + ' 100%);'\n    + 'border:1px solid rgba(0,180,216,.14);border-top:2px solid rgba(0,180,216,.40);'\n    + 'border-radius:10px;padding:8px 22px;height:100%;box-sizing:border-box;'\n    + 'font-family:Inter,\\'Segoe UI\\',sans-serif\">'\n    +   logoHTML\n    +   '<div style=\"flex:1;text-align:center\">'\n    +     '<div style=\"font-size:17px;font-weight:800;letter-spacing:.10em;text-transform:uppercase;color:#fff;line-height:1\">'\n    +       CFG.title + ' &nbsp;|&nbsp; <em style=\"color:' + c.gold + ';font-style:normal\">' + CFG.nocLabel + '</em>'\n    +     '</div>'\n    +     '<div style=\"font-size:8px;color:rgba(255,255,255,.22);letter-spacing:.14em;text-transform:uppercase;margin-top:4px\">'\n    +       CFG.subtitle + '</div>'\n    +   '</div>'\n    +   '<div style=\"text-align:right;flex-shrink:0\">'\n    +     '<span id=\"' + CFG.rootId + '-time\" style=\"font-size:22px;font-weight:800;color:' + c.cyan + ';'\n    +       'letter-spacing:3px;display:block;font-variant-numeric:tabular-nums;line-height:1\">--:--:--</span>'\n    +     '<div id=\"' + CFG.rootId + '-date\" style=\"font-size:8.5px;color:rgba(255,255,255,.22);margin-top:3px;text-transform:capitalize\">…</div>'\n    +   '</div>'\n    + '</div>';\n\n  // relógio — 1 timer por rootId (limpa o anterior em re-render)\n  var tKey = '_bpc_hdrlite_' + CFG.rootId;\n  if (window[tKey]) clearInterval(window[tKey]);\n  function tick() {\n    var el = document.getElementById(CFG.rootId + '-time');\n    var ed = document.getElementById(CFG.rootId + '-date');\n    if (!el) { clearInterval(window[tKey]); return; }\n    var n = new Date();\n    function p(x) { return (x < 10 ? '0' : '') + x; }\n    el.textContent = p(n.getHours()) + ':' + p(n.getMinutes()) + ':' + p(n.getSeconds());\n    if (ed) ed.textContent = n.toLocaleDateString('pt-PT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });\n  }\n  tick();\n  window[tKey] = setInterval(tick, 1000);\n\n})();\n",
      "content": "<div id=\"bt-vmh-header\"></div>",
@@ -38,7 +98,27 @@
      "styles": "",
      "wrap": true
     },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    }
+   },
+   {
+    "type": "marcusolsson-dynamictext-panel",
     "pluginVersion": "6.2.0",
+    "id": 101,
+    "title": "",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 7,
+     "w": 24,
+     "x": 0,
+     "y": 3
+    },
     "targets": [
      {
       "datasource": {
@@ -59,32 +139,12 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "",
     "transformations": [
      {
       "id": "reduce",
       "options": {}
      }
     ],
-    "transparent": true,
-    "type": "marcusolsson-dynamictext-panel"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {},
-     "overrides": []
-    },
-    "gridPos": {
-     "h": 7,
-     "w": 24,
-     "x": 0,
-     "y": 3
-    },
-    "id": 101,
     "options": {
      "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — HERO de identidade (topo do fluxo top-down)             ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid (nome visível da VM)             ║\n// ║  Standalone ES5 + guard anti-double-fire (padrão _l3-base.js).             ║\n// ║  Responde a \"QUE máquina é esta e está viva?\" num relance: nome grande,    ║\n// ║  farol de estado (pior severidade de problema activo), badges de power/    ║\n// ║  agente, chips de tags de negócio e factos rápidos (IP·SO·RAM·uptime·      ║\n// ║  hypervisor·cluster). O detalhe numérico vive nos painéis nativos abaixo.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-hero',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    maxAgeSec: { agent: 7200, vmware: 600 },\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128', mute: '#2D333B',\n      chipBg: 'rgba(88,166,255,.10)',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    tag: function (tags, k) { for (var i = 0; i < (tags || []).length; i++) if (tags[i].tag === k) return tags[i].value; return ''; },\n    byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },\n    byName: function (items, name) { for (var i = 0; i < items.length; i++) if (items[i].name === name && items[i].lastvalue !== '') return items[i]; return null; },\n    fresh: function (it, maxAge) { if (!it) return false; var c = parseInt(it.lastclock) || 0; return c > 0 && (Date.now() / 1000 - c) <= maxAge; },\n    upt: function (secs) {\n      if (secs == null || isNaN(secs)) return '—';\n      var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);\n      return d > 0 ? d + 'd ' + h + 'h' : h + 'h ' + Math.floor((secs % 3600) / 60) + 'm';\n    },\n    gb: function (b) { var n = parseFloat(b); return isNaN(n) ? '—' : (n / 1073741824).toFixed(0) + ' GB'; },\n    renderErro: function (causa) {\n      return '<div style=\"background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.4);border-radius:8px;padding:12px 16px;font-family:monospace\">'\n        + '<span style=\"color:' + CFG.colors.crit + ';font-size:12px;font-weight:700\">&#9888; </span>'\n        + '<span style=\"color:' + CFG.colors.text + ';font-size:12px\">' + U.esc(causa) + '</span></div>';\n    },\n  };\n\n  var SEV_STATE = { 5: 'crit', 4: 'crit', 3: 'warn', 2: 'warn', 1: 'info', 0: 'info' };\n\n  function chip(label, value, color) {\n    if (!value) return '';\n    return '<span style=\"display:inline-flex;align-items:center;gap:6px;background:' + CFG.colors.chipBg + ';'\n      + 'border:1px solid rgba(88,166,255,.25);border-radius:999px;padding:3px 12px;margin:0 6px 6px 0\">'\n      + '<span style=\"font-size:10px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em\">' + label + '</span>'\n      + '<span style=\"font-size:12px;color:' + (color || CFG.colors.text) + ';font-weight:600\">' + U.esc(value) + '</span></span>';\n  }\n  function badge(text, color) {\n    return '<span style=\"background:' + color + '22;color:' + color + ';border:1px solid ' + color + '44;'\n      + 'font-size:11px;font-weight:700;padding:3px 12px;border-radius:6px;letter-spacing:.03em;white-space:nowrap\">' + text + '</span>';\n  }\n  function fact(label, value) {\n    return '<div style=\"min-width:0\">'\n      + '<div style=\"font-size:9.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px\">' + label + '</div>'\n      + '<div style=\"font-size:13px;color:' + CFG.colors.text + ';font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis\">' + value + '</div></div>';\n  }\n\n  function render(host, items, problems) {\n    var c = CFG.colors;\n    // farol = pior severidade activa\n    var worst = -1;\n    for (var i = 0; i < problems.length; i++) { var s = parseInt(problems[i].severity) || 0; if (s > worst) worst = s; }\n    var farolColor = worst < 0 ? c.ok : (worst >= 4 ? c.crit : (worst >= 2 ? c.warn : c.info));\n    var farolText = worst < 0 ? 'SAUDÁVEL' : (problems.length + ' PROBLEMA' + (problems.length > 1 ? 'S' : '') + ' ACTIVO' + (problems.length > 1 ? 'S' : ''));\n\n    var os = U.byKeyPrefix(items, 'system.sw.os');\n    var arch = U.byKeyPrefix(items, 'system.sw.arch');\n    var upt = U.byKeyPrefix(items, 'system.uptime');\n    var mem = U.byKeyPrefix(items, 'vm.memory.size[total]');\n    var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');\n    var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');\n    var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');\n    // portado da Versão A (2026-07-13): processos/threads + CPU ready\n    var procs = U.byName(items, 'Number of processes');\n    var threads = U.byName(items, 'Number of threads');\n    var cpuReady = U.byKeyPrefix(items, 'vmware.vm.cpu.ready');\n\n    var agentAlive = U.fresh(upt, CFG.maxAgeSec.agent);\n    var powerOn = power ? parseFloat(power.lastvalue) === 1 : null;\n\n    var badges = '';\n    if (powerOn === true) badges += badge('⏻ LIGADA', c.ok) + ' ';\n    else if (powerOn === false) badges += badge('⏻ DESLIGADA', c.crit) + ' ';\n    badges += agentAlive ? badge('AGENTE OK', c.ok) : badge('SEM AGENTE', c.warn);\n\n    var ip = (host.interfaces && host.interfaces.length) ? host.interfaces[0].ip : '—';\n    var osTxt = os ? String(os.lastvalue).slice(0, 44) : '—';\n    if (arch && osTxt !== '—') osTxt += ' · ' + arch.lastvalue;\n    else if (arch && osTxt === '—') osTxt = arch.lastvalue;\n\n    var sysTag = U.tag(host.tags, 'servico'), deptTag = U.tag(host.tags, 'departamento');\n    var ambTag = U.tag(host.tags, 'ambiente'), camTag = U.tag(host.tags, 'camada');\n\n    return ''\n      + '<div style=\"display:flex;flex-direction:column;gap:12px;font-family:Inter,-apple-system,\\'Segoe UI\\',sans-serif\">'\n\n      // linha 1: farol + nome + badges\n      + '<div style=\"display:flex;align-items:center;gap:14px;flex-wrap:wrap\">'\n      +   '<span style=\"width:14px;height:14px;border-radius:50%;background:' + farolColor + ';box-shadow:0 0 12px ' + farolColor + '88;flex:none\"></span>'\n      +   '<span style=\"font-size:26px;font-weight:800;color:#E6EDF3;font-family:\\'JetBrains Mono\\',Consolas,monospace;letter-spacing:.01em\">' + U.esc(host.host) + '</span>'\n      +   '<span style=\"font-size:12px;font-weight:700;color:' + farolColor + ';letter-spacing:.04em\">' + farolText + '</span>'\n      +   '<span style=\"flex:1\"></span>'\n      +   '<span style=\"display:flex;gap:8px\">' + badges + '</span>'\n      + '</div>'\n\n      // linha 2: chips de negócio\n      + '<div style=\"display:flex;flex-wrap:wrap\">'\n      +   chip('Sistema', sysTag, c.info) + chip('Dept', deptTag) + chip('Ambiente', ambTag) + chip('Camada', camTag)\n      + '</div>'\n\n      // linha 3: factos rápidos\n      + '<div style=\"display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 22px;'\n      +   'background:rgba(255,255,255,.015);border:1px solid ' + c.brd + ';border-radius:10px;padding:12px 18px\">'\n      +   fact('Endereço IP', U.esc(ip))\n      +   fact('Sistema operativo', U.esc(osTxt))\n      +   fact('Memória', U.gb(mem ? mem.lastvalue : null))\n      +   fact('Uptime', U.upt(upt ? parseFloat(upt.lastvalue) : null))\n      +   fact('Hypervisor', hv ? U.esc(hv.lastvalue) : '—')\n      +   fact('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')\n      +   fact('Processos', procs ? Math.round(parseFloat(procs.lastvalue)) : '—')\n      +   fact('Threads', threads ? Math.round(parseFloat(threads.lastvalue)) : '—')\n      +   fact('CPU ready (VMware)', cpuReady ? Math.round(parseFloat(cpuReady.lastvalue)) + ' ms' : '—')\n      + '</div>'\n      + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM no selector acima.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar identidade…</span>';\n\n  zbx('host.get', { output: ['hostid', 'host', 'name'], selectTags: 'extend', selectInterfaces: ['ip'], filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0];\n      return Promise.all([\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], searchByAny: true, search: { key_: 'system.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue', 'lastclock'], filter: { key_: ['vm.memory.size[total]'] } }),\n        zbx('problem.get', { hostids: [host.hostid], output: ['severity'], suppressed: false }),\n        // portado da Versão A: processos + threads (por nome — keys têm escaping chato)\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], filter: { name: ['Number of processes', 'Number of threads'] } }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        var items = (res[0] || []).concat(res[1] || []).concat(res[2] || []).concat(res[4] || []);\n        root.innerHTML = render(host, items, res[3] || []);\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
      "content": "<div id=\"bt-vmh-hero\"></div>",
@@ -103,7 +163,40 @@
      "styles": "",
      "wrap": true
     },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    }
+   },
+   {
+    "type": "row",
+    "collapsed": false,
+    "id": 200,
+    "title": "Sinais vitais — disponibilidade · saturação (com contexto)",
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 10
+    },
+    "panels": []
+   },
+   {
+    "type": "marcusolsson-dynamictext-panel",
     "pluginVersion": "6.2.0",
+    "id": 102,
+    "title": "",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 5,
+     "w": 24,
+     "x": 0,
+     "y": 11
+    },
     "targets": [
      {
       "datasource": {
@@ -124,559 +217,62 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "",
     "transformations": [
      {
       "id": "reduce",
       "options": {}
      }
     ],
-    "transparent": true,
-    "type": "marcusolsson-dynamictext-panel"
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — SINAIS VITAIS com contexto (donuts + pulso)             ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid (host técnico)                   ║\n// ║  Standalone ES5 + guard. Substitui os 6 stats nativos a pedido do          ║\n// ║  utilizador (2026-07-13): cada KPI mostra o NÚMERO ABSOLUTO além da %      ║\n// ║  (\"6.1 de 8 GB\"), lê os thresholds das MACROS DO ZABBIX do host            ║\n// ║  (usermacro.get — política §4A do CLAUDE.md de Servidores Virtuais;        ║\n// ║  fallback = catálogo canónico §6.2) e PULSA quando warn/crit.              ║\n// ║  Donut SVG por recurso; disco mostra o pior volume + mini-lista de todos.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-vitais',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    // FALLBACK — a fonte primária são as macros do host (usermacro.get).\n    // Valores do catálogo canónico engenharia-do-sistema.md §6.2.\n    thresholds: {\n      cpu: { warn: 70, crit: 90 },\n      ram: { warn: 70, crit: 85 },\n      disk: { warn: 75, crit: 90 },\n      swap: { warn: 10, crit: 50 },\n      rttMs: { warn: 10, crit: 50 },\n      lossPct: { warn: 1, crit: 10 },\n    },\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128', track: '#21262D',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    byName: function (items, name) { for (var i = 0; i < items.length; i++) if (items[i].name === name && items[i].lastvalue !== '') return items[i]; return null; },\n    num: function (it) { if (!it) return null; var n = parseFloat(it.lastvalue); return isNaN(n) ? null : n; },\n    gb: function (b, dec) { if (b == null || isNaN(b)) return '—'; return (b / 1073741824).toFixed(dec == null ? 1 : dec); },\n    renderErro: function (causa) {\n      return '<div style=\"color:' + CFG.colors.crit + ';font-size:12px;font-family:monospace\">&#9888; ' + U.esc(causa) + '</div>';\n    },\n  };\n\n  function stateAbove(v, thr) { if (v == null) return 'nd'; if (v >= thr.crit) return 'crit'; if (v >= thr.warn) return 'warn'; return 'ok'; }\n  function stColor(st) { return st === 'crit' ? CFG.colors.crit : (st === 'warn' ? CFG.colors.warn : (st === 'ok' ? CFG.colors.ok : CFG.colors.sub)); }\n\n  // ── SVG donut (r=30, C≈188.5) ─────────────────────────────────\n  function donut(pct, st) {\n    var c = stColor(st), C = 188.5;\n    var dash = pct == null ? 0 : Math.max(0, Math.min(100, pct)) / 100 * C;\n    return '<svg width=\"86\" height=\"86\" viewBox=\"0 0 86 86\" style=\"flex:none\">'\n      + '<circle cx=\"43\" cy=\"43\" r=\"30\" fill=\"none\" stroke=\"' + CFG.colors.track + '\" stroke-width=\"9\"/>'\n      + '<circle cx=\"43\" cy=\"43\" r=\"30\" fill=\"none\" stroke=\"' + c + '\" stroke-width=\"9\" stroke-linecap=\"round\" '\n      +   'stroke-dasharray=\"' + dash.toFixed(1) + ' ' + C + '\" transform=\"rotate(-90 43 43)\"/>'\n      + '<text x=\"43\" y=\"47\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"800\" fill=\"' + c + '\" '\n      +   'font-family=\"Inter,\\'Segoe UI\\',sans-serif\">' + (pct == null ? '—' : Math.round(pct) + '%') + '</text>'\n      + '</svg>';\n  }\n\n  function card(st, title, donutHtml, mainLine, subLines) {\n    var pulseCls = st === 'crit' ? 'bpc-vit-pulse-crit' : (st === 'warn' ? 'bpc-vit-pulse-warn' : '');\n    return '<div class=\"' + pulseCls + '\" style=\"flex:1;min-width:195px;display:flex;align-items:center;gap:8px;'\n      + 'background:rgba(255,255,255,.015);border:1px solid ' + (st === 'crit' ? CFG.colors.crit + '66' : (st === 'warn' ? CFG.colors.warn + '55' : CFG.colors.brd)) + ';'\n      + 'border-radius:12px;padding:10px 14px 10px 6px\">'\n      + donutHtml\n      + '<div style=\"min-width:0\">'\n      +   '<div style=\"font-size:10px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.06em\">' + title + '</div>'\n      +   '<div style=\"font-size:15px;font-weight:700;color:' + CFG.colors.text + ';margin-top:2px;white-space:nowrap\">' + mainLine + '</div>'\n      +   (subLines ? '<div style=\"font-size:11px;color:' + CFG.colors.sub + ';margin-top:3px;line-height:1.5\">' + subLines + '</div>' : '')\n      + '</div></div>';\n  }\n\n  var PULSE_CSS =\n    '<style>'\n    + '@keyframes bpcVitWarn{0%,100%{box-shadow:0 0 0 0 rgba(210,153,34,0)}50%{box-shadow:0 0 14px 2px rgba(210,153,34,.45)}}'\n    + '@keyframes bpcVitCrit{0%,100%{box-shadow:0 0 2px 0 rgba(248,81,73,.25)}50%{box-shadow:0 0 18px 4px rgba(248,81,73,.65)}}'\n    + '.bpc-vit-pulse-warn{animation:bpcVitWarn 2.4s ease-in-out infinite}'\n    + '.bpc-vit-pulse-crit{animation:bpcVitCrit 1.1s ease-in-out infinite}'\n    + '</style>';\n\n  // macros → thresholds efectivos (primário Zabbix, fallback CFG)\n  function effThr(macros) {\n    var m = {};\n    for (var i = 0; i < macros.length; i++) m[macros[i].macro] = parseFloat(macros[i].value);\n    function pick(v, fb) { return (v != null && !isNaN(v)) ? v : fb; }\n    var T = CFG.thresholds;\n    return {\n      cpu: { warn: pick(m['{$CPU.UTIL.WARN}'], T.cpu.warn), crit: pick(m['{$CPU.UTIL.CRIT}'], T.cpu.crit) },\n      ram: { warn: T.ram.warn, crit: pick(m['{$MEMORY.UTIL.MAX}'], T.ram.crit) },\n      disk: { warn: pick(m['{$VFS.FS.PUSED.MAX.WARN}'], T.disk.warn), crit: pick(m['{$VFS.FS.PUSED.MAX.CRIT}'], T.disk.crit) },\n      swap: T.swap, rttMs: T.rttMs, lossPct: T.lossPct,\n    };\n  }\n\n  function render(named, spaceUtil, spaceUsed, spaceTotal, thr) {\n    var c = CFG.colors;\n\n    // ── Disponibilidade / ICMP ──\n    var ping = U.num(U.byName(named, 'ICMP ping'));\n    var rtt = U.num(U.byName(named, 'ICMP response time'));\n    var loss = U.num(U.byName(named, 'ICMP loss')) != null ? U.num(U.byName(named, 'ICMP loss')) : U.num(U.byName(named, 'ICMP packet loss'));\n    var rttMs = rtt != null ? rtt * 1000 : null;\n    var stPing = ping == null ? 'nd' : (ping >= 1 ? 'ok' : 'crit');\n    var stRtt = stateAbove(rttMs, thr.rttMs), stLoss = stateAbove(loss, thr.lossPct);\n    var stDisp = stPing === 'crit' ? 'crit' : (stLoss === 'crit' || stRtt === 'crit' ? 'warn' : (stLoss === 'warn' || stRtt === 'warn' ? 'warn' : stPing));\n    var dispDonut = '<div style=\"width:86px;height:86px;display:flex;align-items:center;justify-content:center;flex:none\">'\n      + '<span style=\"width:34px;height:34px;border-radius:50%;background:' + stColor(stPing) + ';box-shadow:0 0 16px ' + stColor(stPing) + '88\"></span></div>';\n\n    // ── CPU ──\n    var cpu = U.num(U.byName(named, 'CPU utilization'));\n    var nCpu = U.num(U.byName(named, 'Number of logical processors')) || U.num(U.byName(named, 'Number of CPUs'));\n    var queue = U.num(U.byName(named, 'CPU queue length'));\n    var stCpu = stateAbove(cpu, thr.cpu);\n\n    // ── RAM ──\n    var ramPct = U.num(U.byName(named, 'Memory utilization'));\n    var ramUsed = U.num(U.byName(named, 'Used memory'));\n    var ramTot = U.num(U.byName(named, 'Total memory'));\n    if (ramPct == null && ramUsed != null && ramTot > 0) ramPct = ramUsed / ramTot * 100;\n    var stRam = stateAbove(ramPct, thr.ram);\n\n    // ── SWAP ──\n    var swapFree = U.num(U.byName(named, 'Free swap space'));\n    var swapTot = U.num(U.byName(named, 'Total swap space'));\n    var swapPct = U.num(U.byName(named, 'Used swap space in %'));\n    var swapUsed = (swapTot != null && swapFree != null) ? swapTot - swapFree : null;\n    if (swapPct == null && swapUsed != null && swapTot > 0) swapPct = swapUsed / swapTot * 100;\n    var stSwap = stateAbove(swapPct, thr.swap);\n\n    // ── DISCO — pior volume + lista ──\n    function vol(name) { var m = name.match(/\\(([A-Za-z]:)\\)/); return m ? m[1] : name.split(':')[0]; }\n    var disks = [];\n    for (var i = 0; i < spaceUtil.length; i++) {\n      var it = spaceUtil[i], pct = U.num(it);\n      if (pct == null) continue;\n      var v = vol(it.name);\n      var used = null, tot = null;\n      for (var a = 0; a < spaceUsed.length; a++) if (vol(spaceUsed[a].name) === v) { used = U.num(spaceUsed[a]); break; }\n      for (var b = 0; b < spaceTotal.length; b++) if (vol(spaceTotal[b].name) === v) { tot = U.num(spaceTotal[b]); break; }\n      if (tot != null && tot > 0) disks.push({ v: v, pct: pct, used: used, tot: tot });\n    }\n    disks.sort(function (a, b2) { return b2.pct - a.pct; });\n    var worst = disks.length ? disks[0] : null;\n    var stDisk = worst ? stateAbove(worst.pct, thr.disk) : 'nd';\n    var diskList = '';\n    for (var d = 0; d < Math.min(disks.length, 4); d++) {\n      var dd = disks[d], sc = stColor(stateAbove(dd.pct, thr.disk));\n      diskList += '<span style=\"color:' + sc + ';font-weight:600\">' + U.esc(dd.v) + ' ' + Math.round(dd.pct) + '%</span>'\n        + '<span style=\"color:' + c.sub + '\"> (' + U.gb(dd.used, 0) + '/' + U.gb(dd.tot, 0) + 'G)</span>'\n        + (d < Math.min(disks.length, 4) - 1 ? ' · ' : '');\n    }\n\n    var html = PULSE_CSS\n      + '<div style=\"display:flex;gap:10px;flex-wrap:wrap;font-family:Inter,\\'Segoe UI\\',sans-serif\">'\n\n      + card(stDisp, 'Disponibilidade · ICMP', dispDonut,\n          ping == null ? '—' : (ping >= 1 ? '<span style=\"color:' + c.ok + '\">ONLINE</span>' : '<span style=\"color:' + c.crit + '\">EM BAIXO</span>'),\n          'RTT <b style=\"color:' + stColor(stRtt) + '\">' + (rttMs != null ? rttMs.toFixed(1) + ' ms' : '—') + '</b>'\n          + ' · perda <b style=\"color:' + stColor(stLoss) + '\">' + (loss != null ? loss.toFixed(1) + '%' : '—') + '</b>')\n\n      + card(stCpu, 'CPU', donut(cpu, stCpu),\n          (cpu != null ? cpu.toFixed(1) + '%' : '—') + (nCpu ? ' <span style=\"color:' + c.sub + ';font-weight:400\">de ' + nCpu + ' vCPU</span>' : ''),\n          (queue != null ? 'fila de execução: <b>' + Math.round(queue) + '</b> · ' : '')\n          + 'limiar ' + thr.cpu.warn + '/' + thr.cpu.crit + '%')\n\n      + card(stRam, 'Memória RAM', donut(ramPct, stRam),\n          '<b>' + U.gb(ramUsed) + '</b> de <b>' + U.gb(ramTot) + ' GB</b>',\n          'livre: ' + (ramTot != null && ramUsed != null ? U.gb(ramTot - ramUsed) + ' GB' : '—')\n          + ' · limiar ' + thr.ram.warn + '/' + thr.ram.crit + '%')\n\n      + card(stSwap, 'Swap', donut(swapPct, stSwap),\n          '<b>' + U.gb(swapUsed) + '</b> de <b>' + U.gb(swapTot) + ' GB</b>',\n          'livre: ' + (swapFree != null ? U.gb(swapFree) + ' GB' : '—')\n          + ' · limiar ' + thr.swap.warn + '/' + thr.swap.crit + '%')\n\n      + card(stDisk, 'Disco · pior volume' + (worst ? ' (' + U.esc(worst.v) + ')' : ''), donut(worst ? worst.pct : null, stDisk),\n          worst ? '<b>' + U.gb(worst.used) + '</b> de <b>' + U.gb(worst.tot) + ' GB</b>' : '—',\n          (diskList || 'sem volumes') + '<br>limiar ' + thr.disk.warn + '/' + thr.disk.crit + '%')\n\n      + '</div>';\n    return html;\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar sinais vitais…</span>';\n\n  var NAMES = ['ICMP ping', 'ICMP response time', 'ICMP loss', 'ICMP packet loss',\n    'CPU utilization', 'CPU queue length', 'Number of logical processors', 'Number of CPUs',\n    'Memory utilization', 'Used memory', 'Total memory',\n    'Free swap space', 'Total swap space', 'Used swap space in %'];\n\n  zbx('host.get', { output: ['hostid', 'host'], filter: { host: [hostName] } })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var hid = hosts[0].hostid;\n      return Promise.all([\n        zbx('item.get', { hostids: [hid], output: ['name', 'lastvalue', 'lastclock'], filter: { name: NAMES } }),\n        zbx('item.get', { hostids: [hid], output: ['name', 'lastvalue'], search: { name: ': Space utilization' } }),\n        zbx('item.get', { hostids: [hid], output: ['name', 'lastvalue'], search: { name: ': Used space' } }),\n        zbx('item.get', { hostids: [hid], output: ['name', 'lastvalue'], search: { name: ': Total space' } }),\n        zbx('usermacro.get', { hostids: [hid], output: ['macro', 'value'] }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        root.innerHTML = render(res[0] || [], res[1] || [], res[2] || [], res[3] || [], effThr(res[4] || []));\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
+     "content": "<div id=\"bt-vmh-vitais\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
+     },
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
+    }
    },
    {
+    "type": "row",
     "collapsed": false,
-    "gridPos": {
-     "h": 1,
-     "w": 24,
-     "x": 0,
-     "y": 10
-    },
-    "id": 200,
-    "panels": [],
-    "title": "Sinais vitais — disponibilidade · latência · erros · saturação",
-    "type": "row"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {
-      "color": {
-       "mode": "thresholds"
-      },
-      "mappings": [
-       {
-        "options": {
-         "0": {
-          "index": 0,
-          "text": "EM BAIXO"
-         },
-         "1": {
-          "index": 1,
-          "text": "ONLINE"
-         }
-        },
-        "type": "value"
-       }
-      ],
-      "thresholds": {
-       "mode": "absolute",
-       "steps": [
-        {
-         "color": "red",
-         "value": null
-        },
-        {
-         "color": "green",
-         "value": 1
-        }
-       ]
-      },
-      "unit": "none"
-     },
-     "overrides": []
-    },
-    "gridPos": {
-     "h": 4,
-     "w": 4,
-     "x": 0,
-     "y": 11
-    },
-    "id": 102,
-    "options": {
-     "colorMode": "value",
-     "graphMode": "area",
-     "justifyMode": "auto",
-     "orientation": "auto",
-     "reduceOptions": {
-      "calcs": [
-       "lastNotNull"
-      ],
-      "fields": "",
-      "values": false
-     },
-     "textMode": "value"
-    },
-    "targets": [
-     {
-      "datasource": {
-       "type": "alexanderzobnin-zabbix-datasource",
-       "uid": "3_KgG43nz"
-      },
-      "group": {
-       "filter": "/.*/"
-      },
-      "host": {
-       "filter": "/${hostid}/"
-      },
-      "item": {
-       "filter": "ICMP ping"
-      },
-      "queryType": "0",
-      "refId": "A",
-      "resultFormat": "time_series"
-     }
-    ],
-    "title": "Disponibilidade · ICMP",
-    "transparent": true,
-    "type": "stat"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {
-      "color": {
-       "mode": "thresholds"
-      },
-      "decimals": 3,
-      "mappings": [],
-      "thresholds": {
-       "mode": "absolute",
-       "steps": [
-        {
-         "color": "green",
-         "value": null
-        },
-        {
-         "color": "yellow",
-         "value": 0.01
-        },
-        {
-         "color": "red",
-         "value": 0.05
-        }
-       ]
-      },
-      "unit": "s"
-     },
-     "overrides": []
-    },
-    "gridPos": {
-     "h": 4,
-     "w": 4,
-     "x": 4,
-     "y": 11
-    },
-    "id": 103,
-    "options": {
-     "colorMode": "value",
-     "graphMode": "area",
-     "justifyMode": "auto",
-     "orientation": "auto",
-     "reduceOptions": {
-      "calcs": [
-       "lastNotNull"
-      ],
-      "fields": "",
-      "values": false
-     },
-     "textMode": "value"
-    },
-    "targets": [
-     {
-      "datasource": {
-       "type": "alexanderzobnin-zabbix-datasource",
-       "uid": "3_KgG43nz"
-      },
-      "group": {
-       "filter": "/.*/"
-      },
-      "host": {
-       "filter": "/${hostid}/"
-      },
-      "item": {
-       "filter": "ICMP response time"
-      },
-      "queryType": "0",
-      "refId": "A",
-      "resultFormat": "time_series"
-     }
-    ],
-    "title": "Latência (RTT) · ICMP",
-    "transparent": true,
-    "type": "stat"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {
-      "color": {
-       "mode": "thresholds"
-      },
-      "decimals": 1,
-      "mappings": [],
-      "thresholds": {
-       "mode": "absolute",
-       "steps": [
-        {
-         "color": "green",
-         "value": null
-        },
-        {
-         "color": "yellow",
-         "value": 1
-        },
-        {
-         "color": "red",
-         "value": 10
-        }
-       ]
-      },
-      "unit": "percent"
-     },
-     "overrides": []
-    },
-    "gridPos": {
-     "h": 4,
-     "w": 4,
-     "x": 8,
-     "y": 11
-    },
-    "id": 104,
-    "options": {
-     "colorMode": "value",
-     "graphMode": "area",
-     "justifyMode": "auto",
-     "orientation": "auto",
-     "reduceOptions": {
-      "calcs": [
-       "lastNotNull"
-      ],
-      "fields": "",
-      "values": false
-     },
-     "textMode": "value"
-    },
-    "targets": [
-     {
-      "datasource": {
-       "type": "alexanderzobnin-zabbix-datasource",
-       "uid": "3_KgG43nz"
-      },
-      "group": {
-       "filter": "/.*/"
-      },
-      "host": {
-       "filter": "/${hostid}/"
-      },
-      "item": {
-       "filter": "/ICMP (packet )?loss/"
-      },
-      "queryType": "0",
-      "refId": "A",
-      "resultFormat": "time_series"
-     }
-    ],
-    "title": "Perda de pacotes · ICMP",
-    "transparent": true,
-    "type": "stat"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {
-      "color": {
-       "mode": "thresholds"
-      },
-      "decimals": 1,
-      "mappings": [],
-      "thresholds": {
-       "mode": "absolute",
-       "steps": [
-        {
-         "color": "green",
-         "value": null
-        },
-        {
-         "color": "yellow",
-         "value": 70
-        },
-        {
-         "color": "red",
-         "value": 90
-        }
-       ]
-      },
-      "unit": "percent"
-     },
-     "overrides": []
-    },
-    "gridPos": {
-     "h": 4,
-     "w": 4,
-     "x": 12,
-     "y": 11
-    },
-    "id": 105,
-    "options": {
-     "colorMode": "value",
-     "graphMode": "area",
-     "justifyMode": "auto",
-     "orientation": "auto",
-     "reduceOptions": {
-      "calcs": [
-       "lastNotNull"
-      ],
-      "fields": "",
-      "values": false
-     },
-     "textMode": "value"
-    },
-    "targets": [
-     {
-      "datasource": {
-       "type": "alexanderzobnin-zabbix-datasource",
-       "uid": "3_KgG43nz"
-      },
-      "group": {
-       "filter": "/.*/"
-      },
-      "host": {
-       "filter": "/${hostid}/"
-      },
-      "item": {
-       "filter": "CPU utilization"
-      },
-      "queryType": "0",
-      "refId": "A",
-      "resultFormat": "time_series"
-     }
-    ],
-    "title": "CPU · agente",
-    "transparent": true,
-    "type": "stat"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {
-      "color": {
-       "mode": "thresholds"
-      },
-      "decimals": 1,
-      "mappings": [],
-      "thresholds": {
-       "mode": "absolute",
-       "steps": [
-        {
-         "color": "green",
-         "value": null
-        },
-        {
-         "color": "yellow",
-         "value": 70
-        },
-        {
-         "color": "red",
-         "value": 85
-        }
-       ]
-      },
-      "unit": "percent"
-     },
-     "overrides": []
-    },
-    "gridPos": {
-     "h": 4,
-     "w": 4,
-     "x": 16,
-     "y": 11
-    },
-    "id": 106,
-    "options": {
-     "colorMode": "value",
-     "graphMode": "area",
-     "justifyMode": "auto",
-     "orientation": "auto",
-     "reduceOptions": {
-      "calcs": [
-       "lastNotNull"
-      ],
-      "fields": "",
-      "values": false
-     },
-     "textMode": "value"
-    },
-    "targets": [
-     {
-      "datasource": {
-       "type": "alexanderzobnin-zabbix-datasource",
-       "uid": "3_KgG43nz"
-      },
-      "group": {
-       "filter": "/.*/"
-      },
-      "host": {
-       "filter": "/${hostid}/"
-      },
-      "item": {
-       "filter": "Memory utilization"
-      },
-      "queryType": "0",
-      "refId": "A",
-      "resultFormat": "time_series"
-     }
-    ],
-    "title": "Memória · agente",
-    "transparent": true,
-    "type": "stat"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {
-      "color": {
-       "mode": "thresholds"
-      },
-      "decimals": 1,
-      "mappings": [],
-      "thresholds": {
-       "mode": "absolute",
-       "steps": [
-        {
-         "color": "green",
-         "value": null
-        },
-        {
-         "color": "yellow",
-         "value": 10
-        },
-        {
-         "color": "red",
-         "value": 50
-        }
-       ]
-      },
-      "unit": "percent"
-     },
-     "overrides": []
-    },
-    "gridPos": {
-     "h": 4,
-     "w": 4,
-     "x": 20,
-     "y": 11
-    },
-    "id": 107,
-    "options": {
-     "colorMode": "value",
-     "graphMode": "area",
-     "justifyMode": "auto",
-     "orientation": "auto",
-     "reduceOptions": {
-      "calcs": [
-       "lastNotNull"
-      ],
-      "fields": "",
-      "values": false
-     },
-     "textMode": "value"
-    },
-    "targets": [
-     {
-      "datasource": {
-       "type": "alexanderzobnin-zabbix-datasource",
-       "uid": "3_KgG43nz"
-      },
-      "group": {
-       "filter": "/.*/"
-      },
-      "host": {
-       "filter": "/${hostid}/"
-      },
-      "item": {
-       "filter": "/Used swap space/"
-      },
-      "queryType": "0",
-      "refId": "A",
-      "resultFormat": "time_series"
-     }
-    ],
-    "title": "Swap usado · agente",
-    "transparent": true,
-    "type": "stat"
-   },
-   {
-    "collapsed": false,
-    "gridPos": {
-     "h": 1,
-     "w": 24,
-     "x": 0,
-     "y": 15
-    },
     "id": 201,
-    "panels": [],
     "title": "CPU — utilização & saturação",
-    "type": "row"
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 16
+    },
+    "panels": []
    },
    {
+    "type": "timeseries",
+    "id": 108,
+    "title": "Utilização (%) — agente + VMware",
+    "transparent": true,
     "datasource": {
      "type": "alexanderzobnin-zabbix-datasource",
      "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
-      "custom": {
-       "drawStyle": "line",
-       "fillOpacity": 8,
-       "lineWidth": 1.5,
-       "showPoints": "never",
-       "spanNulls": true
-      },
-      "max": 100,
-      "min": 0,
-      "unit": "percent"
-     },
-     "overrides": []
     },
     "gridPos": {
      "h": 8,
      "w": 12,
      "x": 0,
-     "y": 16
-    },
-    "id": 108,
-    "options": {
-     "legend": {
-      "displayMode": "list",
-      "placement": "bottom",
-      "showLegend": true
-     },
-     "tooltip": {
-      "mode": "multi",
-      "sort": "desc"
-     }
+     "y": 17
     },
     "targets": [
      {
@@ -698,40 +294,24 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Utilização (%) — agente + VMware",
-    "transparent": true,
-    "type": "timeseries"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
     "fieldConfig": {
      "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
+      "unit": "percent",
+      "min": 0,
+      "max": 100,
       "custom": {
        "drawStyle": "line",
-       "fillOpacity": 8,
        "lineWidth": 1.5,
+       "fillOpacity": 8,
        "showPoints": "never",
        "spanNulls": true
       },
-      "max": null,
-      "min": 0,
-      "unit": "none"
+      "color": {
+       "mode": "palette-classic"
+      }
      },
      "overrides": []
     },
-    "gridPos": {
-     "h": 8,
-     "w": 12,
-     "x": 12,
-     "y": 16
-    },
-    "id": 109,
     "options": {
      "legend": {
       "displayMode": "list",
@@ -742,6 +322,22 @@
       "mode": "multi",
       "sort": "desc"
      }
+    }
+   },
+   {
+    "type": "timeseries",
+    "id": 109,
+    "title": "Saturação — fila de execução & CPU ready (VMware, ms)",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 17
     },
     "targets": [
      {
@@ -763,53 +359,24 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Saturação — fila de execução & CPU ready (VMware, ms)",
-    "transparent": true,
-    "type": "timeseries"
-   },
-   {
-    "collapsed": false,
-    "gridPos": {
-     "h": 1,
-     "w": 24,
-     "x": 0,
-     "y": 24
-    },
-    "id": 202,
-    "panels": [],
-    "title": "Memória — utilização & saturação",
-    "type": "row"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
     "fieldConfig": {
      "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
+      "unit": "none",
+      "min": 0,
+      "max": null,
       "custom": {
        "drawStyle": "line",
-       "fillOpacity": 8,
        "lineWidth": 1.5,
+       "fillOpacity": 8,
        "showPoints": "never",
        "spanNulls": true
       },
-      "max": 100,
-      "min": 0,
-      "unit": "percent"
+      "color": {
+       "mode": "palette-classic"
+      }
      },
      "overrides": []
     },
-    "gridPos": {
-     "h": 8,
-     "w": 12,
-     "x": 0,
-     "y": 25
-    },
-    "id": 110,
     "options": {
      "legend": {
       "displayMode": "list",
@@ -820,6 +387,35 @@
       "mode": "multi",
       "sort": "desc"
      }
+    }
+   },
+   {
+    "type": "row",
+    "collapsed": false,
+    "id": 202,
+    "title": "Memória — utilização & saturação",
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 25
+    },
+    "panels": []
+   },
+   {
+    "type": "timeseries",
+    "id": 110,
+    "title": "Utilização (%) — agente + VMware",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 26
     },
     "targets": [
      {
@@ -841,40 +437,24 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Utilização (%) — agente + VMware",
-    "transparent": true,
-    "type": "timeseries"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
     "fieldConfig": {
      "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
+      "unit": "percent",
+      "min": 0,
+      "max": 100,
       "custom": {
        "drawStyle": "line",
-       "fillOpacity": 8,
        "lineWidth": 1.5,
+       "fillOpacity": 8,
        "showPoints": "never",
        "spanNulls": true
       },
-      "max": null,
-      "min": 0,
-      "unit": "none"
+      "color": {
+       "mode": "palette-classic"
+      }
      },
      "overrides": []
     },
-    "gridPos": {
-     "h": 8,
-     "w": 12,
-     "x": 12,
-     "y": 25
-    },
-    "id": 111,
     "options": {
      "legend": {
       "displayMode": "list",
@@ -885,6 +465,22 @@
       "mode": "multi",
       "sort": "desc"
      }
+    }
+   },
+   {
+    "type": "timeseries",
+    "id": 111,
+    "title": "Saturação — swap (%) & balloon",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 26
     },
     "targets": [
      {
@@ -906,53 +502,24 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Saturação — swap (%) & balloon",
-    "transparent": true,
-    "type": "timeseries"
-   },
-   {
-    "collapsed": false,
-    "gridPos": {
-     "h": 1,
-     "w": 24,
-     "x": 0,
-     "y": 33
-    },
-    "id": 203,
-    "panels": [],
-    "title": "Disco — espaço & débito",
-    "type": "row"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
     "fieldConfig": {
      "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
+      "unit": "none",
+      "min": 0,
+      "max": null,
       "custom": {
        "drawStyle": "line",
-       "fillOpacity": 8,
        "lineWidth": 1.5,
+       "fillOpacity": 8,
        "showPoints": "never",
        "spanNulls": true
       },
-      "max": 100,
-      "min": 0,
-      "unit": "percent"
+      "color": {
+       "mode": "palette-classic"
+      }
      },
      "overrides": []
     },
-    "gridPos": {
-     "h": 8,
-     "w": 12,
-     "x": 0,
-     "y": 34
-    },
-    "id": 112,
     "options": {
      "legend": {
       "displayMode": "list",
@@ -963,6 +530,35 @@
       "mode": "multi",
       "sort": "desc"
      }
+    }
+   },
+   {
+    "type": "row",
+    "collapsed": false,
+    "id": 203,
+    "title": "Disco — espaço & débito",
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 34
+    },
+    "panels": []
+   },
+   {
+    "type": "timeseries",
+    "id": 112,
+    "title": "Espaço utilizado por volume (%)",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 35
     },
     "targets": [
      {
@@ -984,40 +580,24 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Espaço utilizado por volume (%)",
-    "transparent": true,
-    "type": "timeseries"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
     "fieldConfig": {
      "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
+      "unit": "percent",
+      "min": 0,
+      "max": 100,
       "custom": {
        "drawStyle": "line",
-       "fillOpacity": 8,
        "lineWidth": 1.5,
+       "fillOpacity": 8,
        "showPoints": "never",
        "spanNulls": true
       },
-      "max": null,
-      "min": 0,
-      "unit": "iops"
+      "color": {
+       "mode": "palette-classic"
+      }
      },
      "overrides": []
     },
-    "gridPos": {
-     "h": 8,
-     "w": 12,
-     "x": 12,
-     "y": 34
-    },
-    "id": 113,
     "options": {
      "legend": {
       "displayMode": "list",
@@ -1028,6 +608,22 @@
       "mode": "multi",
       "sort": "desc"
      }
+    }
+   },
+   {
+    "type": "timeseries",
+    "id": 113,
+    "title": "Débito de I/O (leitura/escrita)",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 35
     },
     "targets": [
      {
@@ -1049,53 +645,24 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Débito de I/O (leitura/escrita)",
-    "transparent": true,
-    "type": "timeseries"
-   },
-   {
-    "collapsed": false,
-    "gridPos": {
-     "h": 1,
-     "w": 24,
-     "x": 0,
-     "y": 42
-    },
-    "id": 204,
-    "panels": [],
-    "title": "Rede — tráfego & erros",
-    "type": "row"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
     "fieldConfig": {
      "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
+      "unit": "iops",
+      "min": 0,
+      "max": null,
       "custom": {
        "drawStyle": "line",
-       "fillOpacity": 8,
        "lineWidth": 1.5,
+       "fillOpacity": 8,
        "showPoints": "never",
        "spanNulls": true
       },
-      "max": null,
-      "min": 0,
-      "unit": "bps"
+      "color": {
+       "mode": "palette-classic"
+      }
      },
      "overrides": []
     },
-    "gridPos": {
-     "h": 8,
-     "w": 12,
-     "x": 0,
-     "y": 43
-    },
-    "id": 114,
     "options": {
      "legend": {
       "displayMode": "list",
@@ -1106,6 +673,35 @@
       "mode": "multi",
       "sort": "desc"
      }
+    }
+   },
+   {
+    "type": "row",
+    "collapsed": false,
+    "id": 204,
+    "title": "Rede — tráfego & erros",
+    "gridPos": {
+     "h": 1,
+     "w": 24,
+     "x": 0,
+     "y": 43
+    },
+    "panels": []
+   },
+   {
+    "type": "timeseries",
+    "id": 114,
+    "title": "Tráfego por interface (bps)",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 0,
+     "y": 44
     },
     "targets": [
      {
@@ -1127,40 +723,24 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Tráfego por interface (bps)",
-    "transparent": true,
-    "type": "timeseries"
-   },
-   {
-    "datasource": {
-     "type": "alexanderzobnin-zabbix-datasource",
-     "uid": "3_KgG43nz"
-    },
     "fieldConfig": {
      "defaults": {
-      "color": {
-       "mode": "palette-classic"
-      },
+      "unit": "bps",
+      "min": 0,
+      "max": null,
       "custom": {
        "drawStyle": "line",
-       "fillOpacity": 8,
        "lineWidth": 1.5,
+       "fillOpacity": 8,
        "showPoints": "never",
        "spanNulls": true
       },
-      "max": 100,
-      "min": 0,
-      "unit": "percent"
+      "color": {
+       "mode": "palette-classic"
+      }
      },
      "overrides": []
     },
-    "gridPos": {
-     "h": 8,
-     "w": 12,
-     "x": 12,
-     "y": 43
-    },
-    "id": 115,
     "options": {
      "legend": {
       "displayMode": "list",
@@ -1171,6 +751,22 @@
       "mode": "multi",
       "sort": "desc"
      }
+    }
+   },
+   {
+    "type": "timeseries",
+    "id": 115,
+    "title": "Erros — perda ICMP (%)",
+    "transparent": true,
+    "datasource": {
+     "type": "alexanderzobnin-zabbix-datasource",
+     "uid": "3_KgG43nz"
+    },
+    "gridPos": {
+     "h": 8,
+     "w": 12,
+     "x": 12,
+     "y": 44
     },
     "targets": [
      {
@@ -1192,24 +788,54 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "Erros — perda ICMP (%)",
-    "transparent": true,
-    "type": "timeseries"
+    "fieldConfig": {
+     "defaults": {
+      "unit": "percent",
+      "min": 0,
+      "max": 100,
+      "custom": {
+       "drawStyle": "line",
+       "lineWidth": 1.5,
+       "fillOpacity": 8,
+       "showPoints": "never",
+       "spanNulls": true
+      },
+      "color": {
+       "mode": "palette-classic"
+      }
+     },
+     "overrides": []
+    },
+    "options": {
+     "legend": {
+      "displayMode": "list",
+      "placement": "bottom",
+      "showLegend": true
+     },
+     "tooltip": {
+      "mode": "multi",
+      "sort": "desc"
+     }
+    }
    },
    {
+    "type": "row",
     "collapsed": false,
+    "id": 205,
+    "title": "Problemas activos",
     "gridPos": {
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 51
+     "y": 52
     },
-    "id": 205,
-    "panels": [],
-    "title": "Problemas activos",
-    "type": "row"
+    "panels": []
    },
    {
+    "type": "alexanderzobnin-zabbix-triggers-panel",
+    "id": 116,
+    "title": "",
+    "transparent": true,
     "datasource": {
      "type": "alexanderzobnin-zabbix-datasource",
      "uid": "3_KgG43nz"
@@ -1218,110 +844,87 @@
      "h": 7,
      "w": 24,
      "x": 0,
-     "y": 52
-    },
-    "id": 116,
-    "options": {
-     "ackField": true,
-     "ageField": true,
-     "descriptionField": true,
-     "fontSize": "100%",
-     "highlightNewerThan": "1h",
-     "hostField": false,
-     "hostTechNameField": false,
-     "limit": 50,
-     "problemTimeline": true,
-     "severityField": true,
-     "showTags": true,
-     "sortProblems": "lastchange",
-     "statusField": true
+     "y": 53
     },
     "targets": [
      {
-      "application": {
-       "filter": ""
-      },
       "datasource": {
        "type": "alexanderzobnin-zabbix-datasource",
        "uid": "3_KgG43nz"
       },
+      "queryType": "5",
       "group": {
        "filter": "/.*/"
       },
       "host": {
        "filter": "/${hostid}/"
       },
-      "options": {
-       "acknowledged": 2,
-       "hostsInMaintenance": false,
-       "minSeverity": 0,
-       "sortProblems": "default"
+      "application": {
+       "filter": ""
       },
       "proxy": {
        "filter": ""
       },
-      "queryType": "5",
-      "refId": "A",
+      "trigger": {
+       "filter": ""
+      },
       "tags": {
        "filter": ""
       },
-      "trigger": {
-       "filter": ""
-      }
+      "options": {
+       "minSeverity": 0,
+       "sortProblems": "default",
+       "acknowledged": 2,
+       "hostsInMaintenance": false
+      },
+      "refId": "A"
      }
     ],
-    "title": "",
-    "transparent": true,
-    "type": "alexanderzobnin-zabbix-triggers-panel"
+    "options": {
+     "ageField": true,
+     "ackField": true,
+     "descriptionField": true,
+     "hostField": false,
+     "hostTechNameField": false,
+     "severityField": true,
+     "statusField": true,
+     "showTags": true,
+     "highlightNewerThan": "1h",
+     "fontSize": "100%",
+     "limit": 50,
+     "sortProblems": "lastchange",
+     "problemTimeline": true
+    }
    },
    {
+    "type": "row",
     "collapsed": false,
+    "id": 206,
+    "title": "Ficha da VM — contexto & inventário",
     "gridPos": {
      "h": 1,
      "w": 24,
      "x": 0,
-     "y": 59
+     "y": 60
     },
-    "id": 206,
-    "panels": [],
-    "title": "Ficha da VM — contexto & inventário",
-    "type": "row"
+    "panels": []
    },
    {
+    "type": "marcusolsson-dynamictext-panel",
+    "pluginVersion": "6.2.0",
+    "id": 117,
+    "title": "",
+    "transparent": true,
     "datasource": {
      "type": "alexanderzobnin-zabbix-datasource",
      "uid": "3_KgG43nz"
-    },
-    "fieldConfig": {
-     "defaults": {},
-     "overrides": []
     },
     "gridPos": {
      "h": 11,
      "w": 24,
      "x": 0,
-     "y": 60
+     "y": 61
     },
-    "id": 117,
-    "options": {
-     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — FICHA completa (contexto + inventário, fim do fluxo)    ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid                                  ║\n// ║  Standalone ES5 + guard. 3 cartões lado a lado: IDENTIDADE (SO/IP/HW),     ║\n// ║  VIRTUALIZAÇÃO (datacenter/cluster/hypervisor/power/consumo) e NEGÓCIO &   ║\n// ║  MONITORIZAÇÃO (tags, grupos, templates). Tipografia limpa, key-value      ║\n// ║  alinhado, sem ruído — o \"bilhete de identidade\" da VM para handover/NOC.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-ficha',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    groupsIgnore: ['Linux servers', 'Windows servers', 'Discovered hosts', 'Virtual machines', 'Zabbix servers', 'Applications'],\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128',\n      cardBg: 'rgba(255,255,255,.015)',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },\n    upt: function (secs) {\n      if (secs == null || isNaN(secs)) return '—';\n      var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);\n      return d > 0 ? d + ' dias ' + h + 'h' : h + 'h ' + Math.floor((secs % 3600) / 60) + 'm';\n    },\n    gb: function (b) { var n = parseFloat(b); return isNaN(n) ? '—' : (n / 1073741824).toFixed(1) + ' GB'; },\n    renderErro: function (causa) {\n      return '<div style=\"color:' + CFG.colors.crit + ';font-size:12px;font-family:monospace\">&#9888; ' + U.esc(causa) + '</div>';\n    },\n  };\n\n  function kv(label, value, mono) {\n    return '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.045)\">'\n      + '<span style=\"font-size:10.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em;flex:none\">' + label + '</span>'\n      + '<span style=\"font-size:12.5px;color:' + CFG.colors.text + ';text-align:right;' + (mono ? 'font-family:Consolas,monospace;' : '') + 'min-width:0;overflow-wrap:anywhere\">' + value + '</span></div>';\n  }\n  function card(title, accent, inner) {\n    return '<div style=\"flex:1;min-width:280px;background:' + CFG.colors.cardBg + ';border:1px solid ' + CFG.colors.brd + ';'\n      + 'border-top:2px solid ' + accent + ';border-radius:10px;padding:14px 18px 10px\">'\n      + '<div style=\"font-size:11px;font-weight:700;color:' + accent + ';text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px\">' + title + '</div>'\n      + inner + '</div>';\n  }\n  function pillList(arr, color) {\n    if (!arr || !arr.length) return '<span style=\"color:' + CFG.colors.sub + '\">—</span>';\n    var out = '';\n    for (var i = 0; i < arr.length; i++) {\n      out += '<span style=\"display:inline-block;background:' + color + '18;color:' + color + ';border:1px solid ' + color + '33;'\n        + 'font-size:11px;padding:2px 9px;border-radius:999px;margin:0 5px 5px 0\">' + U.esc(arr[i]) + '</span>';\n    }\n    return out;\n  }\n\n  function render(host, items) {\n    var c = CFG.colors;\n    var os = U.byKeyPrefix(items, 'system.sw.os');\n    var arch = U.byKeyPrefix(items, 'system.sw.arch');\n    var upt = U.byKeyPrefix(items, 'system.uptime');\n    var memT = U.byKeyPrefix(items, 'vm.memory.size[total]');\n    var cpuN = U.byKeyPrefix(items, 'system.cpu.num') || U.byKeyPrefix(items, 'wmi.get[root/cimv2,select NumberOfLogicalProcessors');\n    var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');\n    var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');\n    var dc = U.byKeyPrefix(items, 'vmware.vm.datacenter.name');\n    var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');\n    var vmwMem = U.byKeyPrefix(items, 'vmware.vm.memory.size[');\n    var vmwUpt = U.byKeyPrefix(items, 'vmware.vm.uptime');\n\n    var ips = [], dnss = [];\n    for (var i = 0; i < (host.interfaces || []).length; i++) {\n      if (host.interfaces[i].ip) ips.push(host.interfaces[i].ip);\n      if (host.interfaces[i].dns && dnss.indexOf(host.interfaces[i].dns) === -1) dnss.push(host.interfaces[i].dns);\n    }\n    // portado da Versão A (2026-07-13): inventário Zabbix (localização/notas)\n    var inv = host.inventory && !Array.isArray(host.inventory) ? host.inventory : {};\n\n    var tags = {};\n    for (var t = 0; t < (host.tags || []).length; t++) tags[host.tags[t].tag] = host.tags[t].value;\n\n    var groups = [];\n    for (var g = 0; g < (host.hostgroups || host.groups || []).length; g++) {\n      var gn = (host.hostgroups || host.groups)[g].name;\n      var ignore = false;\n      for (var x = 0; x < CFG.groupsIgnore.length; x++) if (gn.toLowerCase().indexOf(CFG.groupsIgnore[x].toLowerCase()) === 0) { ignore = true; break; }\n      if (!ignore) groups.push(gn);\n    }\n    var templates = [];\n    for (var p = 0; p < (host.parentTemplates || []).length; p++) templates.push(host.parentTemplates[p].name);\n\n    var powerTxt = power == null ? '—'\n      : (parseFloat(power.lastvalue) === 1 ? '<span style=\"color:' + c.ok + ';font-weight:700\">Ligada</span>'\n        : '<span style=\"color:' + c.crit + ';font-weight:700\">Desligada</span>');\n\n    var ident =\n      kv('Host técnico', U.esc(host.host), true)\n      + kv('Nome completo', U.esc(host.name))\n      + kv('Endereço(s) IP', ips.length ? U.esc(ips.join(' · ')) : '—', true)\n      + (dnss.length ? kv('DNS', U.esc(dnss.join(' · ')), true) : '')\n      + kv('Sistema operativo', os ? U.esc(String(os.lastvalue).slice(0, 60)) : '—')\n      + kv('Arquitectura', arch ? U.esc(arch.lastvalue) : '—')\n      + (cpuN ? kv('CPUs lógicos', U.esc(cpuN.lastvalue)) : '')\n      + kv('Memória total', U.gb(memT ? memT.lastvalue : null))\n      + kv('Uptime (SO)', U.upt(upt ? parseFloat(upt.lastvalue) : null))\n      + (inv.location ? kv('Localização (inventário)', U.esc(inv.location)) : '')\n      + (inv.notes ? kv('Notas (inventário)', U.esc(String(inv.notes).slice(0, 90))) : '');\n\n    var virt =\n      kv('Estado de energia', powerTxt)\n      + kv('Datacenter', dc ? U.esc(dc.lastvalue) : '—')\n      + kv('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')\n      + kv('Hypervisor', hv ? U.esc(hv.lastvalue) : '—', true)\n      + (vmwMem ? kv('Memória atribuída (vSphere)', U.gb(vmwMem.lastvalue)) : '')\n      + (vmwUpt && parseFloat(vmwUpt.lastvalue) > 0 ? kv('Uptime (vSphere)', U.upt(parseFloat(vmwUpt.lastvalue))) : '');\n\n    var negTags = [];\n    if (tags.servico) negTags.push('servico: ' + tags.servico);\n    if (tags.departamento) negTags.push('departamento: ' + tags.departamento);\n    if (tags.ambiente) negTags.push('ambiente: ' + tags.ambiente);\n    if (tags.camada) negTags.push('camada: ' + tags.camada);\n    for (var k in tags) if (tags.hasOwnProperty(k) && ['servico', 'departamento', 'ambiente', 'camada'].indexOf(k) === -1) negTags.push(k + ': ' + tags[k]);\n\n    var neg =\n      '<div style=\"margin-bottom:6px\">' + pillList(negTags, c.info) + '</div>'\n      + '<div style=\"font-size:10.5px;color:' + c.sub + ';text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px\">Grupos Zabbix</div>'\n      + '<div>' + pillList(groups.slice(0, 6), c.warn) + '</div>'\n      + '<div style=\"font-size:10.5px;color:' + c.sub + ';text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px\">Templates (' + templates.length + ')</div>'\n      + '<div style=\"font-size:11.5px;color:' + c.text + ';line-height:1.7\">' + U.esc(templates.join('  ·  ')) + '</div>';\n\n    return '<div style=\"display:flex;gap:14px;flex-wrap:wrap;font-family:Inter,-apple-system,\\'Segoe UI\\',sans-serif;align-items:stretch\">'\n      + card('Identidade', c.info, ident)\n      + card('Virtualização', '#7C4DFF', virt)\n      + card('Negócio & monitorização', c.ok, neg)\n      + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar ficha…</span>';\n\n  zbx('host.get', {\n    output: ['hostid', 'host', 'name'],\n    selectTags: 'extend', selectInterfaces: ['ip', 'dns'],\n    selectParentTemplates: ['name'], selectHostGroups: ['name'],\n    selectInventory: ['location', 'notes'],\n    filter: { host: [hostName] },\n  })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0];\n      return Promise.all([\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], searchByAny: true, search: { key_: 'system.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue'], filter: { key_: ['vm.memory.size[total]'] } }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        root.innerHTML = render(host, (res[0] || []).concat(res[1] || []).concat(res[2] || []));\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
-     "content": "<div id=\"bt-vmh-ficha\"></div>",
-     "contentPartials": [],
-     "defaultContent": "The query didn't return any results.",
-     "editor": {
-      "format": "auto",
-      "language": "markdown"
-     },
-     "editors": [
-      "afterRender"
-     ],
-     "externalStyles": [],
-     "helpers": "",
-     "renderMode": "allRows",
-     "styles": "",
-     "wrap": true
-    },
-    "pluginVersion": "6.2.0",
     "targets": [
      {
       "datasource": {
@@ -1342,52 +945,36 @@
       "resultFormat": "time_series"
      }
     ],
-    "title": "",
     "transformations": [
      {
       "id": "reduce",
       "options": {}
      }
     ],
-    "transparent": true,
-    "type": "marcusolsson-dynamictext-panel"
-   }
-  ],
-  "refresh": "1m",
-  "schemaVersion": 39,
-  "tags": [
-   "bpc",
-   "servidores-virtuais",
-   "n3",
-   "hibrido"
-  ],
-  "templating": {
-   "list": [
-    {
-     "current": {},
-     "datasource": {
-      "type": "mysql",
-      "uid": "afor1g5862fb4c"
+    "options": {
+     "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N3 HÍBRIDO · VM — FICHA completa (contexto + inventário, fim do fluxo)    ║\n// ║  VARIÁVEIS GRAFANA REQUERIDAS: var-hostid                                  ║\n// ║  Standalone ES5 + guard. 3 cartões lado a lado: IDENTIDADE (SO/IP/HW),     ║\n// ║  VIRTUALIZAÇÃO (datacenter/cluster/hypervisor/power/consumo) e NEGÓCIO &   ║\n// ║  MONITORIZAÇÃO (tags, grupos, templates). Tipografia limpa, key-value      ║\n// ║  alinhado, sem ruído — o \"bilhete de identidade\" da VM para handover/NOC.  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n(function () {\n  'use strict';\n\n  var CFG = {\n    rootId: 'bt-vmh-ficha',\n    version: 'v1.0',\n    grafanaUrl: 'http://10.10.126.22:3000',\n    datasourceUid: '3_KgG43nz',\n    abortDelayMs: 80,\n    retry: { maxAttempts: 3, baseDelayMs: 1000 },\n    groupsIgnore: ['Linux servers', 'Windows servers', 'Discovered hosts', 'Virtual machines', 'Zabbix servers', 'Applications'],\n    colors: {\n      ok: '#3FB950', warn: '#D29922', crit: '#F85149', info: '#58A6FF',\n      text: '#CDD9E5', sub: '#6E7681', brd: '#1C2128',\n      cardBg: 'rgba(255,255,255,.015)',\n    },\n  };\n  var PROXY = CFG.grafanaUrl + '/api/datasources/uid/' + CFG.datasourceUid + '/resources/zabbix-api';\n\n  var _sig = null, _myToken = null;\n  function _isCurrent() { return window.__bpc_ns && window.__bpc_ns[CFG.rootId] && window.__bpc_ns[CFG.rootId].token === _myToken; }\n  function fetchWithRetry(url, body, signal, attempt) {\n    attempt = attempt || 0;\n    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: signal || _sig })\n      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n      .catch(function (err) {\n        if (err.name === 'AbortError') throw err;\n        if (attempt >= CFG.retry.maxAttempts - 1) throw err;\n        return new Promise(function (res) { setTimeout(res, CFG.retry.baseDelayMs * Math.pow(2, attempt)); })\n          .then(function () { return fetchWithRetry(url, body, signal, attempt + 1); });\n      });\n  }\n  function zbx(m, p) { return fetchWithRetry(PROXY, { jsonrpc: '2.0', id: 1, method: m, params: p }, _sig).then(function (j) { if (j.error) throw new Error(j.error.data || j.error.message); return j.result; }); }\n\n  var U = {\n    esc: function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;'); },\n    extractHostName: function (raw) { var s = raw.split('(')[0].trim(); var p = s.split(/\\s*-\\s*/); return p[p.length - 1].trim(); },\n    byKeyPrefix: function (items, pfx) { for (var i = 0; i < items.length; i++) if ((items[i].key_ || '').indexOf(pfx) === 0 && items[i].lastvalue !== '') return items[i]; return null; },\n    upt: function (secs) {\n      if (secs == null || isNaN(secs)) return '—';\n      var d = Math.floor(secs / 86400), h = Math.floor((secs % 86400) / 3600);\n      return d > 0 ? d + ' dias ' + h + 'h' : h + 'h ' + Math.floor((secs % 3600) / 60) + 'm';\n    },\n    gb: function (b) { var n = parseFloat(b); return isNaN(n) ? '—' : (n / 1073741824).toFixed(1) + ' GB'; },\n    renderErro: function (causa) {\n      return '<div style=\"color:' + CFG.colors.crit + ';font-size:12px;font-family:monospace\">&#9888; ' + U.esc(causa) + '</div>';\n    },\n  };\n\n  function kv(label, value, mono) {\n    return '<div style=\"display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.045)\">'\n      + '<span style=\"font-size:10.5px;color:' + CFG.colors.sub + ';text-transform:uppercase;letter-spacing:.05em;flex:none\">' + label + '</span>'\n      + '<span style=\"font-size:12.5px;color:' + CFG.colors.text + ';text-align:right;' + (mono ? 'font-family:Consolas,monospace;' : '') + 'min-width:0;overflow-wrap:anywhere\">' + value + '</span></div>';\n  }\n  function card(title, accent, inner) {\n    return '<div style=\"flex:1;min-width:280px;background:' + CFG.colors.cardBg + ';border:1px solid ' + CFG.colors.brd + ';'\n      + 'border-top:2px solid ' + accent + ';border-radius:10px;padding:14px 18px 10px\">'\n      + '<div style=\"font-size:11px;font-weight:700;color:' + accent + ';text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px\">' + title + '</div>'\n      + inner + '</div>';\n  }\n  function pillList(arr, color) {\n    if (!arr || !arr.length) return '<span style=\"color:' + CFG.colors.sub + '\">—</span>';\n    var out = '';\n    for (var i = 0; i < arr.length; i++) {\n      out += '<span style=\"display:inline-block;background:' + color + '18;color:' + color + ';border:1px solid ' + color + '33;'\n        + 'font-size:11px;padding:2px 9px;border-radius:999px;margin:0 5px 5px 0\">' + U.esc(arr[i]) + '</span>';\n    }\n    return out;\n  }\n\n  function render(host, items) {\n    var c = CFG.colors;\n    var os = U.byKeyPrefix(items, 'system.sw.os');\n    var arch = U.byKeyPrefix(items, 'system.sw.arch');\n    var upt = U.byKeyPrefix(items, 'system.uptime');\n    var memT = U.byKeyPrefix(items, 'vm.memory.size[total]');\n    var cpuN = U.byKeyPrefix(items, 'system.cpu.num') || U.byKeyPrefix(items, 'wmi.get[root/cimv2,select NumberOfLogicalProcessors');\n    var hv = U.byKeyPrefix(items, 'vmware.vm.hv.name');\n    var cluster = U.byKeyPrefix(items, 'vmware.vm.cluster.name');\n    var dc = U.byKeyPrefix(items, 'vmware.vm.datacenter.name');\n    var power = U.byKeyPrefix(items, 'vmware.vm.powerstate');\n    var vmwMem = U.byKeyPrefix(items, 'vmware.vm.memory.size[');\n    var vmwUpt = U.byKeyPrefix(items, 'vmware.vm.uptime');\n\n    var ips = [], dnss = [];\n    for (var i = 0; i < (host.interfaces || []).length; i++) {\n      if (host.interfaces[i].ip) ips.push(host.interfaces[i].ip);\n      if (host.interfaces[i].dns && dnss.indexOf(host.interfaces[i].dns) === -1) dnss.push(host.interfaces[i].dns);\n    }\n    // portado da Versão A (2026-07-13): inventário Zabbix (localização/notas)\n    var inv = host.inventory && !Array.isArray(host.inventory) ? host.inventory : {};\n\n    var tags = {};\n    for (var t = 0; t < (host.tags || []).length; t++) tags[host.tags[t].tag] = host.tags[t].value;\n\n    var groups = [];\n    for (var g = 0; g < (host.hostgroups || host.groups || []).length; g++) {\n      var gn = (host.hostgroups || host.groups)[g].name;\n      var ignore = false;\n      for (var x = 0; x < CFG.groupsIgnore.length; x++) if (gn.toLowerCase().indexOf(CFG.groupsIgnore[x].toLowerCase()) === 0) { ignore = true; break; }\n      if (!ignore) groups.push(gn);\n    }\n    var templates = [];\n    for (var p = 0; p < (host.parentTemplates || []).length; p++) templates.push(host.parentTemplates[p].name);\n\n    var powerTxt = power == null ? '—'\n      : (parseFloat(power.lastvalue) === 1 ? '<span style=\"color:' + c.ok + ';font-weight:700\">Ligada</span>'\n        : '<span style=\"color:' + c.crit + ';font-weight:700\">Desligada</span>');\n\n    var ident =\n      kv('Host técnico', U.esc(host.host), true)\n      + kv('Nome completo', U.esc(host.name))\n      + kv('Endereço(s) IP', ips.length ? U.esc(ips.join(' · ')) : '—', true)\n      + (dnss.length ? kv('DNS', U.esc(dnss.join(' · ')), true) : '')\n      + kv('Sistema operativo', os ? U.esc(String(os.lastvalue).slice(0, 60)) : '—')\n      + kv('Arquitectura', arch ? U.esc(arch.lastvalue) : '—')\n      + (cpuN ? kv('CPUs lógicos', U.esc(cpuN.lastvalue)) : '')\n      + kv('Memória total', U.gb(memT ? memT.lastvalue : null))\n      + kv('Uptime (SO)', U.upt(upt ? parseFloat(upt.lastvalue) : null))\n      + (inv.location ? kv('Localização (inventário)', U.esc(inv.location)) : '')\n      + (inv.notes ? kv('Notas (inventário)', U.esc(String(inv.notes).slice(0, 90))) : '');\n\n    var virt =\n      kv('Estado de energia', powerTxt)\n      + kv('Datacenter', dc ? U.esc(dc.lastvalue) : '—')\n      + kv('Cluster', cluster ? U.esc(cluster.lastvalue) : '—')\n      + kv('Hypervisor', hv ? U.esc(hv.lastvalue) : '—', true)\n      + (vmwMem ? kv('Memória atribuída (vSphere)', U.gb(vmwMem.lastvalue)) : '')\n      + (vmwUpt && parseFloat(vmwUpt.lastvalue) > 0 ? kv('Uptime (vSphere)', U.upt(parseFloat(vmwUpt.lastvalue))) : '');\n\n    var negTags = [];\n    if (tags.servico) negTags.push('servico: ' + tags.servico);\n    if (tags.departamento) negTags.push('departamento: ' + tags.departamento);\n    if (tags.ambiente) negTags.push('ambiente: ' + tags.ambiente);\n    if (tags.camada) negTags.push('camada: ' + tags.camada);\n    for (var k in tags) if (tags.hasOwnProperty(k) && ['servico', 'departamento', 'ambiente', 'camada'].indexOf(k) === -1) negTags.push(k + ': ' + tags[k]);\n\n    var neg =\n      '<div style=\"margin-bottom:6px\">' + pillList(negTags, c.info) + '</div>'\n      + '<div style=\"font-size:10.5px;color:' + c.sub + ';text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px\">Grupos Zabbix</div>'\n      + '<div>' + pillList(groups.slice(0, 6), c.warn) + '</div>'\n      + '<div style=\"font-size:10.5px;color:' + c.sub + ';text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px\">Templates (' + templates.length + ')</div>'\n      + '<div style=\"font-size:11.5px;color:' + c.text + ';line-height:1.7\">' + U.esc(templates.join('  ·  ')) + '</div>';\n\n    return '<div style=\"display:flex;gap:14px;flex-wrap:wrap;font-family:Inter,-apple-system,\\'Segoe UI\\',sans-serif;align-items:stretch\">'\n      + card('Identidade', c.info, ident)\n      + card('Virtualização', '#7C4DFF', virt)\n      + card('Negócio & monitorização', c.ok, neg)\n      + '</div>';\n  }\n\n  // ── bootstrap ──\n  if (!window.__bpc_ns) window.__bpc_ns = {};\n  var _ns = window.__bpc_ns[CFG.rootId] || {};\n  window.__bpc_ns[CFG.rootId] = _ns;\n  if (_ns.abortTimer) { clearTimeout(_ns.abortTimer); _ns.abortTimer = null; }\n  var _prev = _ns.controller;\n  if (_prev) { _ns.abortTimer = setTimeout(function () { _prev.abort(); _ns.abortTimer = null; }, CFG.abortDelayMs); }\n  var _ctrl = new AbortController(); _ns.controller = _ctrl; _sig = _ctrl.signal;\n  _myToken = Date.now() + Math.random(); _ns.token = _myToken;\n\n  var root = document.getElementById(CFG.rootId);\n  if (!root) return;\n  var hostRaw = new URLSearchParams(window.location.search).get('var-hostid') || '';\n  var hostName = hostRaw ? U.extractHostName(hostRaw) : '';\n  if (!hostName) { root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">Selecciona uma VM.</span>'; return; }\n  root.innerHTML = '<span style=\"color:' + CFG.colors.sub + ';font-size:12px\">A carregar ficha…</span>';\n\n  zbx('host.get', {\n    output: ['hostid', 'host', 'name'],\n    selectTags: 'extend', selectInterfaces: ['ip', 'dns'],\n    selectParentTemplates: ['name'], selectHostGroups: ['name'],\n    selectInventory: ['location', 'notes'],\n    filter: { host: [hostName] },\n  })\n    .then(function (hosts) {\n      if (!_isCurrent()) return;\n      if (!hosts || !hosts.length) throw new Error('Host não encontrado: ' + hostName);\n      var host = hosts[0];\n      return Promise.all([\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], searchByAny: true, search: { key_: 'system.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['name', 'key_', 'lastvalue', 'lastclock'], search: { key_: 'vmware.vm.' } }),\n        zbx('item.get', { hostids: [host.hostid], output: ['key_', 'lastvalue'], filter: { key_: ['vm.memory.size[total]'] } }),\n      ]).then(function (res) {\n        if (!_isCurrent()) return;\n        root.innerHTML = render(host, (res[0] || []).concat(res[1] || []).concat(res[2] || []));\n      });\n    })\n    .catch(function (e) {\n      if (e.name === 'AbortError' || !_isCurrent()) return;\n      root.innerHTML = U.renderErro(e.message);\n    });\n\n})();\n",
+     "content": "<div id=\"bt-vmh-ficha\"></div>",
+     "contentPartials": [],
+     "defaultContent": "The query didn't return any results.",
+     "editor": {
+      "format": "auto",
+      "language": "markdown"
      },
-     "label": "VM",
-     "name": "hostid",
-     "options": [],
-     "query": "SELECT h.name AS __text, h.host AS __value FROM hosts h JOIN hosts_groups hg ON hg.hostid=h.hostid WHERE hg.groupid=609 AND h.status=0 ORDER BY h.name",
-     "refresh": 1,
-     "regex": "",
-     "sort": 1,
-     "type": "query"
+     "editors": [
+      "afterRender"
+     ],
+     "externalStyles": [],
+     "helpers": "",
+     "renderMode": "allRows",
+     "styles": "",
+     "wrap": true
+    },
+    "fieldConfig": {
+     "defaults": {},
+     "overrides": []
     }
-   ]
-  },
-  "time": {
-   "from": "now-6h",
-   "to": "now"
-  },
-  "timezone": "browser",
-  "title": "N3 · Servidores Virtuais · VM — Ficha (híbrido)",
-  "uid": "vm-n3-ficha",
-  "version": 4
+   }
+  ]
  },
  "folderUid": "cfpm0sdsxjb40c",
  "overwrite": true

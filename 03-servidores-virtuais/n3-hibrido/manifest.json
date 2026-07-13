@@ -19,9 +19,11 @@
       "title": "Hero — identidade"
     },
     {
-      "nativo": "stat",
-      "id": "102-107",
-      "title": "Golden signals (6 stats)"
+      "file": "l3h-vitais.js",
+      "id": 102,
+      "role": "content",
+      "rootId": "bt-vmh-vitais",
+      "title": "Sinais vitais (donuts + thresholds Zabbix + pulso)"
     },
     {
       "nativo": "timeseries",
