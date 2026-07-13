@@ -37,6 +37,38 @@
     }
    ]
   },
+  "annotations": {
+   "list": [
+    {
+     "name": "Triggers da VM",
+     "enable": true,
+     "hide": false,
+     "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+     },
+     "iconColor": "#F85149",
+     "target": {
+      "group": {
+       "filter": "/.*/"
+      },
+      "host": {
+       "filter": "/${hostid}/"
+      },
+      "application": {
+       "filter": ""
+      },
+      "trigger": {
+       "filter": ""
+      },
+      "minseverity": 2,
+      "showOkEvents": false,
+      "hideAcknowledged": false,
+      "showHostname": false
+     }
+    }
+   ]
+  },
   "panels": [
    {
     "type": "marcusolsson-dynamictext-panel",
