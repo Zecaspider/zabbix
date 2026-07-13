@@ -850,8 +850,9 @@ mesmos `l3-*.js` (o render é idêntico); diferem no tipo de painel Grafana:
 Ambas vivem na pasta Grafana **`03·Servidores Virtuais`** (`cfpm0sdsxjb40c`). A Versão B foi movida de `99·Arquivo` → `03·Servidores Virtuais` em 2026-07-09 e o `manifest-versao-b.json` passou a fixar `folderUid` para os push a manterem-na lá.
 
 - Qualquer alteração aos `l3-*.js` afecta **as duas** — testar em ambas antes de fechar.
-- O drill "Ver Detalhe" da tabela L2 aponta hoje para a **Versão A** (`l2-tabela.js`
-  `CFG.n3DashUid`); trocar aí se se quiser a B como destino por omissão.
+- O drill "Ver Detalhe" da tabela L2 aponta para o **HÍBRIDO** (`vm-n3-ficha`) desde
+  2026-07-13 (decisão do utilizador) — passa `r.techName` (host técnico), não o nome
+  visível, porque a variável do híbrido é MySQL com `__value`=host técnico (§13.0).
 - A Versão B, sendo nativa, não sofre do double-fire do Business Text — a vantagem que
   motivou mantê-la em produção a par da A.
 

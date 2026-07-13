@@ -27,12 +27,16 @@ var CFG_VMTAB = {
     vmware: 600,
   },
 
-  // Drill "Ver Detalhe" → N3 · VM Detalhe. Duas versões em produção:
-  //   Versão A (all-BT):  0ae673a3-44c8-41e0-98f5-f5c53473ad54 / n3-sv-versao-a-bt   ← destino actual
+  // Drill "Ver Detalhe" → N3 · VM. TRÊS versões em produção; destino = HÍBRIDO
+  // (decisão do utilizador 2026-07-13, "fica o híbrido"):
+  //   Híbrido (ficha):    vm-n3-ficha / n3-vm-ficha-hibrido               ← destino actual
+  //     ATENÇÃO: a variável hostid do híbrido é MySQL com __value = host
+  //     TÉCNICO (ex. VS8000345) — o drill passa r.techName, não r.hostName.
+  //   Versão A (all-BT):  0ae673a3-44c8-41e0-98f5-f5c53473ad54 / n3-sv-versao-a-bt (var = nome visível)
   //   Versão B (nativo):  0812353b-3da2-4b65-a884-862633c7d70a / n3-sv-versao-b-nativo
   grafanaUrl:  'http://10.10.126.22:3000',
-  n3DashUid:   '0ae673a3-44c8-41e0-98f5-f5c53473ad54',
-  n3DashSlug:  'n3-sv-versao-a-bt',
+  n3DashUid:   'vm-n3-ficha',
+  n3DashSlug:  'n3-vm-ficha-hibrido',
 
   ambienteTags: ['Produção', 'producao'],
 
@@ -360,7 +364,7 @@ function vmRender(el, rows, err) {
     colTrg += '</td>'
 
     var colDrill = '<td style="'+TD+';text-align:center">'
-      + '<a href="'+SH.esc(drillUrl(r.hostName))+'" target="_blank" class="bpc-link"'
+      + '<a href="'+SH.esc(drillUrl(r.techName))+'" target="_blank" class="bpc-link"'
       + ' style="font-size:'+FS.badge+';white-space:nowrap;padding:4px 10px;border-radius:4px;'
       + 'border:1px solid rgba(88,166,255,0.3);color:var(--bpc-info);text-decoration:none">'
       + 'ver detalhes</a></td>'
