@@ -709,7 +709,7 @@ Estado a 2026-06-16. Ordenado por prioridade.
 - [x] `l3-triggers.js` — alterar `debug: true` → `debug: false`
 - [x] `l3-rede.js` — alterar `debug: true` → `debug: false`
 - [x] `l3-vm-kpi.js` — remover bloco "DIAGNÓSTICO v15d"
-- [ ] `l2-kpi-card-v5.js` — substituir `PLACEHOLDER_CPU/RAM/PB/ST` pelos UIDs reais dos dashboards (mantidos com comentário `// TODO` — UIDs reais ainda por obter)
+- [x] `l2-kpi-card-v5.js` — PLACEHOLDER_CPU/RAM **resolvidos 2026-07-13 por decisão de design** (pergunta do utilizador "faz sentido drill só-CPU/só-RAM?"): NÃO se constroem dashboards por métrica — os drills "CPU/RAM da pior VM" apontam à ficha híbrida (`vm-n3-ficha`) com `?var-hostid=<técnico>&viewPanel=108/110` (painel da métrica em fullscreen, contexto completo a um Esc). PLACEHOLDER_PB/ST continuam TODO
 
 ### P2 — Alta prioridade (cobertura de observabilidade)
 

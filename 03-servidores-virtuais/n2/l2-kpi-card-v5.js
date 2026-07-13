@@ -117,8 +117,13 @@
     },
 
     grafanaDash: {
-      vmCpu:    '/d/PLACEHOLDER_CPU/vm-cpu-detail',  // TODO: substituir pelo UID real do dashboard
-      vmRam:    '/d/PLACEHOLDER_RAM/vm-ram-detail',  // TODO: substituir pelo UID real do dashboard
+      // Decisão 2026-07-13 (fecha o TODO P1): NÃO se constroem dashboards
+      // só-CPU/só-RAM — o drill vai para a FICHA HÍBRIDA da pior VM com o
+      // painel da métrica em fullscreen (?viewPanel=NNN). Contexto completo
+      // fica a um Esc de distância; zero dashboards novos a manter.
+      vmFicha:        '/d/vm-n3-ficha/n3-vm-ficha-hibrido',
+      vmCpuPanelId:   108,   // timeseries "Utilização CPU" na ficha híbrida
+      vmRamPanelId:   110,   // timeseries "Utilização Memória" na ficha híbrida
       problems: '/d/PLACEHOLDER_PB/problemas',       // TODO: substituir pelo UID real do dashboard
       storage:  '/d/PLACEHOLDER_ST/storage',         // TODO: substituir pelo UID real do dashboard
     },
@@ -1045,6 +1050,13 @@
 
     const zbBase = `${CFG.zabbixUrl}/zabbix/zabbix.php?action=problem.view&filter_groupids[]=${CFG.groupId}&filter_show=1&filter_set=1`
     const gfUrl  = (id,dash) => `${CFG.grafanaUrl}${dash}${id?'?var-hostid='+id:''}`
+    // Ficha híbrida: a variável hostid é MySQL com __value = host TÉCNICO
+    // (VS8000345), não o nome visível nem o hostid — extrair o código do
+    // nome visível (mesma regra extractHostName dos painéis L3)
+    const techOf = (name) => { const s=String(name||'').split('(')[0].trim().split(/\s*-\s*/); return s[s.length-1].trim() }
+    const fichaUrl = (vmName, panelId) => vmName && vmName!=='—'
+      ? `${CFG.grafanaUrl}${CFG.grafanaDash.vmFicha}?var-hostid=${encodeURIComponent(techOf(vmName))}${panelId?'&viewPanel='+panelId:''}`
+      : '#'
     const tc     = d.triggers.byPrio
 
     // Card 1 · VMs ligadas
@@ -1071,7 +1083,7 @@
           <span style="color:${C.mute};"> vCPU</span>
         </div>`
       +T.infoBox([['pior VM',d.worstCpuName,cpuCol],['avg grupo',pct(d.avgCpu,1),C.info]]),
-      T.drill(gfUrl(d.worstCpuId,CFG.grafanaDash.vmCpu),'detalhe CPU',cpuCol)
+      T.drill(fichaUrl(d.worstCpuName,CFG.grafanaDash.vmCpuPanelId),'CPU da pior VM',cpuCol)
     )
 
     // Card 3 · RAM pior VM
@@ -1081,7 +1093,7 @@
         ${fmtBytes(d.usedRamB)} <span style="color:${C.mute};">/ ${fmtBytes(d.totalRamB)}</span>
       </span>`)
       +T.infoBox([['pior VM',d.worstRamName,ramCol],['avg grupo',pct(d.avgRam,1),C.info]]),
-      T.drill(gfUrl(d.worstRamId,CFG.grafanaDash.vmRam),'detalhe RAM',ramCol)
+      T.drill(fichaUrl(d.worstRamName,CFG.grafanaDash.vmRamPanelId),'RAM da pior VM',ramCol)
     )
 
     // Card 4 · Pressão RAM
