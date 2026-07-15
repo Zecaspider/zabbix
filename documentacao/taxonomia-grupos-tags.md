@@ -28,7 +28,7 @@ vivem como **tags**, onde sobreposição e ambiguidade não fazem mal.
 | Grupo | Conteúdo | Origem (groupid actual) | Estado |
 |---|---|---|---|
 | `BPC/DOMINIO/01 Virtualizacao` | ESXi + vCenters (a plataforma que corre VMs) | rename do `603` + fusão do `664`; físicos saem para 08 | Fase B |
-| `BPC/DOMINIO/02 Armazenamento` | arrays, controladoras, FC switch, tapes, backup appliances | rename do `602` + fusão do `605` | Fase B |
+| `BPC/DOMINIO/02 Armazenamento` | arrays, controladoras, FC switch, tapes, backup appliances | **✅ criado** (groupid `668`) com os hosts do `602`+`605` via pertença dupla — `602` **não foi renomeado** (é a âncora de render, ver §6) | Fase B |
 | `BPC/DOMINIO/03 Servidores Virtuais` | **todas** as VMs (SO convidado, workloads) | rename do `609` | Fase B |
 | `BPC/DOMINIO/05 Seguranca` | só appliances dedicados (Check Point, Imperva); VMs de segurança ficam em 03 com tag `servico` | rename do `656` | Fase B |
 | `BPC/DOMINIO/06 Bases de Dados` | hosts com motor de BD (dupla pertença com 03) | rename do `355` | Fase B |
@@ -155,8 +155,30 @@ Armazenamento pode mudar no futuro sem nunca mais arriscar a âncora.
 dashboards nisso sem testar seria repetir o padrão de assunção não
 verificada que já causou incidentes aqui.
 
-**Estado: bloqueado, a aguardar confirmação explícita do utilizador** antes
-de tocar em `602`/`605`/`push_panel.py`.
+**Estado: ✅ EXECUTADO 2026-07-15** (confirmação do utilizador recebida).
+Investigação adicional revelou que o raio de impacto real era ainda maior
+que os 17 ficheiros medidos: **13 manifests sem `anchor` próprio** também
+herdam o default de `push_panel.py` — confirmado ao vivo (dashboard
+"N2 · VMware — Estado geral", sem override local, tinha o filtro antigo
+gravado no painel já publicado). Renomear `602` directamente teria
+arriscado branquear praticamente todos os painéis Business Text do
+sistema, não só 17 dashboards.
+
+**Decisão final (mais segura que a mitigação inicialmente proposta)**:
+não renomear `602` — criar dois grupos novos em vez de mexer no existente:
+- `_SISTEMA/ANCORA-RENDER` (groupid `667`) — grupo dedicado fora do eixo
+  DOMINIO, só com o host `Storage - IBM FS9500` (pertença dupla com `602`).
+  `push_panel.py` (`ANCHOR_TARGET`) e os 17 ficheiros (`anchor` blocks +
+  snapshots `dashboard-completo.json`) actualizados para apontar aqui —
+  fecha esta classe de incidente **para todas as escritas futuras**, sem
+  tocar em nenhum painel já publicado (zero pushes/testes necessários hoje).
+- `BPC/DOMINIO/02 Armazenamento` (groupid `668`) — grupo canónico com os
+  17 hosts do `602`+`605` (pertença dupla, `602` intacto). Dá a
+  visibilidade rápida no Zabbix pedida pelo utilizador, sem qualquer risco.
+- `605` (Tape Library) fundido no `668` e apagado (0 referências, confirmado).
+- **`602` (nome antigo "BPC / INFRAESTRUTURA / STORAGE") fica para sempre**
+  como âncora estável — decisão deliberada, documentada aqui para não ser
+  "corrigida" por engano numa sessão futura.
 
 ## 7. Decisões de classificação já tomadas (para casos futuros análogos)
 

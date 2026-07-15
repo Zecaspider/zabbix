@@ -12,7 +12,15 @@ Paineis com id=null sao criados (gridPos provisorio, full-width empilhado).
 Apos criacao, o manifest.json e actualizado com o id atribuido pelo Grafana.
 
 ANCORA (anchor):
-  A ancora padrao aponta para Storage IBM FS9500 / ICMP ping (sempre disponivel).
+  A ancora padrao aponta para o grupo dedicado _SISTEMA/ANCORA-RENDER
+  (host Storage IBM FS9500 / ICMP ping, sempre disponivel) — grupo FORA
+  do eixo BPC/DOMINIO/*, criado em 2026-07-15 propositadamente para nunca
+  ser renomeado/apagado numa reorganizacao de taxonomia (ver
+  documentacao/taxonomia-grupos-tags.md §6). Antes desta data, a ancora
+  apontava directo ao grupo de dominio "BPC / INFRAESTRUTURA / STORAGE" —
+  renomear esse grupo teria branqueado todos os paineis BT do sistema
+  (achado do incidente 2026-07-06, generalizado). Nunca voltar a apontar
+  a ancora a um grupo do eixo DOMINIO.
   Para dashboards N3 com variavel $hostid, definir no manifest.json:
     "anchor": {
       "group": {"filter": "$groupid"},
@@ -28,10 +36,10 @@ ROOT = pathlib.Path(__file__).parent
 TOK_PATH = pathlib.Path('C:/Repositorios/zabbix/tok3n')
 GRAFANA = 'http://10.10.126.22:3000'
 
-# Ancora padrao — host sempre disponivel, nao referencia variaveis
+# Ancora padrao — grupo dedicado _SISTEMA/ANCORA-RENDER (nunca renomear/apagar)
 ANCHOR_TARGET = {
     "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
-    "group": {"filter": "BPC / INFRAESTRUTURA / STORAGE"},
+    "group": {"filter": "_SISTEMA/ANCORA-RENDER"},
     "host": {"filter": "Storage - IBM FS9500"},
     "item": {"filter": "ICMP ping"},
     "queryType": "0",
