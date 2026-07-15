@@ -284,5 +284,8 @@ Ou usar host `VIRT - ESXi - sv9000640` + item `vmware.hv.status`.
    `01/02/04/05/06 camada` apagadas (nenhum dashboard as consumia). Grupos
    `490` (SGC, vazio) e `632` (Novos_Inventario) apagados. **Decisão de
    fundo aprovada**: grupos = eixo de domínio; `servico`/`ambiente`/
-   `tecnologia`/`camada` = tags; os 55 grupos `SERVICO/*` vão colapsar para
-   a tag `servico` (F3.5, por executar).
+   `tecnologia`/`camada` = tags. **F3.5 concluído no mesmo dia**: os 50
+   grupos `SERVICO/*` restantes (132 hosts) foram colapsados para a tag
+   `servico` — 0 consumidores vivos confirmados antes de apagar, nenhuma
+   tag alterada, só membership de grupo removida. Total de grupos no
+   Zabbix Infra: 84 → 32.

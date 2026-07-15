@@ -94,12 +94,30 @@ dos dashboards Borda DC. Template `Cisco IOS by SNMP` mas SNMP sem resposta
 internamente quem o criou e que equipamento é** antes de o classificar ou
 os dashboards Borda DC serem ajustados.
 
-## 5. Pendentes (por ordem de prioridade)
+## 5. F3.5 — colapso dos grupos SERVICO/* (executado 2026-07-14)
 
-1. **F3.5 — colapsar os 55 grupos `SERVICO/*` → tag `servico`** (decisão
-   aprovada, execução adiada até os lotes F3.1–F3.4 assentarem nos
-   dashboards). Sub-lotes de ~10 grupos; garantir a tag nos membros antes de
-   remover memberships; usar o mapa de consolidação da auditoria Fase 14.20.
+**Pré-verificação**: zero consumidores vivos confirmados — nenhuma action,
+maintenance, permissão de user group ou host prototype referencia os
+grupos `SERVICO/*`; o único hit no repo é código arquivado
+(`arquivo-referencia/v5-material-bruto/servicos/ebankit/card-service-v2.js`,
+dados de demo com grupos fictícios) que já tem fallback desenhado para a
+tag `servico`. Amostragem confirmou 131/132 hosts com tag `servico`
+coerente com o grupo (a única "divergência", `VS8000754` no grupo
+histórico `Cpi` mas tagueado `ebankit`, é correcta — o próprio nome do
+host confirma "ebankit servidor IIS"; a decisão anterior de não fundir
+`SWIFT`/`Swift SAA`/`Swift SWP` — auditoria Fase 14.20 §7 — foi respeitada,
+só a membership de grupo foi removida, os valores da tag ficaram intactos).
+
+**Execução**: 50 grupos (132 hosts) em 5 lotes de ~10, cada um com
+verificação pré-remoção (aborta se algum membro não tiver tag `servico`),
+snapshot em `bpc-workspace/reconciliacao-snapshots-20260714/f3.5-lote{1..5}-antes.json`,
+`hostgroup.massremove` + `hostgroup.delete`. **Resultado: 0 grupos
+`SERVICO/*` restantes** (`hostgroup.get` confirma). Nenhuma tag foi escrita
+— operação só de grupo. Total de grupos no Zabbix Infra: 84 → **32**.
+
+## 6. Pendentes (por ordem de prioridade)
+
+1. ~~F3.5~~ — **concluído**, ver §5.
 2. **15 hosts no grupo `480` A-CLASSIFICAR** sem classificação óbvia
    (`VS8000771/856/881/900/901/902/905/906/907/908/999`, `VS9000751`,
    `scg9000650`, `Teste Kea DHCP`, `rhcoreos_bootstrap`(?)) — perguntar à
