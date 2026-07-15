@@ -1,9 +1,21 @@
 # Mapa de Host Groups Zabbix → Domínios (v5)
 
-> Inventário sondado via API Grafana em 2026-06-16. 74 host groups (datasource
-> **Infra**), estrutura **facetada**: cada host pertence a vários grupos em
-> eixos distintos (AMBIENTE, INFRAESTRUTURA, CAMADA, SERVICO, TECNOLOGIA,
-> LOCALIZACAO). Os dashboards N2 ancoram no eixo INFRAESTRUTURA/CAMADA.
+> **⚠ ESTRUTURA REORGANIZADA 2026-07-14/15** — o modelo facetado descrito
+> abaixo foi extinto: os eixos SERVICO (50 grupos), AMBIENTE (5), CAMADA
+> (2), TECNOLOGIA (3) e LOCALIZACAO (1) foram colapsados para tags, mais
+> `357`/`608`/`661`/`662`; o Zabbix Infra tem agora **17 grupos** (8
+> âncoras de domínio + `480` worklist + `657` + 7 defaults). O contrato
+> canónico novo (grupos `BPC/DOMINIO/*`, renomeação pendente na Fase B)
+> está em **`taxonomia-grupos-tags.md`** — é essa a referência para
+> classificar hosts. As âncoras actuais mantêm os nomes/groupids antigos
+> até à Fase B; os números de hosts por grupo abaixo estão actualizados,
+> o resto do documento é histórico útil (sondagens de items/triggers).
+
+> Inventário original sondado via API Grafana em 2026-06-16. 74 host groups
+> (datasource **Infra**), estrutura **facetada**: cada host pertencia a
+> vários grupos em eixos distintos (AMBIENTE, INFRAESTRUTURA, CAMADA,
+> SERVICO, TECNOLOGIA, LOCALIZACAO). Os dashboards N2 ancoram no eixo
+> INFRAESTRUTURA/CAMADA.
 
 ## Dois Zabbix → dois datasources
 

@@ -7,7 +7,7 @@
     {
       "refId": "A",
       "queryType": "0",
-      "group":  {"filter": "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"},
+      "group":  {"filter": "BPC/DOMINIO/01 Virtualizacao"},
       "host":   {"filter": "$hostid"},
       "item":   {"filter": "Number of bytes received"},
       "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},
@@ -16,7 +16,7 @@
     {
       "refId": "B",
       "queryType": "0",
-      "group":  {"filter": "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"},
+      "group":  {"filter": "BPC/DOMINIO/01 Virtualizacao"},
       "host":   {"filter": "$hostid"},
       "item":   {"filter": "Number of bytes transmitted"},
       "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},

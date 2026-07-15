@@ -27,7 +27,7 @@ const CFG_KPI_API = {
   elementId: 'bpc-api-kpi',
   refreshMs: 60000,
 
-  groupId: '663', // BPC / APLICACOES / SINTETICOS
+  groupId: '663', // BPC/DOMINIO/07 APIs e Servicos de Negocio
 
   // Severidades — crítico vs aviso
   trigPriority: { crit: [4, 5], warn: [2, 3] },

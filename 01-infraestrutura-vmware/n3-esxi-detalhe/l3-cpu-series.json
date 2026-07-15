@@ -7,7 +7,7 @@
     {
       "refId": "A",
       "queryType": "0",
-      "group":  {"filter": "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"},
+      "group":  {"filter": "BPC/DOMINIO/01 Virtualizacao"},
       "host":   {"filter": "$hostid"},
       "item":   {"filter": "CPU usage in percent"},
       "datasource": {"type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz"},

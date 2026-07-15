@@ -7,7 +7,7 @@
 
 var CFG_VMW_VC = {
   elementId:      'bpc-vmw-vcenter',
-  groupIdESXi:    '603',   // BPC / INFRAESTRUTURA / SERVIDORES FISICOS — grupo com os ESXi reais ({$VMWARE.URL} + vmware.hv.*). 608 (HYPERVISORES) so tem VMs/appliances.
+  groupIdESXi:    '603',   // BPC/DOMINIO/01 Virtualizacao — grupo com os ESXi reais ({$VMWARE.URL} + vmware.hv.*). 608 (HYPERVISORES) so tem VMs/appliances.
   refreshMs:      60000,
   staleThreshold: 3600,    // segundos — item com lastclock > isto é considerado stale
   vmTableDefault: 15,      // VMs desligadas visíveis antes do toggle "ver todas"

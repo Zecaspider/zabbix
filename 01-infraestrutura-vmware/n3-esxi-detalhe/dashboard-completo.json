@@ -85,7 +85,7 @@
                                                               "uid":  "3_KgG43nz"
                                                           },
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -171,7 +171,7 @@
                                                               "uid":  "3_KgG43nz"
                                                           },
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -299,7 +299,7 @@
                                    },
                        "id":  201,
                        "options":  {
-                                       "afterRender":  "{\n  \"type\": \"timeseries\",\n  \"title\": \"RAM Usage\",\n  \"description\": \"MemÃÂ³ria utilizada vs total Ã¢ÂÂ ESXi $hostid\",\n  \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n  \"targets\": [\n    {\n      \"refId\": \"A\",\n      \"queryType\": \"0\",\n      \"group\":  {\"filter\": \"BPC / INFRAESTRUTURA / SERVIDORES FISICOS\"},\n      \"host\":   {\"filter\": \"$hostid\"},\n      \"item\":   {\"filter\": \"Used memory\"},\n      \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n      \"resultFormat\": \"time_series\"\n    },\n    {\n      \"refId\": \"B\",\n      \"queryType\": \"0\",\n      \"group\":  {\"filter\": \"BPC / INFRAESTRUTURA / SERVIDORES FISICOS\"},\n      \"host\":   {\"filter\": \"$hostid\"},\n      \"item\":   {\"filter\": \"Total memory\"},\n      \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n      \"resultFormat\": \"time_series\"\n    }\n  ],\n  \"options\": {\n    \"tooltip\": {\"mode\": \"multi\", \"sort\": \"none\"},\n    \"legend\": {\"displayMode\": \"list\", \"placement\": \"bottom\", \"calcs\": [\"mean\", \"max\", \"last\"]}\n  },\n  \"fieldConfig\": {\n    \"defaults\": {\n      \"unit\": \"bytes\",\n      \"min\": 0,\n      \"color\": {\"mode\": \"palette-classic\"},\n      \"custom\": {\n        \"lineWidth\": 2,\n        \"fillOpacity\": 10,\n        \"spanNulls\": false\n      }\n    },\n    \"overrides\": [\n      {\n        \"matcher\": {\"id\": \"byName\", \"options\": \"Total memory\"},\n        \"properties\": [\n          {\"id\": \"custom.lineStyle\", \"value\": {\"fill\": \"dash\", \"dash\": [8, 4]}},\n          {\"id\": \"custom.fillOpacity\", \"value\": 0},\n          {\"id\": \"color\", \"value\": {\"mode\": \"fixed\", \"fixedColor\": \"rgba(255,255,255,0.25)\"}}\n        ]\n      }\n    ]\n  }\n}\n",
+                                       "afterRender":  "{\n  \"type\": \"timeseries\",\n  \"title\": \"RAM Usage\",\n  \"description\": \"MemÃÂ³ria utilizada vs total Ã¢ÂÂ ESXi $hostid\",\n  \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n  \"targets\": [\n    {\n      \"refId\": \"A\",\n      \"queryType\": \"0\",\n      \"group\":  {\"filter\": \"BPC/DOMINIO/01 Virtualizacao\"},\n      \"host\":   {\"filter\": \"$hostid\"},\n      \"item\":   {\"filter\": \"Used memory\"},\n      \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n      \"resultFormat\": \"time_series\"\n    },\n    {\n      \"refId\": \"B\",\n      \"queryType\": \"0\",\n      \"group\":  {\"filter\": \"BPC/DOMINIO/01 Virtualizacao\"},\n      \"host\":   {\"filter\": \"$hostid\"},\n      \"item\":   {\"filter\": \"Total memory\"},\n      \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n      \"resultFormat\": \"time_series\"\n    }\n  ],\n  \"options\": {\n    \"tooltip\": {\"mode\": \"multi\", \"sort\": \"none\"},\n    \"legend\": {\"displayMode\": \"list\", \"placement\": \"bottom\", \"calcs\": [\"mean\", \"max\", \"last\"]}\n  },\n  \"fieldConfig\": {\n    \"defaults\": {\n      \"unit\": \"bytes\",\n      \"min\": 0,\n      \"color\": {\"mode\": \"palette-classic\"},\n      \"custom\": {\n        \"lineWidth\": 2,\n        \"fillOpacity\": 10,\n        \"spanNulls\": false\n      }\n    },\n    \"overrides\": [\n      {\n        \"matcher\": {\"id\": \"byName\", \"options\": \"Total memory\"},\n        \"properties\": [\n          {\"id\": \"custom.lineStyle\", \"value\": {\"fill\": \"dash\", \"dash\": [8, 4]}},\n          {\"id\": \"custom.fillOpacity\", \"value\": 0},\n          {\"id\": \"color\", \"value\": {\"mode\": \"fixed\", \"fixedColor\": \"rgba(255,255,255,0.25)\"}}\n        ]\n      }\n    ]\n  }\n}\n",
                                        "legend":  {
                                                       "calcs":  [
                                                                     "mean",
@@ -324,7 +324,7 @@
                                                               "uid":  "3_KgG43nz"
                                                           },
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -342,7 +342,7 @@
                                                               "uid":  "3_KgG43nz"
                                                           },
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -440,7 +440,7 @@
                                    },
                        "id":  200,
                        "options":  {
-                                       "afterRender":  "{\n  \"type\": \"timeseries\",\n  \"title\": \"CPU Usage\",\n  \"description\": \"CPU utilizaÃÂ§ÃÂ£o % ao longo do tempo Ã¢ÂÂ ESXi $hostid\",\n  \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n  \"targets\": [\n    {\n      \"refId\": \"A\",\n      \"queryType\": \"0\",\n      \"group\":  {\"filter\": \"BPC / INFRAESTRUTURA / SERVIDORES FISICOS\"},\n      \"host\":   {\"filter\": \"$hostid\"},\n      \"item\":   {\"filter\": \"CPU usage in percent\"},\n      \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n      \"resultFormat\": \"time_series\"\n    }\n  ],\n  \"options\": {\n    \"tooltip\": {\"mode\": \"single\", \"sort\": \"none\"},\n    \"legend\": {\"displayMode\": \"list\", \"placement\": \"bottom\", \"calcs\": [\"mean\", \"max\", \"last\"]}\n  },\n  \"fieldConfig\": {\n    \"defaults\": {\n      \"unit\": \"percent\",\n      \"min\": 0,\n      \"max\": 100,\n      \"color\": {\"mode\": \"thresholds\"},\n      \"thresholds\": {\n        \"mode\": \"absolute\",\n        \"steps\": [\n          {\"color\": \"green\",  \"value\": null},\n          {\"color\": \"yellow\", \"value\": 75},\n          {\"color\": \"red\",    \"value\": 90}\n        ]\n      },\n      \"custom\": {\n        \"lineWidth\": 2,\n        \"fillOpacity\": 10,\n        \"spanNulls\": false,\n        \"thresholdsStyle\": {\"mode\": \"line+area\"}\n      }\n    },\n    \"overrides\": []\n  }\n}\n",
+                                       "afterRender":  "{\n  \"type\": \"timeseries\",\n  \"title\": \"CPU Usage\",\n  \"description\": \"CPU utilizaÃÂ§ÃÂ£o % ao longo do tempo Ã¢ÂÂ ESXi $hostid\",\n  \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n  \"targets\": [\n    {\n      \"refId\": \"A\",\n      \"queryType\": \"0\",\n      \"group\":  {\"filter\": \"BPC/DOMINIO/01 Virtualizacao\"},\n      \"host\":   {\"filter\": \"$hostid\"},\n      \"item\":   {\"filter\": \"CPU usage in percent\"},\n      \"datasource\": {\"type\": \"alexanderzobnin-zabbix-datasource\", \"uid\": \"3_KgG43nz\"},\n      \"resultFormat\": \"time_series\"\n    }\n  ],\n  \"options\": {\n    \"tooltip\": {\"mode\": \"single\", \"sort\": \"none\"},\n    \"legend\": {\"displayMode\": \"list\", \"placement\": \"bottom\", \"calcs\": [\"mean\", \"max\", \"last\"]}\n  },\n  \"fieldConfig\": {\n    \"defaults\": {\n      \"unit\": \"percent\",\n      \"min\": 0,\n      \"max\": 100,\n      \"color\": {\"mode\": \"thresholds\"},\n      \"thresholds\": {\n        \"mode\": \"absolute\",\n        \"steps\": [\n          {\"color\": \"green\",  \"value\": null},\n          {\"color\": \"yellow\", \"value\": 75},\n          {\"color\": \"red\",    \"value\": 90}\n        ]\n      },\n      \"custom\": {\n        \"lineWidth\": 2,\n        \"fillOpacity\": 10,\n        \"spanNulls\": false,\n        \"thresholdsStyle\": {\"mode\": \"line+area\"}\n      }\n    },\n    \"overrides\": []\n  }\n}\n",
                                        "legend":  {
                                                       "calcs":  [
                                                                     "mean",
@@ -465,7 +465,7 @@
                                                               "uid":  "3_KgG43nz"
                                                           },
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -582,7 +582,7 @@
                                                               "uid":  "3_KgG43nz"
                                                           },
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -600,7 +600,7 @@
                                                               "uid":  "3_KgG43nz"
                                                           },
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -687,7 +687,7 @@
 
                                                          ],
                                            "group":  {
-                                                         "filter":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+                                                         "filter":  "BPC/DOMINIO/01 Virtualizacao"
                                                      },
                                            "host":  {
                                                         "filter":  "$hostid"
@@ -767,7 +767,7 @@
                                                     ],
                                         "query":  {
                                                       "application":  "",
-                                                      "group":  "BPC / INFRAESTRUTURA / SERVIDORES FISICOS",
+                                                      "group":  "BPC/DOMINIO/01 Virtualizacao",
                                                       "host":  "/.*/",
                                                       "item":  "",
                                                       "itemTag":  "",

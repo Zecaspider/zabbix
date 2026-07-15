@@ -115,6 +115,12 @@ snapshot em `bpc-workspace/reconciliacao-snapshots-20260714/f3.5-lote{1..5}-ante
 `SERVICO/*` restantes** (`hostgroup.get` confirma). Nenhuma tag foi escrita
 — operação só de grupo. Total de grupos no Zabbix Infra: 84 → **32**.
 
+> **Actualização 2026-07-15**: o modelo-alvo evoluiu para o contrato
+> canónico em `taxonomia-grupos-tags.md` (8 grupos `BPC/DOMINIO/*`,
+> incluindo `08 Datacenter Fisico` novo e split do 603; Fases A/B/C
+> aprovadas). Este documento passa a registo histórico da operação de
+> 2026-07-14; para decisões de classificação usar o contrato.
+
 ## 6. Pendentes (por ordem de prioridade)
 
 1. ~~F3.5~~ — **concluído**, ver §5.

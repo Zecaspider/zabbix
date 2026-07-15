@@ -7,7 +7,7 @@
   "status": "em-construcao",
   "anchor": {
     "group": {
-      "filter": "BPC / INFRAESTRUTURA / SERVIDORES FISICOS"
+      "filter": "BPC/DOMINIO/01 Virtualizacao"
     },
     "host": {
       "filter": "$hostid"

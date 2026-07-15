@@ -14,7 +14,7 @@
       },
       "functions": [],
       "group": {
-        "filter": "BPC / APLICACOES / SINTETICOS"
+        "filter": "BPC/DOMINIO/07 APIs e Servicos de Negocio"
       },
       "host": {
         "filter": "${app}"
