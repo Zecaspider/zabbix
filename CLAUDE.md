@@ -8,6 +8,7 @@
 > - `documentacao/engenharia-do-sistema.md` — arquitectura, contratos, DoD
 > - `documentacao/blueprint-observabilidade.md` — mapa de drill-down N1→N2→N3
 > - `documentacao/mapa-host-groups.md` — domínio → groupId/datasource
+> - **`documentacao/reconciliacao-dominios-taxonomia-20260714.md` — PONTO DE ENTRADA para taxonomia de hosts (grupos vs tags) e para a lista "hosts sem domínio"**: registo da reconciliação Grafana↔Zabbix de 2026-07-14 — decisões F1 aprovadas (grupos = só eixo de domínio; tags ganham aos grupos CAMADA; grupos SERVICO/* vão colapsar para a tag `servico`), limpeza F2 (tags `ambiente`/`camada` normalizadas, 5 tags `NN camada` apagadas, grupos 490/632 apagados) e reclassificação F3 (91 hosts órfãos → 2 por decisão consciente; `Novos_Inventario` extinto). Pendentes: F3.5 (colapso SERVICO), 15 hosts A-CLASSIFICAR, host `BNA`, router novo `10.10.205.55` no HG_DC_ROUTERS (Network, criado 2026-07-14 — quebra a premissa "5 routers" da Borda DC). Ler antes de criar/classificar hosts novos ou mexer em grupos/tags
 > - `documentacao/framework-de-criacao-de-cards.md` — contrato de dados do card
 > - `documentacao/fluxo-agencias-n4-n5.md` — fluxo de drill das Agências (N1→N5)
 > - `documentacao/metodologia-auditoria-topologia.md` — checklist a correr antes de desenhar/redesenhar dashboards de qualquer segmento

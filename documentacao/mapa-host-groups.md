@@ -26,15 +26,16 @@ Zabbix, não usar nos cards (usar sempre o datasource Zabbix).
 | Domínio (N2) | groupId | Grupo Zabbix | Hosts |
 |---|---|---|---|
 | ~~**Infraestrutura VMware** — N2 vCenters+ESXi | `608` | BPC / INFRAESTRUTURA / HYPERVISORES | 24 ESXi~~ | **CORRIGIDO 2026-07-06**: `608` tem 24 hosts mas **zero são ESXi reais** — são VMs/appliances (vProxy EMC Networker, VMs de gestão PowerFlex, os próprios appliances vCenter) que partilham a macro `{$VMWARE.URL}`. O código (`l2-vcenter.js`, `l3-vcenter-topo.js`) usava este grupo para contar/listar "Hosts ESXi" por vCenter desde a criação (2026-06-17) — números plausíveis mas errados (ex: PowerFlex mostrava "17 ESXi", eram 17 VMs). Corrigido para usar `603` (ver linha abaixo), onde estão os 20 ESXi reais. Ver `cronograma.md` 1.24 |
-| **Infraestrutura VMware** — N2 vCenters+ESXi (ESXi) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) |
-| └ N3-ESXi (tabela hosts) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | 27 (**6 físicos + 20 ESXi + 1 Dell**) — mesmo grupo, sempre esteve correcto aqui |
-| **Servidores Virtuais** — N2 saúde VMs | `609` | BPC / INFRAESTRUTURA / SERVIDORES VIRTUAIS | 453 |
-| └ filtro padrão N2 | tag `ambiente` | `"Produção"` \| `"producao"` | ~306 prod |
-| Armazenamento — Storage | `602` | BPC / INFRAESTRUTURA / STORAGE | 10 |
-| └ Tape Library | `605` | BPC / INFRAESTRUTURA / TAPE LIBRARY | 1 |
+| **Infraestrutura VMware** — N2 vCenters+ESXi (ESXi) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | **50** (2026-07-14: eram 27; +18 PowerFlex/UCS ex-Novos_Inventario +5 IBM Power/HMC, maioria desactivada) |
+| └ N3-ESXi (tabela hosts) | `603` | BPC / INFRAESTRUTURA / SERVIDORES FISICOS | **50** — mesmo grupo; os 20 ESXi reais continuam identificáveis pelo prefixo `VIRT - ESXi -` |
+| └ vCenters | `664` | BPC / INFRAESTRUTURA / VCENTER | **4** (2026-07-14: +`sv9001206` Vcenter DR, conector do vCenter Backup Swift) |
+| **Servidores Virtuais** — N2 saúde VMs | `609` | BPC / INFRAESTRUTURA / SERVIDORES VIRTUAIS | **487** (2026-07-14: eram 428; +59 VMs órfãs reclassificadas) |
+| └ filtro padrão N2 | tag `ambiente` | `"Produção"` (grafia única desde 2026-07-14) | 320 prod |
+| Armazenamento — Storage | `602` | BPC / INFRAESTRUTURA / STORAGE | **14** (2026-07-14: +Dell Unity 550F +Data Domain +2× RecoverPoint) |
+| └ Tape Library | `605` | BPC / INFRAESTRUTURA / TAPE LIBRARY | **3** (2026-07-14: +TS3200 +ML3) |
 | Segurança | `656` | BPC / INFRAESTRUTURA / DISPOSITIVOS DE SEGURANCA | 8 |
-| Bases de Dados | `355` | BPC/CAMADA/Bases de Dados | 27 |
-| APIs & Serviços — Sintéticos | `663` | BPC / APLICACOES / SINTETICOS | 39 |
+| Bases de Dados | `355` | BPC/CAMADA/Bases de Dados | **28** |
+| APIs & Serviços — Sintéticos | `663` | BPC / APLICACOES / SINTETICOS | 40 |
 | └ Camada Aplicacional | `345` | BPC/CAMADA/Camada Aplicacional | 88 |
 | Serviços de Negócio — eBankit | `391` | BPC/SERVICO/Ebankit | 17 |
 
@@ -55,7 +56,7 @@ Sondado 2026-06-16 + re-validado 2026-06-19 via API Grafana proxy. 15 grupos tot
 
 | groupId | Grupo Zabbix | Hosts | Sub-domínio Rede | Papel |
 |---|---|---|---|---|
-| `27` | HG_DC_ROUTERS | 5 | **WAN** | 5 routers de borda WAN do DC (ISR4451 + C8500L + GTW01) |
+| `27` | HG_DC_ROUTERS | ~~5~~ **6** | **WAN** | 5 routers de borda WAN do DC (ISR4451 + C8500L + GTW01). **⚠ 2026-07-14: apareceu um 6º host `10.10.205.55` (hostid 11014)** — criado manualmente pelo utilizador "Admin" nesse dia, template Cisco IOS by SNMP, SNMP sem resposta, 0 tags, nome=IP. Quebra a premissa "5 routers" dos dashboards Borda DC; pendente identificar quem criou/que equipamento é antes de classificar |
 | `26` | HG_DC_SWITCHES | 7 | **DC Fabric** | 2 SPINEs + 4 LEAFs + 1 LEAF standalone |
 | `28` | HG_EDIFICIOS_ROUTERS | 9 | **Edifícios** | Routers Cisco dos edifícios BPC (prefixo `RTE-DRL-*`) |
 | `29` | HG_EDIFICIOS_SWITCHES | 46 | **Edifícios** | Switches dos edifícios BPC |
@@ -186,11 +187,16 @@ Ou usar host `VIRT - ESXi - sv9000640` + item `vmware.hv.status`.
 
 ## Lacunas de classificação (cobertura)
 
+> **Actualizado 2026-07-14** (reconciliação de taxonomia — ver
+> `reconciliacao-dominios-taxonomia-20260714.md` para o registo completo):
+> os 91 hosts sem grupo-âncora de domínio foram reclassificados; restam só
+> `BNA` (activo, decisão pendente da equipa) e o Cisco WLC (desactivado).
+
 | groupId | Grupo | Hosts | Nota |
 |---|---|---|---|
-| `480` | BPC/CAMADA/A-CLASSIFICAR | 25 | hosts sem camada atribuída |
-| `632` | Novos_Inventario | 21 | staging de descoberta? |
-| `12` | Applications | 20 | grupo default Zabbix |
+| `480` | BPC/CAMADA/A-CLASSIFICAR | 15 | eram 25; os 10 óbvios (OKD/Veeam) classificados em 2026-07-14; os 15 restantes precisam de informação da equipa |
+| ~~`632`~~ | ~~Novos_Inventario~~ | — | **apagado 2026-07-14** — os 21 hardware foram movidos para 603/602/605 |
+| `12` | Applications | 0 | grupo default Zabbix; vazio mas **não apagável** (usado por host prototypes de templates VMware/K8s) |
 | `481` | BPC/TECNOLOGIA/Desconhecido | 1 | OS por classificar |
 
 ## Sondagem 2.1 — Grupos 602/605 (Armazenamento) — 2026-06-17
@@ -271,3 +277,12 @@ Ou usar host `VIRT - ESXi - sv9000640` + item `vmware.hv.status`.
    de `656` (8 hosts, sem cedilha).~~ **Resolvido 2026-07-06**: `655`
    confirmado genuinamente vazio (nada a migrar) e apagado; `656`
    (Imperva ×3 + Check Point ×5) mantido sem alterações.
+6. **Novo (2026-07-14) — limpeza de tags executada** (registo completo em
+   `reconciliacao-dominios-taxonomia-20260714.md`): tag `ambiente`
+   normalizada (9→6 valores; `producao`/`Producao`→`Produção`, `qa`→`QA`),
+   tag `camada` sem grafias duplicadas de Segurança, e as 5 tags paralelas
+   `01/02/04/05/06 camada` apagadas (nenhum dashboard as consumia). Grupos
+   `490` (SGC, vazio) e `632` (Novos_Inventario) apagados. **Decisão de
+   fundo aprovada**: grupos = eixo de domínio; `servico`/`ambiente`/
+   `tecnologia`/`camada` = tags; os 55 grupos `SERVICO/*` vão colapsar para
+   a tag `servico` (F3.5, por executar).
