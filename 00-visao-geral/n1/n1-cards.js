@@ -1,7 +1,16 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
-// ║  N1 · Portal NOC — Cards de Área                              v2.1       ║
+// ║  N1 · Portal NOC — Cards de Área                              v3.0       ║
 // ║                                                                          ║
-// ║  7 cards (4 colunas x 2 linhas, ultima incompleta com 3) com estado de   ║
+// ║  v3.0 (2026-07-12, F5 do plano-melhorias-observabilidade-20260712.md):   ║
+// ║  (1) card Bases de Dados deixa de estar "Em Construcao" — o bd-n2        ║
+// ║  existe desde a Fase 6.1 e o N1 nunca foi actualizado; (2) novo card     ║
+// ║  "Servicos de Suporte" (DNS/DHCP/AD/NTP/...), resolvido pela tag         ║
+// ║  `servico` (dominio 10, sem host group proprio — ver domain.tags);       ║
+// ║  (3) barra de acessos rapidos no rodape: Indice de dashboards,           ║
+// ║  Notificacoes/envios, Relatorio Diario R1, e nota dos relatorios CLI     ║
+// ║  por dominio (relatorios/por-dominio/). Grid passa a 4x2 completo.       ║
+// ║                                                                          ║
+// ║  8 cards (4 colunas x 2 linhas) com estado de                            ║
 // ║  saude por dominio. 1 card = 1 pasta Grafana real (confirmado por        ║
 // ║  folders.get ao vivo, 2026-07-12) - nunca inventar dominios que nao      ║
 // ║  batam certo com a estrutura de pastas. Estado calculado via             ║
@@ -82,8 +91,8 @@ var CFG = {
       sublabel: 'Instâncias DB',
       groupids: ['355'],
       datasource: 'infra',
-      dashUid: null,
-      dashSlug: null,
+      dashUid: 'bd-n2',
+      dashSlug: 'n2-bases-de-dados',
     },
     {
       id: 'apis-negocio',
@@ -95,6 +104,27 @@ var CFG = {
       dashSlug: 'n2-apis-servicos-negocio',
     },
     {
+      id: 'suporte',
+      label: 'Serviços de Suporte',
+      sublabel: 'DNS · DHCP · AD · NTP · WSUS · Email',
+      // sem host group próprio — hosts resolvidos pela tag `servico` (F4);
+      // problem.get aceita `tags` em vez de `groupids`
+      groupids: null,
+      tags: [
+        { tag: 'servico', value: 'dns externo', operator: '0' },
+        { tag: 'servico', value: 'dhcp server', operator: '0' },
+        { tag: 'servico', value: 'domain controller', operator: '0' },
+        { tag: 'servico', value: 'wsus', operator: '0' },
+        { tag: 'servico', value: 'azure ad connet', operator: '0' },
+        { tag: 'servico', value: 'ad audit', operator: '0' },
+        { tag: 'servico', value: 'exchange', operator: '0' },
+        { tag: 'servico', value: 'iam', operator: '0' },
+      ],
+      datasource: 'infra',
+      dashUid: 'suporte-n2',
+      dashSlug: 'n2-servicos-de-suporte',
+    },
+    {
       id: 'seguranca',
       label: 'Segurança',
       sublabel: 'Transversal · Firewalls · WAF · Darktrace',
@@ -104,6 +134,15 @@ var CFG = {
       dashSlug: null,
     },
   ],
+
+  // Barra de acessos rápidos (rodapé) — F5: relatórios + resumos + índice
+  quickLinks: [
+    { label: '☰ Índice de dashboards', url: '/d/visao-indice-dashboards' },
+    { label: '✉ Notificações e envios', url: '/d/visao-notificacoes' },
+    { label: '📊 Exportar relatórios (Excel/PDF)', url: '/d/visao-relatorios' },
+    { label: '📋 Relatório Diário (R1)', url: '/d/apis-r1-relatorio-diario' },
+  ],
+  quickNote: 'Automação/agendado: relatorios/por-dominio/gerar_relatorio.py (repo BPC-Observe)',
 };
 
 
@@ -146,13 +185,15 @@ function cardClass(state) {
 
 // ── FETCH ─────────────────────────────────────────────────────────────────────
 
-// Busca problemas activos para um ou mais groupids via BPC rpc (Infra)
-function fetchProblemsInfra(rpc, groupids) {
-  return rpc('problem.get', {
-    groupids: groupids,
+// Busca problemas activos via BPC rpc (Infra) — por groupids ou por tags (v3.0)
+function fetchProblemsInfra(rpc, domain) {
+  var params = {
     output: ['eventid', 'severity'],
     suppressed: false,
-  });
+  };
+  if (domain.groupids) params.groupids = domain.groupids;
+  if (domain.tags) { params.tags = domain.tags; params.evaltype = 2; }
+  return rpc('problem.get', params);
 }
 
 // Busca problemas activos para groupids via fetch directo ao proxy Network
@@ -183,11 +224,10 @@ function fetchProblemsNetwork(groupids) {
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
 
-// Skeleton de loading (7 cards) — 4x2 (ultima linha incompleta), mesma
-// grelha do render final
+// Skeleton de loading (8 cards) — 4x2, mesma grelha do render final
 function renderSkeleton() {
   var cards = '';
-  for (var i = 0; i < 7; i++) {
+  for (var i = 0; i < 8; i++) {
     cards += '<div class="bpc bpc-card" style="--card-accent:var(--bpc-mute);display:flex;flex-direction:column;gap:16px;padding:26px 24px;">'
       + '<div class="bpc-skeleton" style="height:18px;width:65%"></div>'
       + '<div class="bpc-skeleton" style="height:12px;width:80%;margin-top:2px"></div>'
@@ -261,20 +301,29 @@ function renderErrorCard(domain) {
     + '</div>';
 }
 
-// Grid final com todos os cards — 4 colunas x 2 linhas (7 domínios reais,
-// última linha com 3 e uma célula em branco), a esticar para preencher
-// toda a altura do painel. A quebra 4+3 bate certo com o estado real:
-// os 4 primeiros (VMware/VMs/Storage/Rede) já têm N2; os 3 últimos
-// (BD/APIs+SN/Segurança) estão "Em Construção" - não é coincidência de
-// código, é o estado actual dos dashboards.
+// Grid final — 4 colunas x 2 linhas (8 domínios, v3.0) + barra de acessos
+// rápidos no rodapé (índice, notificações, relatório diário).
 function renderGrid(results) {
   var cards = CFG.domains.map(function(domain, i) {
     var r = results[i];
     if (!r) return renderErrorCard(domain);
     return renderDomainCard(domain, r);
   });
-  return '<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:18px;padding:4px 0;height:100%">'
+
+  var links = (CFG.quickLinks || []).map(function(l) {
+    return '<a href="' + esc(l.url) + '" style="font-size:.92rem;font-weight:600;color:var(--bpc-cyan);text-decoration:none;padding:8px 18px;border:1px solid rgba(56,189,248,.30);border-radius:10px;background:rgba(56,189,248,.06);white-space:nowrap;">' + esc(l.label) + '</a>';
+  }).join('');
+
+  var rodape = '<div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:6px 2px 0 2px;">'
+    + links
+    + '<span style="font-size:.75rem;color:rgba(255,255,255,.30);margin-left:auto;">' + esc(CFG.quickNote || '') + '</span>'
+    + '</div>';
+
+  return '<div style="display:flex;flex-direction:column;gap:14px;height:100%;">'
+    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:18px;padding:4px 0;flex:1;">'
     + cards.join('')
+    + '</div>'
+    + rodape
     + '</div>';
 }
 
@@ -285,7 +334,7 @@ function loadAndRender(rpc, root) {
   var fetches = CFG.domains.map(function(domain) {
     var fetchFn = domain.datasource === 'network'
       ? fetchProblemsNetwork(domain.groupids)
-      : fetchProblemsInfra(rpc, domain.groupids);
+      : fetchProblemsInfra(rpc, domain);
 
     return fetchFn
       .then(function(problems) { return { problems: problems, error: null }; })

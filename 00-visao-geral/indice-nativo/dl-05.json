@@ -1,0 +1,17 @@
+{
+  "type": "dashlist",
+  "title": "05 · Segurança",
+  "transparent": true,
+  "options": {
+    "folderUID": "afpm0se1lombkb",
+    "includeVars": false,
+    "keepTime": false,
+    "maxItems": 30,
+    "query": "",
+    "showFolderNames": false,
+    "showHeadings": false,
+    "showRecentlyViewed": false,
+    "showSearch": true,
+    "showStarred": false
+  }
+}

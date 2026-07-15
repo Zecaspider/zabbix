@@ -1,0 +1,101 @@
+{
+  "type": "table",
+  "title": "",
+  "transparent": true,
+  "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+  "description": "Histórico de eventos de trigger dos hosts do serviço — activos e resolvidos, últimos 7 dias, com duração e ack. Mesmo padrão do painel Eventos 7d do vm-n3-ficha (2026-07-13), scoped pela tag servico=$servico.",
+  "fieldConfig": {
+    "defaults": {
+      "color": { "mode": "thresholds" },
+      "custom": {
+        "align": "left",
+        "cellOptions": { "type": "auto" },
+        "filterable": false,
+        "inspect": false
+      },
+      "mappings": [],
+      "thresholds": { "mode": "absolute", "steps": [ { "color": "text", "value": 0 } ] }
+    },
+    "overrides": [
+      {
+        "matcher": { "id": "byName", "options": "Início" },
+        "properties": [ { "id": "custom.width", "value": 165 } ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Host" },
+        "properties": [ { "id": "custom.width", "value": 118 } ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Estado" },
+        "properties": [
+          { "id": "custom.width", "value": 96 },
+          { "id": "custom.cellOptions", "value": { "type": "color-text" } },
+          {
+            "id": "mappings",
+            "value": [
+              { "type": "value", "options": {
+                "ACTIVO":    { "text": "● ACTIVO",   "color": "#F85149", "index": 0 },
+                "resolvido": { "text": "resolvido",  "color": "#3FB950", "index": 1 }
+              } }
+            ]
+          }
+        ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Sev" },
+        "properties": [
+          { "id": "custom.width", "value": 104 },
+          { "id": "custom.align", "value": "center" },
+          { "id": "custom.cellOptions", "value": { "type": "color-background", "mode": "basic" } },
+          {
+            "id": "mappings",
+            "value": [
+              { "type": "value", "options": {
+                "0": { "text": "n/class.",   "color": "#6E7681", "index": 0 },
+                "1": { "text": "info",       "color": "#2F5A8F", "index": 1 },
+                "2": { "text": "aviso",      "color": "#8a6d1d", "index": 2 },
+                "3": { "text": "média",      "color": "#B07617", "index": 3 },
+                "4": { "text": "ALTA",       "color": "#A13232", "index": 4 },
+                "5": { "text": "DESASTRE",   "color": "#F85149", "index": 5 }
+              } }
+            ]
+          }
+        ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Duração" },
+        "properties": [
+          { "id": "custom.width", "value": 110 },
+          { "id": "unit", "value": "s" },
+          { "id": "decimals", "value": 0 }
+        ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Ack" },
+        "properties": [
+          { "id": "custom.width", "value": 56 },
+          { "id": "custom.align", "value": "center" },
+          { "id": "noValue", "value": "—" }
+        ]
+      }
+    ]
+  },
+  "options": {
+    "cellHeight": "sm",
+    "showHeader": true,
+    "footer": { "show": false, "reducer": [ "sum" ], "fields": "" },
+    "sortBy": []
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "editorMode": "code",
+      "format": "table",
+      "rawQuery": true,
+      "rawSql": "SELECT\n  FROM_UNIXTIME(e.clock) AS `Início`,\n  (SELECT h3.host FROM functions f3 JOIN items i3 ON i3.itemid=f3.itemid JOIN hosts h3 ON h3.hostid=i3.hostid WHERE f3.triggerid=e.objectid LIMIT 1) AS `Host`,\n  CASE WHEN er.r_eventid IS NULL THEN 'ACTIVO' ELSE 'resolvido' END AS `Estado`,\n  e.severity AS `Sev`,\n  e.name AS `Problema`,\n  CASE WHEN er.r_eventid IS NULL THEN UNIX_TIMESTAMP() - e.clock ELSE re.clock - e.clock END AS `Duração`,\n  CASE WHEN e.acknowledged = 1 THEN '✓' ELSE NULL END AS `Ack`\nFROM events e\nLEFT JOIN event_recovery er ON er.eventid = e.eventid\nLEFT JOIN events re ON re.eventid = er.r_eventid\nWHERE e.source = 0 AND e.object = 0 AND e.value = 1\n  AND e.clock > UNIX_TIMESTAMP() - 7*86400\n  AND e.objectid IN (\n    SELECT DISTINCT f.triggerid FROM functions f\n    JOIN items i ON i.itemid = f.itemid\n    JOIN hosts h ON h.hostid = i.hostid\n    JOIN host_tag ht ON ht.hostid = h.hostid AND ht.tag = 'servico' AND ht.value = '$servico'\n    WHERE h.status = 0\n  )\nORDER BY (er.r_eventid IS NULL) DESC, e.clock DESC\nLIMIT 60",
+      "refId": "A",
+      "sql": { "columns": [ { "parameters": [], "type": "function" } ], "groupBy": [ { "property": { "type": "string" }, "type": "groupBy" } ], "limit": 60 }
+    }
+  ]
+}

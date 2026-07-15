@@ -1,0 +1,66 @@
+{
+  "dashboardUid": "suporte-n3",
+  "dashboardTitle": "N3 · Serviços de Suporte · Serviço — Hosts e sinais",
+  "folderUid": "dominio-suporte",
+  "datasource": "3_KgG43nz",
+  "notes": "Drill dos cards do suporte-n2 (?var-servico=<valor da tag>). 1 dashboard = 1 serviço de suporte seleccionado pela tag `servico`. NOTA: os cards DNS Interno/AD/NTP do N2 apontam todos para DOMAIN CONTROLLER (partilham os mesmos hosts DC — o N3 é por grupo de hosts, não por papel lógico). Variável escondida $hostRegex (GROUP_CONCAT MySQL, padrão apis-n3) alimenta o painel nativo de triggers — sempre ${hostRegex:raw}. Tabela de hosts e eventos 7d em MySQL nativo (items.lastvalue não existe no 7.4 → subqueries a history_uint). Painel BT de serviços Windows é standalone ES5 com guard §4C.7 — mostra o tier de sinal real por host (service.info > agente > ping), gaps explícitos.",
+  "templating": [
+    {
+      "name": "servico",
+      "label": "Serviço",
+      "type": "query",
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "query": "SELECT DISTINCT ht.value AS __text, ht.value AS __value FROM host_tag ht JOIN hosts h ON h.hostid=ht.hostid WHERE ht.tag='servico' AND UPPER(ht.value) IN ('DNS EXTERNO','DHCP SERVER','DOMAIN CONTROLLER','WSUS','AZURE AD CONNET','AD AUDIT','EXCHANGE','IAM') AND h.status=0 ORDER BY 1",
+      "refresh": 1
+    },
+    {
+      "name": "hostRegex",
+      "label": "Host regex (interno)",
+      "hide": 2,
+      "type": "query",
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "query": "SELECT GROUP_CONCAT(h.host SEPARATOR '|') AS __value, GROUP_CONCAT(h.host SEPARATOR '|') AS __text FROM hosts h JOIN host_tag ht ON ht.hostid=h.hostid AND ht.tag='servico' AND ht.value='$servico' WHERE h.status=0",
+      "refresh": 1
+    }
+  ],
+  "anchor": {
+    "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz" },
+    "group": { "filter": "_SISTEMA/ANCORA-RENDER" },
+    "host": { "filter": "Storage - IBM FS9500" },
+    "item": { "filter": "ICMP ping" }
+  },
+  "panels": [
+    {
+      "file": "l3-sup-header.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header BPC NOC (lite)",
+      "content": "<div id=\"bt-sup3-hdr\"></div>"
+    },
+    {
+      "file": "n3-sup-hosts-tabela.json",
+      "id": 200,
+      "role": "content",
+      "title": "Hosts do serviço — ping, agente, service.info, triggers"
+    },
+    {
+      "file": "l3-sup-servicos-windows.js",
+      "id": 101,
+      "role": "content",
+      "title": "Serviços Windows por host (tier de sinal)",
+      "content": "<div id=\"bt-sup3-svcwin\"></div>"
+    },
+    {
+      "file": "n3-sup-triggers.json",
+      "id": 201,
+      "role": "content",
+      "title": "Problemas activos"
+    },
+    {
+      "file": "n3-sup-eventos-7d.json",
+      "id": 202,
+      "role": "content",
+      "title": "Histórico de eventos — 7 dias"
+    }
+  ]
+}

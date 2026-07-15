@@ -1,0 +1,17 @@
+{
+  "type": "dashlist",
+  "title": "04 · Rede",
+  "transparent": true,
+  "options": {
+    "folderUID": "bfpm0sdxiclxcf",
+    "includeVars": false,
+    "keepTime": false,
+    "maxItems": 30,
+    "query": "",
+    "showFolderNames": false,
+    "showHeadings": false,
+    "showRecentlyViewed": false,
+    "showSearch": true,
+    "showStarred": false
+  }
+}

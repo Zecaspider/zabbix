@@ -1,0 +1,38 @@
+{
+  "dashboardUid": "suporte-n2",
+  "dashboardTitle": "N2 · Serviços de Suporte — DNS, DHCP, AD e afins",
+  "folderUid": "dominio-suporte",
+  "datasource": "3_KgG43nz",
+  "notes": "F4 do plano-melhorias-observabilidade-20260712.md. Domínio novo: os serviços de infra-estrutura que nunca têm dono (DNS interno/externo, DHCP, AD, NTP, WSUS, Azure AD Connect, AD Audit, Exchange, IAM). ZERO escrita no Zabbix na v1 — os cards agregam pela tag `servico` existente (16 hosts auditados ao vivo 2026-07-12, 14 com agente). Achados da auditoria a preservar: VS9000003 é o único DC com service.info de DNS/Dhcp/NTDS/Netlogon/W32Time/DFSR (modelo a replicar no VS9000007, que não tem nenhum); VS8000930/931 (DHCP) só têm ICMP, sem agente; NTP sem qualquer cobertura fora do W32Time do VS9000003 — o card NTP declara o gap em vez de o esconder (modelo de tier do domínio 06). Pasta Grafana '10 · Serviços de Suporte' criada 2026-07-12 (uid dominio-suporte, aprovado pelo utilizador). PENDENTE opcional: criar host group BPC/CAMADA/Servicos de Suporte no Zabbix (não é necessário para este dashboard funcionar).",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "_SISTEMA/ANCORA-RENDER"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l2-cards-servicos.js",
+      "id": 101,
+      "role": "content",
+      "title": "Estado por serviço de suporte",
+      "content": "<div id=\"bpc-sup-cards\"></div>"
+    }
+  ]
+}

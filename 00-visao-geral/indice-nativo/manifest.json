@@ -1,0 +1,81 @@
+{
+  "dashboardUid": "visao-indice-nativo",
+  "dashboardTitle": "N1 · Visão Geral · Índice — Dashboards (nativo)",
+  "folderUid": "bfpm0sdaos074d",
+  "datasource": "3_KgG43nz",
+  "notes": "F3.1 do plano-melhorias-observabilidade-20260712.md. Alternativa 100% nativa ao visao-indice-dashboards: 1 painel dashlist por pasta Grafana (folderUID canónico do CLAUDE.md), sem JS custom — sobrevive a qualquer mudança do plugin Business Text. Sem agrupamento por nível nem colunas verdadeiras (limitação aceite do dashlist). 99 · Arquivo deliberadamente fora. Push via push_native.py; layout final em grelha de 4 colunas no passo de fecho.",
+  "panels": [
+    {
+      "file": "dl-00.json",
+      "id": 200,
+      "role": "content",
+      "title": "00 · Visão Geral"
+    },
+    {
+      "file": "dl-01.json",
+      "id": 201,
+      "role": "content",
+      "title": "01 · Infraestrutura VMware"
+    },
+    {
+      "file": "dl-02.json",
+      "id": 202,
+      "role": "content",
+      "title": "02 · Armazenamento"
+    },
+    {
+      "file": "dl-03.json",
+      "id": 203,
+      "role": "content",
+      "title": "03 · Servidores Virtuais"
+    },
+    {
+      "file": "dl-04.json",
+      "id": 204,
+      "role": "content",
+      "title": "04 · Rede"
+    },
+    {
+      "file": "dl-04-1.json",
+      "id": 205,
+      "role": "content",
+      "title": "04.1 · Agências"
+    },
+    {
+      "file": "dl-04-2.json",
+      "id": 206,
+      "role": "content",
+      "title": "04.2 · Borda DC"
+    },
+    {
+      "file": "dl-04-3.json",
+      "id": 207,
+      "role": "content",
+      "title": "04.3 · DC Fabric"
+    },
+    {
+      "file": "dl-04-4.json",
+      "id": 208,
+      "role": "content",
+      "title": "04.4 · Edifícios"
+    },
+    {
+      "file": "dl-05.json",
+      "id": 209,
+      "role": "content",
+      "title": "05 · Segurança"
+    },
+    {
+      "file": "dl-06.json",
+      "id": 210,
+      "role": "content",
+      "title": "06 · Bases de Dados"
+    },
+    {
+      "file": "dl-07.json",
+      "id": 211,
+      "role": "content",
+      "title": "07 · APIs e Serviços de Negócio"
+    }
+  ]
+}

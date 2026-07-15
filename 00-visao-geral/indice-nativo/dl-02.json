@@ -1,0 +1,17 @@
+{
+  "type": "dashlist",
+  "title": "02 · Armazenamento",
+  "transparent": true,
+  "options": {
+    "folderUID": "dfpm0sdnq8x6oe",
+    "includeVars": false,
+    "keepTime": false,
+    "maxItems": 30,
+    "query": "",
+    "showFolderNames": false,
+    "showHeadings": false,
+    "showRecentlyViewed": false,
+    "showSearch": true,
+    "showStarred": false
+  }
+}

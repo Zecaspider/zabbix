@@ -1,0 +1,41 @@
+{
+  "type": "alexanderzobnin-zabbix-triggers-panel",
+  "title": "",
+  "transparent": true,
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz" },
+  "description": "Problemas activos nos hosts do serviço seleccionado. Filtro de host via variável escondida $hostRegex (GROUP_CONCAT MySQL dos nomes técnicos, padrão do apis-n3) — sempre ${hostRegex:raw}, nunca a forma pura (Grafana escapa o | na interpolação normal).",
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz" },
+      "queryType": "5",
+      "group": { "filter": "/.*/" },
+      "host": { "filter": "/${hostRegex:raw}/" },
+      "application": { "filter": "" },
+      "proxy": { "filter": "" },
+      "trigger": { "filter": "" },
+      "tags": { "filter": "" },
+      "options": {
+        "minSeverity": 0,
+        "sortProblems": "default",
+        "acknowledged": 2,
+        "hostsInMaintenance": false
+      },
+      "refId": "A"
+    }
+  ],
+  "options": {
+    "ageField": true,
+    "ackField": true,
+    "descriptionField": true,
+    "hostField": true,
+    "hostTechNameField": false,
+    "severityField": true,
+    "statusField": true,
+    "showTags": false,
+    "highlightNewerThan": "1h",
+    "fontSize": "100%",
+    "limit": 50,
+    "sortProblems": "lastchange",
+    "problemTimeline": true
+  }
+}

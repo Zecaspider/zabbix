@@ -1,0 +1,17 @@
+{
+  "type": "dashlist",
+  "title": "04.2 · Borda DC",
+  "transparent": true,
+  "options": {
+    "folderUID": "rede-seg-bordadc",
+    "includeVars": false,
+    "keepTime": false,
+    "maxItems": 30,
+    "query": "",
+    "showFolderNames": false,
+    "showHeadings": false,
+    "showRecentlyViewed": false,
+    "showSearch": true,
+    "showStarred": false
+  }
+}

@@ -458,13 +458,14 @@ function r1_corpoHTML(dataStr, turnoLabel, horaStr, geradoStr, sistemas, parceir
 
 // ── Export .xlsx fiel ao molde oficial (ZIP+XML puro, sem bibliotecas) ─────
 //
-//  R1_XLSX_TEMPLATE_B64 (definida no fundo deste ficheiro) é o
-//  "RELATORIO DIARIO DO ESTADO DOS SISTEMAS E SERVIÇOS COM PARCEIROS" original
-//  em base64. Só a folha "xl/worksheets/sheet1.xml" é reescrita (mesmas
-//  celulas D/E/F que o script Python gerar_relatorio.py já usava); todas as
-//  outras entradas do zip (graficos, estilos, dropdowns, sharedStrings) sao
-//  copiadas byte a byte, sem descomprimir — só a folha alterada muda de
-//  metodo para "stored" (sem compressao), o resto mantem-se deflate original.
+//  R1_XLSX_TEMPLATE_B64 (definida no fundo deste ficheiro) é o molde
+//  "BPC_I_AO_BNC_2100034AL_Monitorizacao_Lista_Aplicações_v1" original em
+//  base64. Só a folha "xl/worksheets/sheet1.xml" é reescrita (colunas
+//  Hora/Estado/Observações — ver R1_XLSX_LINHA_SISTEMAS/PARCEIROS); todas as
+//  outras entradas do zip (graficos, estilos, dropdowns, sharedStrings,
+//  colunas Host/IP/Ambiente) sao copiadas byte a byte, sem descomprimir —
+//  só a folha alterada muda de metodo para "stored" (sem compressao), o
+//  resto mantem-se deflate original.
 
 var R1_XLSX_SS_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
 

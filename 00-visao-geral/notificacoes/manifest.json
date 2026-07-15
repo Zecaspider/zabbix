@@ -1,0 +1,63 @@
+{
+  "dashboardUid": "visao-notificacoes",
+  "dashboardTitle": "N1 · Visão Geral · Notificações — Triggers e envios",
+  "folderUid": "bfpm0sdaos074d",
+  "datasource": "3_KgG43nz",
+  "notes": "F2 do plano-melhorias-observabilidade-20260712.md. Resumo de triggers por domínio (BT via problem.get, mesmos groupids do n1-cards) + cadeia de notificação action→mediatype→destinatários→entregas (BT via POST /api/ds/query no MySQL Infra afor1g5862fb4c — action.get está bloqueado no proxy zabbix-api e o proxy tem cache de ~30min; o MySQL dá estado real) + 3 painéis nativos MySQL (envios recentes com $__unixEpochFilter, timeline por hora/estado, destinatários users×media). Achado que motivou o dashboard (2026-07-12): 21.878 alertas de email em 7 dias, 100% falhados — action id 9 ON + mediatype Email id 1 OFF desde o incidente GLPI. NUNCA religar o mediatype Email a partir daqui sem o runbook do CLAUDE.md.",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "_SISTEMA/ANCORA-RENDER"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l1-cadeia-notificacao.js",
+      "id": 101,
+      "role": "content",
+      "title": "Cadeia de notificação",
+      "content": "<div id=\"bpc-nt-cadeia\"></div>"
+    },
+    {
+      "file": "l1-resumo-triggers.js",
+      "id": 102,
+      "role": "content",
+      "title": "Triggers por domínio",
+      "content": "<div id=\"bpc-nt-resumo-triggers\"></div>"
+    },
+    {
+      "file": "nt-envios-timeline.json",
+      "id": 200,
+      "role": "content",
+      "title": "Notificações por hora e estado"
+    },
+    {
+      "file": "nt-envios-recentes.json",
+      "id": 201,
+      "role": "content",
+      "title": "Envios recentes (janela do dashboard, máx. 200)"
+    },
+    {
+      "file": "nt-destinatarios.json",
+      "id": 202,
+      "role": "content",
+      "title": "Destinatários configurados (users × media)"
+    }
+  ]
+}

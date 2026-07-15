@@ -1,0 +1,29 @@
+{
+  "dashboardUid": "visao-relatorios",
+  "dashboardTitle": "R0 · Visão Geral · Relatórios — Exportação Excel/PDF",
+  "folderUid": "bfpm0sdaos074d",
+  "datasource": "3_KgG43nz",
+  "notes": "Extensão da F1 (plano-melhorias-observabilidade-20260712.md): painel interactivo de exportação de relatórios — escolher domínio (ou todos), período (início/fim), e exportar .xlsx (OOXML construído em JS no browser, port 1:1 do relatorio_lib.py — ZIP stored + CRC32 manual, multi-folha quando 'todos') ou PDF (janela imprimível + window.print(); o <title> define o nome de ficheiro sugerido pelo browser). Nome canónico: Relatorio_<Dominio>_<YYYY-MM-DD>_<HHMM>. Dados: BPC.rpc (lastvalue, nota de cache ~30min do proxy) + ds/query MySQL trends_uint para a DISP.(período) — validado ao vivo que icmpping/agent.ping/web.test.fail são todos unsigned. Config de domínios é um port de relatorios/por-dominio/dominios.json — mudanças fazem-se lá primeiro e replicam-se aqui à mão. O CLI continua a existir para automação/agendamento; este painel é o caminho self-service do NOC.",
+  "anchor": {
+    "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz" },
+    "group": { "filter": "_SISTEMA/ANCORA-RENDER" },
+    "host": { "filter": "Storage - IBM FS9500" },
+    "item": { "filter": "ICMP ping" }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": null,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l1-relatorios-export.js",
+      "id": null,
+      "role": "content",
+      "title": "Exportação de relatórios",
+      "content": "<div id=\"bpc-relatorios-export\"></div>"
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+  "fieldConfig": {
+    "defaults": {
+      "color": { "mode": "thresholds" },
+      "custom": {
+        "align": "left",
+        "cellOptions": { "type": "auto" },
+        "filterable": true,
+        "inspect": false
+      },
+      "mappings": [],
+      "thresholds": { "mode": "absolute", "steps": [ { "color": "transparent", "value": 0 } ] }
+    },
+    "overrides": [
+      {
+        "matcher": { "id": "byName", "options": "Estado" },
+        "properties": [
+          {
+            "id": "mappings",
+            "value": [
+              {
+                "options": {
+                  "0": { "color": "blue",   "index": 2, "text": "Em fila" },
+                  "1": { "color": "green",  "index": 0, "text": "Enviado" },
+                  "2": { "color": "red",    "index": 1, "text": "Falhado" },
+                  "3": { "color": "orange", "index": 3, "text": "Novo" }
+                },
+                "type": "value"
+              }
+            ]
+          },
+          { "id": "custom.cellOptions", "value": { "type": "color-background" } },
+          { "id": "custom.width", "value": 90 }
+        ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Hora" },
+        "properties": [ { "id": "custom.width", "value": 160 } ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Via" },
+        "properties": [ { "id": "custom.width", "value": 110 } ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Destinatario" },
+        "properties": [ { "id": "custom.width", "value": 230 } ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "Tentativas" },
+        "properties": [ { "id": "custom.width", "value": 90 } ]
+      }
+    ]
+  },
+  "options": { "cellHeight": "sm", "frameIndex": 0, "showHeader": true, "sortBy": [ { "desc": true, "displayName": "Hora" } ] },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "editorMode": "code",
+      "format": "table",
+      "rawQuery": true,
+      "rawSql": "SELECT FROM_UNIXTIME(a.clock) AS Hora, COALESCE(mt.name, '?') AS Via, a.sendto AS Destinatario, a.subject AS Assunto, a.status AS Estado, a.retries AS Tentativas, NULLIF(a.error, '') AS Erro\nFROM alerts a\nLEFT JOIN media_type mt ON mt.mediatypeid = a.mediatypeid\nWHERE a.alerttype = 0 AND $__unixEpochFilter(a.clock)\nORDER BY a.clock DESC\nLIMIT 200",
+      "refId": "A"
+    }
+  ],
+  "title": "Envios recentes (janela do dashboard, máx. 200)",
+  "transparent": true,
+  "type": "table"
+}

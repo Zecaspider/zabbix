@@ -1,0 +1,614 @@
+{
+  "id": 232632782569472,
+  "panels": [
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "3_KgG43nz"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 100,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  BPC NOC — HEADER GLOBAL                                  v8 · BPC-UI   ║\n// ║                                                                          ║\n// ║  Carregado UMA única vez, no painel de cabeçalho do Grafana.            ║\n// ║  Tudo o que é partilhado entre painéis vive aqui.                       ║\n// ║                                                                          ║\n// ║  ESTRUTURA DO FICHEIRO                                                   ║\n// ║  ─────────────────────────────────────────────────────────────────────  ║\n// ║  BLOCO 1 — CFG         Toda a configuração editável (cores, labels…)    ║\n// ║  BLOCO 2 — CSS         Estilos globais BPC (cards, pills, skeleton…)    ║\n// ║  BLOCO 3 — HTML        Render do cabeçalho NOC + relógio                ║\n// ║  BLOCO 4 — BOOTSTRAP   Namespace · utils · RPC · guards de versão       ║\n// ║                                                                          ║\n// ║  REGRA DE OURO: para mudar qualquer coisa visual ou textual,            ║\n// ║  editar APENAS o BLOCO 1. Não tocar nos outros blocos.                  ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗      ██╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ███║\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║     ██║\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║     ██║\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝     ██║\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝      ╚═╝\n//\n//  CONFIGURAÇÃO GLOBAL — EDITAR AQUI E APENAS AQUI\n//\n//  Contém:\n//    CFG_META    → versão, ambiente, URL da API Zabbix\n//    CFG_HEADER  → logótipo, título, subtítulo, labels\n//    CFG_THEME   → toda a paleta de cores BPC\n//    CFG_SIZES   → tipografia e espaçamentos do header\n//    CFG_PULSE   → animações de estado dos cards\n//    CFG_CLOCK   → idioma do relógio (dias, meses)\n//    CFG_THRESHOLDS → limites de alerta ICMP por defeito\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n// ── CFG_META — Identificação e infra ─────────────────────────────────────────\n//\n//  version   → identificador interno do runtime; incrementar em alterações\n//              incompatíveis (força re-inicialização do namespace BPC)\n//  apiUrl    → endpoint do proxy Grafana para a API Zabbix\n//              Alterar se o IP/porta do Grafana mudar\n\nconst CFG_META = {\n  version: 'v9',   // v9 — contrato §5.1 completo: BPC.THEME, BPC_SHARED, BPC_CHARTS, BPC.state (BLOCO 5)\n  apiUrl: 'http://10.10.126.22:3000/api/datasources/uid/3_KgG43nz/resources/zabbix-api',\n};\n\n\n// ── CFG_HEADER — Identidade visual do cabeçalho ───────────────────────────────\n//\n//  logoUrl   → caminho para a imagem do logótipo (relativo ao Grafana public/)\n//              '' → mostra o fallback textual com CFG_HEADER.title\n//  title     → texto principal (aparece a branco)\n//  nocLabel  → palavra destacada a dourado após o separador  |\n//  subtitle  → linha pequena por baixo do título\n//              '' → omite a linha de subtítulo\n//  objectContext → mostra no FINAL do título o nome do objecto seleccionado\n//              numa variável Grafana (router/interface/provedor/agência…) —\n//              obrigatório em qualquer dashboard N4/N5 com dropdown de\n//              selecção de objecto (ver engenharia-do-sistema.md §5.1).\n//              null → sem contexto (dashboards sem selecção, ex. N2/N3 lista)\n//              { urlVars: ['routerName'] }              → mostra o valor tal-e-qual\n//              { urlVars: ['routerName','iface'] }       → junta vários, nesta ordem\n//              { urlVars: ['provider'], labelMap: {...} } → troca o valor bruto\n//                (ex. regex) pelo label bonito antes de mostrar; usar quando o\n//                valor da variável não é directamente legível (ver N4 Provedor)\n\nconst CFG_HEADER = {\n  logoUrl: '/public/img/bpc-logo.png',\n  title: 'BPC NOC',\n  nocLabel: 'NOTIFICACOES - TRIGGERS E ENVIOS',   // ← TEMPLATE: cada dashboard edita (ex.: 'SERVIDORES VIRTUAIS - NIVEL 2')\n  subtitle: 'Banco de Poupança e Crédito · Centro de Operações de Rede',\n  backLink: null,                // ← N4: { url: '/d/<uid>/<slug>', label: '← N3 …' }\n  objectContext: null,           // ← TEMPLATE: definir nos dashboards com dropdown de objecto\n};\n\n\n// ── CFG_THEME — Paleta de cores BPC ──────────────────────────────────────────\n//\n//  navy   → fundo principal do header e cards (azul-marinho escuro)\n//  navy2  → fundo secundário / gradiente do header\n//  cyan   → accent primário: relógio, links, métricas informativas\n//  gold   → accent dourado: palavra \"NOC\", destaques especiais\n//  ok     → estado saudável (verde) — §6 modelo de estado\n//  warn   → estado de aviso (âmbar) — §6: #d29922 (decoplado do gold; ver nota)\n//  crit   → estado crítico / down (vermelho) — §6: #f85149\n//  info   → métrica informativa (igual ao cyan)\n//  mute   → texto e labels secundários (cinzento azulado)\n//\n//  NOTA v9: as cores de estado (ok/warn/crit) seguem o catálogo canónico do\n//  modelo de estado (engenharia §6/§6.1), para que BPC.state.color() e o CSS\n//  .bpc-* sejam UMA única fonte de verdade. O `gold` (#F0A500) mantém-se como\n//  accent de marca (palavra destacada no header), agora distinto do `warn`.\n\nconst CFG_THEME = {\n  navy: '#0B1341',\n  navy2: '#0E1A52',\n  cyan: '#00B4D8',\n  gold: '#F0A500',\n  ok: '#22C55E',\n  warn: '#d29922',\n  crit: '#f85149',\n  info: '#00B4D8',\n  mute: '#64748B',\n};\n\n\n// ── CFG_SIZES — Dimensões e tipografia ───────────────────────────────────────\n//\n//  Controla os tamanhos de texto e espaçamentos do header.\n//  Os cards usam as classes bpc-value-lg/md/sm definidas no BLOCO 2 (CSS).\n//\n//  header.padding       → padding vertical do wrapper (px) — manter ≤12 para\n//                         não expandir o painel Grafana\n//  header.borderTopW    → espessura da barra superior decorativa\n//  title.size           → tamanho do título principal \"BPC | NOC\"\n//  title.letterSpacing  → espaçamento entre letras do título (em)\n//  subtitle.size        → tamanho da linha de subtítulo\n//  clock.timeSize       → tamanho dos dígitos do relógio\n//  clock.dateSize       → tamanho da linha de data\n//  logo.height          → altura do logótipo em píxeis\n\nconst CFG_SIZES = {\n  header: {\n    padding: '8px 22px',\n    borderTopW: '2px',\n  },\n  title: {\n    size: '17px',\n    letterSpacing: '0.10em',\n  },\n  subtitle: {\n    size: '8px',\n  },\n  clock: {\n    timeSize: '22px',\n    dateSize: '8.5px',\n  },\n  logo: {\n    height: 36,   // px\n  },\n};\n\n\n// ── CFG_PULSE — Animações de estado dos cards ─────────────────────────────────\n//\n//  enabled:false → bordas estáticas coloridas (recomendado para ecrã NOC 24h,\n//                  reduz distracção e carga GPU)\n//  enabled:true  → borda + glow pulsante por estado\n//\n//  borderWidth   → espessura da borda dos cards em modo animado\n//  borderRadius  → raio dos cantos em modo animado\n//  intensity     → opacidade máxima do glow { warn, crit }  (0.0 – 1.0)\n//                  0 = sem glow, apenas borda\n//  speed         → período da animação em segundos { warn, crit }\n//  minSpeedSec   → velocidade mínima (evita animações demasiado rápidas)\n\nconst CFG_PULSE = {\n  enabled: false,\n  borderWidth: '2px',\n  borderRadius: '10px',\n  intensity: { warn: 0.10, crit: 0.38 },\n  speed: { warn: 6.0, crit: 2.2 },\n  minSpeedSec: 3.0,\n};\n\n\n// ── CFG_CLOCK — Localização do relógio ───────────────────────────────────────\n//\n//  Substituir arrays por traduções para outro idioma se necessário.\n//  Índice 0 = Domingo (padrão JS).\n\nconst CFG_CLOCK = {\n  days: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],\n  months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],\n};\n\n\n// ── CFG_THRESHOLDS — Limites de alerta ICMP por defeito ──────────────────────\n//\n//  Usados pelo utilitário fetchICMP quando o caller não passa thresholds.\n//  rttWarnMs    → RTT acima deste valor (ms) marca o host como \"degradado\"\n//  lossWarnPct  → packet loss acima deste valor (%) marca como \"degradado\"\n//  Valores alinhados com os macros Zabbix nos templates Cisco IOS by SNMP:\n//    {$ICMP_RESPONSE_TIME_WARN} = 0.15 s = 150 ms\n//    {$ICMP_LOSS_WARN}          = 20 %\n\nconst CFG_THRESHOLDS = {\n  rttWarnMs: 150,\n  lossWarnPct: 20,\n};\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██████╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ╚════██╗\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║      ███╔╝\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║     ██╔══╝\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝     ███████╗\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝      ╚══════╝\n//\n//  CSS GLOBAL BPC\n//\n//  Injectado UMA vez em <head>. Não editar directamente —\n//  os valores vêm do BLOCO 1 (CFG_THEME, CFG_PULSE).\n//\n//  Contém:\n//    • Variáveis CSS --bpc-* (sincronizadas com CFG_THEME)\n//    • Base .bpc\n//    • Cards (.bpc-card, ::before, estados, hover)\n//    • Layout helpers (.bpc-flex, .bpc-flex-col, .bpc-gap-*)\n//    • Tipografia (.bpc-label, .bpc-value-lg/md/sm)\n//    • Cores de estado (.bpc-ok, .bpc-warn, .bpc-crit, .bpc-info, .bpc-mute)\n//    • Pills (.bpc-pill ok/warn/down)\n//    • Skeleton loader (.bpc-skeleton)\n//    • Auxiliares (divider, timestamp, mini-bar, erro inline, status-bar)\n//    • CSS de pulse/bordas de estado (gerado a partir de CFG_PULSE)\n//    • CSS específico do header NOC (.bpc-noc-hdr, logo, título, relógio)\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function injectAllCSS() {\n\n  // ── CSS Global (cards, pills, layout, etc.) ───────────────────────────────\n\n  if (!document.getElementById('bpc-global-css')) {\n    const T = CFG_THEME;\n    const s = document.createElement('style');\n    s.id = 'bpc-global-css';\n    s.textContent = `\n\n      /* ── Variáveis BPC ───────────────────────────────────────────────\n         Definidas em :root E .theme-dark para cobrir os dois contextos\n         que o Grafana pode aplicar consoante o tema seleccionado.      */\n      :root,\n      .theme-dark,\n      [data-theme=\"dark\"] {\n        --bpc-navy:  ${T.navy};\n        --bpc-navy2: ${T.navy2};\n        --bpc-cyan:  ${T.cyan};\n        --bpc-gold:  ${T.gold};\n        --bpc-ok:    ${T.ok};\n        --bpc-warn:  ${T.warn};\n        --bpc-crit:  ${T.crit};\n        --bpc-info:  ${T.info};\n        --bpc-mute:  ${T.mute};\n      }\n\n      /* ── Base ────────────────────────────────────────────────────────\n         Fonte e box-model aplicados a todos os elementos BPC.          */\n      .bpc { font-family:'Inter','Segoe UI',sans-serif; box-sizing:border-box; }\n\n      /* ── Card ────────────────────────────────────────────────────────\n         Contentor principal de cada métrica.\n         --card-accent → cor da barra de topo; definir inline em cada card:\n           <div class=\"bpc-card\" style=\"--card-accent:#22C55E\">\n         O ::before gera a barra de 3px colorida no topo do card.       */\n      .bpc-card {\n        background:    rgba(14, 20, 60, 0.55);\n        border:        1px solid rgba(255,255,255,0.08);\n        border-radius: 10px;\n        padding:       13px 15px 11px;\n        position:      relative;\n        overflow:      hidden;\n        transition:    border-color .15s, background .15s;\n      }\n      .bpc-card::before {\n        content:       '';\n        position:      absolute;\n        top:0; left:0; right:0;\n        height:        3px;\n        background:    var(--card-accent, var(--bpc-cyan));\n        border-radius: 10px 10px 0 0;\n        z-index:       1;\n      }\n      .bpc-card:hover {\n        border-color: rgba(0,180,216,0.22);\n        background:   rgba(14,20,60,0.70);\n      }\n\n      /* ── Estados dos cards ───────────────────────────────────────────\n         .state-ok  → sem override (herda o estilo base do card)\n         .state-warn→ borda esquerda âmbar\n         .state-down→ borda esquerda vermelha + fundo levemente vermelho */\n      .bpc-card.state-ok   {}\n      .bpc-card.state-warn {\n        border-color: rgba(240,165,0,0.28);\n        border-left:  2px solid rgba(240,165,0,0.70);\n      }\n      .bpc-card.state-down {\n        border-color: rgba(239,68,68,0.28);\n        border-left:  2px solid rgba(239,68,68,0.75);\n        background:   rgba(239,68,68,0.04);\n      }\n\n      /* ── Layout helpers ──────────────────────────────────────────────\n         Utilitários de flexbox para compor o interior dos cards.       */\n      .bpc-flex     { display:flex; align-items:center; }\n      .bpc-flex-col { display:flex; flex-direction:column; }\n      .bpc-gap-4    { gap:4px;  }\n      .bpc-gap-8    { gap:8px;  }\n      .bpc-gap-12   { gap:12px; }\n\n      /* ── Tipografia ──────────────────────────────────────────────────\n         .bpc-label    → rótulo pequeno uppercase (ex: \"Total\", \"Down\")\n         .bpc-value-lg → número grande principal (ex: total de hosts)\n         .bpc-value-md → número médio (ex: down, warn)\n         .bpc-value-sm → valor pequeno (ex: RTT, Loss)                  */\n      .bpc-label    { font-size:.67rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--bpc-mute); }\n      .bpc-value-lg { font-size:1.80rem; font-weight:700; color:#E6EDF3; line-height:1; }\n      .bpc-value-md { font-size:1.10rem; font-weight:600; color:#E6EDF3; line-height:1; }\n      .bpc-value-sm { font-size:.85rem;  font-weight:600; color:#E6EDF3; line-height:1; }\n\n      /* ── Classes de cor de estado ────────────────────────────────────\n         Aplicar directamente a qualquer elemento de texto.             */\n      .bpc-ok   { color:var(--bpc-ok);   }\n      .bpc-warn { color:var(--bpc-warn); }\n      .bpc-crit { color:var(--bpc-crit); }\n      .bpc-info { color:var(--bpc-info); }\n      .bpc-mute { color:var(--bpc-mute); }\n\n      /* ── Pills ───────────────────────────────────────────────────────\n         Pastilha colorida de estado (ex: \"OK\", \"Degradado\", \"Down\").\n         .bpc-pill.down inclui animação de pulse para chamar a atenção.  */\n      .bpc-pill {\n        font-size:.65rem; font-weight:700; letter-spacing:.05em;\n        text-transform:uppercase; padding:2px 9px;\n        border-radius:10px; border:1px solid transparent;\n        white-space:nowrap; line-height:1.6;\n      }\n      .bpc-pill.ok   { background:rgba(34,197,94,0.10);  color:var(--bpc-ok);   border-color:rgba(34,197,94,0.25); }\n      .bpc-pill.warn { background:rgba(240,165,0,0.10);  color:var(--bpc-warn); border-color:rgba(240,165,0,0.28); }\n      .bpc-pill.down { background:rgba(239,68,68,0.10);  color:var(--bpc-crit); border-color:rgba(239,68,68,0.28);\n                       animation:bpc-pulse-pill 1.2s ease-in-out infinite; }\n      @keyframes bpc-pulse-pill {\n        0%,100% { box-shadow:0 0 0 0   rgba(239,68,68,0.45); }\n        50%     { box-shadow:0 0 0 4px rgba(239,68,68,0);    }\n      }\n\n      /* ── Skeleton loader ─────────────────────────────────────────────\n         Animação de shimmer enquanto os dados carregam.                */\n      .bpc-skeleton {\n        background:      linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.09) 50%,rgba(255,255,255,0.04) 75%);\n        background-size: 200% 100%;\n        animation:       bpc-shimmer 1.4s infinite;\n        border-radius:   4px;\n      }\n      @keyframes bpc-shimmer {\n        0%   { background-position: 200%  0; }\n        100% { background-position:-200%  0; }\n      }\n\n      /* ── Auxiliares ──────────────────────────────────────────────────\n         .bpc-divider   → separador vertical subtil entre colunas\n         .bpc-timestamp → data/hora de actualização no rodapé do card   */\n      .bpc-divider   { width:1px; align-self:stretch; flex-shrink:0; background:rgba(255,255,255,0.07); }\n      .bpc-timestamp { font-size:.58rem; color:rgba(255,255,255,0.18); text-align:right; margin-top:4px; }\n\n      /* ── Mini bar (histograma de actividade) ─────────────────────────\n         Representação visual de histórico de valores (ex: RTT).\n         Cada segmento tem altura proporcional ao valor relativo.        */\n      .bpc-mini-bar { display:flex; align-items:flex-end; gap:2px; height:22px; margin-top:8px; }\n      .bpc-bar-seg  { flex:1; border-radius:2px 2px 0 0; background:var(--card-accent,var(--bpc-cyan));\n                      opacity:.45; min-height:2px; transition:opacity .2s; }\n      .bpc-card:hover .bpc-bar-seg { opacity:.68; }\n\n      /* ── Erro inline ─────────────────────────────────────────────────\n         Bloco de erro visível dentro de um card quando a API falha.    */\n      .bpc-error-msg {\n        display:flex; align-items:center; gap:6px;\n        font-size:.70rem; color:rgba(239,68,68,0.85);\n        background:rgba(239,68,68,0.07);\n        border-left:2px solid rgba(239,68,68,0.35);\n        border-radius:0 5px 5px 0;\n        padding:4px 8px; margin-top:6px;\n      }\n\n      /* ── Status bar global ───────────────────────────────────────────\n         Barra de resumo \"OK: N · Degradado: N · Crítico: N\"            */\n      .bpc-status-bar  { display:flex; align-items:center; gap:8px; padding:4px 0 8px; flex-wrap:wrap; }\n      .bpc-status-pill {\n        display:flex; align-items:center; gap:5px;\n        font-size:.67rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase;\n        padding:3px 10px; border-radius:20px; border:1px solid transparent; white-space:nowrap;\n      }\n      .bpc-status-pill.ok   { background:rgba(34,197,94,0.08);  color:var(--bpc-ok);   border-color:rgba(34,197,94,0.20); }\n      .bpc-status-pill.warn { background:rgba(240,165,0,0.08);  color:var(--bpc-warn); border-color:rgba(240,165,0,0.22); }\n      .bpc-status-pill.crit { background:rgba(239,68,68,0.08);  color:var(--bpc-crit); border-color:rgba(239,68,68,0.22); }\n      .bpc-status-dot  { width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0; }\n      .bpc-status-sep  { width:1px; height:14px; background:rgba(255,255,255,0.12); margin:0 2px; flex-shrink:0; }\n\n    `;\n    document.head.appendChild(s);\n    if (window.BPC?.log) BPC.log('CSS global injectado (' + CFG_META.version + ')');\n  }\n\n\n  // ── CSS de Pulse / bordas de estado ──────────────────────────────────────\n  //\n  //  Gerado a partir de CFG_PULSE (BLOCO 1).\n  //  enabled:false → bordas estáticas (sem animação, recomendado para NOC 24h)\n  //  enabled:true  → animação de glow pulsante\n\n  if (!document.getElementById('bpc-pulse-css')) {\n    const p = CFG_PULSE;\n    const T = CFG_THEME;\n    const s = document.createElement('style');\n    s.id = 'bpc-pulse-css';\n\n    if (!p.enabled) {\n      // Bordas estáticas — mais limpo para uso contínuo\n      s.textContent = [\n        '.bpc-card.state-ok   {}',\n        '.bpc-card.state-warn { border-color:rgba(240,165,0,0.30); border-left:2px solid rgba(240,165,0,0.70); }',\n        '.bpc-card.state-down { border-color:rgba(239,68,68,0.30); border-left:2px solid rgba(239,68,68,0.75); background:rgba(239,68,68,0.04); }',\n      ].join('\\n');\n      document.head.appendChild(s);\n      if (window.BPC?.log) BPC.log('Pulse: bordas estáticas (enabled=false)');\n    } else {\n      // Glow animado — gerado dinamicamente a partir de CFG_PULSE e CFG_THEME\n      const hex = v => Math.round(Math.max(0, Math.min(1, v)) * 255).toString(16).padStart(2, '0');\n      const wS = Math.max(p.minSpeedSec, p.speed.warn) + 's';\n      const cS = Math.max(p.minSpeedSec, p.speed.crit) + 's';\n      s.textContent = `\n        @keyframes bpc-warn {\n          0%,100%{ border-color:${T.warn}44; box-shadow:0 0 0 0 ${T.warn}${hex(p.intensity.warn)}; }\n          50%    { border-color:${T.warn};   box-shadow:0 0 10px 2px ${T.warn}${hex(p.intensity.warn)}; }\n        }\n        @keyframes bpc-down {\n          0%,100%{ border-color:${T.crit}55; box-shadow:0 0 0 0 ${T.crit}${hex(p.intensity.crit)}; background:rgba(239,68,68,0.03); }\n          50%    { border-color:${T.crit};   box-shadow:0 0 14px 3px ${T.crit}${hex(p.intensity.crit)}; background:rgba(239,68,68,0.07); }\n        }\n        .bpc-card.state-warn{ border:${p.borderWidth} solid ${T.warn}60; border-radius:${p.borderRadius}; animation:bpc-warn ${wS} ease-in-out infinite; }\n        .bpc-card.state-down{ border:${p.borderWidth} solid ${T.crit}70; border-radius:${p.borderRadius}; animation:bpc-down ${cS} ease-in-out infinite; }\n      `;\n      document.head.appendChild(s);\n      if (window.BPC?.log) BPC.log('Pulse: animado — warn:' + wS + ' crit:' + cS);\n    }\n  }\n\n\n  // ── CSS do Header NOC ─────────────────────────────────────────────────────\n  //\n  //  Gerado a partir de CFG_SIZES e CFG_THEME (BLOCO 1).\n  //\n  //  NOTA v8: padding controlado por CFG_SIZES.header.padding.\n  //  Manter ≤12px vertical para não expandir o painel Grafana.\n  //  Sem position:relative ou overflow:hidden no wrapper — evita expansão.\n  //  Sem elementos com position:absolute — evita que o browser expanda\n  //  o container para acomodar conteúdo \"fora do fluxo\".\n\n  if (!document.getElementById('bpc-header-css')) {\n    const Z = CFG_SIZES;\n    const s = document.createElement('style');\n    s.id = 'bpc-header-css';\n    s.textContent = `\n\n      /* ── Wrapper do header ───────────────────────────────────────────\n         Gradiente horizontal navy → navy2 → navy com linha superior cyan */\n      .bpc-noc-hdr {\n        display:       flex;\n        align-items:   center;\n        gap:           16px;\n        background:    linear-gradient(90deg, ${CFG_THEME.navy} 0%, ${CFG_THEME.navy2} 50%, ${CFG_THEME.navy} 100%);\n        border:        1px solid rgba(0,180,216,0.14);\n        border-top:    ${Z.header.borderTopW} solid rgba(0,180,216,0.40);\n        border-radius: 10px;\n        padding:       ${Z.header.padding};\n        height:        100%;\n        box-sizing:    border-box;\n        font-family:   'Inter','Segoe UI',sans-serif;\n      }\n\n      /* ── Logótipo ────────────────────────────────────────────────────\n         .bpc-noc-logo-fallback → exibido quando a imagem falha (onerror) */\n      .bpc-noc-logo          { height:${Z.logo.height}px; flex-shrink:0; }\n      .bpc-noc-logo-fallback {\n        height:${Z.logo.height}px; width:52px; flex-shrink:0;\n        background:rgba(255,255,255,0.04);\n        border:1px dashed rgba(255,255,255,0.12);\n        border-radius:7px; display:flex; align-items:center;\n        justify-content:center; font-size:10px; font-weight:800;\n        color:rgba(255,255,255,0.28); letter-spacing:1px;\n      }\n\n      /* ── Centro — título e subtítulo ─────────────────────────────────\n         <em> dentro do título → cor dourada (nocLabel)                  */\n      .bpc-noc-center { flex:1; text-align:center; }\n      .bpc-noc-title  {\n        font-size:${Z.title.size}; font-weight:800; letter-spacing:${Z.title.letterSpacing};\n        text-transform:uppercase; color:#fff; line-height:1;\n      }\n      .bpc-noc-title em { color:var(--bpc-gold, ${CFG_THEME.gold}); font-style:normal; }\n      .bpc-noc-context {\n        color:var(--bpc-cyan, ${CFG_THEME.cyan}); font-weight:700;\n        text-transform:none; letter-spacing:normal;\n      }\n      .bpc-noc-sub    {\n        font-size:${Z.subtitle.size}; color:rgba(255,255,255,0.22);\n        letter-spacing:.14em; text-transform:uppercase; margin-top:4px;\n      }\n\n      /* ── Relógio ─────────────────────────────────────────────────────\n         Dígitos com tabular-nums para evitar saltos visuais ao mudar    */\n      .bpc-noc-right { text-align:right; flex-shrink:0; }\n      .bpc-noc-time  {\n        font-size:${Z.clock.timeSize}; font-weight:800; color:var(--bpc-cyan, ${CFG_THEME.cyan});\n        letter-spacing:3px; display:block;\n        font-variant-numeric:tabular-nums; line-height:1;\n      }\n      .bpc-noc-date  {\n        font-size:${Z.clock.dateSize}; color:rgba(255,255,255,0.22);\n        margin-top:3px; text-transform:capitalize;\n      }\n\n    `;\n    document.head.appendChild(s);\n    if (window.BPC?.log) BPC.log('CSS header injectado (' + CFG_META.version + ')');\n  }\n\n})(); // fim BLOCO 2\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██████╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ╚════██╗\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║      ▄███╔╝\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║      ▀▀══╝\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝      ██╗\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝       ╚═╝\n//\n//  HTML DO CABEÇALHO NOC\n//\n//  Aguarda o elemento #bpc-header-root no DOM (injectado pelo painel\n//  Grafana \"Text\") e preenche-o com o cabeçalho.\n//\n//  Contém:\n//    • Função renderHeader(el) → gera o HTML do cabeçalho\n//    • Função renderClock()    → actualiza hora + data a cada segundo\n//    • Polling para #bpc-header-root (timeout 10s)\n//\n//  Todo o texto e aparência vêm de CFG_HEADER, CFG_SIZES, CFG_THEME (BLOCO 1).\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function initHeader() {\n\n  // ── renderClock — actualiza #bpc-clock-time e #bpc-clock-date ────────────\n\n  function renderClock() {\n    const now = new Date();\n    const pad = n => String(n).padStart(2, '0');\n    const tEl = document.getElementById('bpc-clock-time');\n    const dEl = document.getElementById('bpc-clock-date');\n    if (!tEl || !dEl) return;\n    tEl.textContent =\n      pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());\n    dEl.textContent =\n      CFG_CLOCK.days[now.getDay()] + ', ' +\n      now.getDate() + ' de ' +\n      CFG_CLOCK.months[now.getMonth()] + ' de ' +\n      now.getFullYear();\n  }\n\n\n  // ── renderContext — actualiza #bpc-noc-context com o objecto seleccionado ─\n  //\n  //  Lê CFG_HEADER.objectContext.urlVars directamente do URL (var-<nome>) a\n  //  cada tick do relógio — não depende de a query do painel referenciar a\n  //  variável, por isso funciona mesmo quando a âncora do painel é fixa\n  //  (caso normal nestes dashboards, para o header não desaparecer se o\n  //  objecto seleccionado estiver down). Grafana actualiza o URL via\n  //  pushState ao mudar uma variável (sem recarregar a página), por isso\n  //  reler window.location.search a cada segundo apanha a mudança sem\n  //  precisar de um evento dedicado.\n\n  function resolveObjectContext() {\n    const cfg = CFG_HEADER.objectContext;\n    if (!cfg || !cfg.urlVars || !cfg.urlVars.length) return '';\n    const params = new URLSearchParams(window.location.search);\n    const parts = cfg.urlVars\n      .map(v => {\n        const raw = params.get('var-' + v);\n        if (!raw) return null;\n        if (raw === '$__all') return cfg.allLabel || 'Todas';   // \"All\" seleccionado\n        if (raw.charAt(0) === '$') return null;                 // valor de variavel nao interpolado\n        if (cfg.labelMap && cfg.labelMap[raw]) return cfg.labelMap[raw];\n        return raw;\n      })\n      .filter(Boolean);\n    return parts.join(cfg.separator || ' · ');\n  }\n\n  function renderContext() {\n    const el = document.getElementById('bpc-noc-context');\n    if (!el) return;\n    const txt = resolveObjectContext();\n    el.textContent = txt ? ('· ' + txt) : '';\n    el.style.display = txt ? '' : 'none';\n  }\n\n\n  // ── renderHeader — gera o HTML e inicia o relógio ─────────────────────────\n  //\n  //  Estrutura:\n  //    .bpc-noc-hdr\n  //    ├── [logo ou fallback textual]\n  //    ├── .bpc-noc-center  (título + subtítulo)\n  //    └── .bpc-noc-right   (relógio + data)\n\n  function renderHeader(el) {\n    const C = CFG_HEADER;\n    const Z = CFG_SIZES;\n\n    // Logótipo: tenta carregar a imagem; se falhar, mostra fallback textual\n    const logoHTML = C.logoUrl\n      ? `<img src=\"${C.logoUrl}\"\n              height=\"${Z.logo.height}\"\n              class=\"bpc-noc-logo\"\n              onerror=\"this.style.display='none';this.nextElementSibling.style.display='flex'\">\n         <div class=\"bpc-noc-logo-fallback\" style=\"display:none\">${C.title}</div>`\n      : `<div class=\"bpc-noc-logo-fallback\">${C.title}</div>`;\n\n    const backHTML = C.backLink\n      ? `<a href=\"${C.backLink.url}\" style=\"display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:4px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.55);font-size:.78rem;font-weight:600;letter-spacing:.04em;text-decoration:none;border:1px solid rgba(255,255,255,0.10);transition:background .15s\" onmouseover=\"this.style.background='rgba(255,255,255,0.13)'\" onmouseout=\"this.style.background='rgba(255,255,255,0.07)'\">${C.backLink.label}</a>`\n      : '';\n\n    el.innerHTML = `\n      <div class=\"bpc-noc-hdr\">\n\n        <!-- Logótipo + back-link -->\n        <div style=\"display:flex;flex-direction:column;align-items:flex-start;gap:6px;flex-shrink:0\">\n          <div style=\"display:flex;align-items:center;gap:10px\">\n            ${logoHTML}\n          </div>\n          ${backHTML}\n        </div>\n\n        <!-- Título + Subtítulo -->\n        <div class=\"bpc-noc-center\">\n          <div class=\"bpc-noc-title\">\n            ${C.title} &nbsp;|&nbsp; <em>${C.nocLabel}</em> <span class=\"bpc-noc-context\" id=\"bpc-noc-context\"></span>\n          </div>\n          ${C.subtitle ? `<div class=\"bpc-noc-sub\">${C.subtitle}</div>` : ''}\n        </div>\n\n        <!-- Relógio -->\n        <div class=\"bpc-noc-right\">\n          <span class=\"bpc-noc-time\" id=\"bpc-clock-time\">--:--:--</span>\n          <div  class=\"bpc-noc-date\" id=\"bpc-clock-date\">…</div>\n        </div>\n\n      </div>`;\n\n    // Inicia o relógio (limpa timer anterior se o header for re-renderizado)\n    // — a mesma tick actualiza o contexto do objecto seleccionado (§ renderContext)\n    if (window._bpc_clock_interval) clearInterval(window._bpc_clock_interval);\n    renderClock();\n    renderContext();\n    window._bpc_clock_interval = setInterval(() => { renderClock(); renderContext(); }, 1000);\n\n    if (window.BPC?.log) BPC.log('Header renderizado (' + CFG_META.version + ')');\n  }\n\n\n  // ── Aguardar #bpc-header-root no DOM ─────────────────────────────────────\n  //\n  //  O Grafana injecta os painéis de forma assíncrona; o elemento pode\n  //  ainda não existir quando este script executa.\n  //  Polling a cada 50ms com timeout de 10s.\n\n  const t0 = Date.now();\n  const poll = setInterval(() => {\n    const el = document.getElementById('bpc-header-root');\n    if (el) {\n      clearInterval(poll);\n      renderHeader(el);\n      return;\n    }\n    if (Date.now() - t0 > 10000) {\n      clearInterval(poll);\n      console.warn('[BPC] Header: #bpc-header-root não encontrado após 10s');\n    }\n  }, 50);\n\n})(); // fim BLOCO 3\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ██╗  ██╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ██║  ██║\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║    ███████║\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║    ╚════██║\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝         ██║\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝          ╚═╝\n//\n//  BOOTSTRAP — NAMESPACE · UTILS · RPC\n//\n//  Inicializa o namespace global window.BPC e expõe:\n//    BPC.rpc        → função async para chamar a API Zabbix via Grafana proxy\n//    BPC.utils      → utilitários partilhados (formatação, builders, ICMP…)\n//    BPC.log        → wrapper de console com prefixo [BPC]\n//    BPC.onReady    → registar callback a executar quando o runtime estiver pronto\n//    BPC.setReady   → chamado internamente ao criar o rpc; dispara callbacks\n//    window.waitForBPC → helper global para painéis que precisam do runtime\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function bootstrap() {\n\n  const VERSION = CFG_META.version;\n\n\n  // ── Guard — evita dupla inicialização ────────────────────────────────────\n  //\n  //  Se já existir uma instância com a mesma versão E o mesmo apiUrl E todos\n  //  os componentes presentes, termina sem fazer nada.\n  //  Se o estado for parcial (crash parcial, recarga do painel), reinicializa.\n  //\n  //  Porquê comparar também o apiUrl (não só a versão): a versão (VERSION)\n  //  é igual em todas as cópias deste ficheiro (ex. 'v9'), mas cada dashboard\n  //  aponta a um datasource Zabbix diferente (Infra vs Network). Ao navegar\n  //  de um dashboard para outro por link interno do Grafana (SPA, sem reload\n  //  de página), o window.BPC do dashboard anterior fica residente. Sem esta\n  //  comparação, o guard via \"versão igual\" e devolvia sem recriar o rpc —\n  //  os painéis do dashboard novo ficavam a usar o rpc (e o datasource) do\n  //  dashboard anterior, devolvendo sempre 0 resultados. Confirmado ao vivo\n  //  2026-07-03: N1 (Infra) → clique \"Ver N2 →\" (Rede) sem reload → N2 Rede\n  //  com todos os painéis a 0, porque herdava o rpc apontado ao Infra.\n\n  if (window.BPC && window.BPC.version === VERSION && window.BPC._apiUrl === CFG_META.apiUrl) {\n    const ok =\n      !!document.getElementById('bpc-global-css') &&\n      typeof (window.BPC.utils && window.BPC.utils.waitForElement) === 'function' &&\n      typeof window.BPC.rpc === 'function' &&\n      typeof window.BPC.log === 'function';\n    if (ok) return;\n    // Init em curso noutro afterRender concorrente — não re-inicializar\n    if (window.BPC._initPending) return;\n    console.warn('[BPC] Estado parcial — reinicializando (' + VERSION + ')');\n    window.BPC._ready = false;\n    window.BPC.rpc = null;\n  } else if (window.BPC && window.BPC.version === VERSION) {\n    console.warn('[BPC] apiUrl mudou face à instância residente — reinicializando runtime para este dashboard (' + VERSION + ')');\n  }\n  if (!window.BPC) window.BPC = {};\n  window.BPC._initPending = true;\n\n\n  // ── Namespace window.BPC ─────────────────────────────────────────────────\n\n  window.BPC = window.BPC || {};\n  Object.assign(window.BPC, {\n    version: VERSION,\n    _apiUrl: CFG_META.apiUrl,\n    rpc: null,\n    _ready: false,\n    _callbacks: window.BPC._callbacks || [],\n\n    // Registar um callback para quando o runtime estiver pronto.\n    // Se já estiver pronto, executa imediatamente.\n    onReady(cb) {\n      if (this._ready && typeof this.rpc === 'function') {\n        try { cb(this.rpc); } catch (e) { console.error('[BPC] onReady:', e); }\n      } else {\n        this._callbacks.push(cb);\n      }\n    },\n\n    // Chamado internamente para marcar o runtime como pronto e\n    // disparar todos os callbacks acumulados em onReady().\n    setReady(rpcFn) {\n      this.rpc = rpcFn;\n      this._ready = true;\n      this._initPending = false;\n      BPC.log('Runtime pronto');\n      this._callbacks.splice(0).forEach(cb => {\n        try { cb(rpcFn); } catch (e) { console.error('[BPC] setReady:', e); }\n      });\n    },\n  });\n\n\n  // ── BPC.log ───────────────────────────────────────────────────────────────\n\n  window.BPC.log = function (msg, level) {\n    const p = '[BPC]';\n    if (level === 'error') console.error(p, msg);\n    else if (level === 'warn') console.warn(p, msg);\n    else console.log(p, msg);\n  };\n\n  const BPC = window.BPC;\n\n\n  // ── window.waitForBPC ────────────────────────────────────────────────────\n  //\n  //  Usado pelos painéis individuais para aguardar o runtime.\n  //  Polling a cada 30ms com timeout de 15s.\n  //  Se expirar, mostra aviso nos cards que ainda estejam vazios.\n\n  if (typeof window.waitForBPC !== 'function' || window.waitForBPC._v !== VERSION) {\n    window.waitForBPC = function (cb) {\n      const t0 = Date.now();\n      const poll = setInterval(() => {\n        if (\n          window.BPC?._ready &&\n          typeof window.BPC.rpc === 'function' &&\n          typeof window.BPC.utils?.waitForElement === 'function' &&\n          typeof window.BPC.log === 'function'\n        ) {\n          clearInterval(poll);\n          try { cb(window.BPC.rpc); } catch (e) { console.error('[BPC] waitForBPC:', e); }\n          return;\n        }\n        if (Date.now() - t0 > 15000) {\n          clearInterval(poll);\n          console.error('[BPC] waitForBPC: timeout 15s');\n          // Mostra aviso nos cards que ainda não foram preenchidos\n          document.querySelectorAll('[id^=\"bpc-card-\"]').forEach(el => {\n            if (!el.innerHTML.trim())\n              el.innerHTML = '<div style=\"color:#EF4444;padding:12px;font-size:.75rem\">⚠ Header não inicializou</div>';\n          });\n        }\n      }, 30);\n    };\n    window.waitForBPC._v = VERSION;\n    BPC.log('waitForBPC registado (' + VERSION + ')');\n  }\n\n\n  // ── BPC.utils ────────────────────────────────────────────────────────────\n  //\n  //  Utilitários partilhados por todos os painéis.\n  //\n  //  Grupos:\n  //    DOM          → waitForElement, startRefresh\n  //    Estado       → stateClass, stateAccent, stateLabel, statePillClass,\n  //                   stateAbove, stateBelow\n  //    Formatação   → fmtBytes, fmtMb, fmtMs, fmtPct, fmtTime\n  //    Dados        → fetchICMP\n  //    Visualização → buildSparkline, buildMiniBar\n  //    Builders     → buildLayerCard, buildError, buildSkeleton, buildStatusBar\n\n  window.BPC.utils = {\n\n    // ── DOM ───────────────────────────────────────────────────────────────\n\n    // Aguarda um elemento pelo ID e chama cb quando disponível (timeout ms)\n    waitForElement(id, cb, ms) {\n      const t0 = Date.now();\n      const p = setInterval(() => {\n        const el = document.getElementById(id);\n        if (el) { clearInterval(p); cb(el); return; }\n        if (Date.now() - t0 > (ms || 10000)) { clearInterval(p); BPC.log('waitForElement: timeout #' + id, 'warn'); }\n      }, 50);\n    },\n\n    // Inicia (ou reinicia) um setInterval associado ao elemento\n    startRefresh(el, fn, ms) {\n      if (el._bpcTimer) clearInterval(el._bpcTimer);\n      el._bpcTimer = setInterval(fn, ms);\n    },\n\n\n    // ── Estado ────────────────────────────────────────────────────────────\n\n    // Devolve a classe CSS de cor para o estado dado ('ok'|'warn'|'down')\n    stateClass(s) { return { ok: 'bpc-ok', warn: 'bpc-warn', down: 'bpc-crit' }[s] || 'bpc-mute'; },\n\n    // Devolve a cor hexadecimal do accent para o estado dado\n    stateAccent(s) { const C = window.BPC.theme; return { ok: C.ok, warn: C.warn, down: C.crit }[s] || C.mute; },\n\n    // Devolve o label legível para o estado dado\n    stateLabel(s) { return { ok: 'OK', warn: 'Degradado', down: 'Down' }[s] || '—'; },\n\n    // Devolve a classe da pill para o estado dado\n    statePillClass(s) { return { ok: 'ok', warn: 'warn', down: 'down' }[s] || 'ok'; },\n\n    // Estado por threshold crescente: ok → warn → down (ex: CPU, latência)\n    // thr = { warn: Number, crit: Number }\n    stateAbove(v, t) { if (v == null || isNaN(v)) return 'mute'; if (v >= t.crit) return 'down'; if (v >= t.warn) return 'warn'; return 'ok'; },\n\n    // Estado por threshold decrescente: ok → warn → down (ex: disponibilidade)\n    stateBelow(v, t) { if (v == null || isNaN(v)) return 'mute'; if (v <= t.crit) return 'down'; if (v <= t.warn) return 'warn'; return 'ok'; },\n\n\n    // ── Formatação ────────────────────────────────────────────────────────\n\n    fmtBytes(b) { if (b == null || isNaN(b) || b < 0) return '—'; if (b >= 1e12) return (b / 1e12).toFixed(2) + ' TB'; if (b >= 1e9) return (b / 1e9).toFixed(1) + ' GB'; if (b >= 1e6) return (b / 1e6).toFixed(1) + ' MB'; if (b >= 1e3) return (b / 1e3).toFixed(0) + ' KB'; return b + ' B'; },\n    fmtMb(mb) { if (mb == null || isNaN(mb) || mb < 0) return '—'; if (mb >= 1048576) return (mb / 1048576).toFixed(2) + ' TB'; if (mb >= 1024) return (mb / 1024).toFixed(1) + ' GB'; return mb + ' MB'; },\n    fmtMs(ms) { if (ms == null || isNaN(ms) || ms < 0) return '—'; if (ms >= 1000) return (ms / 1000).toFixed(2) + ' s'; return ms.toFixed(2) + ' ms'; },\n    fmtPct(v, d) { if (v == null || isNaN(v)) return '—'; return v.toFixed(d ?? 1) + '%'; },\n    fmtTime(u) { if (!u) return '—'; return new Date(u * 1000).toLocaleTimeString('pt-PT'); },\n\n\n    // ── Dados — fetchICMP ─────────────────────────────────────────────────\n    //\n    //  Consulta o Zabbix para um grupo de hosts e devolve:\n    //  { total, down, warn, ok, rtt, loss, sparkData }\n    //\n    //  rpc     → função BPC.rpc\n    //  groupid → ID do host group no Zabbix\n    //  thr     → { rttWarnMs, lossWarnPct } — omitir usa CFG_THRESHOLDS\n\n    async fetchICMP(rpc, groupid, thr) {\n      const rttWarn = thr?.rttWarnMs || CFG_THRESHOLDS.rttWarnMs;\n      const lossWarn = thr?.lossWarnPct || CFG_THRESHOLDS.lossWarnPct;\n      BPC.log('fetchICMP → groupid=' + groupid);\n\n      // Busca todos os items ICMP do grupo\n      const allItems = await rpc('item.get', {\n        groupids: [groupid],\n        search: { key_: 'icmpping' },\n        filter: { status: 0 },\n        output: ['hostid', 'key_', 'lastvalue', 'itemid'],\n      });\n\n      // Agrupa por host\n      const byHost = {};\n      allItems.forEach(i => {\n        if (!byHost[i.hostid]) byHost[i.hostid] = { up: null, rtt: 0, loss: 0, rttItemId: null };\n        const h = byHost[i.hostid];\n        if (i.key_ === 'icmpping') h.up = i.lastvalue === '1';\n        if (i.key_.startsWith('icmppingsec')) { h.rtt = parseFloat(i.lastvalue) * 1000; h.rttItemId = i.itemid; }\n        if (i.key_.startsWith('icmppingloss')) h.loss = parseFloat(i.lastvalue);\n      });\n\n      const hostIds = Object.keys(byHost);\n      const total = hostIds.length;\n      if (!total) return { total: 0, down: 0, warn: 0, ok: 0, rtt: 0, loss: 0, sparkData: [] };\n\n      // Classifica cada host\n      const downSet = new Set(), warnSet = new Set();\n      hostIds.forEach(id => {\n        const h = byHost[id];\n        if (h.up === false || h.up === null) downSet.add(id);\n        else if (h.rtt > rttWarn || h.loss > lossWarn) warnSet.add(id);\n      });\n\n      // Médias dos hosts UP\n      const upIds = hostIds.filter(id => !downSet.has(id));\n      const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;\n      const avgRtt = avg(upIds.map(id => byHost[id].rtt).filter(v => v > 0));\n      const avgLoss = avg(upIds.map(id => byHost[id].loss).filter(v => v > 0));\n\n      // Histórico RTT para o sparkline (último 1h, 30 pontos)\n      let sparkData = [];\n      const firstUp = upIds.find(id => byHost[id].rttItemId);\n      if (firstUp) {\n        const now = Math.floor(Date.now() / 1000);\n        const hist = await rpc('history.get', {\n          itemids: [byHost[firstUp].rttItemId],\n          time_from: now - 3600, time_till: now,\n          output: 'extend', sortfield: 'clock', sortorder: 'ASC', limit: 30,\n        });\n        sparkData = hist.map(h => parseFloat(h.value) * 1000);\n      }\n\n      BPC.log('fetchICMP ← total=' + total + ' down=' + downSet.size + ' warn=' + warnSet.size);\n      return { total, down: downSet.size, warn: warnSet.size, ok: Math.max(0, total - downSet.size - warnSet.size), rtt: avgRtt, loss: avgLoss, sparkData };\n    },\n\n\n    // ── Visualização — buildSparkline ─────────────────────────────────────\n    //\n    //  Gera um SVG de linha (140×32) a partir de um array de valores.\n    //  Usado em cards que precisam de um gráfico inline simples.\n\n    buildSparkline(data, color) {\n      if (!data || data.length < 2) return '';\n      const W = 140, H = 32, mn = Math.min(...data), mx = Math.max(...data), rng = mx - mn || 1, step = W / (data.length - 1);\n      const pts = data.map((v, i) => (i * step).toFixed(1) + ',' + (H - ((v - mn) / rng) * (H - 4) - 2).toFixed(1)).join(' ');\n      return `<svg width=\"${W}\" height=\"${H}\" viewBox=\"0 0 ${W} ${H}\"><polyline points=\"${pts}\" fill=\"none\" stroke=\"${color || 'var(--bpc-cyan)'}\" stroke-width=\"1.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\" opacity=\"0.80\"/></svg>`;\n    },\n\n\n    // ── Visualização — buildMiniBar ───────────────────────────────────────\n    //\n    //  Gera um histograma de barras verticais a partir de um array de valores.\n    //  As alturas são normalizadas entre o min e max do array.\n\n    buildMiniBar(data, color) {\n      if (!data || !data.length) return '';\n      const mn = Math.min(...data), mx = Math.max(...data), rng = mx - mn || 1;\n      const st = color ? `background:${color};` : '';\n      return '<div class=\"bpc-mini-bar\">'\n        + data.map(v => `<div class=\"bpc-bar-seg\" style=\"height:${Math.max(8, Math.round(((v - mn) / rng) * 100))}%;${st}\"></div>`).join('')\n        + '</div>';\n    },\n\n\n    // ── Builder — buildLayerCard ──────────────────────────────────────────\n    //\n    //  Gera o HTML completo de um card de camada de rede (ICMP).\n    //\n    //  cfg = { label, dashUid, color?, groupid? }\n    //  d   = { total, down, warn, ok, rtt, loss, sparkData? }\n\n    buildLayerCard(cfg, d) {\n      const u = window.BPC.utils;\n      const status = d.down > 0 ? 'down' : d.warn > 0 ? 'warn' : 'ok';\n      const accent = cfg.color || u.stateAccent(status);\n      const avail = d.total > 0 ? Math.round((d.ok / d.total) * 100) : 0;\n      const aC = avail === 100 ? 'bpc-ok' : avail >= 80 ? 'bpc-warn' : 'bpc-crit';\n      const barData = (d.sparkData && d.sparkData.length > 1) ? d.sparkData : Array.from({ length: 14 }, () => Math.random() * 100);\n      const bar = u.buildMiniBar(barData, accent);\n      const rttLabel = d.down === d.total ? '—' : u.fmtMs(d.rtt);\n      const lossLabel = d.down === d.total ? '—' : u.fmtPct(d.loss);\n      const lossClass = d.loss > 5 ? 'bpc-warn' : 'bpc-ok';\n\n      return `<a href=\"/d/${cfg.dashUid}\" style=\"text-decoration:none;display:block;height:100%\">\n        <div class=\"bpc bpc-card state-${status}\" style=\"--card-accent:${accent};height:100%;cursor:pointer;display:flex;flex-direction:column;gap:8px;\">\n          <div class=\"bpc-flex\" style=\"justify-content:space-between;align-items:flex-start\">\n            <div>\n              <div class=\"bpc-label\" style=\"margin-bottom:2px\">NOC · Compute</div>\n              <div style=\"font-size:.90rem;font-weight:700;color:#E6EDF3;line-height:1.2\">${cfg.label}</div>\n            </div>\n            <span class=\"bpc-pill ${u.statePillClass(status)}\">${u.stateLabel(status)}</span>\n          </div>\n          <div class=\"bpc-flex bpc-gap-12\">\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-lg\">${d.total}</span><span class=\"bpc-label\">Total</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-md bpc-crit\">${d.down}</span><span class=\"bpc-label\">Down</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-md bpc-warn\">${d.warn}</span><span class=\"bpc-label\">Degradado</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\" style=\"margin-left:auto;text-align:right\">\n              <span class=\"bpc-value-md ${aC}\">${avail}%</span>\n              <span class=\"bpc-label\">Disponib.</span>\n            </div>\n          </div>\n          <div class=\"bpc-flex bpc-gap-12\">\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-sm bpc-info\">${rttLabel}</span><span class=\"bpc-label\">RTT médio</span></div>\n            <div class=\"bpc-flex-col bpc-gap-4\"><span class=\"bpc-value-sm ${lossClass}\">${lossLabel}</span><span class=\"bpc-label\">Loss médio</span></div>\n          </div>\n          ${bar}\n          <div class=\"bpc-flex\" style=\"justify-content:space-between;margin-top:auto;padding-top:4px\">\n            <span style=\"font-size:.68rem;color:var(--bpc-cyan)\">Ver detalhe →</span>\n            <span class=\"bpc-timestamp\">Grupo ${cfg.groupid || '—'}</span>\n          </div>\n        </div>\n      </a>`;\n    },\n\n\n    // ── Builder — buildError ──────────────────────────────────────────────\n    //\n    //  Card de erro inline — exibido quando uma chamada RPC falha.\n    //  label   → título opcional (ex: \"Camada 3 — Core\")\n    //  message → mensagem de erro\n    //  color   → cor do accent (default: vermelho crítico)\n\n    buildError(label, message, color) {\n      const a = color || 'var(--bpc-crit)';\n      return `<div class=\"bpc bpc-card state-down\" style=\"--card-accent:${a};height:100%\">\n        ${label ? `<div class=\"bpc-label\" style=\"color:${a};margin-bottom:6px\">${label}</div>` : ''}\n        <div class=\"bpc-error-msg\">⚠ ${message}</div>\n      </div>`;\n    },\n\n\n    // ── Builder — buildSkeleton ───────────────────────────────────────────\n    //\n    //  Card de carregamento — exibido enquanto os dados ainda não chegaram.\n    //  color → cor do accent (default: cinzento muted)\n\n    buildSkeleton(color) {\n      const a = color || 'var(--bpc-mute)';\n      return `<div class=\"bpc bpc-card\" style=\"--card-accent:${a};height:100%;display:flex;flex-direction:column;gap:10px\">\n        <div class=\"bpc-skeleton\" style=\"height:10px;width:45%\"></div>\n        <div class=\"bpc-skeleton\" style=\"height:26px;width:55%\"></div>\n        <div class=\"bpc-skeleton\" style=\"height:11px;width:75%\"></div>\n        <div class=\"bpc-skeleton\" style=\"height:11px;width:40%;margin-top:auto\"></div>\n      </div>`;\n    },\n\n\n    // ── Builder — buildStatusBar ──────────────────────────────────────────\n    //\n    //  Barra horizontal de contagem de estados.\n    //  counts = { ok, warn, crit, label? }\n    //  label  → texto de timestamp ou identificação (alinhado à direita)\n\n    buildStatusBar(counts) {\n      const { ok = 0, warn = 0, crit = 0, label = '' } = counts;\n      const ts = label ? `<span style=\"font-size:.67rem;color:var(--bpc-mute);margin-left:auto\">${label}</span>` : '';\n      return `<div class=\"bpc-status-bar\">\n        <span class=\"bpc-status-pill ok\">  <span class=\"bpc-status-dot\"></span>OK: ${ok}</span>\n        <span class=\"bpc-status-pill warn\"><span class=\"bpc-status-dot\"></span>Degradado: ${warn}</span>\n        <span class=\"bpc-status-pill crit\"><span class=\"bpc-status-dot\"></span>Crítico: ${crit}</span>\n        <span class=\"bpc-status-sep\"></span>${ts}\n      </div>`;\n    },\n\n  }; // fim BPC.utils\n\n  BPC.log('utils inicializado (' + VERSION + ')');\n\n\n  // ── RPC — Zabbix via proxy Grafana ────────────────────────────────────────\n  //\n  //  O URL vem de CFG_META.apiUrl (BLOCO 1).\n  //  Envia um POST JSON-RPC e devolve json.result.\n  //  Lança Error se HTTP não-OK ou se a resposta contiver json.error.\n\n  window.BPC.setReady(async function rpc(method, params) {\n    BPC.log('rpc → ' + method);\n    const res = await fetch(CFG_META.apiUrl, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json', 'x-grafana-org-id': '1' },\n      credentials: 'include',\n      body: JSON.stringify({ method, params }),\n    });\n    if (!res.ok) throw new Error('HTTP ' + res.status);\n    const json = await res.json();\n    if (json.error) throw new Error(json.error.data || json.error.message);\n    return json.result;\n  });\n\n})(); // fim BLOCO 4\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//\n//  ██████╗ ██╗      ██████╗  ██████╗  ██████╗     ███████╗\n//  ██╔══██╗██║     ██╔═══██╗██╔════╝ ██╔═══██╗    ██╔════╝\n//  ██████╔╝██║     ██║   ██║██║      ██║   ██║    ███████╗\n//  ██╔══██╗██║     ██║   ██║██║      ██║   ██║    ╚════██║\n//  ██████╔╝███████╗╚██████╔╝╚██████╗ ╚██████╔╝    ███████║\n//  ╚═════╝ ╚══════╝ ╚═════╝  ╚═════╝  ╚═════╝     ╚══════╝\n//\n//  CONTRATO §5.1 — THEME · BPC_SHARED · BPC_CHARTS · BPC.state\n//\n//  Símbolos que TODO o painel de conteúdo assume existirem (via initWithRetry).\n//  Definidos UMA vez aqui; nunca redefinidos num card (engenharia §5.1/§9).\n//  Dependem de CFG_THEME (BLOCO 1), acessível neste mesmo ficheiro/escopo.\n//\n//    window.BPC.THEME   → tokens visuais (colorOk/Warn/Crit/Info/Mute/Dis, sz*, …)\n//    window.BPC.theme   → alias legado (CFG_THEME cru: .ok/.warn/.crit) p/ BPC.utils\n//    window.BPC_SHARED  → helpers puros (esc, ts, cls, divider, pbar, fmtNum,\n//                         fmtTb, worstState, severityToState, stateAbove/Below, toFloat)\n//    window.BPC_CHARTS  → SVG (gaugeSemi, sparkline, pbar, dot)\n//    window.BPC.state   → modelo de estado §6.1 (metric, worst, host, color)\n//\n// ══════════════════════════════════════════════════════════════════════════════\n\n(function contractGlobals() {\n\n  window.BPC = window.BPC || {};\n\n  // ── BPC.THEME — tokens visuais consumidos pelos cards (§5.1) ───────────────\n  window.BPC.THEME = {\n    colorOk:   CFG_THEME.ok,\n    colorWarn: CFG_THEME.warn,\n    colorCrit: CFG_THEME.crit,\n    colorInfo: CFG_THEME.info,\n    colorMute: CFG_THEME.mute,\n    colorDis:  CFG_THEME.mute,\n    navy: CFG_THEME.navy, navy2: CFG_THEME.navy2,\n    cyan: CFG_THEME.cyan, gold: CFG_THEME.gold,\n    fontBody:    \"'Inter','Segoe UI',sans-serif\",\n    szLg:        '1.80rem',\n    szMd:        '1.10rem',\n    szSm:        '0.85rem',\n    szLabel:     '0.67rem',\n    cardPadding: '13px 15px 11px',\n  };\n\n  // Alias legado: BPC.utils.stateAccent lê window.BPC.theme.{ok,warn,crit}\n  window.BPC.theme = CFG_THEME;\n\n  // ── BPC.state — modelo de estado, única fonte de cálculo (§6.1) ────────────\n  window.BPC.state = {\n    // classifica UMA métrica contra { warn, crit }; dir 'above' (default) | 'below'\n    metric: function (value, thr, dir) {\n      dir = dir || 'above';\n      if (value == null || isNaN(value) || !thr) return 'ok';\n      if (dir === 'below') {\n        if (value <= thr.crit) return 'crit';\n        if (value <= thr.warn) return 'warn';\n        return 'ok';\n      }\n      if (value >= thr.crit) return 'crit';\n      if (value >= thr.warn) return 'warn';\n      return 'ok';\n    },\n\n    // pior de uma lista; precedência down > crit > warn > ok > mute\n    worst: function (states) {\n      var order = { down: 4, crit: 3, warn: 2, ok: 1, mute: 0 };\n      var w = 'ok', wv = 1;\n      (states || []).forEach(function (s) {\n        var v = order[s] != null ? order[s] : 0;\n        if (v > wv) { wv = v; w = s; }\n      });\n      return w;\n    },\n\n    // estado de um host a partir das métricas já classificadas;\n    // metrics.reachable === false → 'down'\n    host: function (metrics) {\n      if (!metrics) return 'ok';\n      if (metrics.reachable === false) return 'down';\n      var vals = [];\n      Object.keys(metrics).forEach(function (k) {\n        if (k !== 'reachable') vals.push(metrics[k]);\n      });\n      return window.BPC.state.worst(vals);\n    },\n\n    // cor hexadecimal de um estado (via BPC.THEME, nunca hex no card)\n    color: function (state) {\n      var T = window.BPC.THEME;\n      var map = {\n        ok: T.colorOk, warn: T.colorWarn, crit: T.colorCrit,\n        down: T.colorCrit, info: T.colorInfo, mute: T.colorMute,\n      };\n      return map[state] || T.colorMute;\n    },\n  };\n\n  // ── BPC.NET_THR — catálogo de thresholds de rede (rede-arquitectura §4) ────\n  //  Promovido para o utils partilhado: consumido por l2-kpi / l2-segmentos e\n  //  qualquer painel de rede via window.BPC.state.metric(valor, NET_THR.<m>).\n  //  Forma { warn, crit } compatível com state.metric (dir 'above').\n  window.BPC.NET_THR = {\n    rtt:  { warn: 5, crit: 50 },   // ICMP RTT (ms)  — icmppingsec\n    loss: { warn: 1, crit: 10 },   // perda ICMP (%) — icmppingloss\n  };\n\n  // ── BPC_CHARTS — componentes SVG partilhados (§5.1) ────────────────────────\n  window.BPC_CHARTS = {\n    // gauge semicircular; opts = { max, color, size, label, unit }\n    gaugeSemi: function (value, opts) {\n      opts = opts || {};\n      var max = opts.max || 100;\n      var color = opts.color || 'var(--bpc-cyan)';\n      var size = opts.size || 90;\n      var v = Math.max(0, Math.min(max, value || 0));\n      var r = size / 2 - 8;\n      var cx = size / 2, cy = size / 2;\n      var len = Math.PI * r;            // comprimento do semicírculo\n      var dash = len * (v / max);\n      var arc = 'M8 ' + cy + ' A ' + r + ' ' + r + ' 0 0 1 ' + (size - 8) + ' ' + cy;\n      var label = opts.label != null ? opts.label : Math.round(v) + (opts.unit || '%');\n      return '<svg width=\"' + size + '\" height=\"' + (size / 2 + 12) + '\" viewBox=\"0 0 ' + size + ' ' + (size / 2 + 12) + '\">'\n        + '<path d=\"' + arc + '\" fill=\"none\" stroke=\"rgba(255,255,255,0.08)\" stroke-width=\"8\" stroke-linecap=\"round\"/>'\n        + '<path d=\"' + arc + '\" fill=\"none\" stroke=\"' + color + '\" stroke-width=\"8\" stroke-linecap=\"round\" stroke-dasharray=\"' + dash.toFixed(1) + ' ' + len.toFixed(1) + '\"/>'\n        + '<text x=\"' + cx + '\" y=\"' + (cy - 3) + '\" text-anchor=\"middle\" fill=\"#E6EDF3\" font-size=\"' + (size * 0.20).toFixed(0) + '\" font-weight=\"700\">' + label + '</text>'\n        + '</svg>';\n    },\n\n    // linha sparkline (delega no util já testado)\n    sparkline: function (data, color) {\n      return window.BPC.utils.buildSparkline(data, color);\n    },\n\n    // barra de progresso horizontal; pct 0..100\n    pbar: function (pct, color) {\n      pct = Math.max(0, Math.min(100, pct || 0));\n      color = color || 'var(--bpc-cyan)';\n      return '<div style=\"background:rgba(255,255,255,0.08);border-radius:4px;height:6px;width:100%;overflow:hidden\">'\n        + '<div style=\"height:100%;width:' + pct + '%;background:' + color + ';border-radius:4px\"></div></div>';\n    },\n\n    // ponto colorido de estado (ok|warn|crit|down|info|mute)\n    dot: function (state) {\n      var c = window.BPC.state.color(state);\n      return '<span style=\"display:inline-block;width:8px;height:8px;border-radius:50%;background:' + c + '\"></span>';\n    },\n  };\n\n  // ── BPC_SHARED — helpers puros, sem efeitos laterais (§5.1) ────────────────\n  window.BPC_SHARED = {\n    esc: function (s) {\n      return String(s == null ? '' : s).replace(/[&<>\"']/g, function (c) {\n        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c];\n      });\n    },\n    ts: function (ms) { return ms ? new Date(ms).toLocaleTimeString('pt-PT') : '—'; },\n    cls: function (state) {\n      return { ok: 'bpc-ok', warn: 'bpc-warn', crit: 'bpc-crit', down: 'bpc-crit', info: 'bpc-info' }[state] || 'bpc-mute';\n    },\n    divider: function () { return '<div class=\"bpc-divider\"></div>'; },\n    pbar: function (pct, color) { return window.BPC_CHARTS.pbar(pct, color); },\n    fmtNum: function (n, d) {\n      if (n == null || isNaN(n)) return '—';\n      return Number(n).toLocaleString('pt-PT', { minimumFractionDigits: d || 0, maximumFractionDigits: d || 0 });\n    },\n    fmtTb: function (bytes) {\n      if (bytes == null || isNaN(bytes)) return '—';\n      if (bytes >= 1e12) return (bytes / 1e12).toFixed(2) + ' TB';\n      if (bytes >= 1e9) return (bytes / 1e9).toFixed(1) + ' GB';\n      return (bytes / 1e6).toFixed(0) + ' MB';\n    },\n    worstState: function (states) { return window.BPC.state.worst(states); },\n    // severidade Zabbix → estado: 0-1→ok, 2-3→warn, ≥critPriority(4)→crit (§6.2)\n    severityToState: function (sev, critPriority) {\n      sev = parseInt(sev, 10) || 0;\n      var cp = critPriority || 4;\n      if (sev >= cp) return 'crit';\n      if (sev >= 2) return 'warn';\n      return 'ok';\n    },\n    stateAbove: function (v, t) { return window.BPC.state.metric(v, t, 'above'); },\n    stateBelow: function (v, t) { return window.BPC.state.metric(v, t, 'below'); },\n    toFloat: function (v) { var n = parseFloat(v); return isNaN(n) ? null : n; },\n  };\n\n  if (window.BPC && window.BPC.log) {\n    window.BPC.log('Contrato §5.1 exposto: THEME · state · BPC_CHARTS · BPC_SHARED (' + CFG_META.version + ')');\n  }\n\n})(); // fim BLOCO 5\n\n\n// ══════════════════════════════════════════════════════════════════════════════\n//  REFERÊNCIA RÁPIDA — v9\n//  ─────────────────────────────────────────────────────────────────────────\n//\n//  ONDE EDITAR (apenas BLOCO 1):\n//    URL API Zabbix      → CFG_META.apiUrl\n//    Versão do runtime   → CFG_META.version\n//    Logo / Título       → CFG_HEADER (logoUrl, title, nocLabel, subtitle)\n//    Paleta de cores     → CFG_THEME  (navy, cyan, gold, ok, warn, crit…)\n//    Tamanhos / fontes   → CFG_SIZES  (header, title, clock, logo…)\n//    Animações de estado → CFG_PULSE  (enabled, intensity, speed…)\n//    Idioma do relógio   → CFG_CLOCK  (days[], months[])\n//    Alertas ICMP        → CFG_THRESHOLDS (rttWarnMs, lossWarnPct)\n//\n//  COMO APLICAR A BARRA DE ACENTO DE COR NOS CARDS:\n//    <div class=\"bpc bpc-card state-down\" style=\"--card-accent:#EF4444\">\n//\n//  RECEITAS CFG_PULSE:\n//    Activar pulse:         enabled:true\n//    Apenas borda, sem glow: intensity:{ warn:0, crit:0 }\n//    Apenas glow, sem borda: borderWidth:'0px'\n//    Desligar completamente: enabled:false\n//\n// ══════════════════════════════════════════════════════════════════════════════",
+        "content": "<div id=\"bpc-header-root\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "3_KgG43nz"
+          },
+          "group": {
+            "filter": "_SISTEMA/ANCORA-RENDER"
+          },
+          "host": {
+            "filter": "Storage - IBM FS9500"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "3_KgG43nz"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 2
+      },
+      "id": 101,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N1 · Notificações — Cadeia de notificação                     v1.0      ║\n// ║                                                                          ║\n// ║  Mostra, por action de trigger do Zabbix Infra, a cadeia completa:       ║\n// ║  action (ON/OFF) → mediatype (ON/OFF) → destinatários → entregas 24h.    ║\n// ║  Destaca a vermelho a cadeia partida (action ON + mediatype OFF =        ║\n// ║  alertas gerados que nunca chegam — estado real desde o incidente        ║\n// ║  GLPI; ver runbook no CLAUDE.md antes de reactivar o Email).             ║\n// ║                                                                          ║\n// ║  Dados: datasource MySQL Infra (afor1g5862fb4c) via POST /api/ds/query   ║\n// ║  (same-origin, sessão do browser). Não usa o proxy zabbix-api porque     ║\n// ║  action.get está bloqueado nesse proxy e o cache de ~30min esconderia    ║\n// ║  mudanças de estado — o MySQL dá o estado real, sem cache.               ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\nvar CFG = {\n  rootId: 'bpc-nt-cadeia',\n  refreshMs: 120000,\n  dsQueryUrl: 'http://10.10.126.22:3000/api/ds/query',\n  mysqlUid: 'afor1g5862fb4c',\n};\n\nvar SQL = {\n  acts: \"SELECT actionid, name, status FROM actions WHERE eventsource = 0\",\n  medias: \"SELECT o.actionid, om.mediatypeid, COALESCE(mt.name,'Qualquer mediatype') AS mtname, COALESCE(mt.status,0) AS mtstatus FROM operations o JOIN opmessage om ON om.operationid = o.operationid LEFT JOIN media_type mt ON mt.mediatypeid = om.mediatypeid WHERE o.operationtype = 0\",\n  usrs: \"SELECT o.actionid, u.userid, u.username FROM operations o JOIN opmessage_usr ou ON ou.operationid = o.operationid JOIN users u ON u.userid = ou.userid\",\n  grps: \"SELECT o.actionid, u.userid, u.username FROM operations o JOIN opmessage_grp og ON og.operationid = o.operationid JOIN users_groups ug ON ug.usrgrpid = og.usrgrpid JOIN users u ON u.userid = ug.userid\",\n  media: \"SELECT m.userid, m.mediatypeid, m.sendto, m.active FROM media m\",\n  stats: \"SELECT actionid, status, COUNT(*) AS c FROM alerts WHERE clock > UNIX_TIMESTAMP(NOW() - INTERVAL 24 HOUR) GROUP BY actionid, status\",\n};\n\nfunction esc(s) {\n  return String(s == null ? '' : s).replace(/[&<>\"']/g, function(c) {\n    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c];\n  });\n}\n\n// ── ds/query ──────────────────────────────────────────────────────────────────\n\nfunction dsQuery(sqls) {\n  var queries = Object.keys(sqls).map(function(refId) {\n    return {\n      refId: refId,\n      datasource: { uid: CFG.mysqlUid, type: 'mysql' },\n      rawSql: sqls[refId],\n      format: 'table',\n    };\n  });\n  return fetch(CFG.dsQueryUrl, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json', 'x-grafana-org-id': '1' },\n    credentials: 'include',\n    body: JSON.stringify({ queries: queries, from: 'now-1h', to: 'now' }),\n  })\n  .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n  .then(function(json) {\n    var out = {};\n    Object.keys(sqls).forEach(function(refId) {\n      var res = json.results && json.results[refId];\n      var frame = res && res.frames && res.frames[0];\n      if (!frame) { out[refId] = []; return; }\n      var nomes = frame.schema.fields.map(function(f) { return f.name; });\n      var vals = frame.data.values;\n      var linhas = [];\n      var n = vals.length ? vals[0].length : 0;\n      for (var i = 0; i < n; i++) {\n        var row = {};\n        nomes.forEach(function(nm, c) { row[nm] = vals[c][i]; });\n        linhas.push(row);\n      }\n      out[refId] = linhas;\n    });\n    return out;\n  });\n}\n\n// ── MODELO ────────────────────────────────────────────────────────────────────\n\nfunction montarCadeias(d) {\n  var mediaPorUser = {};\n  d.media.forEach(function(m) {\n    (mediaPorUser[m.userid] = mediaPorUser[m.userid] || []).push(m);\n  });\n\n  var statsPorAction = {};\n  d.stats.forEach(function(s) {\n    var st = statsPorAction[s.actionid] = statsPorAction[s.actionid] || { enviados: 0, falhados: 0, outros: 0 };\n    if (s.status === 1) st.enviados += s.c;\n    else if (s.status === 2) st.falhados += s.c;\n    else st.outros += s.c;\n  });\n\n  return d.acts.map(function(a) {\n    var mts = d.medias.filter(function(m) { return m.actionid === a.actionid; });\n    var users = {};\n    d.usrs.concat(d.grps).forEach(function(u) {\n      if (u.actionid === a.actionid) users[u.userid] = u.username;\n    });\n\n    var destinos = [];\n    Object.keys(users).forEach(function(uid) {\n      (mediaPorUser[uid] || []).forEach(function(m) {\n        var relevante = !mts.length || mts.some(function(mt) {\n          return mt.mediatypeid === 0 || mt.mediatypeid === m.mediatypeid;\n        });\n        if (relevante) {\n          destinos.push({ user: users[uid], sendto: m.sendto, activo: m.active === 0 });\n        }\n      });\n    });\n\n    return {\n      nome: a.name,\n      ligada: a.status === 0,\n      mediatypes: mts.map(function(m) { return { nome: m.mtname, ligado: m.mtstatus === 0 }; }),\n      destinos: destinos,\n      stats: statsPorAction[a.actionid] || { enviados: 0, falhados: 0, outros: 0 },\n    };\n  });\n}\n\n// ── RENDER ────────────────────────────────────────────────────────────────────\n\nfunction pill(txt, ok) {\n  var cor = ok ? '#22C55E' : '#f85149';\n  return '<span style=\"font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:8px;background:' + cor + '22;color:' + cor + ';border:1px solid ' + cor + '55;\">' + esc(txt) + '</span>';\n}\n\nfunction seta() {\n  return '<span style=\"color:rgba(255,255,255,.30);font-size:1.0rem;margin:0 8px;\">→</span>';\n}\n\nfunction renderCadeia(c) {\n  var partida = c.ligada && c.mediatypes.length && c.mediatypes.every(function(m) { return !m.ligado; });\n\n  var mtsHtml = c.mediatypes.length\n    ? c.mediatypes.map(function(m) {\n        return '<span style=\"margin-right:6px;white-space:nowrap;\">' + esc(m.nome) + ' ' + pill(m.ligado ? 'ON' : 'OFF', m.ligado) + '</span>';\n      }).join('')\n    : '<span style=\"color:rgba(255,255,255,.35);\">sem operação de mensagem</span>';\n\n  var vistos = {};\n  var unicos = c.destinos.filter(function(dd) {\n    var k = dd.sendto + '|' + dd.user;\n    if (vistos[k]) return false; vistos[k] = 1; return true;\n  });\n  var destHtml;\n  if (!c.ligada) {\n    // action desligada: não gastar altura com a lista completa (regra sem-scroll)\n    destHtml = '<div style=\"font-size:.80rem;color:rgba(255,255,255,.35);\">'\n      + unicos.length + ' destinatário(s) configurados — action desligada, nada é enviado</div>';\n  } else {\n    destHtml = unicos.map(function(dd) {\n      var op = dd.activo ? '1' : '.45';\n      var nota = dd.activo ? '' : ' <span style=\"font-size:.65rem;color:#d29922;\">(media desactivada)</span>';\n      return '<div style=\"font-size:.80rem;color:rgba(255,255,255,' + op + ');\">' + esc(dd.sendto) + ' <span style=\"color:rgba(255,255,255,.30);\">· ' + esc(dd.user) + '</span>' + nota + '</div>';\n    }).join('');\n    if (!destHtml) destHtml = '<div style=\"font-size:.80rem;color:rgba(255,255,255,.35);\">sem destinatários resolvidos</div>';\n  }\n\n  var s = c.stats;\n  var statsHtml = '<span style=\"color:#22C55E;font-weight:700;\">' + s.enviados + '</span> <span style=\"font-size:.72rem;color:rgba(255,255,255,.4);\">enviados</span>'\n    + ' <span style=\"color:#f85149;font-weight:700;margin-left:10px;\">' + s.falhados + '</span> <span style=\"font-size:.72rem;color:rgba(255,255,255,.4);\">falhados</span>'\n    + (s.outros ? ' <span style=\"color:#d29922;font-weight:700;margin-left:10px;\">' + s.outros + '</span> <span style=\"font-size:.72rem;color:rgba(255,255,255,.4);\">em fila</span>' : '');\n\n  var alerta = partida\n    ? '<div style=\"margin-top:8px;padding:8px 12px;border-radius:8px;background:#f8514915;border:1px solid #f8514955;font-size:.80rem;color:#f85149;\">'\n      + '⚠ Cadeia partida: a action está ligada e a gerar alertas, mas o mediatype está desligado — nada é entregue. '\n      + 'Não religar o Email sem o runbook GLPI (CLAUDE.md): cada email vira 1 ticket automático.'\n      + '</div>'\n    : '';\n\n  return '<div class=\"bpc bpc-card\" style=\"--card-accent:' + (partida ? '#f85149' : c.ligada ? '#22C55E' : '#64748B') + ';padding:14px 18px;margin-bottom:12px;\">'\n    + '<div style=\"display:flex;align-items:center;flex-wrap:wrap;gap:4px;\">'\n    +   '<span style=\"font-size:.98rem;font-weight:700;color:#E6EDF3;\">' + esc(c.nome) + '</span> '\n    +   pill(c.ligada ? 'ACTION ON' : 'ACTION OFF', c.ligada)\n    +   seta() + '<span style=\"font-size:.85rem;color:rgba(255,255,255,.7);\">' + mtsHtml + '</span>'\n    +   seta() + '<span>' + statsHtml + '</span>'\n    + '</div>'\n    + '<div style=\"margin-top:8px;padding-left:2px;display:flex;flex-direction:column;gap:2px;\">' + destHtml + '</div>'\n    + alerta\n    + '</div>';\n}\n\nfunction loadAndRender(root) {\n  dsQuery(SQL).then(function(d) {\n    var cadeias = montarCadeias(d);\n    cadeias.sort(function(a, b) { return (b.ligada ? 1 : 0) - (a.ligada ? 1 : 0); });\n    root.innerHTML = '<div style=\"padding:2px 0;\">'\n      + '<div style=\"font-size:.78rem;color:rgba(255,255,255,.40);margin-bottom:10px;\">Actions de trigger do Zabbix Infra · estado lido directo do MySQL (sem cache) · janela de entregas: últimas 24h</div>'\n      + cadeias.map(renderCadeia).join('')\n      + '</div>';\n  }).catch(function(err) {\n    console.error('[BPC] nt-cadeia: falha ds/query', err);\n    root.innerHTML = '<div class=\"bpc-error-msg\">Falha a ler a cadeia de notificação (' + esc(err.message) + ')</div>';\n  });\n}\n\n// ── BOOTSTRAP (initWithRetry) ─────────────────────────────────────────────────\n\nfunction start(rpc) {\n  BPC.utils.waitForElement(CFG.rootId, function(root) {\n    root.innerHTML = '<div class=\"bpc-skeleton\" style=\"height:160px;\"></div>';\n    loadAndRender(root);\n    BPC.utils.startRefresh(root, function() { loadAndRender(root); }, CFG.refreshMs);\n  });\n}\n\nfunction initWithRetry(attempt) {\n  attempt = attempt || 0;\n  if (typeof window.waitForBPC === 'function') {\n    window.waitForBPC(start);\n    return;\n  }\n  if (attempt > 50) {\n    console.error('[BPC] nt-cadeia: window.waitForBPC nunca ficou disponivel');\n    return;\n  }\n  setTimeout(function() { initWithRetry(attempt + 1); }, 100);\n}\n\ninitWithRetry();\n",
+        "content": "<div id=\"bpc-nt-cadeia\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "3_KgG43nz"
+          },
+          "group": {
+            "filter": "_SISTEMA/ANCORA-RENDER"
+          },
+          "host": {
+            "filter": "Storage - IBM FS9500"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "3_KgG43nz"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 27,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 102,
+      "options": {
+        "afterRender": "// ╔══════════════════════════════════════════════════════════════════════════╗\n// ║  N1 · Notificações — Resumo de triggers por domínio            v1.0      ║\n// ║                                                                          ║\n// ║  F2 do plano-melhorias-observabilidade-20260712.md.                      ║\n// ║  1 secção por domínio (mesmos groupids do n1-cards.js): contadores       ║\n// ║  Crít/Aviso + lista dos piores problemas activos (host, problema,        ║\n// ║  idade), sem ter de ir pesquisar ao Zabbix.                              ║\n// ║                                                                          ║\n// ║  Dados: problem.get (contagem+lista) e trigger.get (nome do host dos     ║\n// ║  problemas listados) — Infra via BPC.rpc, Rede via fetch directo ao      ║\n// ║  proxy Network (mesmo padrão do n1-cards.js).                            ║\n// ╚══════════════════════════════════════════════════════════════════════════╝\n\nvar CFG = {\n  rootId: 'bpc-nt-resumo-triggers',\n  refreshMs: 60000,\n  maxProblemas: 6, // por domínio\n\n  networkProxy: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',\n\n  domains: [\n    { id: 'vmware',   label: 'Infraestrutura VMware',        groupids: ['608'],                 datasource: 'infra',   dashUid: 'a967e936-99a3-47c8-af98-052d7a80beb8' },\n    { id: 'vms',      label: 'Servidores Virtuais',          groupids: ['609'],                 datasource: 'infra',   dashUid: '0758c24e-d2b1-4a81-bb14-1788ac8bec68' },\n    { id: 'storage',  label: 'Armazenamento',                groupids: ['602', '605'],          datasource: 'infra',   dashUid: '993834a3-6bd3-4d25-88f5-0a59eab171fe' },\n    { id: 'rede',     label: 'Rede',                         groupids: ['26', '27', '28', '29'], datasource: 'network', dashUid: 'rede-n2-segmentos' },\n    { id: 'bd',       label: 'Bases de Dados',               groupids: ['355'],                 datasource: 'infra',   dashUid: 'bd-n2' },\n    { id: 'apis',     label: 'APIs e Serviços de Negócio',   groupids: ['663', '345', '391'],   datasource: 'infra',   dashUid: 'apis-n2' },\n    { id: 'seg',      label: 'Segurança',                    groupids: ['656'],                 datasource: 'infra',   dashUid: null },\n  ],\n};\n\nvar SEV = {\n  5: { label: 'Desastre', color: '#f85149' },\n  4: { label: 'Alta',     color: '#f85149' },\n  3: { label: 'Média',    color: '#e3742f' },\n  2: { label: 'Aviso',    color: '#d29922' },\n  1: { label: 'Info',     color: '#58a6ff' },\n  0: { label: 'N/class',  color: '#64748B' },\n};\n\nfunction esc(s) {\n  return String(s == null ? '' : s).replace(/[&<>\"']/g, function(c) {\n    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', \"'\": '&#39;' }[c];\n  });\n}\n\nfunction idade(clock) {\n  var s = Math.max(0, Math.floor(Date.now() / 1000) - parseInt(clock, 10));\n  if (s < 3600) return Math.floor(s / 60) + 'm';\n  if (s < 86400) return Math.floor(s / 3600) + 'h';\n  return Math.floor(s / 86400) + 'd';\n}\n\n// ── FETCH ─────────────────────────────────────────────────────────────────────\n\nfunction rpcNetwork(method, params) {\n  return fetch(CFG.networkProxy, {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json', 'x-grafana-org-id': '1' },\n    credentials: 'include',\n    body: JSON.stringify({ method: method, params: params }),\n  })\n  .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })\n  .then(function(json) {\n    if (json.error) throw new Error(json.error.data || json.error.message);\n    return json.result;\n  });\n}\n\n// problemas + nome do host dos piores (2 chamadas por domínio)\nfunction fetchDominio(rpc, domain) {\n  var call = domain.datasource === 'network'\n    ? rpcNetwork\n    : function(m, p) { return rpc(m, p); };\n\n  return call('problem.get', {\n    groupids: domain.groupids,\n    output: ['eventid', 'objectid', 'name', 'severity', 'clock'],\n    suppressed: false,\n    sortfield: ['eventid'],\n    sortorder: 'DESC',\n  }).then(function(problems) {\n    problems.sort(function(a, b) {\n      return (parseInt(b.severity, 10) - parseInt(a.severity, 10))\n          || (parseInt(b.clock, 10) - parseInt(a.clock, 10));\n    });\n    var top = problems.slice(0, CFG.maxProblemas);\n    var trigIds = top.map(function(p) { return p.objectid; });\n    if (!trigIds.length) return { problems: problems, top: top, hosts: {} };\n    return call('trigger.get', {\n      triggerids: trigIds,\n      output: ['triggerid'],\n      selectHosts: ['name'],\n    }).then(function(trigs) {\n      var hosts = {};\n      trigs.forEach(function(t) {\n        hosts[t.triggerid] = (t.hosts && t.hosts[0] && t.hosts[0].name) || '?';\n      });\n      return { problems: problems, top: top, hosts: hosts };\n    });\n  });\n}\n\n// ── RENDER ────────────────────────────────────────────────────────────────────\n\nfunction renderDominio(domain, r) {\n  if (!r) {\n    return '<div class=\"bpc bpc-card\" style=\"--card-accent:#64748B;padding:16px 18px;\">'\n      + '<div style=\"font-size:1.05rem;font-weight:700;color:#E6EDF3;\">' + esc(domain.label) + '</div>'\n      + '<div class=\"bpc-error-msg\" style=\"margin-top:8px;\">Sem dados</div></div>';\n  }\n  var nCrit = 0, nWarn = 0;\n  r.problems.forEach(function(p) {\n    var sev = parseInt(p.severity, 10) || 0;\n    if (sev >= 4) nCrit++; else if (sev >= 2) nWarn++;\n  });\n  var state = nCrit > 0 ? 'crit' : nWarn > 0 ? 'warn' : 'ok';\n  var accent = { ok: '#22C55E', warn: '#d29922', crit: '#f85149' }[state];\n\n  var titulo = domain.dashUid\n    ? '<a href=\"/d/' + domain.dashUid + '\" style=\"color:#E6EDF3;text-decoration:none;\">' + esc(domain.label) + ' <span style=\"color:var(--bpc-cyan);font-size:.85rem;\">↗</span></a>'\n    : esc(domain.label);\n\n  var linhas = r.top.map(function(p) {\n    var sev = SEV[parseInt(p.severity, 10)] || SEV[0];\n    var host = r.hosts[p.objectid] || '?';\n    return '<tr>'\n      + '<td style=\"padding:3px 8px 3px 0;white-space:nowrap;\"><span style=\"display:inline-block;min-width:52px;text-align:center;font-size:.68rem;font-weight:700;padding:2px 6px;border-radius:8px;background:' + sev.color + '22;color:' + sev.color + ';border:1px solid ' + sev.color + '55;\">' + sev.label + '</span></td>'\n      + '<td style=\"padding:3px 10px 3px 0;font-size:.82rem;color:rgba(255,255,255,.75);white-space:nowrap;max-width:180px;overflow:hidden;text-overflow:ellipsis;\">' + esc(host) + '</td>'\n      + '<td style=\"padding:3px 10px 3px 0;font-size:.82rem;color:rgba(255,255,255,.55);overflow:hidden;text-overflow:ellipsis;\">' + esc(p.name) + '</td>'\n      + '<td style=\"padding:3px 0;font-size:.78rem;color:rgba(255,255,255,.35);text-align:right;white-space:nowrap;\">' + idade(p.clock) + '</td>'\n      + '</tr>';\n  }).join('');\n\n  var resto = r.problems.length - r.top.length;\n  var rodape = resto > 0\n    ? '<div style=\"font-size:.75rem;color:rgba(255,255,255,.30);margin-top:4px;\">+ ' + resto + ' problema(s) de menor severidade</div>'\n    : '';\n  var corpo = r.top.length\n    ? '<table style=\"width:100%;border-collapse:collapse;table-layout:auto;margin-top:8px;\">' + linhas + '</table>' + rodape\n    : '<div style=\"margin-top:10px;font-size:.85rem;color:#22C55E;\">Sem problemas activos</div>';\n\n  return '<div class=\"bpc bpc-card\" style=\"--card-accent:' + accent + ';padding:14px 18px;display:flex;flex-direction:column;\">'\n    + '<div style=\"display:flex;justify-content:space-between;align-items:center;gap:8px;\">'\n    +   '<div style=\"font-size:1.05rem;font-weight:700;\">' + titulo + '</div>'\n    +   '<div style=\"display:flex;gap:14px;align-items:baseline;\">'\n    +     '<span style=\"font-size:1.3rem;font-weight:700;color:' + (nCrit ? '#f85149' : 'rgba(255,255,255,.25)') + ';\">' + nCrit + '<span style=\"font-size:.7rem;font-weight:600;margin-left:4px;\">CRÍT</span></span>'\n    +     '<span style=\"font-size:1.3rem;font-weight:700;color:' + (nWarn ? '#d29922' : 'rgba(255,255,255,.25)') + ';\">' + nWarn + '<span style=\"font-size:.7rem;font-weight:600;margin-left:4px;\">AVISO</span></span>'\n    +   '</div>'\n    + '</div>'\n    + corpo\n    + '</div>';\n}\n\nfunction renderGrid(results) {\n  var cards = CFG.domains.map(function(d, i) { return renderDominio(d, results[i]); });\n  return '<div style=\"display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:2px 0;\">'\n    + cards.join('') + '</div>';\n}\n\nfunction loadAndRender(rpc, root) {\n  var fetches = CFG.domains.map(function(domain) {\n    return fetchDominio(rpc, domain).catch(function(err) {\n      console.warn('[BPC] nt-resumo-triggers: erro no domínio ' + domain.id, err);\n      return null;\n    });\n  });\n  Promise.all(fetches).then(function(results) {\n    root.innerHTML = renderGrid(results);\n  });\n}\n\n// ── BOOTSTRAP (initWithRetry) ─────────────────────────────────────────────────\n\nfunction start(rpc) {\n  BPC.utils.waitForElement(CFG.rootId, function(root) {\n    root.innerHTML = '<div class=\"bpc-skeleton\" style=\"height:220px;\"></div>';\n    loadAndRender(rpc, root);\n    BPC.utils.startRefresh(root, function() { loadAndRender(rpc, root); }, CFG.refreshMs);\n  });\n}\n\nfunction initWithRetry(attempt) {\n  attempt = attempt || 0;\n  if (typeof window.waitForBPC === 'function') {\n    window.waitForBPC(start);\n    return;\n  }\n  if (attempt > 50) {\n    console.error('[BPC] nt-resumo-triggers: window.waitForBPC nunca ficou disponivel');\n    return;\n  }\n  setTimeout(function() { initWithRetry(attempt + 1); }, 100);\n}\n\ninitWithRetry();\n",
+        "content": "<div id=\"bpc-nt-resumo-triggers\"></div>",
+        "editors": [
+          "afterRender"
+        ],
+        "renderMode": "allRows"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "3_KgG43nz"
+          },
+          "group": {
+            "filter": "_SISTEMA/ANCORA-RENDER"
+          },
+          "host": {
+            "filter": "Storage - IBM FS9500"
+          },
+          "item": {
+            "filter": "ICMP ping"
+          },
+          "queryType": "0",
+          "refId": "A",
+          "resultFormat": "time_series"
+        }
+      ],
+      "title": "",
+      "transformations": [
+        {
+          "id": "reduce",
+          "options": {}
+        }
+      ],
+      "transparent": true,
+      "type": "marcusolsson-dynamictext-panel"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afor1g5862fb4c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "notificações / hora",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 65,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Falhado"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Enviado"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Em fila"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 200,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "afor1g5862fb4c"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "SELECT FROM_UNIXTIME(FLOOR(a.clock / 3600) * 3600) AS time,\n  CASE a.status WHEN 1 THEN 'Enviado' WHEN 2 THEN 'Falhado' WHEN 0 THEN 'Em fila' ELSE 'Novo' END AS metric,\n  COUNT(*) AS value\nFROM alerts a\nWHERE a.alerttype = 0 AND $__unixEpochFilter(a.clock)\nGROUP BY 1, 2\nORDER BY 1",
+          "refId": "A"
+        }
+      ],
+      "title": "Notificações por hora e estado",
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afor1g5862fb4c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Estado"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "blue",
+                        "index": 2,
+                        "text": "Em fila"
+                      },
+                      "1": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Enviado"
+                      },
+                      "2": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Falhado"
+                      },
+                      "3": {
+                        "color": "orange",
+                        "index": 3,
+                        "text": "Novo"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hora"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 160
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Via"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Destinatario"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 230
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Tentativas"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 90
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "id": 201,
+      "options": {
+        "cellHeight": "sm",
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "afor1g5862fb4c"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT FROM_UNIXTIME(a.clock) AS Hora, COALESCE(mt.name, '?') AS Via, a.sendto AS Destinatario, a.subject AS Assunto, a.status AS Estado, a.retries AS Tentativas, NULLIF(a.error, '') AS Erro\nFROM alerts a\nLEFT JOIN media_type mt ON mt.mediatypeid = a.mediatypeid\nWHERE a.alerttype = 0 AND $__unixEpochFilter(a.clock)\nORDER BY a.clock DESC\nLIMIT 200",
+          "refId": "A"
+        }
+      ],
+      "title": "Envios recentes (janela do dashboard, máx. 200)",
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afor1g5862fb4c"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Media do utilizador"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "Activa"
+                      },
+                      "1": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "Desactivada"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Mediatype"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "ON"
+                      },
+                      "1": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "OFF"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 202,
+      "options": {
+        "cellHeight": "sm",
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.4.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "afor1g5862fb4c"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT TRIM(CONCAT(COALESCE(u.name,''), ' ', COALESCE(u.surname,''))) AS Utilizador, u.username AS Login, mt.name AS Via, mt.status AS Mediatype, m.sendto AS Destino, m.active AS 'Media do utilizador'\nFROM media m\nJOIN users u ON u.userid = m.userid\nJOIN media_type mt ON mt.mediatypeid = m.mediatypeid\nORDER BY u.username, mt.name",
+          "refId": "A"
+        }
+      ],
+      "title": "Destinatários configurados (users × media)",
+      "transparent": true,
+      "type": "table"
+    }
+  ],
+  "refresh": "1m",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "N1 · Visão Geral · Notificações — Triggers e envios",
+  "uid": "visao-notificacoes",
+  "version": 5
+}

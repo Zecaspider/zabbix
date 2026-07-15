@@ -1,0 +1,38 @@
+{
+  "dashboardUid": "visao-indice-dashboards",
+  "dashboardTitle": "N1 · Visão Geral · Índice — Todos os dashboards",
+  "folderUid": "bfpm0sdaos074d",
+  "datasource": "3_KgG43nz",
+  "notes": "F3 do plano-melhorias-observabilidade-20260712.md. Tabela de colunas por domínio (pasta Grafana) com os dashboards linkados por baixo, ordenados por nível (badge N1..N6/R1). Fonte: GET /api/search?type=dash-db ao vivo com a sessão do browser — nada hardcoded, dashboards novos aparecem sozinhos. Pastas 04.x aninham na coluna Rede como subgrupos; 99 · Arquivo escondida por defeito com toggle. Alternativa 100% nativa em 00-visao-geral/indice-nativo/ (F3.1).",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "_SISTEMA/ANCORA-RENDER"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "l1-indice-dashboards.js",
+      "id": 101,
+      "role": "content",
+      "title": "Índice de dashboards",
+      "content": "<div id=\"bpc-indice-dashboards\"></div>"
+    }
+  ]
+}

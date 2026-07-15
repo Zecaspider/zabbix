@@ -1,0 +1,106 @@
+{
+  "_notas": [
+    "Config por dominio do gerar_relatorio.py (F1, plano-melhorias-observabilidade-20260712.md).",
+    "Fontes validadas ao vivo em 2026-07-12 (item.get por grupo/tag, nunca assumido):",
+    "- 603: chaves vmware.hv.* tem parametros -> keys_like (LIKE), nunca match exacto; so hosts 'VIRT - ESXi -*' sao hypervisores.",
+    "- 609: system.cpu.util 349 / vm.memory.util 305 / vm.memory.utilization 44 / icmpping 428 / agent.ping 349 / pused 891.",
+    "- bases-dados: grupo 355 tem 26 hosts mas so 4 activos - a classificacao real e' a tag camada=base de dados (mesma fonte do dashboard bd-n2).",
+    "- 663 (sinteticos): items web.* so aparecem com webitems:true; web.test.fail[cenario] 0=OK, >0 = passo que falhou.",
+    "- rede/backbone: usar relatorios/backbone-dc/gerar_relatorio.py (modelo aprovado, nao duplicado aqui).",
+    "map de saude storage: system.status[systemHealthStat.0] 0=OK 1=warn 2=crit."
+  ],
+  "dominios": {
+    "vmware": {
+      "titulo": "Infraestrutura VMware - Hypervisores ESXi",
+      "sheet": "VMware",
+      "zabbix": "infra",
+      "groupids": ["603"],
+      "host_re": "^VIRT - ESXi",
+      "col_servico": false,
+      "col_ambiente": false,
+      "metricas": [
+        { "col": "CPU%", "keys_like": ["vmware.hv.cpu.usage.perf"], "agg": "first", "fmt": "pct" },
+        { "col": "VMS", "keys_like": ["vmware.hv.vm.num"], "agg": "first", "fmt": "int" },
+        { "col": "UPTIME", "keys_like": ["vmware.hv.uptime"], "agg": "first", "fmt": "dias" }
+      ],
+      "avail_keys": ["icmpping"]
+    },
+    "servidores-virtuais": {
+      "titulo": "Servidores Virtuais - VMs de Producao",
+      "sheet": "Servidores Virtuais",
+      "zabbix": "infra",
+      "groupids": ["609"],
+      "tags": [
+        { "tag": "ambiente", "value": "Produção", "operator": "1" },
+        { "tag": "ambiente", "value": "producao", "operator": "1" }
+      ],
+      "evaltype_tags": 2,
+      "col_servico": true,
+      "col_ambiente": false,
+      "metricas": [
+        { "col": "CPU%", "keys_like": ["system.cpu.util"], "agg": "first", "fmt": "pct" },
+        { "col": "RAM%", "keys_like": ["vm.memory.util", "vm.memory.utilization"], "agg": "first", "fmt": "pct" },
+        { "col": "DISCO% (pior)", "keys_like": ["pused"], "agg": "max", "fmt": "pct" }
+      ],
+      "avail_keys": ["icmpping", "agent.ping"]
+    },
+    "armazenamento": {
+      "titulo": "Armazenamento - Storage e Tape Library",
+      "sheet": "Armazenamento",
+      "zabbix": "infra",
+      "groupids": ["602", "605"],
+      "col_servico": false,
+      "col_ambiente": false,
+      "metricas": [
+        { "col": "SAUDE SNMP", "keys_like": ["systemHealthStat"], "agg": "first", "fmt": "map",
+          "map": { "0": "OK", "1": "Atenção", "2": "Crítico" } }
+      ],
+      "avail_keys": ["icmpping"]
+    },
+    "bases-dados": {
+      "titulo": "Bases de Dados - Producao",
+      "sheet": "Bases de Dados",
+      "zabbix": "infra",
+      "groupids": null,
+      "tags": [
+        { "tag": "camada", "value": "base de dados", "operator": "1" },
+        { "tag": "ambiente", "value": "Produção", "operator": "1" }
+      ],
+      "evaltype_tags": 0,
+      "col_servico": true,
+      "col_ambiente": false,
+      "col_motor": true,
+      "metricas": [
+        { "col": "CPU%", "keys_like": ["system.cpu.util"], "agg": "first", "fmt": "pct" },
+        { "col": "RAM%", "keys_like": ["vm.memory.util", "vm.memory.utilization"], "agg": "first", "fmt": "pct" },
+        { "col": "DISCO% (pior)", "keys_like": ["pused"], "agg": "max", "fmt": "pct" }
+      ],
+      "avail_keys": ["icmpping", "agent.ping"]
+    },
+    "apis-servicos": {
+      "titulo": "APIs e Servicos de Negocio - Monitores Sinteticos",
+      "sheet": "APIs e Servicos",
+      "zabbix": "infra",
+      "groupids": ["663"],
+      "webitems": true,
+      "col_servico": true,
+      "col_ambiente": false,
+      "metricas": [
+        { "col": "CENARIOS KO", "keys_like": ["web.test.fail"], "agg": "count_pos", "fmt": "int" },
+        { "col": "PIOR PASSO (s)", "keys_like": ["web.test.time"], "agg": "max", "fmt": "seg" }
+      ],
+      "avail_keys": [],
+      "web_avail": true
+    },
+    "seguranca": {
+      "titulo": "Seguranca - Firewalls, WAF e Darktrace",
+      "sheet": "Seguranca",
+      "zabbix": "infra",
+      "groupids": ["656"],
+      "col_servico": false,
+      "col_ambiente": false,
+      "metricas": [],
+      "avail_keys": ["icmpping"]
+    }
+  }
+}

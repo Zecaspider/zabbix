@@ -1,0 +1,302 @@
+{
+  "id": 232634988773376,
+  "panels": [
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 200,
+      "options": {
+        "folderUID": "bfpm0sdaos074d",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "00 · Visão Geral",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 201,
+      "options": {
+        "folderUID": "bfpm0sdhhi22od",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "01 · Infraestrutura VMware",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 202,
+      "options": {
+        "folderUID": "dfpm0sdnq8x6oe",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "02 · Armazenamento",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 203,
+      "options": {
+        "folderUID": "cfpm0sdsxjb40c",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "03 · Servidores Virtuais",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "id": 204,
+      "options": {
+        "folderUID": "bfpm0sdxiclxcf",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "04 · Rede",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 8
+      },
+      "id": 205,
+      "options": {
+        "folderUID": "rede-seg-agencias",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "04.1 · Agências",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 8
+      },
+      "id": 206,
+      "options": {
+        "folderUID": "rede-seg-bordadc",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "04.2 · Borda DC",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 8
+      },
+      "id": 207,
+      "options": {
+        "folderUID": "rede-seg-dcfabric",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "04.3 · DC Fabric",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 16
+      },
+      "id": 208,
+      "options": {
+        "folderUID": "rede-seg-edificios",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "04.4 · Edifícios",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 16
+      },
+      "id": 209,
+      "options": {
+        "folderUID": "afpm0se1lombkb",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "05 · Segurança",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 16
+      },
+      "id": 210,
+      "options": {
+        "folderUID": "afpm0se5rij28d",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "06 · Bases de Dados",
+      "transparent": true,
+      "type": "dashlist"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 16
+      },
+      "id": 211,
+      "options": {
+        "folderUID": "bfpm0sedbpgqob",
+        "includeVars": false,
+        "keepTime": false,
+        "maxItems": 30,
+        "query": "",
+        "showFolderNames": false,
+        "showHeadings": false,
+        "showRecentlyViewed": false,
+        "showSearch": true,
+        "showStarred": false
+      },
+      "title": "07 · APIs e Serviços de Negócio",
+      "transparent": true,
+      "type": "dashlist"
+    }
+  ],
+  "refresh": "1m",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timezone": "browser",
+  "title": "N1 · Visão Geral · Índice — Dashboards (nativo)",
+  "uid": "visao-indice-nativo",
+  "version": 3
+}
