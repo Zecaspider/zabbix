@@ -180,6 +180,48 @@ não renomear `602` — criar dois grupos novos em vez de mexer no existente:
   como âncora estável — decisão deliberada, documentada aqui para não ser
   "corrigida" por engano numa sessão futura.
 
+### 6.1 Repush dos dashboards já publicados (2026-07-15/16)
+
+Depois de `push_panel.py` + os 17 ficheiros passarem a apontar para a
+âncora nova, foi feito o repush de **19 dashboards** para que a alteração
+chegasse ao que já estava ao vivo (sem isto, o `602` continuava com
+painéis dependentes dele até à próxima edição de cada dashboard).
+
+**16/19 migrados e verificados ao vivo** (0 referências antigas, âncora
+com dados frescos, confirmado via API — cascata grupo→host→item):
+`visao-indice-dashboards`, `visao-notificacoes`, `bd-n2`, `apis-n2`,
+`apis-n3`, `apis-n4-sistema`, `apis-r1-relatorio-diario`, `suporte-n2`,
+`n1-visao-geral-noc`, N2 VMware, N3-ESXi, N3-vCenter, `armazenamento/n2`,
+`servidores-virtuais/n2`, `bd-n2-nativo`, `bd-n3`.
+
+**3 excepções (nenhuma causada por este trabalho):**
+
+1. **`visao-relatorios`** (`00-visao-geral/relatorios`) e **`suporte-n3`**
+   (`10-servicos-suporte/n3`) — `push_panel.py` falha com "Dashboard not
+   found" (HTTP 404). Estes 2 dashboards **nunca foram publicados no
+   Grafana**, apesar de o código estar completo e commitado (Fase 17).
+   Não foram criados agora — publicar um dashboard novo é decisão à parte,
+   com o próprio ciclo de revisão painel-a-painel. **Pendente**: decidir
+   se se publicam.
+2. **`vm-n3-ficha`** (`03-servidores-virtuais/n3-hibrido`, "Ficha da VM")
+   — todas as tentativas de push falharam com `ConnectionResetError` do
+   lado do servidor: push completo, painel a painel, com header
+   `Connection: close`, e **mesmo um reenvio sem qualquer alteração**
+   (teste de diagnóstico que prova a causa não estar na edição de hoje).
+   Suspeita: algo na estrutura de um dos painéis (`l3h-vitais.js` "Sinais
+   vitais" ou `l3h-processos.js` "Top processos") que o Grafana lê sem
+   problema mas rejeita/crasha ao gravar — bug pré-existente, não
+   introduzido hoje. **Este dashboard continua com a âncora antiga
+   (`602`) e continua a funcionar normalmente** (o `602` não foi
+   renomeado/apagado). **Pendente**: investigar qual painel especificamente
+   causa o crash (bisecção campo a campo), possivelmente reportar como bug
+   do Grafana 12.4.2.
+
+Consequência prática: o `602` deixou de ter qualquer consumidor vivo
+**excepto o `vm-n3-ficha`** — confirma que manter o grupo antigo (em vez
+de forçar a migração de tudo) foi a decisão certa, já que pelo menos um
+dashboard seria, hoje, impossível de migrar de qualquer forma.
+
 ## 7. Decisões de classificação já tomadas (para casos futuros análogos)
 
 - **IBM Power** → `08 Datacenter Fisico`, `tipo=ibm-power`. ⚠ Suspeita de
