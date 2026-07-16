@@ -10,6 +10,28 @@ Data: 2026-07-16. Âmbito: as duas instâncias (Zabbix **Infra 7.4** e
 > avaliação do risco de flood (incidente real: template MSSQL → enxurrada
 > de e-mails → tickets em massa no GLPI).
 
+## 0. ⚠️ Achado de segurança colateral (2026-07-16) — ação do utilizador pendente
+
+Durante a varredura de ofensores (secção 5.6), consultas a `usermacro.get`
+em hosts com template `VMware Guest` expuseram **senhas em texto plano**:
+macros `{$VMWARE.PASSWORD}` (credenciais de vCenter/PowerFlex) configuradas
+como tipo `0` ("Text") em vez de tipo `1` ("Secret text" — o Zabbix mascara
+como `******` mesmo via API para este tipo). Confirmado em pelo menos 3
+hosts. Os valores não são reproduzidos neste documento.
+
+**Ações recomendadas (decisão do BPC, não executadas por esta sessão):**
+1. Rotacionar as credenciais de vCenter associadas às macros `{$VMWARE.PASSWORD}`
+   dos hosts afetados (apareceram em texto plano numa sessão de terminal).
+2. Ao recriar, marcar o macro como **Secret text** (Configuration → Hosts →
+   Macros → dropdown de tipo ao lado do valor) — impede exposição futura
+   mesmo por quem tem acesso de leitura à API.
+3. Auditar se outras macros sensíveis (`{$MSSQL.DSN}`, credenciais de
+   dispositivos de rede, etc.) têm o mesmo problema em outros hosts.
+
+Lição para esta sessão: `usermacro.get` deixou de ser chamado com
+`output: extend` sem filtro — só se consulta o nome de macro especificamente
+relevante ao diagnóstico em curso.
+
 ## 1. Estado actual (auditoria só-leitura, 2026-07-16)
 
 ### Zabbix Infra (10.10.126.22, 7.4)
@@ -174,7 +196,9 @@ primeiro passo da F1. Antes de ligar canais:
    | `VS9000312` (VM **SWIFT**) — "(C:) Disk space is low" | **10.295 (78% de TODO o ruído da Infra)** | Diagnóstico (history 24h): não é hover no limiar — é **serra de 29%↔89%** (uso 62→82 GiB em ciclos rápidos; workload escreve/apaga ~20 GiB). **✅ APLICADO 2026-07-16 (aprovado)**: protótipo "Disk space is low" do template `Windows by Zabbix agent active` (341 hosts) alterado — problem `min(pused,30m)>WARN` (persistência) + recovery `max(pused,30m)<WARN-5` (histerese). **✅ CONFIRMADO 2026-07-16 13:02** — trigger sincronizou (LLD) e o flap **parou por completo**: ~59-83 eventos/hora constantes até às 09h, **zero desde então** (4h sem nenhum evento novo, vs média de ~60/h antes). Redução medida: **de ~1.470/dia para 0** nesta trigger especificamente. **Pendente**: reportar à equipa SWIFT o workload cíclico (picos de 89,5% com ~10 GiB livres — risco real de encher; a trigger agora só voltará a disparar se o disco ficar 30 min contínuos acima do limiar, ou seja, um enchimento real) |
    | `svucs020084` (Cisco UCS 6248UP) — temperatura CPU dos blades (6 triggers, chassis 1 e 2) | ~514 | **Investigado a fundo (2026-07-16) — NÃO era ruído de config nem incidente físico, era limiar mal calibrado.** O template oficial `Cisco UCS SNMP` usa fallback genérico `{$TEMP_WARN}=50`/`{$TEMP_CRIT}=60` para TODOS os tipos de sensor (CPU, Ambient, IOH...) por não definir contexto `"CPU"` próprio — bug conhecido e documentado ([ZBX-20027](https://support.zabbix.com/browse/ZBX-20027)). Contra esse limiar genérico, `chassis-2/blade-1/cpu-2` ficou **95,4% do tempo "crítico"** em 7 dias (média 63,5°C, pico 73°C) — mas o spec real da Cisco para CPU de blade é desligamento automático a 82°C e crítico documentado em 86°C (classe B200 M4) — ou seja, o hardware estava operando dentro do normal, só o alarme estava errado. Não foi possível confirmar o modelo exato do blade (Zabbix só regista o Fabric Interconnect `6248UP`, não a blade) — decisão tomada com o utilizador foi aplicar valor conservador provisório. **✅ APLICADO 2026-07-16**: macros de contexto `{$TEMP_WARN:"CPU"}=75` e `{$TEMP_CRIT:"CPU"}=85` criadas **só no host `svucs020084`** (não no template — há um 2º host, `svucs015644`, com o mesmo template e ainda no default genérico, propositalmente não tocado sem confirmação). **✅ CONFIRMADO**: problemas ativos no host caíram de **14 → 0** no primeiro ciclo de polling (3 min) após a mudança — todos eram falso-positivo. **Pendente**: confirmar modelo exato da blade (via UCS Manager) para validar/ajustar os 75/85 definitivamente, e decidir se `svucs015644` recebe a mesma correção |
    | "Memory Pages/sec is too high" (VS9000105, VS8000305, VS9000509, VS8000789...) | ~305 | **Investigado (2026-07-16).** Trigger já usa `min(...,5m)` com limiar oficial do template `Windows by Zabbix agent active` (`{$MEM.PAGE_SEC.CRIT.MAX}=1000`) — mecanismo bem desenhado, não é bug de template. Diagnóstico por host (history 7d, p50/p90/p99): **só `VS9000105` tem mismatch de baseline** — p50=1.480 (mediana já ACIMA do limiar de 1000), p90=2.690. As outras 3 (`VS8000305` p50=1, `VS9000509` p50=8, `VS8000789` p50=9, todas com p99 alto e picos de até 275.730) ficam quietas na maior parte do tempo com **picos genuínos** — não tocadas, risco de mascarar pressão de memória real. **✅ APLICADO 2026-07-16**: override `{$MEM.PAGE_SEC.CRIT.MAX}=4000` só no `VS9000105`, calibrado pelo p90 medido + margem. **✅ CONFIRMADO**: 0 eventos novos em 3 min de observação |
-   | Creditquest `VS8000823` "High ICMP ping loss" | 78 | Investigar rede/host; candidata a dependência |
+   | `VS8000219` (Sophos MTA) "CPU queue length is too high" | 72 | **Investigado (2026-07-16) — NÃO é ruído, é sinal genuíno.** Fórmula `min(fila,5m) − núcleos×2 > 3` (6 núcleos → desconto de 12). Mediana real da fila (7d): **26** — mesmo descontado, fica cronicamente ~14 acima do limiar. **Não alterado** — parece fila de CPU estruturalmente alta (VM sob carga real ou subdimensionada), merece investigação de capacidade pela equipa dona da VM, não ajuste de trigger |
+   | `VS9000309` (SGC — Sistema de Gestão de Carteiras) "High memory utilization" | 60-65 | **Investigado (2026-07-16) — NÃO é ruído.** Métrica é "memória comprometida vs RAM física" (pode passar de 100%, contador padrão Windows). Mediana (7d) **80%**, p90 **126%**, pico **166%** — uso sustentado acima de 100% indica dependência pesada de *page file* além da RAM instalada. **Não alterado** — sinal real de possível subdimensionamento de memória, escalar à equipa da aplicação |
+   | `VS8000823` (Creditquest/PMSI-Finastra) "High ICMP ping loss" | 49-78 | **Investigado (2026-07-16) — NÃO é ruído.** Padrão bimodal: p50=0%, p90=0% (majoritariamente saudável) mas p99=100% — picos de **perda total intermitente**. Parece blip real de rede/pausa de VM (ex. vMotion), não flutuação de medição. **Não alterado** — vale monitorar/dependência, não suprimir |
 
    **Network** (7.303 eventos Warn+, 812 triggers; top 15 = 51%):
    | Ofensor | Eventos/7d | Ação proposta |
