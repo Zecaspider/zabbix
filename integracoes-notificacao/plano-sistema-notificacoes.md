@@ -179,14 +179,23 @@ primeiro passo da F1. Antes de ligar canais:
    **Network** (7.303 eventos Warn+, 812 triggers; top 15 = 51%):
    | Ofensor | Eventos/7d | Ação proposta |
    |---|---|---|
-   | `SWJAMB00` Fa0/6 "Ligacao de Telefones e PCs" link down | **1.417** | Porta de acesso — link down é comportamento normal de PC/telefone a ligar/desligar. **Desativar trigger de link down em portas de acesso** (manter só uplinks/WAN) |
-   | `SWLARG00` Gi1/0/21 `***CENTRAL_INTRUSAO***` link down | 636 | Idem porta de acesso, MAS o nome sugere central de intrusão — **verificar fisicamente o cabo/equipamento** antes de silenciar |
-   | `SWA-EDS-P0-00/01` portas AREA-COMERCIAL link down | ~141 | Portas de acesso — idem SWJAMB00 |
+   | `SWJAMB00` Fa0/6 "Ligacao de Telefones e PCs" link down | **1.417** | **✅ APLICADO 2026-07-16** — mecanismo oficial do template `Cisco IOS by SNMP` já existe para isto (`{$IFCONTROL:"{#IFNAME}"}=1` controla se a trigger de link-down dispara por interface) mas **nunca tinha sido usado em toda a frota** (0 overrides em 8.323 triggers "Link down" da Network, confirmado por query). Criado `{$IFCONTROL:"Fa0/6"}=0` no host — confirmado: problema saiu da lista de ativos imediatamente (sem esperar poll, a macro é avaliada na condição) |
+   | `SWLARG00` Gi1/0/21 `***CENTRAL_INTRUSAO***` link down | 636 | Idem porta de acesso, MAS o nome sugere central de intrusão — **verificar fisicamente o cabo/equipamento** antes de silenciar. **Deliberadamente não tocado** |
+   | `SWA-EDS-P0-01` Gi1/0/35 "AREA-COMERCIAL" link down | 100 | **✅ APLICADO 2026-07-16** — `{$IFCONTROL:"Gi1/0/35"}=0`, mesmo mecanismo, confirmado. **Achado de escala**: só este switch tem outras ~8 portas no mesmo padrão `**AREA-COMERCIAL**` (Gi1/0/7,13,16,19,24,26,37,39) ainda instáveis, **deliberadamente não tocadas** — escopo desta rodada foi só os 2 casos do top-15, não uma varredura da frota |
    | `RTLOFIN00`, `RTCACU00`, `RT-PST-POLICIAL`, `RTTEBA00`, `RTZANGO00`... "High ICMP ping response time" | ~1.100 somados | Limiar de latência WAN agressivo para links de agência — subir limiar/janela de média por perfil de link |
    | `DC1-LEAF-103/105` (Nexus 9000) "Temperature above critical" | 254 | **Cruzar com os UCS da Infra — dois sinais independentes de temperatura no mesmo DC.** Investigar arrefecimento como incidente real |
 
    Ação combinada estimada: Infra 13.212 → ~2.000/7d; High da Infra
    10.724 → ~430/7d. Só depois disto os gates F2+ fazem sentido.
+
+   **Decisão de escala pendente (Network)**: confirmado 8.323 triggers
+   "Link down" na frota toda, mecanismo `{$IFCONTROL}` nunca usado antes
+   desta sessão. Corrigidos só os 2 casos do top-15 (ver tabela acima) —
+   uma varredura/política de classificação porta-a-porta (acesso vs
+   uplink, por regex de ifAlias ou por convenção de nomenclatura) para
+   o resto da frota fica como decisão do BPC, não executada em massa
+   sem revisão humana caso a caso (risco de silenciar um uplink real
+   mal rotulado).
 7. **Teste canário obrigatório** (regra CLAUDE.md): 1 trigger + 1
    destinatário por canal, validado, antes de alargar a grupos.
 
