@@ -78,6 +78,51 @@ AD Audit (VS8000214) · Azure AD Connect (VS8000403) · **DHCP Kea/Stork ×5**
 | **F-D Calibrar items** | Por papel: DC/DNS = `service.info` core + `net.dns` uniforme; DHCP = check funcional Kea; Zabbix/Graylog/PRTG = checks de processo+porta+self-monitoring | sim |
 | **F-E Calibrar triggers** | Limiares por papel (ex.: DC com CPU alta ≠ file server com CPU alta), dependências ICMP→agente→serviço, severidades (serviço de suporte core = High/Disaster) | sim |
 
+## ✅ F-B APLICADA (2026-07-16, aprovada pelo utilizador)
+
+- **52 hosts** atualizados (0 falhas): +grupo 666 em todos; tag `tipo=` em
+  todos; tag `servico=` acrescentada onde faltava (10 hosts — vProxies
+  GUEST-OS e ACM Jump), preservando todas as tags/grupos existentes.
+- Âmbito validado pelo utilizador: monitorização + backup + SCCM/Sophos
+  MTA/TACACS + jump servers + ficheiros/FTP.
+- **Duplicado PRTG removido**: host 11653 (`VS8000223`) apagado após
+  confirmação tripla (mesmo IP + mesmo DNS do 10539, zero dados desde
+  sempre, já desativado).
+- Grupo `10 Servicos de Suporte`: **23 → 75 membros**.
+- Em espera (deliberado): Graylog Win 14134 (morto há 30d+, decidir
+  destino), Observe it 14178 (OFF), appliances Data Domain/RecoverPoint
+  (→ 08?), RMS VS8000107 e "ToBe" (sinal ambíguo → M5).
+
+## F-C — validação de agentes dos 75 (snapshot 2026-07-16 23h)
+
+46 problemas ativos no grupo. O quadro:
+
+### 🔴 URGENTE — cluster DHCP inteiro sem agente
+Os **5 servidores Kea DHCP** estão sem agente: VS8000927/928/929 há **81
+dias**, e **VS8000930/931 morreram HOJE** — com o problema "Kea HA degradado
+ou quebrado" ativo em simultâneo. O DHCP do banco está sem visibilidade e
+com HA em estado degradado. **Escalar primeiro.**
+
+### Agente morto há 81d em serviços críticos (recuperar — fluxo Fase 14)
+`VS8000932` (**a própria VM do Zabbix Network!**) · NS4 (DNS externo) ·
+DC VS6000001 · Exchange VS8000220+394 · VeeamSA · vProxies ×3 · Observer ·
+SFTP ubuntu · 4 jumps · FTP VS9000711 · WSUS VS8000229 — 22 no total.
+
+### Provavelmente VMs mortas/desligadas (ICMP 55d — confirmar e desativar)
+Exchange VS8000220 · VD5000AJ012 · VD5000AVG0014 · VS8000528 ·
+Observer_PRD · FTP VS9000711 · vProxy VS8000145 (+ Teste Kea DHCP 27d).
+
+### Outros achados na F-C
+- `VS9000508` (jump): **serviço WinRM parado há 14 dias** — é a porta de
+  gestão remota de um jump server.
+- `VD5000JM003` (jump): disco C: >90% há 81 dias.
+- Exchange VS8000390/391: os falsos positivos EMC NetWorker (supressão já
+  proposta na triagem) + Memory Pages/sec (paging alto é semi-normal em
+  Exchange — calibrar por papel na F-E).
+- vProxies VS8000105/111: NTP fora de sincronia (23-88d).
+- Zabbix server: os 3 auto-diagnósticos conhecidos (http poller, value
+  cache, itens sem dados) — plano §0.1.
+
 ## Tag scheme proposto (para validação)
 
 ```
