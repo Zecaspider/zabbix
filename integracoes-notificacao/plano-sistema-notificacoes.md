@@ -32,6 +32,80 @@ Lição para esta sessão: `usermacro.get` deixou de ser chamado com
 `output: extend` sem filtro — só se consulta o nome de macro especificamente
 relevante ao diagnóstico em curso.
 
+## 0.1. 🔴 Achado crítico — serviços de negócio em Disaster há dias, sem notificação (2026-07-16)
+
+Durante a varredura por domínio (secção 5.7), o domínio **`07 APIs e Servicos`**
+mostrou 9 de 11 problemas ativos em severidade **Disaster** — investigado a fundo.
+
+### Grupo A — indisponibilidade de longa duração, confirmada por resposta HTTP real
+| Serviço | Sintoma técnico (verificado ao vivo) | Duração |
+|---|---|---|
+| BNA - Angola RTGS (SPTR) | HTTP **503** — servidor responde, rejeita o pedido | 6d 1h51m |
+| EMP - Emissão de Cartões de Crédito | `response code = 0` — sem resposta (timeout/DNS/conexão recusada) | 6d 21h |
+| SMS Banking / ConnectBanking | idem, `response code = 0` | 6d 21h |
+| INSS - Portal BPC | idem, `response code = 0` | 4d 19h |
+| INSS - Portal Público | HTTP 200 até às 10:30 de hoje; falha desde então (bate com a idade do problema) | 11h39m |
+
+### Grupo B — falha síncrona recente, ainda ativa no momento da investigação
+4 serviços em domínios completamente distintos (sem proxy Zabbix partilhado,
+sem hosting comum: `.pt`, SAP Cloud `.ondemand.com`, e o próprio `www.bpc.ao`)
+falharam no mesmo segundo (22:16:20–23), confirmado por transição 0→1 no
+histórico do item de falha:
+
+| Serviço | Última resposta OK | Início da falha |
+|---|---|---|
+| Mundial Seguro - Pagamentos | 21:59:13 (200) | 22:16:20 |
+| SAP - ERP BPC (Cloud) | 21:59:14 (200) | 22:16:22 |
+| Pumangol - Gestão de Frota | 21:59:14 (200) | 22:16:22 |
+| BPC.AO - Site Público Institucional | 21:59:15 (200) | 22:16:23 |
+
+Confirmado que **apenas estes 4 de 40** hosts do domínio tiveram essa transição
+na última hora (não é um apagão total do domínio).
+
+**Nota de correção**: um primeiro check de "está tudo recuperado?" desta sessão
+deu falso positivo — bug no filtro de busca (`search:{"name":"indisponivel"}`
+sem o acento `í`, que não bateu com o texto real armazenado). Reconfirmado
+sem esse filtro: **todos os 9 continuavam ativos** no momento da investigação.
+
+### Causa-raiz confirmada: pool de HTTP poller do Zabbix server saturado a 100%
+
+```
+Zabbix server: Utilization of http poller data collector processes, in % = 100
+Zabbix server: Queue                    (7d): min=12.397  p50=13.345  max=13.974
+Zabbix server: Queue over 10 minutes    (7d): min=4.362   p50=4.421   max=4.573
+```
+
+Valores **estáveis há pelo menos 7 dias** (não é pico) — o servidor tem
+permanentemente ~13.300 itens em fila, ~4.400 deles há mais de 10 minutos.
+CPU geral do servidor: 28% (com folga). Memória: 78%. ICMP pinger: 50%
+utilização. Ou seja: **não é falta de hardware, é o número de processos
+`StartHTTPPollers` configurado no `zabbix_server.conf` insuficiente** para a
+carga real (~40 serviços × 4 cenários web cada = muitos checks HTTP/HTTPS
+concorrentes, com timeouts longos típicos de endpoints externos).
+
+**Implicação**: os "6+ falhas consecutivas" que abrem estes triggers podem
+estar a contar timeouts do PRÓPRIO poller saturado, não necessariamente do
+serviço de destino — à excepção do BNA RTGS, onde o **503 é uma resposta HTTP
+real** (o poller conseguiu executar o check e recebeu erro do servidor),
+confirmando que pelo menos esse caso é sinal genuíno, não artefacto de fila.
+Os restantes (resposta `0`) são ambíguos entre "serviço really down" e
+"poller nunca conseguiu executar o check a tempo".
+
+**Ações recomendadas (decisão do BPC, não executadas por esta sessão)**:
+1. **Verificar os 5 serviços do Grupo A independentemente do Zabbix**
+   (curl/browser a partir de outro ponto de rede) antes de escalar como
+   incidente de negócio — especialmente o BNA RTGS (503 real) e o SMS Banking.
+2. **Aumentar `StartHTTPPollers`** no `zabbix_server.conf` do servidor Infra
+   e reiniciar o `zabbix-server` — ação de infraestrutura, precisa de janela
+   e dono do servidor; fora do âmbito desta sessão (só leitura via API).
+3. Considerar aumentar também `StartPingers` (ICMP pinger a 50% utilização,
+   segunda maior pressão).
+4. Depois do fix de capacidade, re-auditar se os 5 problemas do Grupo A
+   continuam genuinamente ativos ou se eram artefacto de poller saturado.
+5. **Reativar notificação** (Email ou os novos canais SMS/WhatsApp) para a
+   action que cobre este domínio — como está hoje, um Disaster de 6 dias no
+   RTGS do Banco Nacional de Angola não gerou aviso a ninguém.
+
 ## 1. Estado actual (auditoria só-leitura, 2026-07-16)
 
 ### Zabbix Infra (10.10.126.22, 7.4)
