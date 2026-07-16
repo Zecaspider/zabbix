@@ -1,0 +1,160 @@
+zabbix_export:
+  version: '6.0'
+  media_types:
+    - name: 'Twilio SMS/WhatsApp'
+      type: WEBHOOK
+      description: |
+        SMS e WhatsApp via Twilio (agregador internacional).
+
+        API: POST https://api.twilio.com/2010-04-01/Accounts/{SID}/Messages.json
+        Autenticação: HTTP Basic (AccountSID:AuthToken).
+
+        Seleção de canal (duas formas):
+          1. Parâmetro "channel" do media type: sms (padrão) ou whatsapp.
+             Para ter os dois canais, clone o media type e mude o channel.
+          2. Prefixo no "Send to" da media do usuário: "whatsapp:+2449XXXXXXXX"
+             força WhatsApp independentemente do parâmetro.
+
+        Pré-requisitos na conta Twilio:
+          - Conta paga (trial só envia para números verificados).
+          - SMS: habilitar Angola em Messaging Geo Permissions (vem desativado
+            e falha de forma silenciosa). Sender: número Twilio ou sender ID
+            alfanumérico (funciona em Angola sem registo, só para SMS).
+          - WhatsApp: sender WhatsApp aprovado (número com perfil Business
+            aprovado pela Meta). Mensagens de alerta são "business-initiated":
+            fora da janela de 24h SÓ são entregues com template aprovado —
+            preencha "twilio_content_sid" com o Content SID do template
+            (o corpo do alerta vai como variável {{1}}). Corpo livre (Body)
+            só é entregue dentro de janela de sessão de 24h.
+
+        Parâmetros: twilio_account_sid, twilio_auth_token, twilio_from_sms,
+        twilio_from_whatsapp, channel, twilio_content_sid (opcional).
+
+        Requer Zabbix 6.0+ e saída HTTPS do server para api.twilio.com.
+      parameters:
+        - name: sendto
+          value: '{ALERT.SENDTO}'
+        - name: subject
+          value: '{ALERT.SUBJECT}'
+        - name: message
+          value: '{ALERT.MESSAGE}'
+        - name: channel
+          value: 'sms'
+        - name: twilio_account_sid
+          value: '<PREENCHER_ACCOUNT_SID>'
+        - name: twilio_auth_token
+          value: '<PREENCHER_AUTH_TOKEN>'
+        - name: twilio_from_sms
+          value: '<PREENCHER_NUMERO_OU_SENDER_ID>'
+        - name: twilio_from_whatsapp
+          value: ''
+        - name: twilio_content_sid
+          value: ''
+      script: |
+        // Twilio SMS/WhatsApp — webhook Zabbix (Duktape/ES5, Zabbix 6.0+)
+
+        function normalize(number) {
+            var n = String(number).replace(/[\s\-\+\.]/g, '');
+            if (n.indexOf('00244') === 0) {
+                n = n.substring(2);
+            }
+            if (n.indexOf('244') !== 0) {
+                n = '244' + n;
+            }
+            if (!/^244\d{9}$/.test(n)) {
+                throw 'numero de destino invalido: "' + number + '"';
+            }
+            return '+' + n;
+        }
+
+        function truncate(text, max) {
+            text = String(text);
+            return text.length > max ? text.substring(0, max - 3) + '...' : text;
+        }
+
+        try {
+            var params = JSON.parse(value);
+
+            if (!params.sendto) {
+                throw 'parametro "sendto" vazio';
+            }
+            if (!params.twilio_account_sid || params.twilio_account_sid.indexOf('<PREENCHER') === 0) {
+                throw 'credenciais Twilio nao configuradas no media type';
+            }
+
+            // canal: prefixo "whatsapp:" no sendto tem prioridade sobre o parametro
+            var sendto = String(params.sendto),
+                channel = (params.channel || 'sms').toLowerCase();
+
+            if (sendto.toLowerCase().indexOf('whatsapp:') === 0) {
+                channel = 'whatsapp';
+                sendto = sendto.substring(9);
+            }
+
+            var fullText = (params.subject ? params.subject + ' | ' : '') + params.message,
+                to = normalize(sendto),
+                body = '';
+
+            if (channel === 'whatsapp') {
+                if (!params.twilio_from_whatsapp) {
+                    throw 'twilio_from_whatsapp nao configurado (necessario para canal whatsapp)';
+                }
+                body = 'To=' + encodeURIComponent('whatsapp:' + to) +
+                       '&From=' + encodeURIComponent('whatsapp:' + params.twilio_from_whatsapp);
+
+                if (params.twilio_content_sid) {
+                    // template aprovado: corpo do alerta vai como variavel {{1}}
+                    body += '&ContentSid=' + encodeURIComponent(params.twilio_content_sid) +
+                            '&ContentVariables=' + encodeURIComponent(JSON.stringify({ '1': fullText }));
+                }
+                else {
+                    // corpo livre: entregue apenas dentro da janela de sessao de 24h
+                    body += '&Body=' + encodeURIComponent(fullText);
+                }
+            }
+            else {
+                body = 'To=' + encodeURIComponent(to) +
+                       '&From=' + encodeURIComponent(params.twilio_from_sms) +
+                       '&Body=' + encodeURIComponent(truncate(fullText, 160));
+            }
+
+            var url = 'https://api.twilio.com/2010-04-01/Accounts/' +
+                      encodeURIComponent(params.twilio_account_sid) + '/Messages.json',
+                request = new HttpRequest();
+
+            request.addHeader('Content-Type: application/x-www-form-urlencoded');
+            request.addHeader('Authorization: Basic ' +
+                btoa(params.twilio_account_sid + ':' + params.twilio_auth_token));
+
+            var response = request.post(url, body),
+                status = request.getStatus();
+
+            Zabbix.log(4, '[Twilio ' + channel + '] HTTP ' + status + ' resposta: ' + response);
+
+            if (status < 200 || status >= 300) {
+                throw 'Twilio HTTP ' + status + ': ' + response;
+            }
+
+            return 'enviado via Twilio/' + channel + ' (HTTP ' + status + ')';
+        }
+        catch (error) {
+            Zabbix.log(3, '[Twilio] envio falhou: ' + error);
+            throw 'Twilio: ' + error;
+        }
+      timeout: 30s
+      attempts: '3'
+      attempt_interval: 30s
+      max_sessions: '1'
+      message_templates:
+        - event_source: TRIGGERS
+          operation_mode: PROBLEM
+          subject: ''
+          message: 'PROBLEMA {EVENT.SEVERITY}: {EVENT.NAME} em {HOST.NAME} as {EVENT.TIME} de {EVENT.DATE}'
+        - event_source: TRIGGERS
+          operation_mode: RECOVERY
+          subject: ''
+          message: 'RESOLVIDO: {EVENT.NAME} em {HOST.NAME} (duracao {EVENT.DURATION})'
+        - event_source: TRIGGERS
+          operation_mode: UPDATE
+          subject: ''
+          message: 'UPDATE por {USER.FULLNAME}: {EVENT.NAME} em {HOST.NAME}. {EVENT.UPDATE.MESSAGE}'

@@ -1,0 +1,174 @@
+zabbix_export:
+  version: '6.0'
+  media_types:
+    - name: 'SMS (Mimo + fallback Twilio)'
+      type: WEBHOOK
+      description: |
+        Envia SMS de alerta via Mimo (Backbone, Angola) como rota primária.
+        Se o Mimo falhar (erro HTTP ou indisponibilidade), tenta automaticamente
+        o Twilio como fallback — se as credenciais Twilio estiverem preenchidas.
+
+        Configuração necessária:
+          - mimo_host: host da API Mimo (confirmar com suporte@backbone.it.ao)
+          - mimo_token: token da conta Mimo
+          - mimo_sender: sender ID registado no Mimo (ex: BPC)
+          - twilio_account_sid / twilio_auth_token: credenciais Twilio (opcional)
+          - twilio_from: número Twilio ou sender ID alfanumérico (opcional)
+
+        O número de destino vem de {ALERT.SENDTO} — campo "Send to" da media
+        do usuário. Aceita formato 9XXXXXXXX, 2449XXXXXXXX ou +2449XXXXXXXX.
+
+        Requer Zabbix 6.0+ (objetos HttpRequest e btoa no engine JS).
+        O Zabbix server precisa de saída HTTPS para o host do Mimo e para
+        api.twilio.com.
+      parameters:
+        - name: sendto
+          value: '{ALERT.SENDTO}'
+        - name: subject
+          value: '{ALERT.SUBJECT}'
+        - name: message
+          value: '{ALERT.MESSAGE}'
+        - name: mimo_host
+          value: 'https://www.mimo.it.ao'
+        - name: mimo_token
+          value: '<PREENCHER_TOKEN_MIMO>'
+        - name: mimo_sender
+          value: '<PREENCHER_SENDER_ID>'
+        - name: twilio_account_sid
+          value: ''
+        - name: twilio_auth_token
+          value: ''
+        - name: twilio_from
+          value: ''
+      script: |
+        // Webhook Zabbix: SMS via Mimo (primário) com fallback Twilio.
+        // Compatível com o engine Duktape (ES5) do Zabbix 6.0+.
+
+        var Sms = {
+            params: {},
+
+            // Normaliza para 2449XXXXXXXX (formato aceito pelo Mimo).
+            normalize: function (number) {
+                var n = String(number).replace(/[\s\-\+\.]/g, '');
+                if (n.indexOf('00244') === 0) {
+                    n = n.substring(2);
+                }
+                if (n.indexOf('244') !== 0) {
+                    n = '244' + n;
+                }
+                if (!/^244\d{9}$/.test(n)) {
+                    throw 'numero de destino invalido: "' + number + '" (esperado 9 digitos de Angola)';
+                }
+                return n;
+            },
+
+            // SMS GSM-7: 160 chars por mensagem. Trunca para evitar concatenacao.
+            truncate: function (text, max) {
+                text = String(text);
+                return text.length > max ? text.substring(0, max - 3) + '...' : text;
+            },
+
+            sendMimo: function (to, text) {
+                if (!this.params.mimo_host || !this.params.mimo_token || this.params.mimo_token.indexOf('<PREENCHER') === 0) {
+                    throw 'credenciais Mimo nao configuradas';
+                }
+
+                var host = String(this.params.mimo_host).replace(/\/+$/, ''),
+                    url = host + '/mimosms/v1/message/send?token=' + encodeURIComponent(this.params.mimo_token),
+                    payload = {
+                        sender: this.params.mimo_sender,
+                        recipients: this.normalize(to),
+                        text: text
+                    },
+                    request = new HttpRequest();
+
+                request.addHeader('Content-Type: application/json');
+
+                var response = request.post(url, JSON.stringify(payload)),
+                    status = request.getStatus();
+
+                Zabbix.log(4, '[SMS Mimo] HTTP ' + status + ' resposta: ' + response);
+
+                if (status < 200 || status >= 300) {
+                    throw 'Mimo HTTP ' + status + ': ' + response;
+                }
+
+                // Alguns gateways devolvem 200 com erro no corpo — validar na homologacao
+                // e ajustar este bloco conforme a resposta real da API Mimo.
+                return 'enviado via Mimo (HTTP ' + status + ')';
+            },
+
+            sendTwilio: function (to, text) {
+                var sid = this.params.twilio_account_sid;
+
+                if (!sid || !this.params.twilio_auth_token || !this.params.twilio_from) {
+                    throw 'credenciais Twilio nao configuradas (fallback indisponivel)';
+                }
+
+                var url = 'https://api.twilio.com/2010-04-01/Accounts/' + encodeURIComponent(sid) + '/Messages.json',
+                    body = 'To=' + encodeURIComponent('+' + this.normalize(to)) +
+                           '&From=' + encodeURIComponent(this.params.twilio_from) +
+                           '&Body=' + encodeURIComponent(text),
+                    request = new HttpRequest();
+
+                request.addHeader('Content-Type: application/x-www-form-urlencoded');
+                request.addHeader('Authorization: Basic ' + btoa(sid + ':' + this.params.twilio_auth_token));
+
+                var response = request.post(url, body),
+                    status = request.getStatus();
+
+                Zabbix.log(4, '[SMS Twilio] HTTP ' + status + ' resposta: ' + response);
+
+                if (status < 200 || status >= 300) {
+                    throw 'Twilio HTTP ' + status + ': ' + response;
+                }
+
+                return 'enviado via Twilio (HTTP ' + status + ')';
+            }
+        };
+
+        try {
+            Sms.params = JSON.parse(value);
+
+            if (!Sms.params.sendto) {
+                throw 'parametro "sendto" vazio — defina o numero no campo "Send to" da media do usuario';
+            }
+
+            var text = Sms.truncate(
+                (Sms.params.subject ? Sms.params.subject + ' | ' : '') + Sms.params.message,
+                160
+            );
+
+            var result;
+            try {
+                result = Sms.sendMimo(Sms.params.sendto, text);
+            }
+            catch (mimoError) {
+                Zabbix.log(3, '[SMS webhook] Mimo falhou (' + mimoError + '), tentando fallback Twilio');
+                result = Sms.sendTwilio(Sms.params.sendto, text) +
+                         ' [fallback — Mimo falhou: ' + mimoError + ']';
+            }
+
+            return result;
+        }
+        catch (error) {
+            Zabbix.log(3, '[SMS webhook] Envio falhou: ' + error);
+            throw 'Falha no envio de SMS: ' + error;
+        }
+      timeout: 30s
+      attempts: '3'
+      attempt_interval: 30s
+      max_sessions: '1'
+      message_templates:
+        - event_source: TRIGGERS
+          operation_mode: PROBLEM
+          subject: ''
+          message: 'PROBLEMA {EVENT.SEVERITY}: {EVENT.NAME} em {HOST.NAME} as {EVENT.TIME} de {EVENT.DATE}'
+        - event_source: TRIGGERS
+          operation_mode: RECOVERY
+          subject: ''
+          message: 'RESOLVIDO: {EVENT.NAME} em {HOST.NAME} (duracao {EVENT.DURATION})'
+        - event_source: TRIGGERS
+          operation_mode: UPDATE
+          subject: ''
+          message: 'UPDATE por {USER.FULLNAME}: {EVENT.NAME} em {HOST.NAME}. {EVENT.UPDATE.MESSAGE}'

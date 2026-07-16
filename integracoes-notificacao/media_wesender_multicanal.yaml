@@ -1,0 +1,128 @@
+zabbix_export:
+  version: '6.0'
+  media_types:
+    - name: 'WeSender (SMS/WhatsApp)'
+      type: WEBHOOK
+      description: |
+        Envio multicanal via WeSender (Digital Factory Angola — Luanda).
+        API pública e documentada: https://www.wesender.co.ao/devs.html
+
+        API: POST https://api.wesender.co.ao/envio/apikey
+        Corpo JSON: {"ApiKey", "Destino": ["9XXXXXXXX", ...], "Mensagem",
+        "CEspeciais": "false"}
+        Autenticação: só a ApiKey no corpo (sem header).
+
+        IMPORTANTE sobre canais: a API do WeSender NAO permite escolher o
+        canal por envio — a plataforma distribui conforme os canais ativos
+        e saldos da CONTA (SMS, WhatsApp, Facebook Messenger). Para usar
+        WhatsApp, o canal deve estar contratado/ativo na conta WeSender.
+        A resposta devolve os saldos restantes por canal.
+
+        Números: a API usa formato local de 9 dígitos (ex.: 923000000) —
+        o script remove prefixos 244/+244 automaticamente.
+
+        Contactos: suportewesender@digitalfactory.co.ao / +244 945 953 197.
+        Registo dá 10 SMS grátis para teste.
+
+        Parâmetros a preencher: wesender_apikey.
+        Requer Zabbix 6.0+ e saída HTTPS para api.wesender.co.ao.
+      parameters:
+        - name: sendto
+          value: '{ALERT.SENDTO}'
+        - name: subject
+          value: '{ALERT.SUBJECT}'
+        - name: message
+          value: '{ALERT.MESSAGE}'
+        - name: wesender_apikey
+          value: '<PREENCHER_APIKEY>'
+        - name: wesender_url
+          value: 'https://api.wesender.co.ao/envio/apikey'
+      script: |
+        // WeSender multicanal — webhook Zabbix (Duktape/ES5, Zabbix 6.0+)
+
+        // WeSender usa numero local de 9 digitos (sem 244)
+        function normalizeLocal(number) {
+            var n = String(number).replace(/[\s\-\+\.]/g, '');
+            if (n.indexOf('00244') === 0) {
+                n = n.substring(5);
+            }
+            else if (n.indexOf('244') === 0 && n.length === 12) {
+                n = n.substring(3);
+            }
+            if (!/^9\d{8}$/.test(n)) {
+                throw 'numero de destino invalido: "' + number + '" (esperado 9XXXXXXXX)';
+            }
+            return n;
+        }
+
+        function truncate(text, max) {
+            text = String(text);
+            return text.length > max ? text.substring(0, max - 3) + '...' : text;
+        }
+
+        try {
+            var params = JSON.parse(value);
+
+            if (!params.sendto) {
+                throw 'parametro "sendto" vazio';
+            }
+            if (!params.wesender_apikey || params.wesender_apikey.indexOf('<PREENCHER') === 0) {
+                throw 'wesender_apikey nao configurada no media type';
+            }
+
+            var text = truncate((params.subject ? params.subject + ' | ' : '') + params.message, 160),
+                payload = {
+                    ApiKey: params.wesender_apikey,
+                    Destino: [normalizeLocal(params.sendto)],
+                    Mensagem: text,
+                    CEspeciais: 'false'
+                },
+                request = new HttpRequest();
+
+            request.addHeader('Content-Type: application/json');
+
+            var response = request.post(params.wesender_url, JSON.stringify(payload)),
+                status = request.getStatus();
+
+            Zabbix.log(4, '[WeSender] HTTP ' + status + ' resposta: ' + response);
+
+            if (status < 200 || status >= 300) {
+                throw 'WeSender HTTP ' + status + ': ' + response;
+            }
+
+            // A resposta traz {"Exito": bool, "Mensagem": "...", "Objeto": {saldos}}
+            var result = {};
+            try {
+                result = JSON.parse(response);
+            }
+            catch (e) {
+                throw 'resposta nao-JSON do WeSender: ' + response;
+            }
+
+            if (result.Exito !== true) {
+                throw 'WeSender recusou o envio: ' + (result.Mensagem || response);
+            }
+
+            return 'enviado via WeSender: ' + result.Mensagem;
+        }
+        catch (error) {
+            Zabbix.log(3, '[WeSender] envio falhou: ' + error);
+            throw 'WeSender: ' + error;
+        }
+      timeout: 30s
+      attempts: '3'
+      attempt_interval: 30s
+      max_sessions: '1'
+      message_templates:
+        - event_source: TRIGGERS
+          operation_mode: PROBLEM
+          subject: ''
+          message: 'PROBLEMA {EVENT.SEVERITY}: {EVENT.NAME} em {HOST.NAME} as {EVENT.TIME} de {EVENT.DATE}'
+        - event_source: TRIGGERS
+          operation_mode: RECOVERY
+          subject: ''
+          message: 'RESOLVIDO: {EVENT.NAME} em {HOST.NAME} (duracao {EVENT.DURATION})'
+        - event_source: TRIGGERS
+          operation_mode: UPDATE
+          subject: ''
+          message: 'UPDATE por {USER.FULLNAME}: {EVENT.NAME} em {HOST.NAME}. {EVENT.UPDATE.MESSAGE}'

@@ -1,0 +1,125 @@
+zabbix_export:
+  version: '6.0'
+  media_types:
+    - name: 'TelcoSMS SMS'
+      type: WEBHOOK
+      description: |
+        SMS via TelcoSMS (telcosms.co.ao — Angola). Preços públicos em AOA
+        (11,00 AOA/SMS caindo até 5,00 por volume). Suporte 24x7.
+
+        API (estilo Ozeki NG SMS Gateway, levantada via gem Ruby "telcosms"):
+        POST {telcosms_host}/api com parâmetros na query string:
+          username, password, action=sendmessage, recipient,
+          messagetype=SMS:TEXT, messagedata, originator
+
+        *** ATENÇÃO — VALIDAR ANTES DE PRODUÇÃO ***
+        1. O host conhecido publicamente é http://196.216.53.194:9501 —
+           IP direto e SEM HTTPS: credenciais trafegam em claro na query
+           string. Exigir da TelcoSMS um endpoint HTTPS/hostname oficial
+           (suporte@telcosms.co.ao / +244 940 620 227) antes de usar num
+           ambiente bancário.
+        2. Formato do recipient (com/sem 244, com/sem +) a confirmar.
+        3. A TelcoSMS também oferece E2S (e-mail-para-SMS): alternativa sem
+           código usando o media type "Email" nativo do Zabbix apontando a
+           mensagem para o endereço E2S — boa contingência de implantação
+           imediata enquanto a API não é homologada.
+
+        Parâmetros a preencher: telcosms_host, telcosms_username,
+        telcosms_password, telcosms_originator.
+      parameters:
+        - name: sendto
+          value: '{ALERT.SENDTO}'
+        - name: subject
+          value: '{ALERT.SUBJECT}'
+        - name: message
+          value: '{ALERT.MESSAGE}'
+        - name: telcosms_host
+          value: '<PREENCHER_HOST_HTTPS_OFICIAL>'
+        - name: telcosms_username
+          value: '<PREENCHER_USERNAME>'
+        - name: telcosms_password
+          value: '<PREENCHER_PASSWORD>'
+        - name: telcosms_originator
+          value: '<PREENCHER_ORIGINATOR>'
+      script: |
+        // TelcoSMS — webhook Zabbix (Duktape/ES5, Zabbix 6.0+)
+        // API estilo Ozeki: parametros na query string do POST /api
+
+        function normalize(number) {
+            var n = String(number).replace(/[\s\-\+\.]/g, '');
+            if (n.indexOf('00244') === 0) {
+                n = n.substring(2);
+            }
+            if (n.indexOf('244') !== 0) {
+                n = '244' + n;
+            }
+            if (!/^244\d{9}$/.test(n)) {
+                throw 'numero de destino invalido: "' + number + '"';
+            }
+            // formato do recipient a confirmar na homologacao com a TelcoSMS
+            return n;
+        }
+
+        function truncate(text, max) {
+            text = String(text);
+            return text.length > max ? text.substring(0, max - 3) + '...' : text;
+        }
+
+        try {
+            var params = JSON.parse(value);
+
+            if (!params.sendto) {
+                throw 'parametro "sendto" vazio';
+            }
+            if (!params.telcosms_host || params.telcosms_host.indexOf('<PREENCHER') === 0) {
+                throw 'telcosms_host nao configurado — pedir endpoint HTTPS oficial a suporte@telcosms.co.ao';
+            }
+
+            var text = truncate((params.subject ? params.subject + ' | ' : '') + params.message, 160),
+                host = String(params.telcosms_host).replace(/\/+$/, ''),
+                url = host + '/api' +
+                      '?username=' + encodeURIComponent(params.telcosms_username) +
+                      '&password=' + encodeURIComponent(params.telcosms_password) +
+                      '&action=sendmessage' +
+                      '&recipient=' + encodeURIComponent(normalize(params.sendto)) +
+                      '&messagetype=SMS:TEXT' +
+                      '&messagedata=' + encodeURIComponent(text) +
+                      '&originator=' + encodeURIComponent(params.telcosms_originator),
+                request = new HttpRequest();
+
+            request.addHeader('Content-Type: application/json');
+            request.addHeader('Accept: application/json');
+
+            var response = request.post(url, ''),
+                status = request.getStatus();
+
+            // nunca logar a URL completa (contem username/password)
+            Zabbix.log(4, '[TelcoSMS] HTTP ' + status + ' resposta: ' + response);
+
+            if (status < 200 || status >= 300) {
+                throw 'TelcoSMS HTTP ' + status + ': ' + response;
+            }
+
+            return 'enviado via TelcoSMS (HTTP ' + status + ')';
+        }
+        catch (error) {
+            Zabbix.log(3, '[TelcoSMS] envio falhou: ' + error);
+            throw 'TelcoSMS: ' + error;
+        }
+      timeout: 30s
+      attempts: '3'
+      attempt_interval: 30s
+      max_sessions: '1'
+      message_templates:
+        - event_source: TRIGGERS
+          operation_mode: PROBLEM
+          subject: ''
+          message: 'PROBLEMA {EVENT.SEVERITY}: {EVENT.NAME} em {HOST.NAME} as {EVENT.TIME} de {EVENT.DATE}'
+        - event_source: TRIGGERS
+          operation_mode: RECOVERY
+          subject: ''
+          message: 'RESOLVIDO: {EVENT.NAME} em {HOST.NAME} (duracao {EVENT.DURATION})'
+        - event_source: TRIGGERS
+          operation_mode: UPDATE
+          subject: ''
+          message: 'UPDATE por {USER.FULLNAME}: {EVENT.NAME} em {HOST.NAME}. {EVENT.UPDATE.MESSAGE}'

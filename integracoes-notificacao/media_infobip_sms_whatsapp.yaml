@@ -1,0 +1,180 @@
+zabbix_export:
+  version: '6.0'
+  media_types:
+    - name: 'Infobip SMS/WhatsApp'
+      type: WEBHOOK
+      description: |
+        SMS e WhatsApp via Infobip (agregador internacional, rotas diretas
+        em África; ~US$ 0,098/SMS para Angola).
+
+        Cada conta Infobip tem um BASE URL PRÓPRIO (ex.:
+        https://xxxxx.api.infobip.com) — obter no portal em conta > API keys.
+        Autenticação: header "Authorization: App {api_key}"
+        (API key com scopes sms:message:send e whatsapp).
+
+        Endpoints usados:
+          SMS:      POST {base_url}/sms/2/text/advanced
+                    {"messages":[{"from","destinations":[{"to"}],"text"}]}
+          WhatsApp: POST {base_url}/whatsapp/1/message/template
+                    (template aprovado; corpo do alerta = placeholder 1)
+                    ou POST {base_url}/whatsapp/1/message/text
+                    (texto livre, só dentro de janela de sessao de 24h)
+
+        Seleção de canal (duas formas):
+          1. Parâmetro "channel": sms (padrão) ou whatsapp. Para os dois
+             canais em paralelo, clone o media type e mude o channel.
+          2. Prefixo "whatsapp:" no campo "Send to" da media do usuário.
+
+        WhatsApp business-initiated (caso de alertas) EXIGE template
+        aprovado pela Meta — criar o template no portal Infobip com um
+        único placeholder no corpo (ex.: "Alerta Zabbix: {{1}}") e
+        preencher whatsapp_template e whatsapp_language.
+
+        Parâmetros: base_url, api_key, sms_sender, whatsapp_sender,
+        whatsapp_template, whatsapp_language, channel.
+        Requer Zabbix 6.0+ e saída HTTPS para *.api.infobip.com.
+      parameters:
+        - name: sendto
+          value: '{ALERT.SENDTO}'
+        - name: subject
+          value: '{ALERT.SUBJECT}'
+        - name: message
+          value: '{ALERT.MESSAGE}'
+        - name: channel
+          value: 'sms'
+        - name: base_url
+          value: '<PREENCHER_BASE_URL_DA_CONTA>'
+        - name: api_key
+          value: '<PREENCHER_API_KEY>'
+        - name: sms_sender
+          value: '<PREENCHER_SENDER_SMS>'
+        - name: whatsapp_sender
+          value: ''
+        - name: whatsapp_template
+          value: ''
+        - name: whatsapp_language
+          value: 'pt_PT'
+      script: |
+        // Infobip SMS/WhatsApp — webhook Zabbix (Duktape/ES5, Zabbix 6.0+)
+
+        function normalize(number) {
+            var n = String(number).replace(/[\s\-\+\.]/g, '');
+            if (n.indexOf('00244') === 0) {
+                n = n.substring(2);
+            }
+            if (n.indexOf('244') !== 0) {
+                n = '244' + n;
+            }
+            if (!/^244\d{9}$/.test(n)) {
+                throw 'numero de destino invalido: "' + number + '"';
+            }
+            return n;
+        }
+
+        function truncate(text, max) {
+            text = String(text);
+            return text.length > max ? text.substring(0, max - 3) + '...' : text;
+        }
+
+        try {
+            var params = JSON.parse(value);
+
+            if (!params.sendto) {
+                throw 'parametro "sendto" vazio';
+            }
+            if (!params.base_url || params.base_url.indexOf('<PREENCHER') === 0 ||
+                !params.api_key || params.api_key.indexOf('<PREENCHER') === 0) {
+                throw 'base_url/api_key nao configurados no media type';
+            }
+
+            var sendto = String(params.sendto),
+                channel = (params.channel || 'sms').toLowerCase();
+
+            if (sendto.toLowerCase().indexOf('whatsapp:') === 0) {
+                channel = 'whatsapp';
+                sendto = sendto.substring(9);
+            }
+
+            var fullText = (params.subject ? params.subject + ' | ' : '') + params.message,
+                to = normalize(sendto),
+                base = String(params.base_url).replace(/\/+$/, ''),
+                url = '',
+                payload = null;
+
+            if (channel === 'whatsapp') {
+                if (!params.whatsapp_sender) {
+                    throw 'whatsapp_sender nao configurado (necessario para canal whatsapp)';
+                }
+                if (params.whatsapp_template) {
+                    // template aprovado (obrigatorio fora da janela de 24h)
+                    url = base + '/whatsapp/1/message/template';
+                    payload = {
+                        messages: [{
+                            from: params.whatsapp_sender,
+                            to: to,
+                            content: {
+                                templateName: params.whatsapp_template,
+                                templateData: { body: { placeholders: [fullText] } },
+                                language: params.whatsapp_language || 'pt_PT'
+                            }
+                        }]
+                    };
+                }
+                else {
+                    // texto livre: entregue apenas dentro de sessao de 24h
+                    url = base + '/whatsapp/1/message/text';
+                    payload = {
+                        from: params.whatsapp_sender,
+                        to: to,
+                        content: { text: fullText }
+                    };
+                }
+            }
+            else {
+                url = base + '/sms/2/text/advanced';
+                payload = {
+                    messages: [{
+                        from: params.sms_sender,
+                        destinations: [{ to: to }],
+                        text: truncate(fullText, 160)
+                    }]
+                };
+            }
+
+            var request = new HttpRequest();
+            request.addHeader('Content-Type: application/json');
+            request.addHeader('Accept: application/json');
+            request.addHeader('Authorization: App ' + params.api_key);
+
+            var response = request.post(url, JSON.stringify(payload)),
+                status = request.getStatus();
+
+            Zabbix.log(4, '[Infobip ' + channel + '] HTTP ' + status + ' resposta: ' + response);
+
+            if (status < 200 || status >= 300) {
+                throw 'Infobip HTTP ' + status + ': ' + response;
+            }
+
+            return 'enviado via Infobip/' + channel + ' (HTTP ' + status + ')';
+        }
+        catch (error) {
+            Zabbix.log(3, '[Infobip] envio falhou: ' + error);
+            throw 'Infobip: ' + error;
+        }
+      timeout: 30s
+      attempts: '3'
+      attempt_interval: 30s
+      max_sessions: '1'
+      message_templates:
+        - event_source: TRIGGERS
+          operation_mode: PROBLEM
+          subject: ''
+          message: 'PROBLEMA {EVENT.SEVERITY}: {EVENT.NAME} em {HOST.NAME} as {EVENT.TIME} de {EVENT.DATE}'
+        - event_source: TRIGGERS
+          operation_mode: RECOVERY
+          subject: ''
+          message: 'RESOLVIDO: {EVENT.NAME} em {HOST.NAME} (duracao {EVENT.DURATION})'
+        - event_source: TRIGGERS
+          operation_mode: UPDATE
+          subject: ''
+          message: 'UPDATE por {USER.FULLNAME}: {EVENT.NAME} em {HOST.NAME}. {EVENT.UPDATE.MESSAGE}'
