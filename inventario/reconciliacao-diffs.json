@@ -1,0 +1,392 @@
+{
+ "total_vms_vcenter": 545,
+ "total_hosts_zabbix": 607,
+ "matched": 467,
+ "vcenter_sistema_ignorado": [
+  "vCLS-f4c2c494-eeda-40a1-94fa-a0a329998fed",
+  "vCLS-83e7c3e1-86c7-4239-82ff-7386186078bc",
+  "TEMPLATE_windows 11",
+  "TEMPLATE_W2K22STD",
+  "VS8000751_TEMPLATE",
+  "vCLS-71b0fed6-1ae6-4bdc-a0a4-f7a67d169b68",
+  "TEMPLATE_W2K19STD",
+  "TEMPLATE_LINUXRHEL-8.6",
+  "vCLS-dd6e196a-fb92-4fa2-916d-bd9a698edaf9",
+  "TEMPLATE_W2K19HRD",
+  "TEMPLATE_Fedora-server-linux",
+  "vCLS-5f2a457e-ac62-4cf0-9e4d-dd80f3b919de",
+  "TEMPLATE_NETBOX",
+  "TEMPLATE_W2K19STD",
+  "TEMPLATE_W2K19HRD",
+  "TEMPLATE_W2K22STD",
+  "TEMPLATE_LINUXRHEL-8.6",
+  "TEMPLATE_W2K22HRD",
+  "TEMPLATE_W2K10EP"
+ ],
+ "zabbix_sem_par_vcenter": [],
+ "vcenter_sem_par_zabbix": [
+  {
+   "vm": "VD5000NP010",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000649.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000799",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000649.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "vHMC9-DR",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000649.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000882",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000646.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VD5000KPMG2",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000646.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VD5000KPMG1",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000646.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000707",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000646.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000797",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000640.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS9000320",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000640.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VD5000JD006",
+   "power_state": "POWERED_OFF",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000640.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000511",
+   "power_state": "POWERED_OFF",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000642.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000705",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000642.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VD5000SAFIRA_JUMP",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000642.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000701",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000645.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000744",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000644.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VD5000JUMP_DSE",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000644.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS9000313",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000644.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000223",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000798",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "vHMC9",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "LNX",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000LNX",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000892",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS9001206",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000493",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000641.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000716",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000643.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VD5000IA007",
+   "power_state": "POWERED_ON",
+   "cluster": "CS9000002",
+   "esxi_host": "sv9000643.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000934",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000655.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000717",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000651.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000715",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000651.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000396",
+   "power_state": "POWERED_OFF",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000651.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000744",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000652.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000883",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000652.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000841_CLONE_PDD_CLIENTE_30012024",
+   "power_state": "POWERED_OFF",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000652.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000916",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000653.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000819",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000653.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000914",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000653.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "TESTE",
+   "power_state": "POWERED_OFF",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000653.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS9000750",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000653.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000403_tape_recover",
+   "power_state": "POWERED_OFF",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000654.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "CS9000B02",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000654.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "TELMPLATE_UBUNTULINUX",
+   "power_state": "POWERED_OFF",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000650.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000719",
+   "power_state": "POWERED_ON",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000650.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "NS4_restore_TAPE",
+   "power_state": "POWERED_OFF",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000650.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  },
+  {
+   "vm": "VS8000848_CLONE_PDD_CLIENTE_30012024",
+   "power_state": "POWERED_OFF",
+   "cluster": "CLS-BPC01",
+   "esxi_host": "sv9000650.bpc.intranet",
+   "fonte": "snapshot-2026-05-04"
+  }
+ ],
+ "divergencias_estado": [
+  {
+   "vm": "VS8000126_Migrada_Nao_Ligar",
+   "zabbix_hostid": "11736",
+   "zabbix_host": "SWIFT - VM - VS8000126 (Win · Produção · Camada Aplicacional | DTI - SWP)",
+   "criterio_match": "guest-hostname",
+   "problema": "Zabbix ATIVO mas vCenter diz power_state=POWERED_OFF"
+  },
+  {
+   "vm": "VS8000127_Migrada_Nao_Ligar",
+   "zabbix_hostid": "11737",
+   "zabbix_host": "SWIFT - VM - VS8000127 (Win · Produção · Segurança | DTI - SWIFT Jump Server)",
+   "criterio_match": "guest-hostname",
+   "problema": "Zabbix ATIVO mas vCenter diz power_state=POWERED_OFF"
+  },
+  {
+   "vm": "VS8000128_Migrada_Nao_Ligar",
+   "zabbix_hostid": "11738",
+   "zabbix_host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)",
+   "criterio_match": "guest-hostname",
+   "problema": "Zabbix ATIVO mas vCenter diz power_state=POWERED_OFF"
+  },
+  {
+   "vm": "VS8000478",
+   "zabbix_hostid": "14215",
+   "zabbix_host": "Secureshere gateway cluster - VM - VS8000478 (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "criterio_match": "nome-tecnico",
+   "problema": "Zabbix ATIVO mas vCenter diz power_state=POWERED_OFF"
+  },
+  {
+   "vm": "VS8000481",
+   "zabbix_hostid": "14216",
+   "zabbix_host": "Securesphere - VM - VS8000481 (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_match": "nome-tecnico",
+   "problema": "Zabbix ATIVO mas vCenter diz power_state=POWERED_OFF"
+  }
+ ],
+ "propostas_servico": [
+  {
+   "tipo": "virtualizacao-mgmt",
+   "servico": "vCenter/vProxy",
+   "evidencia": "nome/anotacao contem 'vcenter'",
+   "zabbix_hostid": "11877",
+   "zabbix_host": "sv9000204 (Vcenter PRD)",
+   "vm_vcenter": "SV9000204",
+   "criterio_match": "nome-tecnico"
+  }
+ ]
+}
