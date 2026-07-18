@@ -65,8 +65,8 @@ var CFG = {
       domainPrefix: '08',
       groupids: ['665'],
       datasource: 'infra',
-      dashUid: null,
-      dashSlug: null,
+      dashUid: 'datacenter-n2',
+      dashSlug: 'n2-datacenter-fisico',
     },
     {
       id: 'vmware',
@@ -133,8 +133,8 @@ var CFG = {
       domainPrefix: '09',
       groupids: ['689'],
       datasource: 'infra',
-      dashUid: null,
-      dashSlug: null,
+      dashUid: 'integracao-n2',
+      dashSlug: 'n2-integracao-e-apis',
     },
     {
       id: 'negocio',

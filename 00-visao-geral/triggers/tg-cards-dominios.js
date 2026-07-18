@@ -27,8 +27,8 @@ var CFG = {
     { prefix: '05', label: 'Segurança',             dashUid: null },
     { prefix: '06', label: 'Bases de Dados',        dashUid: 'bd-n2' },
     { prefix: '07', label: 'Serviços de Negócio',   dashUid: 'apis-n2' },
-    { prefix: '09', label: 'Integração e APIs',     dashUid: null },
-    { prefix: '08', label: 'Datacenter Físico',     dashUid: null },
+    { prefix: '09', label: 'Integração e APIs',     dashUid: 'integracao-n2' },
+    { prefix: '08', label: 'Datacenter Físico',     dashUid: 'datacenter-n2' },
     { prefix: '10', label: 'Serviços de Suporte',   dashUid: 'suporte-n2' },
   ],
   // Rede vem da instância Network: grupos por prefixo do nome

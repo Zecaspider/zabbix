@@ -1,0 +1,18 @@
+{
+  "dashboardUid": "datacenter-n2",
+  "dashboardTitle": "N2 · Datacenter Físico",
+  "folderUid": "efsh9mn66m4u8b",
+  "datasource": "3_KgG43nz",
+  "notes": "N2 do domínio 08 (grupo 665) construído 2026-07-18 (auditoria-dominios-08-09-20260718.md). Painéis nativos + header-lite. Modelo de fonte-de-dados (tier SNMP-rico/ICMP): tabela MySQL da frota física com disponibilidade ICMP + tier + nº items; painel de problemas nativo. Precedido pelo fecho do ping-gap (fechar_pinggap_dc_20260718.py): 22 hosts físicos estavam DESACTIVADOS (IBM Power/HMC/PowerFlex) — activados + BPC Ping, resultado 26 UP / 4 DOWN. Gap de plataforma: sem SNMP nos IBM Power/PowerFlex/HMC (só ICMP); os 2 UCS Manager têm saúde completa (fan/temp/PSU).",
+  "anchor": {
+    "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "3_KgG43nz" },
+    "group": { "filter": "_SISTEMA/ANCORA-RENDER" },
+    "host": { "filter": "Storage - IBM FS9500" },
+    "item": { "filter": "ICMP ping" }
+  },
+  "panels": [
+    { "file": "header-lite.js", "id": 100, "role": "utils", "rootId": "bt-hdr-dc08", "title": "Header BPC NOC (lite)" },
+    { "nativo": "table", "id": 200, "title": "Frota física — tier de monitoria e disponibilidade" },
+    { "nativo": "alexanderzobnin-zabbix-triggers-panel", "id": 201, "title": "Problemas activos — Datacenter Físico" }
+  ]
+}

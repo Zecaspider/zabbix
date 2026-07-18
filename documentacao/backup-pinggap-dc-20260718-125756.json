@@ -1,0 +1,145 @@
+{
+ "ts": "20260718-125756",
+ "hosts": [
+  {
+   "hostid": "14699",
+   "host": "svucs015644",
+   "status_antes": "1",
+   "templates_antes": [
+    "10304"
+   ]
+  },
+  {
+   "hostid": "14711",
+   "host": "ibm_power_e980",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14712",
+   "host": "ibm_power_720__1",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14713",
+   "host": "ibm_power_720__2",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14714",
+   "host": "ibm_power_770",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14679",
+   "host": "Dell EMC PE - R650XS",
+   "status_antes": "0",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14680",
+   "host": "svdell002321",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14681",
+   "host": "svdell002322",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14682",
+   "host": "svdell002323",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14683",
+   "host": "svdell002324",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14684",
+   "host": "svdell002325",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14685",
+   "host": "svdell002326",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14686",
+   "host": "svdell002327",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14687",
+   "host": "svdell002328",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14688",
+   "host": "svdell023211",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14689",
+   "host": "svdell023212",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14690",
+   "host": "svdell023213",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14691",
+   "host": "svdell023214",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14692",
+   "host": "svdell023215",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14693",
+   "host": "svdell023216",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14694",
+   "host": "svdell023219",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14695",
+   "host": "svdell023220",
+   "status_antes": "1",
+   "templates_antes": []
+  },
+  {
+   "hostid": "14708",
+   "host": "ibm_hmc_sk-8845rc",
+   "status_antes": "1",
+   "templates_antes": []
+  }
+ ]
+}
