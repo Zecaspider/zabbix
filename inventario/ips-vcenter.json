@@ -1,0 +1,60 @@
+[
+ {
+  "host": "Cacti - VM - Cacti (Linux · Produção · Serviços de Infraestrutura | DTI)",
+  "vm": "Cacti",
+  "ipv4_encontrados": [],
+  "resultado": "sem IPv4 (tools nao reportam)"
+ },
+ {
+  "host": "Digiwave - VM - VS8000835 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+  "resultado": "nao esta no PRD live (provavel PowerFlex)"
+ },
+ {
+  "host": "Digiwave - VM - VS8000836 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+  "resultado": "nao esta no PRD live (provavel PowerFlex)"
+ },
+ {
+  "host": "Fircosoftapp - VM - VS8000833 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+  "resultado": "nao esta no PRD live (provavel PowerFlex)"
+ },
+ {
+  "host": "Fircosoftapp - VM - VS8000834 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+  "resultado": "nao esta no PRD live (provavel PowerFlex)"
+ },
+ {
+  "host": "Fircosoftmq - VM - VS8000830 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+  "resultado": "nao esta no PRD live (provavel PowerFlex)"
+ },
+ {
+  "host": "Graylog - VM - Graylog (Win · Produção · Camada Aplicacional | DSI - Aplicação de Logs da Rede)",
+  "vm": "Graylog",
+  "ipv4_encontrados": [],
+  "resultado": "sem IPv4 (tools nao reportam)"
+ },
+ {
+  "host": "Servidor ftp - VM - VS9000711 (Win · Produção · Serviços de Infraestrutura | DTI - SFTP)",
+  "vm": "VS9000711",
+  "ipv4_encontrados": [],
+  "resultado": "sem IPv4 (tools nao reportam)"
+ },
+ {
+  "host": "JUMP SERVER - VM - VD5000IA007",
+  "resultado": "erro guest tools: HTTPError"
+ },
+ {
+  "host": "JUMP SERVER - VM - VD5000NP010",
+  "resultado": "erro guest tools: HTTPError"
+ },
+ {
+  "host": "SWIFT - VM - VS9000313",
+  "resultado": "erro guest tools: HTTPError"
+ },
+ {
+  "host": "CONSOLA IBM HMC - VM - vHMC9",
+  "resultado": "erro guest tools: HTTPError"
+ },
+ {
+  "host": "NGINX - VM - VS8000744",
+  "resultado": "erro guest tools: HTTPError"
+ }
+]

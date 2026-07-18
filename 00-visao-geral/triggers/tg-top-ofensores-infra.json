@@ -1,0 +1,42 @@
+{
+  "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+  "fieldConfig": {
+    "defaults": {
+      "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
+      "mappings": [],
+      "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": 0 } ] }
+    },
+    "overrides": [
+      {
+        "matcher": { "id": "byName", "options": "eventos" },
+        "properties": [
+          { "id": "custom.cellOptions", "value": { "type": "color-background", "mode": "gradient" } },
+          { "id": "thresholds", "value": { "mode": "absolute", "steps": [
+            { "color": "transparent", "value": 0 },
+            { "color": "#d29922", "value": 50 },
+            { "color": "#f85149", "value": 200 } ] } },
+          { "id": "custom.width", "value": 90 }
+        ]
+      },
+      { "matcher": { "id": "byName", "options": "host" }, "properties": [ { "id": "custom.width", "value": 220 } ] }
+    ]
+  },
+  "options": {
+    "cellHeight": "sm",
+    "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+    "showHeader": true,
+    "sortBy": [ { "desc": true, "displayName": "eventos" } ]
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": { "type": "mysql", "uid": "afor1g5862fb4c" },
+      "editorMode": "code", "format": "table", "rawQuery": true,
+      "rawSql": "SELECT COUNT(DISTINCT e.eventid) AS eventos,\n  MIN(h.name) AS host,\n  t.description AS trigger_nome\nFROM events e\nJOIN triggers t ON t.triggerid = e.objectid\nJOIN functions f ON f.triggerid = t.triggerid\nJOIN items i ON i.itemid = f.itemid\nJOIN hosts h ON h.hostid = i.hostid\nWHERE e.source = 0 AND e.object = 0 AND e.value = 1 AND $__unixEpochFilter(e.clock)\nGROUP BY t.triggerid, t.description\nORDER BY eventos DESC\nLIMIT 15",
+      "refId": "A"
+    }
+  ],
+  "title": "INFRA — top 15 triggers ofensoras (flappers) na janela",
+  "transparent": true,
+  "type": "table"
+}

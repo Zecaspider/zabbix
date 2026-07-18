@@ -1,0 +1,1691 @@
+{
+ "executado_em": "20260717-172929",
+ "dry_run": true,
+ "removidos": [
+  {
+   "hostid": "10524",
+   "host": "Office online server - VM - VS8000106 (Win · Produção · Interface e Web | DTI)"
+  },
+  {
+   "hostid": "10525",
+   "host": "RMS - VM - VS8000107 (Win · Produção · Serviços de Infraestrutura | DTI - AD RMS & FTP backup vCenter.ROOT CA)"
+  },
+  {
+   "hostid": "10529",
+   "host": "Domain controller - VM - VS9000007 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "10532",
+   "host": "Domain controller - VM - VS9000003 (Win · Produção · Serviços de Infraestrutura | DTI - Secundário)"
+  },
+  {
+   "hostid": "10536",
+   "host": "File server - VM - VS9000105 (Win · Produção · Interface e Web)"
+  },
+  {
+   "hostid": "10537",
+   "host": "Jump server - VM - VS9000509 (Win · Produção · Segurança | DTI - Máquina de salto para assistencia remota a...)"
+  },
+  {
+   "hostid": "10538",
+   "host": "Azure ad connet - VM - VS8000403 (Win · Produção · Serviços de Infraestrutura | DTI - Novo Funcional)"
+  },
+  {
+   "hostid": "10539",
+   "host": "Prtgnetwork - VM - VS9000403 (Win · Produção · Serviços de Infraestrutura | DTI - Monitor)"
+  },
+  {
+   "hostid": "10540",
+   "host": "Ftp - VM - VS8000363 (Win · Produção · Serviços de Infraestrutura | DTI - Servidor FTP)"
+  },
+  {
+   "hostid": "10541",
+   "host": "Forgest - VM - VS9000480 (Win · Produção · Camada Aplicacional | DCH)"
+  },
+  {
+   "hostid": "10543",
+   "host": "Bank trade - VM - VS8000431 (Win · Produção · Bases de Dados | DTI - Banktrade NOVO)"
+  },
+  {
+   "hostid": "10544",
+   "host": "Gestão do bfteller - VM - VS8000452 (Win · Produção · Camada Aplicacional | DTI - Aplicação Caixa das Agenc...)"
+  },
+  {
+   "hostid": "10545",
+   "host": "Sigcap - VM - VS8000412 (Win · Produção · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "10547",
+   "host": "Jump server - VM - VS9000507 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "10548",
+   "host": "Jump server - VM - VS9000506 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "10555",
+   "host": "Aplicacoes internas - VM - VS8000304 (Win · Produção · Camada Aplicacional | DTI - RDA INFOX SIP RUPE AGEC ...)"
+  },
+  {
+   "hostid": "10556",
+   "host": "Aplicações internas - VM - VS8000414 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "10557",
+   "host": "Aplicacoes internas - VM - VS8000305 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "10559",
+   "host": "Aplicacoes internas - VM - VS8000430 (Win · Produção · Bases de Dados | DTI - Aplicações Internas)"
+  },
+  {
+   "hostid": "10560",
+   "host": "Match cash - VM - VS8000401 (Win · Produção · Camada Aplicacional | DOP - Sistema de reconciliação contas i...)"
+  },
+  {
+   "hostid": "10561",
+   "host": "Sigcap - VM - VS8000312 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "10563",
+   "host": "Bank trade - VM - VS9000912 (Win · Produção · Camada Aplicacional | DTI - Administrator)"
+  },
+  {
+   "hostid": "10564",
+   "host": "Talentia - VM - VS8000434 (Win · Produção · Bases de Dados | DCH - NOVO)"
+  },
+  {
+   "hostid": "10565",
+   "host": "Talentia - VM - VS8000342 (Win · Produção · Camada Aplicacional | DCH - Relatórios PRD)"
+  },
+  {
+   "hostid": "10566",
+   "host": "Uysig - VM - VS8000422 (Win · Produção · Camada Aplicacional | DPC+DGR - DB Novo)"
+  },
+  {
+   "hostid": "10567",
+   "host": "Match cash - VM - VS8000416 (Win · Produção · Camada Aplicacional | DOP - Reconciliação de contas STC (EMIS))"
+  },
+  {
+   "hostid": "10568",
+   "host": "Match cash - VM - VS8000417 (Win · Produção · Camada Aplicacional | DOP - Contas internas e Correspondentes...)"
+  },
+  {
+   "hostid": "10570",
+   "host": "SWIFT - VM - VS9000312 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "10572",
+   "host": "ToBe - VM - VS8000912 (Win · QA · Camada Aplicacional | DTI - Serv Dev da TOBE - STC, SCC)"
+  },
+  {
+   "hostid": "10573",
+   "host": "ToBe - VM - VS8000427 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - STC)"
+  },
+  {
+   "hostid": "10574",
+   "host": "ToBe - VM - VS8000923 (Win · QA · Camada Aplicacional | DTI - Serv Dev da TOBE - App)"
+  },
+  {
+   "hostid": "10575",
+   "host": "ToBe - VM - VS8000454 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - SOP)"
+  },
+  {
+   "hostid": "10576",
+   "host": "ToBe - VM - VS8000413 (Win · Produção · Bases de Dados | DTI - Serv.BD TOBE - SOP)"
+  },
+  {
+   "hostid": "10577",
+   "host": "ToBe - VM - VS9000424 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - CSF)"
+  },
+  {
+   "hostid": "10578",
+   "host": "SGC - VM - VS9000309 (Win · Produção · Camada Aplicacional | DTM - Sistema de Gestão de Carteiras SGC)"
+  },
+  {
+   "hostid": "10579",
+   "host": "SGC - VM - VS8000475 (Win · Produção · Bases de Dados | DTM - Sistema de Gestão de Carteiras)"
+  },
+  {
+   "hostid": "10580",
+   "host": "Intix - VM - VS8000418 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "10581",
+   "host": "Talentia - VM - VS9000318 (Win · Produção · Camada Aplicacional | DCH)"
+  },
+  {
+   "hostid": "10587",
+   "host": "Sophos - VM - VS8000218 (Win · Produção · Serviços de Infraestrutura | DTI - MTA)"
+  },
+  {
+   "hostid": "10589",
+   "host": "ToBe - VM - VS8000113 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - File Server)"
+  },
+  {
+   "hostid": "10590",
+   "host": "Uysig - VM - VS8000437 (Win · Produção · Camada Aplicacional | DGR - UY CONSULTING)"
+  },
+  {
+   "hostid": "10591",
+   "host": "SIRIS - VM - VS8000227 (Win · QA · Bases de Dados | DRG)"
+  },
+  {
+   "hostid": "10592",
+   "host": "SIRIS - VM - VS8000226 (Win · Produção · Bases de Dados | DRG - BASE DE DADOS)"
+  },
+  {
+   "hostid": "10593",
+   "host": "SIRIS - VM - VS8000225 (Win · QA · Camada Aplicacional | DRG)"
+  },
+  {
+   "hostid": "10594",
+   "host": "SIRIS - VM - VS8000224 (Win · Produção · Camada Aplicacional | DRG)"
+  },
+  {
+   "hostid": "10595",
+   "host": "Recebimentos unitel - VM - VS9000726 (Win · Produção · Camada Aplicacional | DTI - NOVO)"
+  },
+  {
+   "hostid": "10596",
+   "host": "Scsm - VM - VS9000423 (Win · Operações · Bases de Dados | DTI - DB Data Warehouse Database)"
+  },
+  {
+   "hostid": "10597",
+   "host": "System center - VM - VS9000406 (Win · Produção · Serviços de Infraestrutura | DTI - SCOM)"
+  },
+  {
+   "hostid": "10605",
+   "host": "Servidortftp - VM - VS9000282 (Win · Produção · Serviços de Infraestrutura | DTI - TRANSFERÊNCIAFICHEIROS)"
+  },
+  {
+   "hostid": "10606",
+   "host": "System center - VM - VS9000214 (Win · Produção · Serviços de Infraestrutura | DTI - SCOM)"
+  },
+  {
+   "hostid": "10610",
+   "host": "EAI - VM - VS8000456 (Win · Produção · Bases de Dados | DTI - BD do EAI Pre Producao)"
+  },
+  {
+   "hostid": "10611",
+   "host": "Papercut - VM - VS8000440 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "10612",
+   "host": "Sms banking+chat bot - VM - VS8000439 (Win · Produção · Camada Aplicacional | DSE)"
+  },
+  {
+   "hostid": "10613",
+   "host": "Sms banking+chat bot - VM - VS8000438 (Win · Produção · Camada Aplicacional | DSE)"
+  },
+  {
+   "hostid": "10616",
+   "host": "RMS - VM - VS8000360 (Win · Produção · Serviços de Infraestrutura | DTI - Rights Management Server)"
+  },
+  {
+   "hostid": "10617",
+   "host": "Excel report - VM - VS8000330 (Win · Produção · Camada Aplicacional | DCO - CPI)"
+  },
+  {
+   "hostid": "10619",
+   "host": "Sophos - VM - VS8000219 (Win · Produção · Serviços de Infraestrutura | DTI - MTA II)"
+  },
+  {
+   "hostid": "10621",
+   "host": "Ad audit - VM - VS8000214 (Win · Produção · Serviços de Infraestrutura | DSI - NOVO)"
+  },
+  {
+   "hostid": "10622",
+   "host": "Seguro de credito - VM - VS8000213 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "10624",
+   "host": "Servidor central - VM - VS8000207 (Win · Operações · Camada Aplicacional | DTI - GFE e TVC)"
+  },
+  {
+   "hostid": "10626",
+   "host": "Creditquest - VM - VS8000112 (Win · QA · Camada Aplicacional | PMSI - Hardware Provisioning)"
+  },
+  {
+   "hostid": "10627",
+   "host": "Emc networker - VM - VS8000108 (Win · Produção · Serviços de Infraestrutura | DTI - NOVO)"
+  },
+  {
+   "hostid": "10629",
+   "host": "Binfolio - VM - VS9000322 (Win · Produção · Camada Aplicacional | FENIX - Aplicação Binfolio)"
+  },
+  {
+   "hostid": "10630",
+   "host": "Jump server - VM - VS9000508 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "10644",
+   "host": "EAI - VM - VS9000404 (Win · Produção · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "10645",
+   "host": "EAI - VM - VS9000343 (Win · Produção · Camada Aplicacional | DTI - IBM IB9)"
+  },
+  {
+   "hostid": "11643",
+   "host": "Binfolio - VM - VS8000297 (Win · Produção · Bases de Dados | FENIX - Exportação e importação da base de dados)"
+  },
+  {
+   "hostid": "11644",
+   "host": "Binfolio - VM - VS8000299 (Win · Produção · Camada Aplicacional | FENIX - Aplicação Binfolio)"
+  },
+  {
+   "hostid": "11648",
+   "host": "Talentia - VM - VS9000319 (Win · QA · Camada Aplicacional | DCH)"
+  },
+  {
+   "hostid": "11649",
+   "host": "SWIFT - VM - VS8000317 (Win · QA · Camada Aplicacional | DTI - FPM - Fusion Payment Manager)"
+  },
+  {
+   "hostid": "11650",
+   "host": "Projecto diretiva - VM - VS8000118 (Win · QA · Camada Aplicacional | DTI - 02)"
+  },
+  {
+   "hostid": "11651",
+   "host": "Projecto diretiva - VM - VS8000119 (Win · QA · Bases de Dados | DTI - 02)"
+  },
+  {
+   "hostid": "11654",
+   "host": "Servidor de aplicacoes - VM - VS8000320 (Win · Produção · Serviços de Infraestrutura | DTI - Equation Telle...)"
+  },
+  {
+   "hostid": "11655",
+   "host": "Servidor de aplicacoes - VM - VS8000321 (Win · Produção · Serviços de Infraestrutura | DTI - Equation Telle...)"
+  },
+  {
+   "hostid": "11657",
+   "host": "EAI - VM - VS9000470 (Win · QA · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "11658",
+   "host": "Digiwave - VM - VS8000509 (Win · QA · Bases de Dados | PMSI - BD1)"
+  },
+  {
+   "hostid": "11659",
+   "host": "Digiwave - VM - VS8000508 (Win · QA · Bases de Dados | PMSI - BD01)"
+  },
+  {
+   "hostid": "11662",
+   "host": "Optics - VM - VS8000501 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11663",
+   "host": "Optics - VM - VS8000500 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11664",
+   "host": "Fircosoft - VM - VS8000499 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11665",
+   "host": "Fircosoft - VM - VS8000498 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11666",
+   "host": "Fircosoft - VM - VS8000497 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11667",
+   "host": "Fircosoft - VM - VS8000496 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11668",
+   "host": "Fircosoft - VM - VS8000495 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11669",
+   "host": "Fircosoft - VM - VS8000494 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11671",
+   "host": "Digiwave - VM - VS8000491 (Win · QA · Bases de Dados | PMSI - BD02)"
+  },
+  {
+   "hostid": "11672",
+   "host": "Digiwave - VM - VS8000490 (Win · QA · Bases de Dados | PMSI - BD02)"
+  },
+  {
+   "hostid": "11673",
+   "host": "Optics - VM - VS8000489 (Win · QA · Bases de Dados | PMSI)"
+  },
+  {
+   "hostid": "11674",
+   "host": "Optics - VM - VS8000488 (Win · QA · Bases de Dados | PMSI)"
+  },
+  {
+   "hostid": "11676",
+   "host": "Abc - VM - VS8000102 (Win · Produção · Camada Aplicacional | DGE)"
+  },
+  {
+   "hostid": "11678",
+   "host": "KMS - VM - VS8000104 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11679",
+   "host": "SAP - VM - VS8000133 (Win · Produção · Camada Aplicacional | DCH)"
+  },
+  {
+   "hostid": "11680",
+   "host": "SACC - VM - VS8000134 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11682",
+   "host": "System center - VM - VS8000221 (Win · Produção · Serviços de Infraestrutura | DTI - SCCM)"
+  },
+  {
+   "hostid": "11683",
+   "host": "Sistema de gestão de carteiras - VM - VS8000308 (Win · Produção · Camada Aplicacional | Web Server)"
+  },
+  {
+   "hostid": "11685",
+   "host": "ACM - VM - VS8000345 (Win · QA · Camada Aplicacional | DSE - Aplicação da Assecco (MIA))"
+  },
+  {
+   "hostid": "11686",
+   "host": "Sftp pmsi - VM - VS8000319 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11687",
+   "host": "SACC - VM - VS8000347 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11688",
+   "host": "Reconciliador - VM - VS8000406 (Win · Produção · Camada Aplicacional | DCO - conta interna)"
+  },
+  {
+   "hostid": "11690",
+   "host": "Servidor sql - VM - VS8000435 (Win · Produção · Bases de Dados | DTI - Para varias bases de dados pequenas ...)"
+  },
+  {
+   "hostid": "11691",
+   "host": "SGC - VM - VS8000476 (Win · Produção · Bases de Dados | DTI - SQL)"
+  },
+  {
+   "hostid": "11692",
+   "host": "ACM - VM - VS8000482 (Win · QA · Camada Aplicacional | DTI - Server ACM - MFT \\ PRT Qualidade, Certificação)"
+  },
+  {
+   "hostid": "11693",
+   "host": "ACM - VM - VS8000483 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11694",
+   "host": "ACM - VM - VS8000516 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11695",
+   "host": "ACM - VM - VS8000517 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11697",
+   "host": "ACM - VM - VS8000520 (Win · QA · Bases de Dados | DTI - DB Server)"
+  },
+  {
+   "hostid": "11698",
+   "host": "Dynatrace - VM - VS8000522 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11699",
+   "host": "Dynatrace - VM - VS8000523 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11700",
+   "host": "Dsvm - VM - VS8000529 (Win · QA · Camada Aplicacional | SAFIRA)"
+  },
+  {
+   "hostid": "11701",
+   "host": "Sdvm - VM - VS8000530 (Win · QA · Camada Aplicacional | SAFIRA)"
+  },
+  {
+   "hostid": "11702",
+   "host": "Sdvm - VM - VS8000531 (Win · QA · Camada Aplicacional | SAFIRA)"
+  },
+  {
+   "hostid": "11703",
+   "host": "Sdvm - VM - VS8000533 (Win · QA · Camada Aplicacional | SAFIRA - Ambiente DEV)"
+  },
+  {
+   "hostid": "11704",
+   "host": "Sdvm - VM - VS8000534 (Win · QA · Camada Aplicacional | SAFIRA - Ambiente UAT)"
+  },
+  {
+   "hostid": "11707",
+   "host": "EAI - VM - VS9000472 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11709",
+   "host": "Relay prd front-end - VM - VS9000467 (Win · Operações · Camada Aplicacional | DTI - Projecto Relay)"
+  },
+  {
+   "hostid": "11711",
+   "host": "SWIFT - VM - VS9000314 (Win · Produção · Camada Aplicacional | DTI - Histórico)"
+  },
+  {
+   "hostid": "11713",
+   "host": "Desenvolvimento interno - VM - VS8000922 (Win · Desenvolvimento · Camada Aplicacional | DTI - Servidor para...)"
+  },
+  {
+   "hostid": "11714",
+   "host": "Sms gateway - VM - VS8000718 (Win · Produção · Camada Aplicacional | DTI - INNOVATION MAKERS)"
+  },
+  {
+   "hostid": "11716",
+   "host": "Hexastep - VM - VS8000739 (Win · Produção · Camada Aplicacional | DTI - PROJECTO SIGC)"
+  },
+  {
+   "hostid": "11718",
+   "host": "Canal de denuncias - VM - VS8000741 (Win · Produção · Camada Aplicacional | DTI - PWC)"
+  },
+  {
+   "hostid": "11719",
+   "host": "Essence - VM - VS8000743 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11720",
+   "host": "Essence - VM - VS8000746 (Win · Produção · Bases de Dados | PMSI - Banktrade)"
+  },
+  {
+   "hostid": "11721",
+   "host": "ACM - VM - VS8000747 (Win · QA · Camada Aplicacional | DTI - SERVER 2)"
+  },
+  {
+   "hostid": "11722",
+   "host": "ACM - VM - VS8000748 (Win · QA · Camada Aplicacional | DTI - Portal)"
+  },
+  {
+   "hostid": "11723",
+   "host": "ACM - VM - VS8000749 (Win · QA · Camada Aplicacional | DTI - SUPPORT SERVER)"
+  },
+  {
+   "hostid": "11724",
+   "host": "ACM - VM - VS8000750 (Win · QA · Bases de Dados | PMSI - Relational DB Server ACM 1)"
+  },
+  {
+   "hostid": "11725",
+   "host": "Sigcap - VM - VS8000752 (Win · QA · Camada Aplicacional | DTI - WEB RETRIEVE)"
+  },
+  {
+   "hostid": "11727",
+   "host": "Cpi - VM - VS8000755 (Win · QA · Bases de Dados | PMSI - Projeto.PMSI)"
+  },
+  {
+   "hostid": "11728",
+   "host": "Finantech - VM - VS8000756 (Win · QA · Camada Aplicacional | SAFIRA - FINANTECH)"
+  },
+  {
+   "hostid": "11729",
+   "host": "Finantech - VM - VS8000757 (Win · QA · Camada Aplicacional | SAFIRA - Front Office)"
+  },
+  {
+   "hostid": "11730",
+   "host": "Finantech - VM - VS8000758 (Win · QA · Camada Aplicacional | SAFIRA - Back Office)"
+  },
+  {
+   "hostid": "11731",
+   "host": "Finantech - VM - VS8000759 (Win · Produção · Bases de Dados | SAFIRA - FINANTECH)"
+  },
+  {
+   "hostid": "11732",
+   "host": "ACM - VM - VS8000761 (Win · QA · Bases de Dados | DTI - ACM 1)"
+  },
+  {
+   "hostid": "11735",
+   "host": "SWIFT - VM - VS8000125 (Win · Produção · Camada Aplicacional | DTI - SAA)"
+  },
+  {
+   "hostid": "11736",
+   "host": "SWIFT - VM - VS8000126 (Win · Produção · Camada Aplicacional | DTI - SWP)"
+  },
+  {
+   "hostid": "11737",
+   "host": "SWIFT - VM - VS8000127 (Win · Produção · Segurança | DTI - SWIFT Jump Server)"
+  },
+  {
+   "hostid": "11738",
+   "host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)"
+  },
+  {
+   "hostid": "11836",
+   "host": "ACM - VM - VS8000768 (Win · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11837",
+   "host": "ACM - VM - VS8000769 (Win · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11838",
+   "host": "ACM - VM - VS8000770 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11839",
+   "host": "ACM - VM - VS8000780 (Win · QA · Bases de Dados | DTI - Servidor BD)"
+  },
+  {
+   "hostid": "11850",
+   "host": "SIRIS - VM - VS8000837 (Win · Produção · Camada Aplicacional | DTI - PWC)"
+  },
+  {
+   "hostid": "11851",
+   "host": "SIRIS - VM - VS8000838 (Win · Produção · Bases de Dados | DTI - PWC)"
+  },
+  {
+   "hostid": "11852",
+   "host": "SIRIS - VM - VS8000839 (Win · Produção · Camada Aplicacional | DTI - PWC)"
+  },
+  {
+   "hostid": "11853",
+   "host": "SIRIS - VM - VS8000840 (Win · Produção · Bases de Dados | DTI - PWC)"
+  },
+  {
+   "hostid": "11854",
+   "host": "Sigcap - VM - VS8000841 (Win · Produção · Bases de Dados | DTI - DB)"
+  },
+  {
+   "hostid": "11855",
+   "host": "ACM - VM - VS8000800 (Win · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11856",
+   "host": "ACM - VM - VS8000801 (Win · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11857",
+   "host": "Supportserver - VM - VS8000802 (Win · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11858",
+   "host": "Acmrelational - VM - VS8000803 (Win · Produção · Bases de Dados | PMSI)"
+  },
+  {
+   "hostid": "11859",
+   "host": "Sigcap - VM - VS8000842 (Win · Produção · Camada Aplicacional | DTI - WEB CAPTURE)"
+  },
+  {
+   "hostid": "11860",
+   "host": "Sigcap - VM - VS8000843 (Win · Produção · Camada Aplicacional | DTI - WEB CAPTURE)"
+  },
+  {
+   "hostid": "11861",
+   "host": "Sigcap - VM - VS8000844 (Win · Produção · Camada Aplicacional | DTI - WEB CAPTURE)"
+  },
+  {
+   "hostid": "11862",
+   "host": "Sigcap - VM - VS8000845 (Win · Produção · Camada Aplicacional | DTI - WebRetrieve)"
+  },
+  {
+   "hostid": "11863",
+   "host": "Sigcap - VM - VS8000846 (Win · Produção · Camada Aplicacional | DTI - WebRetrieve)"
+  },
+  {
+   "hostid": "11864",
+   "host": "Sigcap - VM - VS8000847 (Win · Produção · Camada Aplicacional | DTI - WebRetrieve)"
+  },
+  {
+   "hostid": "11865",
+   "host": "Sigcap - VM - VS8000848 (Win · Produção · Bases de Dados | DTI - Migration Servers)"
+  },
+  {
+   "hostid": "11866",
+   "host": "ToBe - VM - VS8000849 (Win · Produção · Bases de Dados | PMSI - Portal de operações File server)"
+  },
+  {
+   "hostid": "11867",
+   "host": "ToBe - VM - VS8000850 (Win · Produção · Bases de Dados | PMSI - Portal de operações BD)"
+  },
+  {
+   "hostid": "11868",
+   "host": "ToBe - VM - VS8000851 (Win · Produção · Bases de Dados | PMSI - Sistema de Compensação BD)"
+  },
+  {
+   "hostid": "11869",
+   "host": "ToBe - VM - VS8000852 (Win · Produção · Bases de Dados | PMSI - Portal de Operações Aplicaional)"
+  },
+  {
+   "hostid": "11870",
+   "host": "Fircosoftmq - VM - VS8000853 (Win · Produção · Bases de Dados | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11871",
+   "host": "SACC - VM - VS8000867 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11872",
+   "host": "Exchange - VM - VS8000390 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11873",
+   "host": "Exchange - VM - VS8000391 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11874",
+   "host": "Exchange - VM - VS8000392 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11875",
+   "host": "Exchange - VM - VS8000393 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11900",
+   "host": "sv9000206 (vCenter PowerFlex)"
+  },
+  {
+   "hostid": "11913",
+   "host": "Domain controller - VM - VS8000004 (Win · QA · Serviços de Infraestrutura | DTI - Autenticação dos utilizad...)"
+  },
+  {
+   "hostid": "11924",
+   "host": "Projecto diretiva - VM - VS8000117 (Win · QA · Camada Aplicacional | DTI - 02)"
+  },
+  {
+   "hostid": "11925",
+   "host": "SWIFT - VM - VS8000324 (Win · Produção · Camada Aplicacional | DTI - FPM - Fusion Payment Manager - Hist´or...)"
+  },
+  {
+   "hostid": "11926",
+   "host": "Servidor bd - VM - VS8000368 (Win · Operações · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "11928",
+   "host": "Personalizadoras de cartoes - VM - VS8000600 (Win · Produção · Camada Aplicacional | DSE)"
+  },
+  {
+   "hostid": "11929",
+   "host": "Personalizadoras de cartoes - VM - VS8000601 (Win · Produção · Bases de Dados | DSE)"
+  },
+  {
+   "hostid": "11930",
+   "host": "Desenvolvimento - VM - VS8000885 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11931",
+   "host": "Desenvolvimento - VM - VS8000886 (Win · QA · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "11932",
+   "host": "Desenvolvimento - VM - VS8000887 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11933",
+   "host": "Desenvolvimento - VM - VS8000889 (Win · QA · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "11939",
+   "host": "Sigcap - VM - VS8000751 (Win · QA · Camada Aplicacional | DTI - WEB CAPTURE)"
+  },
+  {
+   "hostid": "11940",
+   "host": "Sigcap - VM - VS8000753 (Win · QA · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "11941",
+   "host": "Finantech - VM - VS8000764 (Win · QA · Bases de Dados | SAFIRA - FINANTECH)"
+  },
+  {
+   "hostid": "11942",
+   "host": "Finantech - VM - VS8000765 (Win · Produção · Camada Aplicacional | SAFIRA - Front Office)"
+  },
+  {
+   "hostid": "11943",
+   "host": "Finantech - VM - VS8000766 (Win · Produção · Camada Aplicacional | SAFIRA - Front Office)"
+  },
+  {
+   "hostid": "11944",
+   "host": "Finantech - VM - VS8000767 (Win · Produção · Bases de Dados | SAFIRA - FINANTECH)"
+  },
+  {
+   "hostid": "11945",
+   "host": "Sigcap - VM - VS8000781 (Win · QA · Camada Aplicacional | DTI - WEB CAPTURE)"
+  },
+  {
+   "hostid": "11946",
+   "host": "Sigcap - VM - VS8000783 (Win · QA · Camada Aplicacional | DTI - WEB RETRIEVE)"
+  },
+  {
+   "hostid": "11947",
+   "host": "Fusion essence - VM - VS8000786 (Win · QA · Camada Aplicacional | PMSI - Data Extracts)"
+  },
+  {
+   "hostid": "11948",
+   "host": "Servidor de base de dados - VM - VS8000790 (Win · Produção · Bases de Dados | FENIX)"
+  },
+  {
+   "hostid": "11949",
+   "host": "Primavera - VM - VS8000791 (Win · Produção · Camada Aplicacional | FENIX)"
+  },
+  {
+   "hostid": "11950",
+   "host": "Integracao - VM - VS8000796 (Win · QA · Bases de Dados | PMSI - Integração com o essense)"
+  },
+  {
+   "hostid": "11952",
+   "host": "Excel report - VM - VS8000807 (Win · QA · Camada Aplicacional | DCO - Relatórios contabilísticos)"
+  },
+  {
+   "hostid": "11954",
+   "host": "Excel Report - VM - VS8000809 (QA | PMSI)"
+  },
+  {
+   "hostid": "11957",
+   "host": "SWIFT - VM - VS9000316 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11958",
+   "host": "Bank trade - VM - VS9000328 (Win · Produção · Camada Aplicacional | DOP - Projecto Bank Trade)"
+  },
+  {
+   "hostid": "11959",
+   "host": "Banktrade - VM - VS8000820 (Win · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "11960",
+   "host": "Banktrade - VM - VS8000821 (Win · Produção · Bases de Dados | PMSI)"
+  },
+  {
+   "hostid": "11961",
+   "host": "Creditquest - VM - VS8000822 (Win · Produção · Camada Aplicacional | PMSI - Finastra)"
+  },
+  {
+   "hostid": "11962",
+   "host": "Creditquest - VM - VS8000823 (Win · Produção · Bases de Dados | PMSI - Finastra)"
+  },
+  {
+   "hostid": "11963",
+   "host": "Fircosoftutilities - VM - VS8000824 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11964",
+   "host": "Fircosoftutilities - VM - VS8000825 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11965",
+   "host": "Digiwave - VM - VS8000826 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11966",
+   "host": "Digiwave - VM - VS8000827 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11967",
+   "host": "Digiwave - VM - VS8000828 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11969",
+   "host": "Creditquest - VM - VS8000831 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11970",
+   "host": "Digiwave - VM - VS8000832 (Linux · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "11972",
+   "host": "File server - VM - VS9000106 (Win · Produção · Interface e Web | DTI - Novo)"
+  },
+  {
+   "hostid": "11981",
+   "host": "Integrador - VM - VS8000712 (Linux · Produção · Camada Aplicacional | PMSI - Servidor Apache ENFINT)"
+  },
+  {
+   "hostid": "11983",
+   "host": "Integrador - VM - VS8000745 (Linux · QA · Serviços de Infraestrutura | PMSI - Servidor Apache NIFI ENFINT)"
+  },
+  {
+   "hostid": "11984",
+   "host": "Elastic search - VM - VS8000779 (Linux · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11986",
+   "host": "Dns externo - VM - NS3 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "11987",
+   "host": "Kudipala - VM - VS8000893 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11988",
+   "host": "GLPI - VM - VS8000788 (Linux · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11989",
+   "host": "GLPI - VM - VS8000896 (Linux · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "11994",
+   "host": "SWIFT - VM - VS8000141 (Win · Produção · Camada Aplicacional | DTI - SWP)"
+  },
+  {
+   "hostid": "11995",
+   "host": "SWIFT - VM - VS8000140 (Win · Produção · Camada Aplicacional | DTI - SAA)"
+  },
+  {
+   "hostid": "11996",
+   "host": "SWIFT - VM - VS8000142 (Win · Produção · Camada Aplicacional | DTI - Jump Server)"
+  },
+  {
+   "hostid": "12000",
+   "host": "Cezanne - VM - VS9000235 (Win · Produção · Camada Aplicacional | DCH - Gestão de Pessoal)"
+  },
+  {
+   "hostid": "14076",
+   "host": "Accuity - VM - VS9000476 (Win · Operações · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14077",
+   "host": "Ansible - VM - VS8000811 (QA | DTI)"
+  },
+  {
+   "hostid": "14078",
+   "host": "Backup exe - VM - VS9000381 (Win · Operações · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14079",
+   "host": "BPM - VM - VS8000862 (Linux · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14080",
+   "host": "BPM - VM - VS8000863 (Linux · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14081",
+   "host": "BPM - VM - VS8000864 (Linux · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14082",
+   "host": "Cacti - VM - Cacti (Linux · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "14083",
+   "host": "Cluster bd - VM - VS6000005 (Win · QA · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "14084",
+   "host": "Contif - VM - VS9000359 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14085",
+   "host": "Conversor vms - VM - VS9000706 (Win · Produção · Serviços de Infraestrutura | DTI - PC para Converter Servi...)"
+  },
+  {
+   "hostid": "14086",
+   "host": "Darktrace - VM - VS8000525 (Linux · Produção · Serviços de Infraestrutura | DTI - sensor novo)"
+  },
+  {
+   "hostid": "14087",
+   "host": "Desenvolvimento interno - VM - VS9000922 (Win · Desenvolvimento · Camada Aplicacional | DTI - Servidor para...)"
+  },
+  {
+   "hostid": "14088",
+   "host": "Dhcp server - VM - VS8000927 (Linux · Produção · Camada Aplicacional | Web Application Stork Server)"
+  },
+  {
+   "hostid": "14089",
+   "host": "Dhcp server - VM - VS8000928 (Linux · Produção · Bases de Dados | Data Base Postgresql, Mysql)"
+  },
+  {
+   "hostid": "14090",
+   "host": "Dhcp server - VM - VS8000929 (Linux · Produção · Camada Aplicacional | Agent Stork)"
+  },
+  {
+   "hostid": "14091",
+   "host": "Dhcp server - VM - VS8000930 (Linux · Produção · Serviços de Infraestrutura | Kea DHCP Node)"
+  },
+  {
+   "hostid": "14092",
+   "host": "Dhcp server - VM - VS8000931 (Linux · Produção · Serviços de Infraestrutura | Kea DHCP NodeLPI)"
+  },
+  {
+   "hostid": "14093",
+   "host": "Digiwave - VM - VS8000502 (Linux · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14094",
+   "host": "Digiwave - VM - VS8000503 (Linux · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14095",
+   "host": "Digiwave - VM - VS8000504 (Linux · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14096",
+   "host": "Digiwave - VM - VS8000505 (Linux · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14097",
+   "host": "Digiwave - VM - VS8000506 (Linux · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14098",
+   "host": "Digiwave - VM - VS8000507 (Linux · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14099",
+   "host": "Dns externo - VM - NS4 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "14100",
+   "host": "Domain controller - VM - VS6000001 (Win · QA · Serviços de Infraestrutura | DTI - Ambiente de qualidade teste)"
+  },
+  {
+   "hostid": "14101",
+   "host": "Data lake - VM - VS8000992 (Win · Produção · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "14102",
+   "host": "Digiwave - VM - VS8000835 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "14103",
+   "host": "Digiwave - VM - VS8000836 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "14104",
+   "host": "E-learning - VM - VS8000884 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14105",
+   "host": "Eba - VM - SV9000401 (Win · Produção · Bases de Dados | DTI - Aplicacão de Caixa das Agencias)"
+  },
+  {
+   "hostid": "14106",
+   "host": "Eba - VM - VS1800002 (Win · Operações · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14109",
+   "host": "Elastic search - VM - VS8000135 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)"
+  },
+  {
+   "hostid": "14110",
+   "host": "Elastic search - VM - VS8000136 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)"
+  },
+  {
+   "hostid": "14111",
+   "host": "Elastic search - VM - VS8000137 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)"
+  },
+  {
+   "hostid": "14112",
+   "host": "Elastic search - VM - VS8000785 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)"
+  },
+  {
+   "hostid": "14113",
+   "host": "Essence - VM - VS8000510 (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)"
+  },
+  {
+   "hostid": "14114",
+   "host": "Essence - VM - VS8000512 (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)"
+  },
+  {
+   "hostid": "14115",
+   "host": "Essence - VM - VS8000513 (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)"
+  },
+  {
+   "hostid": "14116",
+   "host": "Essence - VM - VS8000514 (Linux · QA · Bases de Dados | PMSI - Migration Tool)"
+  },
+  {
+   "hostid": "14117",
+   "host": "Essence - VM - VS8000515 (Linux · QA · Bases de Dados | PMSI - Migration Tool)"
+  },
+  {
+   "hostid": "14118",
+   "host": "Essence - VM - VS8000526 (Win · QA · Camada Aplicacional | PMSI - MIG Tool Client or Equation Client)"
+  },
+  {
+   "hostid": "14119",
+   "host": "ETL - VM - VS8000865 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14120",
+   "host": "Exchange - VM - VS8000220 (Win · Produção · Serviços de Infraestrutura | DTI - ARR (Load balance/reverse pr...)"
+  },
+  {
+   "hostid": "14121",
+   "host": "Exchange - VM - VS8000394 (Win · Produção · Camada Aplicacional | DTI - Edge Server)"
+  },
+  {
+   "hostid": "14122",
+   "host": "Elasticsearch - VM - VS8000772 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)"
+  },
+  {
+   "hostid": "14123",
+   "host": "Elasticsearch - VM - VS8000773 (Linux · Produção · Serviços de Infraestrutura | DTI - Logstash)"
+  },
+  {
+   "hostid": "14124",
+   "host": "Elasticsearch - VM - VS8000774 (Linux · Produção · Serviços de Infraestrutura | DTI - FleetServer)"
+  },
+  {
+   "hostid": "14125",
+   "host": "Elasticsearch - VM - VS8000775 (Linux · Produção · Serviços de Infraestrutura | DTI - MasterDataNodes)"
+  },
+  {
+   "hostid": "14126",
+   "host": "Elasticsearch - VM - VS8000776 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)"
+  },
+  {
+   "hostid": "14127",
+   "host": "Elasticsearch - VM - VS8000777 (Linux · Produção · Serviços de Infraestrutura | DTI - KIBANA)"
+  },
+  {
+   "hostid": "14128",
+   "host": "Fusion essence - VM - VS8000760 (Win · QA · Camada Aplicacional | PMSI - Middleware Server)"
+  },
+  {
+   "hostid": "14129",
+   "host": "Fileserver_sharepoint_migration - VM - VS8000913 (Win · Produção · Camada Aplicacional | DSI)"
+  },
+  {
+   "hostid": "14130",
+   "host": "Fircosoftapp - VM - VS8000833 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "14131",
+   "host": "Fircosoftapp - VM - VS8000834 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "14132",
+   "host": "Fircosoftmq - VM - VS8000830 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)"
+  },
+  {
+   "hostid": "14133",
+   "host": "Git lab - VM - VS8000700 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14134",
+   "host": "Graylog - VM - Graylog (Win · Produção · Camada Aplicacional | DSI - Aplicação de Logs da Rede)"
+  },
+  {
+   "hostid": "14135",
+   "host": "Gitlab - VM - VS8000890 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14136",
+   "host": "Graylog - VM - graylog-vm01 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)"
+  },
+  {
+   "hostid": "14137",
+   "host": "Graylog - VM - graylog-vm02 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)"
+  },
+  {
+   "hostid": "14138",
+   "host": "Hermes - VM - VS9000268 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14139",
+   "host": "IAM - VM - SRV-JUMP01 (Win · Produção · Serviços de Infraestrutura | DTI - ADDS DNS DHCP)"
+  },
+  {
+   "hostid": "14140",
+   "host": "IAM - VM - SRV-JUMP02 (Win · Produção · Serviços de Infraestrutura | DTI - ADDS DNS DHCP)"
+  },
+  {
+   "hostid": "14141",
+   "host": "Imperva - VM - VS8000485 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)"
+  },
+  {
+   "hostid": "14142",
+   "host": "Imperva - VM - VS8000486 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)"
+  },
+  {
+   "hostid": "14143",
+   "host": "Imperva - VM - VS8000487 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)"
+  },
+  {
+   "hostid": "14144",
+   "host": "Integrador/Masternode - VM - VS8000804 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14145",
+   "host": "Integrador/CEPH - VM - VS8000805 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14146",
+   "host": "Integrador/Apachenifi - VM - VS8000812 (Linux · Produção · Bases de Dados | PMSI)"
+  },
+  {
+   "hostid": "14147",
+   "host": "Integrador/Elasticsearch - VM - VS8000814 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14148",
+   "host": "Integrador/Elasticsearch - VM - VS8000815 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14149",
+   "host": "Integrador/Bastionnode - VM - VS8000816 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14150",
+   "host": "Integrador/Gitlab - VM - VS8000817 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14151",
+   "host": "Integrador/Computenodes - VM - VS8000818 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14152",
+   "host": "Integrador/CEPH - VM - VS8000866 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14153",
+   "host": "Integrador/Apachekafka - VM - VS8000868 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14154",
+   "host": "Integrador/Apachenifi - VM - VS8000869 (Linux · Produção · Bases de Dados | PMSI)"
+  },
+  {
+   "hostid": "14155",
+   "host": "Integrador/Apachekafka - VM - VS8000870 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14156",
+   "host": "Integrador/Elasticsearch - VM - VS8000978 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14157",
+   "host": "Ise tst - VM - ISE-TST (Linux · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "14158",
+   "host": "Jump server - VM - VD5000AJ012 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "14159",
+   "host": "Jump server - VM - VD5000AVG0014 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "14160",
+   "host": "Jump server - VM - VD5000JM003 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "14161",
+   "host": "Jump server - VM - VD5000PD001 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "14162",
+   "host": "Jump server - VM - VD5000UCALL005 (Win · Produção · Segurança | DTI - António Diamantino)"
+  },
+  {
+   "hostid": "14163",
+   "host": "Jump server - VM - VS8000528 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "14164",
+   "host": "Jump Server - VM - VD5000JUMP04 (Win · Produção · Segurança | DTI)"
+  },
+  {
+   "hostid": "14165",
+   "host": "Master node - VM - VS8000714 (Linux · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14166",
+   "host": "Mdw server - VM - VS8000795 (Linux · QA · Serviços de Infraestrutura | PMSI - Integração com o Essense)"
+  },
+  {
+   "hostid": "14167",
+   "host": "Microcredito - VM - VS8000813 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14168",
+   "host": "Microcredito - VM - VS8000813_teste (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14169",
+   "host": "Multicanal - VM - VS9000453 (Win · QA · Camada Aplicacional | DSE)"
+  },
+  {
+   "hostid": "14170",
+   "host": "PowerFlex - VM - pfm9000650 (Linux · Produção · Virtualização | DTI - Management VM)"
+  },
+  {
+   "hostid": "14171",
+   "host": "PowerFlex - VM - pfm9000651 (Linux · Produção · Virtualização | DTI - Management VM)"
+  },
+  {
+   "hostid": "14172",
+   "host": "PowerFlex - VM - pfm9000652 (Linux · Produção · Virtualização | DTI - Management VM)"
+  },
+  {
+   "hostid": "14174",
+   "host": "Netmarket - VM - VS8000891 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14175",
+   "host": "Netmarket - VM - VS8000904 (Win · Produção · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14176",
+   "host": "NGINX - VM - VS8000734 (Linux · Produção · Interface e Web | PMSI - Load Balance HW SIZING MSA PMSI PRD)"
+  },
+  {
+   "hostid": "14177",
+   "host": "Netpicker server - VM - VS8000933 (Linux · Produção · Camada Aplicacional | Automação, configuração de rede)"
+  },
+  {
+   "hostid": "14178",
+   "host": "Observe it - VM - VS9000449 (Win · QA · Serviços de Infraestrutura | DSI)"
+  },
+  {
+   "hostid": "14179",
+   "host": "Observer - VM - Observer_PRD (Linux · Produção · Serviços de Infraestrutura | DSI)"
+  },
+  {
+   "hostid": "14180",
+   "host": "OCP - VM - ibm-cp-infra-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)"
+  },
+  {
+   "hostid": "14181",
+   "host": "OCP - VM - ibm-cp-infra-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)"
+  },
+  {
+   "hostid": "14182",
+   "host": "OCP - VM - ibm-cp-infra-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)"
+  },
+  {
+   "hostid": "14183",
+   "host": "OCP - VM - ibm-cp-master-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)"
+  },
+  {
+   "hostid": "14184",
+   "host": "OCP - VM - ibm-cp-master-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)"
+  },
+  {
+   "hostid": "14185",
+   "host": "OCP - VM - ibm-cp-master-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)"
+  },
+  {
+   "hostid": "14186",
+   "host": "OCP - VM - ibm-cp-storage-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)"
+  },
+  {
+   "hostid": "14187",
+   "host": "OCP - VM - ibm-cp-storage-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)"
+  },
+  {
+   "hostid": "14188",
+   "host": "OCP - VM - ibm-cp-storage-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)"
+  },
+  {
+   "hostid": "14189",
+   "host": "OCP - VM - ibm-cp-worker-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14190",
+   "host": "OCP - VM - ibm-cp-worker-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14191",
+   "host": "OCP - VM - ibm-cp-worker-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14192",
+   "host": "OCP - VM - ibm-cp-worker-04 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14193",
+   "host": "OCP - VM - ibm-cp-worker-05 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14194",
+   "host": "OCP - VM - ibm-cp-worker-06 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14195",
+   "host": "OCP - VM - ibm-cp-worker-07 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14196",
+   "host": "OCP - VM - ibm-cp-worker-08 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14197",
+   "host": "OCP - VM - ibm-cp-worker-09 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)"
+  },
+  {
+   "hostid": "14198",
+   "host": "OKD - VM - VS8000980 (Linux · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14199",
+   "host": "OKD - VM - VS8000981 (Linux · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14200",
+   "host": "PHPIPAM - VM - PHPIPAM (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão IPs)"
+  },
+  {
+   "hostid": "14201",
+   "host": "Portnox - VM - VS8000518 (Win · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "14202",
+   "host": "Portnox - VM - VS8000924 (Win · Produção · Serviços de Infraestrutura | DSI - Aplicação de segurança)"
+  },
+  {
+   "hostid": "14203",
+   "host": "Portnox - VM - VS8000925 (Win · Produção · Serviços de Infraestrutura | DSI - Aplicação de segurança)"
+  },
+  {
+   "hostid": "14204",
+   "host": "PowerFlex - VM - JumpServer (Win · Produção · Segurança | DTI - Jump Server)"
+  },
+  {
+   "hostid": "14205",
+   "host": "PowerFlex - VM - pfmp-installer (Linux · Produção · Virtualização | DTI - Installer)"
+  },
+  {
+   "hostid": "14206",
+   "host": "Primavera - VM - VS6000100 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14207",
+   "host": "Primavera - VM - VS6000100_CLONE_PDD_CLIENTE_DTI (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14208",
+   "host": "Primavera - VM - VS6000101 (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14209",
+   "host": "Primavera - VM - VS6000101_CLONE_PDD_CLIENTE_DTI (Win · QA · Camada Aplicacional | PMSI)"
+  },
+  {
+   "hostid": "14210",
+   "host": "Psi - VM - LTTI44_CLONE (Win · Produção · Camada Aplicacional | DTI - Processamento de Salário para contas ...)"
+  },
+  {
+   "hostid": "14211",
+   "host": "SAS - VM - VS8000897 (Win · Produção · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "14212",
+   "host": "SAS - VM - VS8000898 (Win · Produção · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "14213",
+   "host": "SAS - VM - VS8000994 (Win · Produção · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "14214",
+   "host": "Sdd - VM - VS8000222 (Win · Produção · Camada Aplicacional | DTI - Sistema de debito direito)"
+  },
+  {
+   "hostid": "14215",
+   "host": "Secureshere gateway cluster - VM - VS8000478 (Linux · Produção · Serviços de Infraestrutura | DSI)"
+  },
+  {
+   "hostid": "14216",
+   "host": "Securesphere - VM - VS8000481 (Linux · Produção · Serviços de Infraestrutura | DTI)"
+  },
+  {
+   "hostid": "14217",
+   "host": "Sem-Classificação - VM - VEEAM-POWERFLEX (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14218",
+   "host": "Sem-Classificação - VM - VEEAM-VXBLOCK (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14219",
+   "host": "Sem-Classificação - VM - VS8000771 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14220",
+   "host": "Sem-Classificação - VM - VS8000856 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14221",
+   "host": "Sem-Classificação - VM - VS8000881 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14222",
+   "host": "Sem-Classificação - VM - VS8000900 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14223",
+   "host": "Sem-Classificação - VM - VS8000901 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14224",
+   "host": "Sem-Classificação - VM - VS8000902 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14225",
+   "host": "Sem-Classificação - VM - VS8000905 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14226",
+   "host": "Sem-Classificação - VM - VS8000906 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14227",
+   "host": "Sem-Classificação - VM - VS8000907 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14228",
+   "host": "Sem-Classificação - VM - VS8000908 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14229",
+   "host": "OKD Master1 - VM - VS8000979 (master1.okd-dev.bpc.intranet)"
+  },
+  {
+   "hostid": "14230",
+   "host": "OKD Worker1 - VM - VS8000982 (worker1.okd-dev.bpc.intranet)"
+  },
+  {
+   "hostid": "14231",
+   "host": "OKD Worker2 - VM - VS8000983 (worker2.okd-dev.bpc.intranet)"
+  },
+  {
+   "hostid": "14232",
+   "host": "OKD Worker3 - VM - VS8000984 (worker3.okd-dev.bpc.intranet)"
+  },
+  {
+   "hostid": "14233",
+   "host": "Sem-Classificação - VM - VS8000989_NGINX-ProxyManager (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14234",
+   "host": "Sem-Classificação - VM - VS8000999 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14235",
+   "host": "Sem-Classificação - VM - VS9000751 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14236",
+   "host": "Sem-Classificação - VM - VeeamRepo (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14237",
+   "host": "Sem-Classificação - VM - okd_ha_proxy (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14238",
+   "host": "Sem-Classificação - VM - rhcoreos_bootstrap (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14239",
+   "host": "Sem-Classificação - VM - rhocp-helper (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14240",
+   "host": "Sem-Classificação - VM - scg9000650 (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14241",
+   "host": "Sem-Classificação - VM - VS8000926 (A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14242",
+   "host": "Servidor ftp - VM - VS9000711 (Win · Produção · Serviços de Infraestrutura | DTI - SFTP)"
+  },
+  {
+   "hostid": "14243",
+   "host": "Sftpcall manager - VM - VS8000ubuntu (Linux · Produção · Serviços de Infraestrutura | DTI - Backup)"
+  },
+  {
+   "hostid": "14245",
+   "host": "Support server - VM - VS8000519_Revovery (Win · QA · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "14246",
+   "host": "PowerFlex - VM - sv9000666-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)"
+  },
+  {
+   "hostid": "14247",
+   "host": "PowerFlex - VM - sv9000667-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)"
+  },
+  {
+   "hostid": "14248",
+   "host": "PowerFlex - VM - sv9000668-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)"
+  },
+  {
+   "hostid": "14249",
+   "host": "SWIFT - VM - VS8000123 (Win · QA · Camada Aplicacional | DTI - SAA Teste\nVM recuperada (Janeiro 2024))"
+  },
+  {
+   "hostid": "14250",
+   "host": "SWIFT - VM - VS8000124 (Win · QA · Camada Aplicacional | DTI - SWP Teste)"
+  },
+  {
+   "hostid": "14251",
+   "host": "SWIFT - VM - VS8000314 (Win · Produção · Camada Aplicacional | DTI - Histórico)"
+  },
+  {
+   "hostid": "14252",
+   "host": "SWIFT - VM - VS8000371 (Win · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14253",
+   "host": "SWIFT - VM - VS9000239 (Win · Produção · Camada Aplicacional | DTI - Histórico)"
+  },
+  {
+   "hostid": "14254",
+   "host": "SWIFT - VM - VS9000242 (Win · Produção · Camada Aplicacional | DTI - Histórico)"
+  },
+  {
+   "hostid": "14256",
+   "host": "Swift saa - VM - VS8000894 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14257",
+   "host": "Swift swp - VM - VS8000895 (Win · QA · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14258",
+   "host": "Talentia - VM - VS8000343 (Win · Produção · Camada Aplicacional | DCH - Recrutamento)"
+  },
+  {
+   "hostid": "14259",
+   "host": "Tenable - VM - VS8000995 (Linux · Produção · Segurança | DTI - Nessus)"
+  },
+  {
+   "hostid": "14260",
+   "host": "Tenable - VM - VS8000996 (Linux · Produção · Segurança | DTI - Nessus)"
+  },
+  {
+   "hostid": "14261",
+   "host": "Tenable - VM - VS8000997 (Linux · Produção · Segurança | DTI - Nessus)"
+  },
+  {
+   "hostid": "14262",
+   "host": "Tenable - VM - VS8000998 (Linux · Produção · Segurança | DTI - Nessus Core)"
+  },
+  {
+   "hostid": "14263",
+   "host": "ToBe - VM - VS8000919 (Win · Produção · Bases de Dados | DTI)"
+  },
+  {
+   "hostid": "14264",
+   "host": "Unitel money - VM - VS8000306 (Linux · Produção · Camada Aplicacional | DTI - SFTP)"
+  },
+  {
+   "hostid": "14267",
+   "host": "VMware - VM - sv9000206-Passive (Linux · Produção · Virtualização | DTI - vCenter Appliance)"
+  },
+  {
+   "hostid": "14268",
+   "host": "VMware - VM - sv9000206-Witness (Linux · Produção · Virtualização | DTI - vCenter Appliance)"
+  },
+  {
+   "hostid": "14269",
+   "host": "VMware - VM - vs9001207 (Linux · Produção · Virtualização | DTI - vCenter Appliance)"
+  },
+  {
+   "hostid": "14270",
+   "host": "Veeam - VM - VeeamSA (Linux · Produção · Serviços de Infraestrutura | DTI - Backup Appliance)"
+  },
+  {
+   "hostid": "14271",
+   "host": "WAF - VM - VS8000257 (Linux · Produção · Serviços de Infraestrutura | DTI - Firewall)"
+  },
+  {
+   "hostid": "14272",
+   "host": "WSUS - VM - VS8000228 (Win · Produção · Serviços de Infraestrutura | DSI)"
+  },
+  {
+   "hostid": "14273",
+   "host": "WSUS - VM - VS8000229 (Win · Produção · Bases de Dados | DSI)"
+  },
+  {
+   "hostid": "14274",
+   "host": "XoruX - VM - lpar2rrd (Linux · Produção · Serviços de Infraestrutura | DTI - Monitor IBM)"
+  },
+  {
+   "hostid": "14275",
+   "host": "Zabbix - VM - VS8000932 (Linux · Produção · Serviços de Infraestrutura | DTI - Networker)"
+  },
+  {
+   "hostid": "14277",
+   "host": "Coletas_auditoria_rede - VM - VS8000993 (Linux · Produção · Camada Aplicacional | DTI)"
+  },
+  {
+   "hostid": "14278",
+   "host": "Essence - VM - VS8000510 Clone (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)"
+  },
+  {
+   "hostid": "14279",
+   "host": "Excel report - VM - VS8000806_Excel Report (Win · Produção · Camada Aplicacional | DCO - Relatórios contabi...)"
+  },
+  {
+   "hostid": "14280",
+   "host": "Excel report - VM - VS8000808_Excel Report (Win · Produção · Camada Aplicacional | PMSI - Relatórios contab...)"
+  },
+  {
+   "hostid": "14281",
+   "host": "Insightvm console - VM - INSIGHTVM CONSOLE (Linux · Produção · Serviços de Infraestrutura | DSI)"
+  },
+  {
+   "hostid": "14282",
+   "host": "Sem-Classificação - VM - Teste Kea DHCP (A-CLASSIFICAR · A-CLASSIFICAR)"
+  },
+  {
+   "hostid": "14285",
+   "host": "VMware - VM - VS8000114_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)"
+  },
+  {
+   "hostid": "14286",
+   "host": "VMware - VM - VS8000116_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)"
+  },
+  {
+   "hostid": "14290",
+   "host": "VMware - VM - VS8000145_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)"
+  },
+  {
+   "hostid": "14724",
+   "host": "PRTG - VM - VS8000223 (Win – Teste – Camada Aplicacional | DTI - Monitoramento da rede teste)"
+  }
+ ],
+ "erros": [],
+ "verificacao": {
+  "falhas": [],
+  "ok": true
+ }
+}

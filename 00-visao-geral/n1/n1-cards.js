@@ -10,7 +10,14 @@
 // ║  Notificacoes/envios, Relatorio Diario R1, e nota dos relatorios CLI     ║
 // ║  por dominio (relatorios/por-dominio/). Grid passa a 4x2 completo.       ║
 // ║                                                                          ║
-// ║  8 cards (4 colunas x 2 linhas) com estado de                            ║
+// ║  v3.2 (2026-07-18): +card "Datacenter Fisico" (dominio 08, groupid 665,   ║
+// ║  30 hosts fisicos) — faltava na homepage. Grelha 3x3 -> 5x2 (10 cards,    ║
+// ║  = os 10 dominios reais). v3.1: +card "Integracao e APIs" (09 novo, §8);  ║
+// ║  07 renomeado -> "Servicos de Negocio"; cards sem N2 mostram contadores   ║
+// ║  reais. Ordem em camadas: fisico/virt/vms/storage/rede (linha 1) ->       ║
+// ║  dados/integracao/negocio/suporte/seguranca (linha 2).                    ║
+// ║                                                                          ║
+// ║  10 cards (5 colunas x 2 linhas) com estado de                           ║
 // ║  saude por dominio. 1 card = 1 pasta Grafana real (confirmado por        ║
 // ║  folders.get ao vivo, 2026-07-12) - nunca inventar dominios que nao      ║
 // ║  batam certo com a estrutura de pastas. Estado calculado via             ║
@@ -50,10 +57,27 @@ var CFG = {
   // esq→dir, cima→baixo. dashUid: null → área em construção.
   domains: [
     {
+      id: 'datacenter',
+      label: 'Datacenter Físico',
+      sublabel: 'IBM Power · UCS · PowerFlex · HMC',
+      // domínio 08 (groupid 665, 30 hosts): o chão-de-fábrica físico —
+      // IBM Power/POWER9, Cisco UCS, nós PowerFlex, HMC. N2 ainda por construir.
+      domainPrefix: '08',
+      groupids: ['665'],
+      datasource: 'infra',
+      dashUid: null,
+      dashSlug: null,
+    },
+    {
       id: 'vmware',
       label: 'Infraestrutura VMware',
       sublabel: 'Físico · vCenters · ESXi · Clusters',
-      groupids: ['608'],
+      // groupids resolvidos DINAMICAMENTE por nome (domainPrefix) — ver
+      // resolveInfraGroups(). O 608 antigo ('HYPERVISORES') foi ESVAZIADO
+      // e apagado na migração de taxonomia (F1-F3, 2026-07-14); o domínio
+      // real é 603 'BPC/DOMINIO/01 Virtualizacao'. groupids fica de fallback.
+      domainPrefix: '01',
+      groupids: ['603'],
       datasource: 'infra',
       dashUid: 'a967e936-99a3-47c8-af98-052d7a80beb8',
       dashSlug: 'n2-vmware',
@@ -62,6 +86,7 @@ var CFG = {
       id: 'vms',
       label: 'Servidores Virtuais',
       sublabel: 'VMs em produção',
+      domainPrefix: '03',
       groupids: ['609'],
       datasource: 'infra',
       dashUid: '0758c24e-d2b1-4a81-bb14-1788ac8bec68',
@@ -71,7 +96,11 @@ var CFG = {
       id: 'storage',
       label: 'Armazenamento',
       sublabel: 'Storage · Tape Library',
-      groupids: ['602', '605'],
+      // era ['602','605']: 605 (tape) apagado; 602 é o nome antigo
+      // 'BPC / INFRAESTRUTURA / STORAGE' (14 hosts). O canónico é 668
+      // 'BPC/DOMINIO/02 Armazenamento' (17 hosts, já inclui a tape).
+      domainPrefix: '02',
+      groupids: ['668'],
       datasource: 'infra',
       dashUid: '993834a3-6bd3-4d25-88f5-0a59eab171fe',
       dashSlug: 'n2-armazenamento',
@@ -89,16 +118,32 @@ var CFG = {
       id: 'bd',
       label: 'Bases de Dados',
       sublabel: 'Instâncias DB',
+      domainPrefix: '06',
       groupids: ['355'],
       datasource: 'infra',
       dashUid: 'bd-n2',
       dashSlug: 'n2-bases-de-dados',
     },
     {
-      id: 'apis-negocio',
-      label: 'APIs e Serviços de Negócio',
-      sublabel: 'Endpoints técnicos · Sintéticos · eBankit',
-      groupids: ['663', '345', '391'],
+      id: 'integracao',
+      label: 'Integração e APIs',
+      sublabel: 'EAI · Integrador (Kafka/NiFi) · ESB',
+      // domínio novo (09, groupid 689) da decisão §8 da taxonomia (2026-07-18):
+      // barramento de integração/API — EAI + Integrador. N2 ainda por construir.
+      domainPrefix: '09',
+      groupids: ['689'],
+      datasource: 'infra',
+      dashUid: null,
+      dashSlug: null,
+    },
+    {
+      id: 'negocio',
+      label: 'Serviços de Negócio',
+      sublabel: 'Sistemas do relatório diário · sintéticos + internos',
+      // 07 renomeado "APIs e Servicos de Negocio"→"Servicos de Negocio" (§8):
+      // agora só os 40 sintéticos app-*; as APIs foram para o 09.
+      domainPrefix: '07',
+      groupids: ['663'],
       datasource: 'infra',
       dashUid: 'apis-n2',
       dashSlug: 'n2-apis-servicos-negocio',
@@ -128,6 +173,7 @@ var CFG = {
       id: 'seguranca',
       label: 'Segurança',
       sublabel: 'Transversal · Firewalls · WAF · Darktrace',
+      domainPrefix: '05',
       groupids: ['656'],
       datasource: 'infra',
       dashUid: null,
@@ -222,12 +268,37 @@ function fetchProblemsNetwork(groupids) {
 }
 
 
+// Resolve os groupids dos domínios Infra por NOME (BPC/DOMINIO/NN...) uma
+// única vez. Torna os cards imunes a renumeração/rename de grupos — a causa
+// do bug do card VMware (apontava ao grupo 608, apagado na migração de
+// taxonomia, mostrando 0 problemas quando havia 88 críticos em 603).
+// Se a resolução falhar, mantém-se o groupids de fallback já correcto no CFG.
+function resolveInfraGroups(rpc) {
+  return rpc('hostgroup.get', {
+    search: { name: 'BPC/DOMINIO' }, output: ['groupid', 'name'],
+  }).then(function(groups) {
+    var byPrefix = {};
+    groups.forEach(function(g) {
+      var m = /BPC\/DOMINIO\/(\d\d)\s/.exec(g.name + ' ');
+      if (m) (byPrefix[m[1]] = byPrefix[m[1]] || []).push(g.groupid);
+    });
+    CFG.domains.forEach(function(d) {
+      if (d.domainPrefix && byPrefix[d.domainPrefix]) {
+        d.groupids = byPrefix[d.domainPrefix];
+      }
+    });
+  }).catch(function(err) {
+    console.warn('[BPC] n1-cards: resolveInfraGroups falhou, usando fallback', err);
+  });
+}
+
+
 // ── RENDER ────────────────────────────────────────────────────────────────────
 
-// Skeleton de loading (8 cards) — 4x2, mesma grelha do render final
+// Skeleton de loading (10 cards) — 5x2, mesma grelha do render final
 function renderSkeleton() {
   var cards = '';
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < 10; i++) {
     cards += '<div class="bpc bpc-card" style="--card-accent:var(--bpc-mute);display:flex;flex-direction:column;gap:16px;padding:26px 24px;">'
       + '<div class="bpc-skeleton" style="height:18px;width:65%"></div>'
       + '<div class="bpc-skeleton" style="height:12px;width:80%;margin-top:2px"></div>'
@@ -235,7 +306,7 @@ function renderSkeleton() {
       + '<div class="bpc-skeleton" style="height:14px;width:40%;margin-top:auto"></div>'
       + '</div>';
   }
-  return '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;padding:4px 0;height:100%">' + cards + '</div>';
+  return '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;padding:4px 0;height:100%">' + cards + '</div>';
 }
 
 // Card de um domínio com dados reais — dimensionado para leitura à
@@ -246,12 +317,13 @@ function renderDomainCard(domain, result) {
   var accent = stateColor(state);
   var hasN2 = !!domain.dashUid;
 
-  var headerBadge = hasN2
-    ? '<span class="bpc-pill ' + pillClass(state) + '" style="font-size:.90rem;padding:5px 14px;border-radius:12px;">' + pillLabel(state) + '</span>'
-    : '<span style="font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border-radius:12px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.30);border:1px solid rgba(255,255,255,0.10);">Em Construção</span>';
+  // O selo de estado (OK/Degradado/Crítico) reflecte o estado REAL e mostra-se
+  // sempre — mesmo sem N2. A ausência de N2 só afecta o link de drill-down.
+  var headerBadge = '<span class="bpc-pill ' + pillClass(state) + '" style="font-size:.90rem;padding:5px 14px;border-radius:12px;">' + pillLabel(state) + '</span>';
 
-  var counters = hasN2
-    ? '<div style="display:flex;gap:36px;margin-top:18px;">'
+  // Contadores mostram-se sempre — vêm do problem.get, não dependem de existir
+  // dashboard N2 (antes os domínios sem N2, ex. Segurança, escondiam os números).
+  var counters = '<div style="display:flex;gap:36px;margin-top:18px;">'
         + '<div style="display:flex;flex-direction:column;gap:6px;">'
         +   '<span style="font-size:3.1rem;font-weight:700;color:#E6EDF3;line-height:1;">' + classified.nCrit + '</span>'
         +   '<span class="bpc-label bpc-crit" style="font-size:.85rem;">Crít.</span>'
@@ -260,14 +332,13 @@ function renderDomainCard(domain, result) {
         +   '<span style="font-size:3.1rem;font-weight:700;color:#E6EDF3;line-height:1;">' + classified.nWarn + '</span>'
         +   '<span class="bpc-label bpc-warn" style="font-size:.85rem;">Aviso</span>'
         + '</div>'
-      + '</div>'
-    : '<div style="margin-top:18px;font-size:1.05rem;color:rgba(255,255,255,0.22);">Dashboard em desenvolvimento</div>';
+      + '</div>';
 
   var footer = hasN2
     ? '<a href="/d/' + domain.dashUid + '/' + domain.dashSlug + '" '
         + 'style="font-size:1.00rem;font-weight:600;color:var(--bpc-cyan);text-decoration:none;margin-top:auto;padding-top:16px;display:block;">'
         + esc(domain.linkLabel || 'Ver N2 →') + '</a>'
-    : '<span style="font-size:1.00rem;color:rgba(255,255,255,0.15);margin-top:auto;padding-top:16px;display:block;">—</span>';
+    : '<span style="font-size:.92rem;color:rgba(255,255,255,0.30);margin-top:auto;padding-top:16px;display:block;">N2 em construção</span>';
 
   var errorNote = result.error
     ? '<div style="font-size:.80rem;color:rgba(239,68,68,0.70);margin-top:6px;">Erro ao carregar dados</div>'
@@ -320,7 +391,7 @@ function renderGrid(results) {
     + '</div>';
 
   return '<div style="display:flex;flex-direction:column;gap:14px;height:100%;">'
-    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,1fr);gap:18px;padding:4px 0;flex:1;">'
+    + '<div style="display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(2,1fr);gap:16px;padding:4px 0;flex:1;">'
     + cards.join('')
     + '</div>'
     + rodape
@@ -355,8 +426,11 @@ function loadAndRender(rpc, root) {
 function start(rpc) {
   BPC.utils.waitForElement(CFG.rootId, function(root) {
     root.innerHTML = renderSkeleton();
-    loadAndRender(rpc, root);
-    BPC.utils.startRefresh(root, function() { loadAndRender(rpc, root); }, CFG.refreshMs);
+    // resolve groupids por nome ANTES da 1ª carga; refresca a seguir
+    resolveInfraGroups(rpc).then(function() {
+      loadAndRender(rpc, root);
+      BPC.utils.startRefresh(root, function() { loadAndRender(rpc, root); }, CFG.refreshMs);
+    });
   });
 }
 

@@ -1,0 +1,56 @@
+{
+  "datasource": { "type": "mysql", "uid": "cfo3cgypdrdvkf" },
+  "fieldConfig": {
+    "defaults": {
+      "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
+      "mappings": [],
+      "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": 0 } ] }
+    },
+    "overrides": [
+      {
+        "matcher": { "id": "byName", "options": "dias" },
+        "properties": [
+          { "id": "custom.cellOptions", "value": { "type": "color-background", "mode": "gradient" } },
+          { "id": "thresholds", "value": { "mode": "absolute", "steps": [
+            { "color": "transparent", "value": 0 },
+            { "color": "#d29922", "value": 30 },
+            { "color": "#f85149", "value": 90 } ] } },
+          { "id": "custom.width", "value": 70 }
+        ]
+      },
+      {
+        "matcher": { "id": "byName", "options": "sev" },
+        "properties": [
+          { "id": "mappings", "value": [ { "type": "value", "options": {
+            "5": { "text": "Desastre", "color": "#f85149" },
+            "4": { "text": "Alta",     "color": "#f97583" },
+            "3": { "text": "Média",    "color": "#e3742f" },
+            "2": { "text": "Aviso",    "color": "#d29922" },
+            "1": { "text": "Info",     "color": "#58a6ff" },
+            "0": { "text": "N/class",  "color": "#64748B" } } } ] },
+          { "id": "custom.cellOptions", "value": { "type": "color-text" } },
+          { "id": "custom.width", "value": 90 }
+        ]
+      },
+      { "matcher": { "id": "byName", "options": "host" }, "properties": [ { "id": "custom.width", "value": 220 } ] }
+    ]
+  },
+  "options": {
+    "cellHeight": "sm",
+    "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false },
+    "showHeader": true,
+    "sortBy": [ { "desc": true, "displayName": "dias" } ]
+  },
+  "pluginVersion": "12.4.2",
+  "targets": [
+    {
+      "datasource": { "type": "mysql", "uid": "cfo3cgypdrdvkf" },
+      "editorMode": "code", "format": "table", "rawQuery": true,
+      "rawSql": "SELECT ROUND((UNIX_TIMESTAMP() - p.clock) / 86400) AS dias,\n  p.severity AS sev,\n  MIN(h.name) AS host,\n  p.name AS problema\nFROM problem p\nJOIN triggers t ON t.triggerid = p.objectid\nJOIN functions f ON f.triggerid = t.triggerid\nJOIN items i ON i.itemid = f.itemid\nJOIN hosts h ON h.hostid = i.hostid\nWHERE p.source = 0 AND p.object = 0 AND p.r_eventid IS NULL AND p.severity >= 2\nGROUP BY p.eventid, p.clock, p.severity, p.name\nORDER BY dias DESC\nLIMIT 20",
+      "refId": "A"
+    }
+  ],
+  "title": "NETWORK — 20 problemas activos mais antigos (backlog)",
+  "transparent": true,
+  "type": "table"
+}

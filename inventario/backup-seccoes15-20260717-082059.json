@@ -1,0 +1,324 @@
+{
+ "criado_em": "20260717-082059",
+ "interfaces_pre": [
+  {
+   "interfaceid": "1205",
+   "hostid": "11718",
+   "main": "1",
+   "type": "1",
+   "useip": "1",
+   "ip": "192.168.1.29",
+   "dns": "VS8000741.bpc.intranet",
+   "port": "10050",
+   "available": "0",
+   "error": "",
+   "errors_from": "1775310349",
+   "disable_until": "1775310364",
+   "details": []
+  },
+  {
+   "interfaceid": "1225",
+   "hostid": "11738",
+   "main": "1",
+   "type": "1",
+   "useip": "1",
+   "ip": "10.10.13.8",
+   "dns": "",
+   "port": "10050",
+   "available": "0",
+   "error": "",
+   "errors_from": "0",
+   "disable_until": "0",
+   "details": []
+  },
+  {
+   "interfaceid": "1355",
+   "hostid": "11874",
+   "main": "1",
+   "type": "1",
+   "useip": "1",
+   "ip": "10.10.236.38",
+   "dns": "vs8000392.bpc.intranet",
+   "port": "10050",
+   "available": "0",
+   "error": "",
+   "errors_from": "0",
+   "disable_until": "0",
+   "details": []
+  },
+  {
+   "interfaceid": "1356",
+   "hostid": "11875",
+   "main": "1",
+   "type": "1",
+   "useip": "1",
+   "ip": "10.10.236.61",
+   "dns": "VS8000393.bpc.intranet",
+   "port": "10050",
+   "available": "0",
+   "error": "",
+   "errors_from": "0",
+   "disable_until": "0",
+   "details": []
+  },
+  {
+   "interfaceid": "1438",
+   "hostid": "11957",
+   "main": "1",
+   "type": "1",
+   "useip": "1",
+   "ip": "10.10.238.54",
+   "dns": "VS9000316.bpc.intranet",
+   "port": "10050",
+   "available": "0",
+   "error": "",
+   "errors_from": "0",
+   "disable_until": "0",
+   "details": []
+  }
+ ],
+ "hosts_templates_pre": [
+  {
+   "hostid": "11970",
+   "name": "Digiwave - VM - VS8000832 (Linux · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "11988",
+   "name": "GLPI - VM - VS8000788 (Linux · Produção · Camada Aplicacional | DTI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "11989",
+   "name": "GLPI - VM - VS8000896 (Linux · QA · Camada Aplicacional | DTI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14077",
+   "name": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14104",
+   "name": "E-learning - VM - VS8000884 (Win · QA · Camada Aplicacional | PMSI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14116",
+   "name": "Essence - VM - VS8000514 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14073",
+     "name": "BPC MSSQL by ODBC"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14117",
+   "name": "Essence - VM - VS8000515 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14073",
+     "name": "BPC MSSQL by ODBC"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14128",
+   "name": "Fusion essence - VM - VS8000760 (Win · QA · Camada Aplicacional | PMSI - Middleware Server)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14133",
+   "name": "Git lab - VM - VS8000700 (Win · QA · Camada Aplicacional | PMSI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14134",
+   "name": "Graylog - VM - Graylog (Win · Produção · Camada Aplicacional | DSI - Aplicação de Logs da Rede)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14135",
+   "name": "Gitlab - VM - VS8000890 (Win · QA · Camada Aplicacional | DTI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14146",
+   "name": "Integrador/Apachenifi - VM - VS8000812 (Linux · Produção · Bases de Dados | PMSI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  },
+  {
+   "hostid": "14154",
+   "name": "Integrador/Apachenifi - VM - VS8000869 (Linux · Produção · Bases de Dados | PMSI)",
+   "parentTemplates": [
+    {
+     "templateid": "10174",
+     "name": "VMware Guest"
+    },
+    {
+     "templateid": "10351",
+     "name": "Windows by Zabbix agent active"
+    },
+    {
+     "templateid": "14074",
+     "name": "BPC Ping"
+    }
+   ]
+  }
+ ]
+}

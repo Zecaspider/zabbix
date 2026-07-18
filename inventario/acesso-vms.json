@@ -1,0 +1,763 @@
+{
+ "total_catB_com_ipv4": 94,
+ "vias_instalacao_por_so": {
+  "Windows": {
+   "RDP-so": 4,
+   "WinRM": 10,
+   "nenhuma-via-remota": 4
+  },
+  "Linux": {
+   "SSH-disponivel": 71,
+   "SSH-fechado": 4
+  }
+ },
+ "hosts": [
+  {
+   "host": "ToBe - VM - VS9000424 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - CSF)",
+   "so": "Windows",
+   "ip": "10.10.236.135",
+   "portas_abertas": [
+    "RDP"
+   ]
+  },
+  {
+   "host": "SO - Compute - VS8000519 (Support Server)",
+   "so": "Windows",
+   "ip": "10.10.237.50",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "ACM - VM - VS8000800 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "ip": "10.10.203.60",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "sv9000204 (Vcenter PRD)",
+   "so": "Linux",
+   "ip": "10.10.101.9",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "sv9000206 (vCenter PowerFlex)",
+   "so": "Linux",
+   "ip": "10.10.232.84",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "so": "Linux",
+   "ip": "10.10.236.109",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Digiwave - VM - VS8000826 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "ip": "10.10.203.86",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "Digiwave - VM - VS8000828 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "ip": "10.10.203.88",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "Digiwave - VM - VS8000832 (Linux · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Linux",
+   "ip": "10.10.203.92",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "so": "Linux",
+   "ip": "10.10.203.12",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Elastic search - VM - VS8000779 (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Linux",
+   "ip": "10.10.126.177",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Dns externo - VM - NS3 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "ip": "10.5.0.128",
+   "portas_abertas": []
+  },
+  {
+   "host": "GLPI - VM - VS8000788 (Linux · Produção · Camada Aplicacional | DTI)",
+   "so": "Linux",
+   "ip": "10.10.204.78",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Cezanne - VM - VS9000235 (Win · Produção · Camada Aplicacional | DCH - Gestão de Pessoal)",
+   "so": "Windows",
+   "ip": "172.16.8.183",
+   "portas_abertas": [
+    "RDP"
+   ]
+  },
+  {
+   "host": "Contif - VM - VS9000359 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "ip": "10.10.238.226",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "Darktrace - VM - VS8000525 (Linux · Produção · Serviços de Infraestrutura | DTI - sensor novo)",
+   "so": "Linux",
+   "ip": "10.10.126.90",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Dhcp server - VM - VS8000927 (Linux · Produção · Camada Aplicacional | Web Application Stork Server)",
+   "so": "Linux",
+   "ip": "10.10.233.135",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Dhcp server - VM - VS8000928 (Linux · Produção · Bases de Dados | Data Base Postgresql, Mysql)",
+   "so": "Linux",
+   "ip": "10.10.233.136",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Dhcp server - VM - VS8000929 (Linux · Produção · Camada Aplicacional | Agent Stork)",
+   "so": "Linux",
+   "ip": "10.10.233.137",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Dhcp server - VM - VS8000930 (Linux · Produção · Serviços de Infraestrutura | Kea DHCP Node)",
+   "so": "Linux",
+   "ip": "10.10.233.138",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Dhcp server - VM - VS8000931 (Linux · Produção · Serviços de Infraestrutura | Kea DHCP NodeLPI)",
+   "so": "Linux",
+   "ip": "10.10.233.139",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Dns externo - VM - NS4 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "ip": "10.5.0.129",
+   "portas_abertas": []
+  },
+  {
+   "host": "Eba - VM - SV9000401 (Win · Produção · Bases de Dados | DTI - Aplicacão de Caixa das Agencias)",
+   "so": "Windows",
+   "ip": "172.16.8.162",
+   "portas_abertas": []
+  },
+  {
+   "host": "Elastic search - VM - VS8000135 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "ip": "10.10.126.43",
+   "portas_abertas": []
+  },
+  {
+   "host": "Elastic search - VM - VS8000136 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "ip": "10.10.126.44",
+   "portas_abertas": []
+  },
+  {
+   "host": "Elastic search - VM - VS8000137 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "ip": "10.10.126.45",
+   "portas_abertas": []
+  },
+  {
+   "host": "Elastic search - VM - VS8000785 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "ip": "10.10.126.88",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Elasticsearch - VM - VS8000772 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)",
+   "so": "Linux",
+   "ip": "10.10.126.170",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Elasticsearch - VM - VS8000773 (Linux · Produção · Serviços de Infraestrutura | DTI - Logstash)",
+   "so": "Linux",
+   "ip": "10.10.126.171",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Elasticsearch - VM - VS8000774 (Linux · Produção · Serviços de Infraestrutura | DTI - FleetServer)",
+   "so": "Linux",
+   "ip": "10.10.126.172",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Elasticsearch - VM - VS8000775 (Linux · Produção · Serviços de Infraestrutura | DTI - MasterDataNodes)",
+   "so": "Linux",
+   "ip": "10.10.126.173",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Elasticsearch - VM - VS8000776 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)",
+   "so": "Linux",
+   "ip": "10.10.126.175",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Elasticsearch - VM - VS8000777 (Linux · Produção · Serviços de Infraestrutura | DTI - KIBANA)",
+   "so": "Linux",
+   "ip": "10.10.126.176",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Graylog - VM - graylog-vm01 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "so": "Linux",
+   "ip": "10.10.233.148",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Graylog - VM - graylog-vm02 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "so": "Linux",
+   "ip": "10.10.233.134",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Hermes - VM - VS9000268 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "ip": "172.16.8.135",
+   "portas_abertas": [
+    "RDP"
+   ]
+  },
+  {
+   "host": "Imperva - VM - VS8000485 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "so": "Linux",
+   "ip": "10.10.126.164",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Imperva - VM - VS8000486 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "so": "Linux",
+   "ip": "10.10.126.163",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Imperva - VM - VS8000487 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "so": "Linux",
+   "ip": "10.10.126.162",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Masternode - VM - VS8000804 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.64",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/CEPH - VM - VS8000805 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.65",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Apachenifi - VM - VS8000812 (Linux · Produção · Bases de Dados | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.72",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Elasticsearch - VM - VS8000814 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.74",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Elasticsearch - VM - VS8000815 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.75",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Gitlab - VM - VS8000817 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.77",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Computenodes - VM - VS8000818 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.78",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/CEPH - VM - VS8000866 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.66",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Apachenifi - VM - VS8000869 (Linux · Produção · Bases de Dados | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.70",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Apachekafka - VM - VS8000870 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.68",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Integrador/Elasticsearch - VM - VS8000978 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.73",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Ise tst - VM - ISE-TST (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Linux",
+   "ip": "10.10.126.140",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Jump server - VM - VD5000AVG0014 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "ip": "192.168.56.1",
+   "portas_abertas": [
+    "RDP"
+   ]
+  },
+  {
+   "host": "Master node - VM - VS8000714 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "ip": "10.10.203.25",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - pfm9000650 (Linux · Produção · Virtualização | DTI - Management VM)",
+   "so": "Linux",
+   "ip": "10.10.232.76",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - pfm9000651 (Linux · Produção · Virtualização | DTI - Management VM)",
+   "so": "Linux",
+   "ip": "10.10.232.77",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - pfm9000652 (Linux · Produção · Virtualização | DTI - Management VM)",
+   "so": "Linux",
+   "ip": "10.10.232.78",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "NGINX - VM - VS8000734 (Linux · Produção · Interface e Web | PMSI - Load Balance HW SIZING MSA PMSI PRD)",
+   "so": "Linux",
+   "ip": "10.10.203.26",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Netpicker server - VM - VS8000933 (Linux · Produção · Camada Aplicacional | Automação, configuração de rede)",
+   "so": "Linux",
+   "ip": "10.10.233.146",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-infra-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "so": "Linux",
+   "ip": "10.10.226.132",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-infra-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "so": "Linux",
+   "ip": "10.10.226.133",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-infra-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "so": "Linux",
+   "ip": "10.10.226.134",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-master-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "so": "Linux",
+   "ip": "10.10.226.129",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-master-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "so": "Linux",
+   "ip": "10.10.226.130",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-master-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "so": "Linux",
+   "ip": "10.10.226.131",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-worker-07 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "ip": "10.10.226.147",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-worker-08 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "ip": "10.10.226.148",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "OCP - VM - ibm-cp-worker-09 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "ip": "10.10.226.149",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "PHPIPAM - VM - PHPIPAM (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão IPs)",
+   "so": "Linux",
+   "ip": "10.10.126.77",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Portnox - VM - VS8000518 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "ip": "10.10.238.56",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "Portnox - VM - VS8000925 (Win · Produção · Serviços de Infraestrutura | DSI - Aplicação de segurança)",
+   "so": "Windows",
+   "ip": "10.10.238.41",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - JumpServer (Win · Produção · Segurança | DTI - Jump Server)",
+   "so": "Windows",
+   "ip": "10.10.232.74",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - pfmp-installer (Linux · Produção · Virtualização | DTI - Installer)",
+   "so": "Linux",
+   "ip": "10.10.232.75",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Sdd - VM - VS8000222 (Win · Produção · Camada Aplicacional | DTI - Sistema de debito direito)",
+   "so": "Windows",
+   "ip": "10.4.0.131",
+   "portas_abertas": []
+  },
+  {
+   "host": "Secureshere gateway cluster - VM - VS8000478 (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "so": "Linux",
+   "ip": "10.10.126.160",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Securesphere - VM - VS8000481 (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Linux",
+   "ip": "10.10.126.161",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Sftpcall manager - VM - VS8000ubuntu (Linux · Produção · Serviços de Infraestrutura | DTI - Backup)",
+   "so": "Linux",
+   "ip": "10.10.238.250",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - sv9000666-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)",
+   "so": "Linux",
+   "ip": "10.10.232.161",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - sv9000667-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)",
+   "so": "Linux",
+   "ip": "10.10.232.162",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "PowerFlex - VM - sv9000668-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)",
+   "so": "Linux",
+   "ip": "10.10.232.163",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "SWIFT - VM - VS9000239 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "so": "Windows",
+   "ip": "10.10.239.13",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "SWIFT - VM - VS9000242 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "so": "Windows",
+   "ip": "10.10.238.236",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  },
+  {
+   "host": "Tenable - VM - VS8000995 (Linux · Produção · Segurança | DTI - Nessus)",
+   "so": "Linux",
+   "ip": "10.10.203.110",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Tenable - VM - VS8000996 (Linux · Produção · Segurança | DTI - Nessus)",
+   "so": "Linux",
+   "ip": "10.10.203.111",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Tenable - VM - VS8000997 (Linux · Produção · Segurança | DTI - Nessus)",
+   "so": "Linux",
+   "ip": "10.10.203.112",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Unitel money - VM - VS8000306 (Linux · Produção · Camada Aplicacional | DTI - SFTP)",
+   "so": "Linux",
+   "ip": "10.10.236.86",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "VMware - VM - vs9001207 (Linux · Produção · Virtualização | DTI - vCenter Appliance)",
+   "so": "Linux",
+   "ip": "10.10.101.20",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Veeam - VM - VeeamSA (Linux · Produção · Serviços de Infraestrutura | DTI - Backup Appliance)",
+   "so": "Linux",
+   "ip": "10.10.126.56",
+   "portas_abertas": []
+  },
+  {
+   "host": "WAF - VM - VS8000257 (Linux · Produção · Serviços de Infraestrutura | DTI - Firewall)",
+   "so": "Linux",
+   "ip": "10.10.126.23",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "XoruX - VM - lpar2rrd (Linux · Produção · Serviços de Infraestrutura | DTI - Monitor IBM)",
+   "so": "Linux",
+   "ip": "10.10.101.15",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Coletas_auditoria_rede - VM - VS8000993 (Linux · Produção · Camada Aplicacional | DTI)",
+   "so": "Linux",
+   "ip": "10.10.233.226",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "Insightvm console - VM - INSIGHTVM CONSOLE (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "so": "Linux",
+   "ip": "10.10.236.51",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "VMware - VM - VS8000114_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "so": "Linux",
+   "ip": "10.10.238.241",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "VMware - VM - VS8000116_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "so": "Linux",
+   "ip": "10.10.238.242",
+   "portas_abertas": [
+    "SSH"
+   ]
+  },
+  {
+   "host": "SWIFT - VM - VS9000320",
+   "so": null,
+   "ip": "10.10.237.70",
+   "portas_abertas": [
+    "WinRM-http",
+    "RDP"
+   ]
+  }
+ ]
+}

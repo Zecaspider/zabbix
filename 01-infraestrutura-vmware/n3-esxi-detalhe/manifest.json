@@ -3,19 +3,19 @@
   "dashboardTitle": "N3 · ESXi Detalhe",
   "folderUid": "bfpm0sdhhi22od",
   "datasource": "3_KgG43nz",
-  "groupIdAncora": "603",
   "status": "em-construcao",
   "anchor": {
     "group": {
-      "filter": "BPC/DOMINIO/01 Virtualizacao"
+      "filter": "_SISTEMA/ANCORA-RENDER"
     },
     "host": {
-      "filter": "$hostid"
+      "filter": "Storage - IBM FS9500"
     },
     "item": {
-      "filter": "CPU usage in percent"
+      "filter": "ICMP ping"
     }
   },
+  "_nota_anchor": "Âncora corrigida 2026-07-18 (varredura-grupos-mortos): estava em 'BPC / INFRAESTRUTURA / SERVIDORES FISICOS' (morto) ao vivo, e o manifest apontava a 'BPC/DOMINIO/01 Virtualizacao' (grupo DOMINIO, proibido pela regra de âncora do CLAUDE.md). Agora usa a âncora universal _SISTEMA/ANCORA-RENDER.",
   "panels": [
     {
       "file": "utils.js",

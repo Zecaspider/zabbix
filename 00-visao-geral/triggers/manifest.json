@@ -1,0 +1,86 @@
+{
+  "dashboardUid": "visao-triggers",
+  "dashboardTitle": "N1 · Visão Geral · Triggers — Problemas activos por domínio",
+  "folderUid": "bfpm0sdaos074d",
+  "datasource": "3_KgG43nz",
+  "notes": "Pedido do utilizador 2026-07-18, na sequência do despiste de triggers (documentacao/despiste-calibracao-triggers-20260718.md): vista NOC grande e robusta só de triggers, por domínio, as 2 instâncias. Desenho híbrido: BT para os cards executivos por domínio (groupids resolvidos DINAMICAMENTE por nome — BPC/DOMINIO/* na Infra via BPC.rpc, HG_* na Network via proxy directo — sobrevive a renames; cache ~30min do proxy documentada) + 2 painéis nativos alexanderzobnin-zabbix-triggers-panel (lista viva com ack/idade/severidade, sem cache, minSeverity Aviso p/ excluir o ruído Info tipo lower-speed) + 4 nativos MySQL sem cache (timeline de problemas abertos por hora/severidade e top ofensores/flappers, por instância) + 2 tabelas de backlog (problemas mais antigos). Layout final no fecho (§4): cards h~14 full-width, 2 listas nativas lado a lado h~16, timelines lado a lado h~8, ofensores lado a lado h~9, antigos lado a lado h~9.",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "_SISTEMA/ANCORA-RENDER"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "tg-cards-dominios.js",
+      "id": 101,
+      "role": "content",
+      "title": "",
+      "content": "<div id=\"bpc-tg-cards\"></div>"
+    },
+    {
+      "file": "tg-infra-problemas.json",
+      "id": 200,
+      "role": "content",
+      "title": "Problemas Activos — INFRA (todos os domínios BPC)"
+    },
+    {
+      "file": "tg-network-problemas.json",
+      "id": 201,
+      "role": "content",
+      "title": "Problemas Activos — NETWORK (Rede: agências, edifícios, DC)"
+    },
+    {
+      "file": "tg-eventos-timeline-infra.json",
+      "id": 202,
+      "role": "content",
+      "title": "INFRA — problemas abertos por hora e severidade"
+    },
+    {
+      "file": "tg-eventos-timeline-network.json",
+      "id": 203,
+      "role": "content",
+      "title": "NETWORK — problemas abertos por hora e severidade"
+    },
+    {
+      "file": "tg-top-ofensores-infra.json",
+      "id": 204,
+      "role": "content",
+      "title": "INFRA — top 15 triggers ofensoras (flappers) na janela"
+    },
+    {
+      "file": "tg-top-ofensores-network.json",
+      "id": 205,
+      "role": "content",
+      "title": "NETWORK — top 15 triggers ofensoras (flappers) na janela"
+    },
+    {
+      "file": "tg-mais-antigos-infra.json",
+      "id": 206,
+      "role": "content",
+      "title": "INFRA — 20 problemas activos mais antigos (backlog)"
+    },
+    {
+      "file": "tg-mais-antigos-network.json",
+      "id": 207,
+      "role": "content",
+      "title": "NETWORK — 20 problemas activos mais antigos (backlog)"
+    }
+  ]
+}

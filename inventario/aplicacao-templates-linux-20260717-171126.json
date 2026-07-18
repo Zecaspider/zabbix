@@ -1,0 +1,276 @@
+{
+ "executado_em": "20260717-171126",
+ "dry_run": true,
+ "aplicados": [
+  {
+   "hostid": "11877",
+   "host": "sv9000204 (Vcenter PRD)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11900",
+   "host": "sv9000206 (vCenter PowerFlex)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14109",
+   "host": "Elastic search - VM - VS8000135 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14110",
+   "host": "Elastic search - VM - VS8000136 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14111",
+   "host": "Elastic search - VM - VS8000137 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14112",
+   "host": "Elastic search - VM - VS8000785 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14122",
+   "host": "Elasticsearch - VM - VS8000772 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14123",
+   "host": "Elasticsearch - VM - VS8000773 (Linux · Produção · Serviços de Infraestrutura | DTI - Logstash)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14124",
+   "host": "Elasticsearch - VM - VS8000774 (Linux · Produção · Serviços de Infraestrutura | DTI - FleetServer)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14125",
+   "host": "Elasticsearch - VM - VS8000775 (Linux · Produção · Serviços de Infraestrutura | DTI - MasterDataNodes)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14126",
+   "host": "Elasticsearch - VM - VS8000776 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14127",
+   "host": "Elasticsearch - VM - VS8000777 (Linux · Produção · Serviços de Infraestrutura | DTI - KIBANA)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14136",
+   "host": "Graylog - VM - graylog-vm01 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14137",
+   "host": "Graylog - VM - graylog-vm02 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14141",
+   "host": "Imperva - VM - VS8000485 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14142",
+   "host": "Imperva - VM - VS8000486 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14143",
+   "host": "Imperva - VM - VS8000487 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14145",
+   "host": "Integrador/CEPH - VM - VS8000805 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14147",
+   "host": "Integrador/Elasticsearch - VM - VS8000814 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14148",
+   "host": "Integrador/Elasticsearch - VM - VS8000815 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14149",
+   "host": "Integrador/Bastionnode - VM - VS8000816 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "14150",
+   "host": "Integrador/Gitlab - VM - VS8000817 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14151",
+   "host": "Integrador/Computenodes - VM - VS8000818 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14152",
+   "host": "Integrador/CEPH - VM - VS8000866 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14153",
+   "host": "Integrador/Apachekafka - VM - VS8000868 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14155",
+   "host": "Integrador/Apachekafka - VM - VS8000870 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14156",
+   "host": "Integrador/Elasticsearch - VM - VS8000978 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14180",
+   "host": "OCP - VM - ibm-cp-infra-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14181",
+   "host": "OCP - VM - ibm-cp-infra-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14182",
+   "host": "OCP - VM - ibm-cp-infra-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14183",
+   "host": "OCP - VM - ibm-cp-master-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14184",
+   "host": "OCP - VM - ibm-cp-master-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14185",
+   "host": "OCP - VM - ibm-cp-master-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14186",
+   "host": "OCP - VM - ibm-cp-storage-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14187",
+   "host": "OCP - VM - ibm-cp-storage-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14188",
+   "host": "OCP - VM - ibm-cp-storage-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14189",
+   "host": "OCP - VM - ibm-cp-worker-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14190",
+   "host": "OCP - VM - ibm-cp-worker-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14191",
+   "host": "OCP - VM - ibm-cp-worker-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14194",
+   "host": "OCP - VM - ibm-cp-worker-06 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14195",
+   "host": "OCP - VM - ibm-cp-worker-07 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14196",
+   "host": "OCP - VM - ibm-cp-worker-08 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14197",
+   "host": "OCP - VM - ibm-cp-worker-09 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14281",
+   "host": "Insightvm console - VM - INSIGHTVM CONSOLE (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "ping": true,
+   "tcp10050": false
+  }
+ ],
+ "pulados": [],
+ "erros": [],
+ "verificacao": {
+  "falhas": [],
+  "ok": true
+ }
+}

@@ -1,0 +1,5893 @@
+{
+ "gerado_em": "2026-07-17T17:05:09",
+ "total_producao": 318,
+ "por_so": {
+  "Linux": 105,
+  "Windows": 207,
+  "null": 6
+ },
+ "saude_agente_por_so": {
+  "Linux": {
+   "ok(<=1h)": 12,
+   "sem-item-agent.ping": 44,
+   "sem-dado": 49
+  },
+  "Windows": {
+   "ok(<=1h)": 151,
+   "sem-dado": 56
+  },
+  "?": {
+   "sem-item-agent.ping": 6
+  }
+ },
+ "gaps_por_so": {
+  "Windows": {
+   "agente-declarado-mas-sem-dados": 56
+  },
+  "Linux": {
+   "sem-template-agente-Linux": 44,
+   "agente-declarado-mas-sem-dados": 93
+  },
+  "?": {
+   "sem-tag-so": 6,
+   "agente-declarado-mas-sem-dados": 6
+  }
+ },
+ "hosts": [
+  {
+   "hostid": "10084",
+   "host": "PLAT - Mgmt - Zabbix server",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent",
+    "Zabbix server health"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.22",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "zabbix",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10524",
+   "host": "Office online server - VM - VS8000106 (Win · Produção · Interface e Web | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.211",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "OFFICE ONLINE SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10525",
+   "host": "RMS - VM - VS8000107 (Win · Produção · Serviços de Infraestrutura | DTI - AD RMS & FTP backup vCenter.ROOT CA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.205",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "RMS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10529",
+   "host": "Domain controller - VM - VS9000007 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC DNS Check",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.240.133",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "DOMAIN CONTROLLER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10532",
+   "host": "Domain controller - VM - VS9000003 (Win · Produção · Serviços de Infraestrutura | DTI - Secundário)",
+   "so": "Windows",
+   "templates": [
+    "BPC DNS Check",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.240.135",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "DOMAIN CONTROLLER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10536",
+   "host": "File server - VM - VS9000105 (Win · Produção · Interface e Web)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.123",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FILE SERVER",
+   "departamento": "A-CLASSIFICAR"
+  },
+  {
+   "hostid": "10537",
+   "host": "Jump server - VM - VS9000509 (Win · Produção · Segurança | DTI - Máquina de salto para assistencia remota a...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.122",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10538",
+   "host": "Azure ad connet - VM - VS8000403 (Win · Produção · Serviços de Infraestrutura | DTI - Novo Funcional)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.139",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "AZURE AD CONNECT",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10539",
+   "host": "Prtgnetwork - VM - VS9000403 (Win · Produção · Serviços de Infraestrutura | DTI - Monitor)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.32",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "PRTGNetwork",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10540",
+   "host": "Ftp - VM - VS8000363 (Win · Produção · Serviços de Infraestrutura | DTI - Servidor FTP)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.73",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FTP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10541",
+   "host": "Forgest - VM - VS9000480 (Win · Produção · Camada Aplicacional | DCH)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.201",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FORGEST",
+   "departamento": "DCH"
+  },
+  {
+   "hostid": "10543",
+   "host": "Bank trade - VM - VS8000431 (Win · Produção · Bases de Dados | DTI - Banktrade NOVO)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.227",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BANK TRADE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10544",
+   "host": "Gestão do bfteller - VM - VS8000452 (Win · Produção · Camada Aplicacional | DTI - Aplicação Caixa das Agenc...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.162",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "Gestão do BFTELLER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10545",
+   "host": "Sigcap - VM - VS8000412 (Win · Produção · Bases de Dados | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.65",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10547",
+   "host": "Jump server - VM - VS9000507 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.132",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10548",
+   "host": "Jump server - VM - VS9000506 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.131",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10555",
+   "host": "Aplicacoes internas - VM - VS8000304 (Win · Produção · Camada Aplicacional | DTI - RDA INFOX SIP RUPE AGEC ...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.40",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIR",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10556",
+   "host": "Aplicações internas - VM - VS8000414 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.44",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "APLICAÇÕES INTERNAS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10557",
+   "host": "Aplicacoes internas - VM - VS8000305 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.50",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "LIVE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10559",
+   "host": "Aplicacoes internas - VM - VS8000430 (Win · Produção · Bases de Dados | DTI - Aplicações Internas)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.17",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "APLICAÇÕES INTERNAS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10560",
+   "host": "Match cash - VM - VS8000401 (Win · Produção · Camada Aplicacional | DOP - Sistema de reconciliação contas i...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.47",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "MATCH CASH",
+   "departamento": "DOP"
+  },
+  {
+   "hostid": "10561",
+   "host": "Sigcap - VM - VS8000312 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.14",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10563",
+   "host": "Bank trade - VM - VS9000912 (Win · Produção · Camada Aplicacional | DTI - Administrator)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.8",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BANK TRADE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10564",
+   "host": "Talentia - VM - VS8000434 (Win · Produção · Bases de Dados | DCH - NOVO)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.48",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TALENTIA",
+   "departamento": "DCH"
+  },
+  {
+   "hostid": "10565",
+   "host": "Talentia - VM - VS8000342 (Win · Produção · Camada Aplicacional | DCH - Relatórios PRD)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.101",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TALENTIA",
+   "departamento": "DCH"
+  },
+  {
+   "hostid": "10566",
+   "host": "Uysig - VM - VS8000422 (Win · Produção · Camada Aplicacional | DPC+DGR - DB Novo)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.16",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "UYSIG",
+   "departamento": "DPC+DGR"
+  },
+  {
+   "hostid": "10567",
+   "host": "Match cash - VM - VS8000416 (Win · Produção · Camada Aplicacional | DOP - Reconciliação de contas STC (EMIS))",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.48",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "MATCH CASH",
+   "departamento": "DOP"
+  },
+  {
+   "hostid": "10568",
+   "host": "Match cash - VM - VS8000417 (Win · Produção · Camada Aplicacional | DOP - Contas internas e Correspondentes...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.81",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "MATCH CASH",
+   "departamento": "DOP"
+  },
+  {
+   "hostid": "10570",
+   "host": "SWIFT - VM - VS9000312 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.203",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SWIFT",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10573",
+   "host": "ToBe - VM - VS8000427 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - STC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.176",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "sistema de compensacao de cheques",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10575",
+   "host": "ToBe - VM - VS8000454 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - SOP)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.34",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10576",
+   "host": "ToBe - VM - VS8000413 (Win · Produção · Bases de Dados | DTI - Serv.BD TOBE - SOP)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.49",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10577",
+   "host": "ToBe - VM - VS9000424 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - CSF)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.135",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "TOBE",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "10578",
+   "host": "SGC - VM - VS9000309 (Win · Produção · Camada Aplicacional | DTM - Sistema de Gestão de Carteiras SGC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.229",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SGC",
+   "departamento": "DTM"
+  },
+  {
+   "hostid": "10579",
+   "host": "SGC - VM - VS8000475 (Win · Produção · Bases de Dados | DTM - Sistema de Gestão de Carteiras)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.59",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SGC",
+   "departamento": "DTM"
+  },
+  {
+   "hostid": "10580",
+   "host": "Intix - VM - VS8000418 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.20",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "INTIX",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10581",
+   "host": "Talentia - VM - VS9000318 (Win · Produção · Camada Aplicacional | DCH)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.54",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TALENTIA",
+   "departamento": "DCH"
+  },
+  {
+   "hostid": "10587",
+   "host": "Sophos - VM - VS8000218 (Win · Produção · Serviços de Infraestrutura | DTI - MTA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.11",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SOPHOS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10589",
+   "host": "ToBe - VM - VS8000113 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - File Server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.103",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10590",
+   "host": "Uysig - VM - VS8000437 (Win · Produção · Camada Aplicacional | DGR - UY CONSULTING)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.27",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "UYSIG",
+   "departamento": "DGR"
+  },
+  {
+   "hostid": "10592",
+   "host": "SIRIS - VM - VS8000226 (Win · Produção · Bases de Dados | DRG - BASE DE DADOS)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.31",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIRIS",
+   "departamento": "DRG"
+  },
+  {
+   "hostid": "10594",
+   "host": "SIRIS - VM - VS8000224 (Win · Produção · Camada Aplicacional | DRG)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.30",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIRIS",
+   "departamento": "DRG"
+  },
+  {
+   "hostid": "10595",
+   "host": "Recebimentos unitel - VM - VS9000726 (Win · Produção · Camada Aplicacional | DTI - NOVO)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.237.75",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "RECEBIMENTOS UNITEL",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10597",
+   "host": "System center - VM - VS9000406 (Win · Produção · Serviços de Infraestrutura | DTI - SCOM)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.152",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SYSTEM CENTER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10598",
+   "host": "PLAT - Mgmt - VS9000400 (SCSM_DB - Operations Database)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.232",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": null,
+   "departamento": null,
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "10599",
+   "host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.197",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "ebankit",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "10600",
+   "host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "so": "Windows",
+   "templates": [
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.179",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "KMS",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "10604",
+   "host": "PLAT - Infra - VS9000301 (MIM Sync and DB)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.195",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": null,
+   "departamento": null,
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "10605",
+   "host": "Servidortftp - VM - VS9000282 (Win · Produção · Serviços de Infraestrutura | DTI - TRANSFERÊNCIAFICHEIROS)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.133",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ServidorTFTP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10606",
+   "host": "System center - VM - VS9000214 (Win · Produção · Serviços de Infraestrutura | DTI - SCOM)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.211",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SYSTEM CENTER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10610",
+   "host": "EAI - VM - VS8000456 (Win · Produção · Bases de Dados | DTI - BD do EAI Pre Producao)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.74",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EAI",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10611",
+   "host": "Papercut - VM - VS8000440 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.105",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "PAPERCUT",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10612",
+   "host": "Sms banking+chat bot - VM - VS8000439 (Win · Produção · Camada Aplicacional | DSE)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.215",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SMS BANKING+CHAT BOT",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "10613",
+   "host": "Sms banking+chat bot - VM - VS8000438 (Win · Produção · Camada Aplicacional | DSE)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.214",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SMS BANKING+CHAT BOT",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "10616",
+   "host": "RMS - VM - VS8000360 (Win · Produção · Serviços de Infraestrutura | DTI - Rights Management Server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.22",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "RMS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10617",
+   "host": "Excel report - VM - VS8000330 (Win · Produção · Camada Aplicacional | DCO - CPI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.237",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EXCEL REPORT",
+   "departamento": "DCO"
+  },
+  {
+   "hostid": "10619",
+   "host": "Sophos - VM - VS8000219 (Win · Produção · Serviços de Infraestrutura | DTI - MTA II)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.12",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SOPHOS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10621",
+   "host": "Ad audit - VM - VS8000214 (Win · Produção · Serviços de Infraestrutura | DSI - NOVO)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.72",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "AD AUDIT",
+   "departamento": "DSI"
+  },
+  {
+   "hostid": "10622",
+   "host": "Seguro de credito - VM - VS8000213 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.64",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SEGURO DE CREDITO",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10627",
+   "host": "Emc networker - VM - VS8000108 (Win · Produção · Serviços de Infraestrutura | DTI - NOVO)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.60",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC NETWORKER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10629",
+   "host": "Binfolio - VM - VS9000322 (Win · Produção · Camada Aplicacional | FENIX - Aplicação Binfolio)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.231",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BINFOLIO",
+   "departamento": "FENIX"
+  },
+  {
+   "hostid": "10630",
+   "host": "Jump server - VM - VS9000508 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.133",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10644",
+   "host": "EAI - VM - VS9000404 (Win · Produção · Bases de Dados | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC DB Engine Process Check",
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.14",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EAI",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "10645",
+   "host": "EAI - VM - VS9000343 (Win · Produção · Camada Aplicacional | DTI - IBM IB9)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.6",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "EAI",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11623",
+   "host": "Ebankit - VM - VS8000728 (Win · Produção · Camada Aplicacional | Middleware)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.12",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "11624",
+   "host": "Ebankit - VM - VS8000725 (Win · Produção · Camada Aplicacional | Front End)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.113",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "11625",
+   "host": "Ebankit - VM - VS8000726 (Win · Produção · Camada Aplicacional | Back Office)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.42",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "11626",
+   "host": "Ebankit - VM - VS8000727 (Win · Produção · Camada Aplicacional | Back Office)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.43",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "11627",
+   "host": "Ebankit - VM - VS8000724 (Win · Produção · Camada Aplicacional | Front End)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.112",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "11628",
+   "host": "Ebankit - VM - VS8000729 (Win · Produção · Camada Aplicacional | Middleware)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.13",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "11629",
+   "host": "Ebankit - VM - VS8000737 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.71",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "11630",
+   "host": "Ebankit - VM - VS8000730 (Win · Produção · Camada Aplicacional | Middleware)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.14",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "11631",
+   "host": "Ebankit - VM - VS8000738 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.72",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "11643",
+   "host": "Binfolio - VM - VS8000297 (Win · Produção · Bases de Dados | FENIX - Exportação e importação da base de dados)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.52",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BINFOLIO",
+   "departamento": "FENIX"
+  },
+  {
+   "hostid": "11644",
+   "host": "Binfolio - VM - VS8000299 (Win · Produção · Camada Aplicacional | FENIX - Aplicação Binfolio)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.53",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BINFOLIO",
+   "departamento": "FENIX"
+  },
+  {
+   "hostid": "11645",
+   "host": "Ebankit audit system - VM - VS9000494 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.173",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11654",
+   "host": "Servidor de aplicacoes - VM - VS8000320 (Win · Produção · Serviços de Infraestrutura | DTI - Equation Telle...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.116",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SERVIDOR DE APLICACOES",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11655",
+   "host": "Servidor de aplicacoes - VM - VS8000321 (Win · Produção · Serviços de Infraestrutura | DTI - Equation Telle...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.117",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SERVIDOR DE APLICACOES",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11656",
+   "host": "PLAT - Compute - VS9000346 (IBM IB9 - PRD)",
+   "so": "Windows",
+   "templates": [
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.12",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": null,
+   "departamento": null,
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11676",
+   "host": "Abc - VM - VS8000102 (Win · Produção · Camada Aplicacional | DGE)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.62",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ABC",
+   "departamento": "DGE"
+  },
+  {
+   "hostid": "11678",
+   "host": "KMS - VM - VS8000104 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.118",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "KMS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11679",
+   "host": "SAP - VM - VS8000133 (Win · Produção · Camada Aplicacional | DCH)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.43",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SAP",
+   "departamento": "DCH",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11680",
+   "host": "SACC - VM - VS8000134 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.15",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SACC",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11682",
+   "host": "System center - VM - VS8000221 (Win · Produção · Serviços de Infraestrutura | DTI - SCCM)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.112",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SYSTEM CENTER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11687",
+   "host": "SACC - VM - VS8000347 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.146",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SACC",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11688",
+   "host": "Reconciliador - VM - VS8000406 (Win · Produção · Camada Aplicacional | DCO - conta interna)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.19",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "RECONCILIADOR",
+   "departamento": "DCO"
+  },
+  {
+   "hostid": "11690",
+   "host": "Servidor sql - VM - VS8000435 (Win · Produção · Bases de Dados | DTI - Para varias bases de dados pequenas ...)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL Perfmon sem Credencial",
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.23",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SERVIDOR SQL",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11691",
+   "host": "SGC - VM - VS8000476 (Win · Produção · Bases de Dados | DTI - SQL)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.237.52",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SGC",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11696",
+   "host": "SO - Compute - VS8000519 (Support Server)",
+   "so": "Windows",
+   "templates": [
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.237.50",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": null,
+   "departamento": null,
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11698",
+   "host": "Dynatrace - VM - VS8000522 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.119",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "DYNATRACE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11699",
+   "host": "Dynatrace - VM - VS8000523 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.120",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "DYNATRACE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11711",
+   "host": "SWIFT - VM - VS9000314 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.239.11",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11714",
+   "host": "Sms gateway - VM - VS8000718 (Win · Produção · Camada Aplicacional | DTI - INNOVATION MAKERS)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.22",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SMS Gateway",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11715",
+   "host": "APP - Compute - VS8000735 (Whatsaap BPC | Load Balance_Camada_Backoffice (Ebanking))",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.228.132",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "11716",
+   "host": "Hexastep - VM - VS8000739 (Win · Produção · Camada Aplicacional | DTI - PROJECTO SIGC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.33",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "HEXASTEP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11717",
+   "host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.228.133",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "canais digitais",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "11718",
+   "host": "Canal de denuncias - VM - VS8000741 (Win · Produção · Camada Aplicacional | DTI - PWC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.29",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "CANAL DE DENUNCIAS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11720",
+   "host": "Essence - VM - VS8000746 (Win · Produção · Bases de Dados | PMSI - Banktrade)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.23",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ESSENCE",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11731",
+   "host": "Finantech - VM - VS8000759 (Win · Produção · Bases de Dados | SAFIRA - FINANTECH)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.46",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FINANTECH",
+   "departamento": "SAFIRA"
+  },
+  {
+   "hostid": "11733",
+   "host": "APP - Compute - VS8000789 (SACC)",
+   "so": "Windows",
+   "templates": [
+    "Apache by HTTP",
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.45",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SACC",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11735",
+   "host": "SWIFT - VM - VS8000125 (Win · Produção · Camada Aplicacional | DTI - SAA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.4",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11736",
+   "host": "SWIFT - VM - VS8000126 (Win · Produção · Camada Aplicacional | DTI - SWP)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.5",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11737",
+   "host": "SWIFT - VM - VS8000127 (Win · Produção · Segurança | DTI - SWIFT Jump Server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.60",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11738",
+   "host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.8",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11836",
+   "host": "ACM - VM - VS8000768 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.45",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ACM",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11837",
+   "host": "ACM - VM - VS8000769 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.46",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ACM",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11850",
+   "host": "SIRIS - VM - VS8000837 (Win · Produção · Camada Aplicacional | DTI - PWC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.51",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIRIS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11851",
+   "host": "SIRIS - VM - VS8000838 (Win · Produção · Bases de Dados | DTI - PWC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.52",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIRIS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11852",
+   "host": "SIRIS - VM - VS8000839 (Win · Produção · Camada Aplicacional | DTI - PWC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.53",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIRIS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11853",
+   "host": "SIRIS - VM - VS8000840 (Win · Produção · Bases de Dados | DTI - PWC)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.54",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIRIS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11854",
+   "host": "Sigcap - VM - VS8000841 (Win · Produção · Bases de Dados | DTI - DB)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.56",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11855",
+   "host": "ACM - VM - VS8000800 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.60",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "ACM",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11856",
+   "host": "ACM - VM - VS8000801 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.61",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ACM",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11857",
+   "host": "Supportserver - VM - VS8000802 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.62",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SUPPORT SERVER",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11858",
+   "host": "Acmrelational - VM - VS8000803 (Win · Produção · Bases de Dados | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.63",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ACMRELATIONAL",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11859",
+   "host": "Sigcap - VM - VS8000842 (Win · Produção · Camada Aplicacional | DTI - WEB CAPTURE)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.57",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11860",
+   "host": "Sigcap - VM - VS8000843 (Win · Produção · Camada Aplicacional | DTI - WEB CAPTURE)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.58",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11861",
+   "host": "Sigcap - VM - VS8000844 (Win · Produção · Camada Aplicacional | DTI - WEB CAPTURE)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.59",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11862",
+   "host": "Sigcap - VM - VS8000845 (Win · Produção · Camada Aplicacional | DTI - WebRetrieve)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.94",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11863",
+   "host": "Sigcap - VM - VS8000846 (Win · Produção · Camada Aplicacional | DTI - WebRetrieve)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.95",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11864",
+   "host": "Sigcap - VM - VS8000847 (Win · Produção · Camada Aplicacional | DTI - WebRetrieve)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.96",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11865",
+   "host": "Sigcap - VM - VS8000848 (Win · Produção · Bases de Dados | DTI - Migration Servers)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.97",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIGCAP",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11866",
+   "host": "ToBe - VM - VS8000849 (Win · Produção · Bases de Dados | PMSI - Portal de operações File server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.98",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11867",
+   "host": "ToBe - VM - VS8000850 (Win · Produção · Bases de Dados | PMSI - Portal de operações BD)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.99",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11868",
+   "host": "ToBe - VM - VS8000851 (Win · Produção · Bases de Dados | PMSI - Sistema de Compensação BD)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.101",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11869",
+   "host": "ToBe - VM - VS8000852 (Win · Produção · Bases de Dados | PMSI - Portal de Operações Aplicaional)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.100",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11870",
+   "host": "Fircosoftmq - VM - VS8000853 (Win · Produção · Bases de Dados | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.103",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FircosoftMQ",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11871",
+   "host": "SACC - VM - VS8000867 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.104",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SACC",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11872",
+   "host": "Exchange - VM - VS8000390 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.36",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EXCHANGE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11873",
+   "host": "Exchange - VM - VS8000391 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.37",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EXCHANGE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11874",
+   "host": "Exchange - VM - VS8000392 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.96",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EXCHANGE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11875",
+   "host": "Exchange - VM - VS8000393 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.97",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EXCHANGE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11876",
+   "host": "SO - Compute - VS8000810 (Betbox)",
+   "so": "Linux",
+   "templates": [
+    "Linux by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.41",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "NETBOX",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11877",
+   "host": "sv9000204 (Vcenter PRD)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.101.9",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "VMWARE VCENTER",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11900",
+   "host": "sv9000206 (vCenter PowerFlex)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.84",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "VMware vCenter Server Appliance",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11912",
+   "host": "tacacsubuntu",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.199",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "tacacs",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11914",
+   "host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.223",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11915",
+   "host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.185",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11916",
+   "host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.109",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "EMC Networker vProxy",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11917",
+   "host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.110",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11918",
+   "host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.111",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11919",
+   "host": "GUEST-OS - VS8000122 (vProxy PowerFlex)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.193",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": null
+  },
+  {
+   "hostid": "11920",
+   "host": "GUEST-OS - VS8000100 (vProxy PowerFlex)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.240",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": null
+  },
+  {
+   "hostid": "11921",
+   "host": "GUEST-OS - VS8000120 (vProxy PowerFlex)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.161",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": null
+  },
+  {
+   "hostid": "11922",
+   "host": "GUEST-OS - VS8000121 (vProxy PowerFlex)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.166",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EMC Networker vProxy",
+   "departamento": null
+  },
+  {
+   "hostid": "11923",
+   "host": "APP - Compute - VS8000138 (Swift - Token Server DR)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.12",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": null,
+   "departamento": null,
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11925",
+   "host": "SWIFT - VM - VS8000324 (Win · Produção · Camada Aplicacional | DTI - FPM - Fusion Payment Manager - Hist´or...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.7",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11927",
+   "host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "so": "Windows",
+   "templates": [
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.55",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SGC",
+   "departamento": "DTM",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11928",
+   "host": "Personalizadoras de cartoes - VM - VS8000600 (Win · Produção · Camada Aplicacional | DSE)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.163",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "PERSONALIZADORAS DE CARTOES",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "11929",
+   "host": "Personalizadoras de cartoes - VM - VS8000601 (Win · Produção · Bases de Dados | DSE)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL Perfmon sem Credencial",
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.164",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "PERSONALIZADORAS DE CARTOES",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "11938",
+   "host": "Ebankit - VM - VS8000742 (Win · Produção · Interface e Web | DSE - Load balance do Front End)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.228.196",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": "DSE"
+  },
+  {
+   "hostid": "11944",
+   "host": "Finantech - VM - VS8000767 (Win · Produção · Bases de Dados | SAFIRA - FINANTECH)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.43",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FINANTECH",
+   "departamento": "SAFIRA"
+  },
+  {
+   "hostid": "11948",
+   "host": "Servidor de base de dados - VM - VS8000790 (Win · Produção · Bases de Dados | FENIX)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL Perfmon sem Credencial",
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.56",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SERVIDOR DE BASE DE DADOS",
+   "departamento": "FENIX"
+  },
+  {
+   "hostid": "11949",
+   "host": "Primavera - VM - VS8000791 (Win · Produção · Camada Aplicacional | FENIX)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.57",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "PRIMAVERA",
+   "departamento": "FENIX"
+  },
+  {
+   "hostid": "11957",
+   "host": "SWIFT - VM - VS9000316 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.162",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11958",
+   "host": "Bank trade - VM - VS9000328 (Win · Produção · Camada Aplicacional | DOP - Projecto Bank Trade)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.221",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BANK TRADE",
+   "departamento": "DOP"
+  },
+  {
+   "hostid": "11959",
+   "host": "Banktrade - VM - VS8000820 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.80",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BANK TRADE",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11960",
+   "host": "Banktrade - VM - VS8000821 (Win · Produção · Bases de Dados | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.81",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "BANK TRADE",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11961",
+   "host": "Creditquest - VM - VS8000822 (Win · Produção · Camada Aplicacional | PMSI - Finastra)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.82",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "CreditQuest",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11962",
+   "host": "Creditquest - VM - VS8000823 (Win · Produção · Bases de Dados | PMSI - Finastra)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.83",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "CreditQuest",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11963",
+   "host": "Fircosoftutilities - VM - VS8000824 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.84",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FircosoftUtilities",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11964",
+   "host": "Fircosoftutilities - VM - VS8000825 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.85",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "FircosoftUtilities",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11965",
+   "host": "Digiwave - VM - VS8000826 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.86",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Digiwave",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11966",
+   "host": "Digiwave - VM - VS8000827 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.87",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "Digiwave",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11967",
+   "host": "Digiwave - VM - VS8000828 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.88",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Digiwave",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11968",
+   "host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.89",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "FircosoftMQ",
+   "departamento": "PMSI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11969",
+   "host": "Creditquest - VM - VS8000831 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.91",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "CreditQuest",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11970",
+   "host": "Digiwave - VM - VS8000832 (Linux · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.92",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Digiwave",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11971",
+   "host": "APP - Compute - VS8000855 (Sigcap Load Balancer)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.18",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Sigcap",
+   "departamento": null,
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11972",
+   "host": "File server - VM - VS9000106 (Win · Produção · Interface e Web | DTI - Novo)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.233",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "FILE SERVER",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11973",
+   "host": "APP - Compute - VS8000294 (BFTeller)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.84",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "bfteller",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11980",
+   "host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.76",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "COMPUTE NODES",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11981",
+   "host": "Integrador - VM - VS8000712 (Linux · Produção · Camada Aplicacional | PMSI - Servidor Apache ENFINT)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "Linux by Zabbix agent",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.24",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "11982",
+   "host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.12",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "MASTER NODE",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11984",
+   "host": "Elastic search - VM - VS8000779 (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.177",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11986",
+   "host": "Dns externo - VM - NS3 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC DNS Check",
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.5.0.128",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "DNS EXTERNO",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11987",
+   "host": "Kudipala - VM - VS8000893 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.225.130",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "KudiPala",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "11988",
+   "host": "GLPI - VM - VS8000788 (Linux · Produção · Camada Aplicacional | DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.78",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "GLPI",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "11994",
+   "host": "SWIFT - VM - VS8000141 (Win · Produção · Camada Aplicacional | DTI - SWP)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.11",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11995",
+   "host": "SWIFT - VM - VS8000140 (Win · Produção · Camada Aplicacional | DTI - SAA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.10",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "11996",
+   "host": "SWIFT - VM - VS8000142 (Win · Produção · Camada Aplicacional | DTI - Jump Server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.13.100",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "12000",
+   "host": "Cezanne - VM - VS9000235 (Win · Produção · Camada Aplicacional | DCH - Gestão de Pessoal)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.183",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "CEZANNE",
+   "departamento": "DCH",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14082",
+   "host": "Cacti - VM - Cacti (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::250:56ff:fea3:35c7",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "CACTI",
+   "departamento": "DTI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14084",
+   "host": "Contif - VM - VS9000359 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.226",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "CONTIF",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14085",
+   "host": "Conversor vms - VM - VS9000706 (Win · Produção · Serviços de Infraestrutura | DTI - PC para Converter Servi...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.228",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Conversor VMs",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14086",
+   "host": "Darktrace - VM - VS8000525 (Linux · Produção · Serviços de Infraestrutura | DTI - sensor novo)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.90",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "DARKTRACE",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14088",
+   "host": "Dhcp server - VM - VS8000927 (Linux · Produção · Camada Aplicacional | Web Application Stork Server)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.135",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Stork Server (DHCP)",
+   "departamento": "Web Application Stork Server",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14089",
+   "host": "Dhcp server - VM - VS8000928 (Linux · Produção · Bases de Dados | Data Base Postgresql, Mysql)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.136",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Stork DB (DHCP)",
+   "departamento": "Data Base Postgresql, Mysql",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14090",
+   "host": "Dhcp server - VM - VS8000929 (Linux · Produção · Camada Aplicacional | Agent Stork)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.137",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Stork Agent (DHCP)",
+   "departamento": "Agent Stork",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14091",
+   "host": "Dhcp server - VM - VS8000930 (Linux · Produção · Serviços de Infraestrutura | Kea DHCP Node)",
+   "so": "Linux",
+   "templates": [
+    "BPC Kea HA Check",
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.138",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "DHCP Server",
+   "departamento": "Kea DHCP Node",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14092",
+   "host": "Dhcp server - VM - VS8000931 (Linux · Produção · Serviços de Infraestrutura | Kea DHCP NodeLPI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.139",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "DHCP Server",
+   "departamento": "Kea DHCP NodeLPI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14099",
+   "host": "Dns externo - VM - NS4 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC DNS Check",
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.5.0.129",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "DNS EXTERNO",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14101",
+   "host": "Data lake - VM - VS8000992 (Win · Produção · Bases de Dados | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.115",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "Data Lake",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14102",
+   "host": "Digiwave - VM - VS8000835 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::8da1:91da:f0e1:5732",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Digiwave",
+   "departamento": "PMSI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14103",
+   "host": "Digiwave - VM - VS8000836 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::8da1:91da:f0e1:5732",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Digiwave",
+   "departamento": "PMSI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14105",
+   "host": "Eba - VM - SV9000401 (Win · Produção · Bases de Dados | DTI - Aplicacão de Caixa das Agencias)",
+   "so": "Windows",
+   "templates": [
+    "BPC DB Engine Process Check",
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.162",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "EBA",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14107",
+   "host": "Ebankit - VM - VS8000731 (Win · Produção · Camada Aplicacional | Middleware)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.11.15",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "ebankit",
+   "departamento": null
+  },
+  {
+   "hostid": "14109",
+   "host": "Elastic search - VM - VS8000135 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.43",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14110",
+   "host": "Elastic search - VM - VS8000136 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.44",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14111",
+   "host": "Elastic search - VM - VS8000137 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.45",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14112",
+   "host": "Elastic search - VM - VS8000785 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.88",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14120",
+   "host": "Exchange - VM - VS8000220 (Win · Produção · Serviços de Infraestrutura | DTI - ARR (Load balance/reverse pr...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "169.254.130.9",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "EXCHANGE",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14121",
+   "host": "Exchange - VM - VS8000394 (Win · Produção · Camada Aplicacional | DTI - Edge Server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "192.168.1.71",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "EXCHANGE",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14122",
+   "host": "Elasticsearch - VM - VS8000772 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.170",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "KIBANA",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14123",
+   "host": "Elasticsearch - VM - VS8000773 (Linux · Produção · Serviços de Infraestrutura | DTI - Logstash)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.171",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14124",
+   "host": "Elasticsearch - VM - VS8000774 (Linux · Produção · Serviços de Infraestrutura | DTI - FleetServer)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.172",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14125",
+   "host": "Elasticsearch - VM - VS8000775 (Linux · Produção · Serviços de Infraestrutura | DTI - MasterDataNodes)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.173",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14126",
+   "host": "Elasticsearch - VM - VS8000776 (Linux · Produção · Serviços de Infraestrutura | KIBANA - DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.175",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "KIBANA",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14127",
+   "host": "Elasticsearch - VM - VS8000777 (Linux · Produção · Serviços de Infraestrutura | DTI - KIBANA)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.176",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Elasticsearch",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14129",
+   "host": "Fileserver_sharepoint_migration - VM - VS8000913 (Win · Produção · Camada Aplicacional | DSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.100",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "Fileserver_SharePoint_Migration",
+   "departamento": "DSI"
+  },
+  {
+   "hostid": "14130",
+   "host": "Fircosoftapp - VM - VS8000833 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::8da1:91da:f0e1:5732",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "FircosoftApp",
+   "departamento": "PMSI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14131",
+   "host": "Fircosoftapp - VM - VS8000834 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::8da1:91da:f0e1:5732",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "FircosoftApp",
+   "departamento": "PMSI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14132",
+   "host": "Fircosoftmq - VM - VS8000830 (Win · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::8da1:91da:f0e1:5732",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "FircosoftMQ",
+   "departamento": "PMSI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14134",
+   "host": "Graylog - VM - Graylog (Win · Produção · Camada Aplicacional | DSI - Aplicação de Logs da Rede)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::250:56ff:fe8d:53db",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Graylog",
+   "departamento": "DSI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14136",
+   "host": "Graylog - VM - graylog-vm01 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.148",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Graylog",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14137",
+   "host": "Graylog - VM - graylog-vm02 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.134",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Graylog",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14138",
+   "host": "Hermes - VM - VS9000268 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "172.16.8.135",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "HERMES",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14139",
+   "host": "IAM - VM - SRV-JUMP01 (Win · Produção · Serviços de Infraestrutura | DTI - ADDS DNS DHCP)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.235.4",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "IAM",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14140",
+   "host": "IAM - VM - SRV-JUMP02 (Win · Produção · Serviços de Infraestrutura | DTI - ADDS DNS DHCP)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.235.7",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "IAM",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14141",
+   "host": "Imperva - VM - VS8000485 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.164",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "IMPERVA",
+   "departamento": "DSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14142",
+   "host": "Imperva - VM - VS8000486 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.163",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "IMPERVA",
+   "departamento": "DSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14143",
+   "host": "Imperva - VM - VS8000487 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.162",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "IMPERVA",
+   "departamento": "DSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14144",
+   "host": "Integrador/Masternode - VM - VS8000804 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.64",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14145",
+   "host": "Integrador/CEPH - VM - VS8000805 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.65",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14146",
+   "host": "Integrador/Apachenifi - VM - VS8000812 (Linux · Produção · Bases de Dados | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.72",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14147",
+   "host": "Integrador/Elasticsearch - VM - VS8000814 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.74",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14148",
+   "host": "Integrador/Elasticsearch - VM - VS8000815 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.75",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14149",
+   "host": "Integrador/Bastionnode - VM - VS8000816 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.76",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "14150",
+   "host": "Integrador/Gitlab - VM - VS8000817 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.77",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14151",
+   "host": "Integrador/Computenodes - VM - VS8000818 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.78",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14152",
+   "host": "Integrador/CEPH - VM - VS8000866 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.66",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14153",
+   "host": "Integrador/Apachekafka - VM - VS8000868 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.67",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14154",
+   "host": "Integrador/Apachenifi - VM - VS8000869 (Linux · Produção · Bases de Dados | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.70",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14155",
+   "host": "Integrador/Apachekafka - VM - VS8000870 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.68",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14156",
+   "host": "Integrador/Elasticsearch - VM - VS8000978 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.73",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INTEGRADOR",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14157",
+   "host": "Ise tst - VM - ISE-TST (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.140",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "ISE TST",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14158",
+   "host": "Jump server - VM - VD5000AJ012 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.10.4",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14159",
+   "host": "Jump server - VM - VD5000AVG0014 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "192.168.56.1",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14160",
+   "host": "Jump server - VM - VD5000JM003 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.15",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14161",
+   "host": "Jump server - VM - VD5000PD001 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.25",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14162",
+   "host": "Jump server - VM - VD5000UCALL005 (Win · Produção · Segurança | DTI - António Diamantino)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.134",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14163",
+   "host": "Jump server - VM - VS8000528 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.5",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14164",
+   "host": "Jump Server - VM - VD5000JUMP04 (Win · Produção · Segurança | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.235.3",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14165",
+   "host": "Master node - VM - VS8000714 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.25",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "MASTER NODE",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14167",
+   "host": "Microcredito - VM - VS8000813 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.161",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SIC",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14170",
+   "host": "PowerFlex - VM - pfm9000650 (Linux · Produção · Virtualização | DTI - Management VM)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.76",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "MVM #1",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14171",
+   "host": "PowerFlex - VM - pfm9000651 (Linux · Produção · Virtualização | DTI - Management VM)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.77",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "MVM #2",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14172",
+   "host": "PowerFlex - VM - pfm9000652 (Linux · Produção · Virtualização | DTI - Management VM)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.78",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "MVM #3",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14175",
+   "host": "Netmarket - VM - VS8000904 (Win · Produção · Camada Aplicacional | PMSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.88",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "NETMARKET",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "14176",
+   "host": "NGINX - VM - VS8000734 (Linux · Produção · Interface e Web | PMSI - Load Balance HW SIZING MSA PMSI PRD)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.26",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "NGINX",
+   "departamento": "PMSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14177",
+   "host": "Netpicker server - VM - VS8000933 (Linux · Produção · Camada Aplicacional | Automação, configuração de rede)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.146",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Netpicker Server",
+   "departamento": "Automação, configuração de rede",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14179",
+   "host": "Observer - VM - Observer_PRD (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.101.40",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OBSERVER",
+   "departamento": "DSI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14180",
+   "host": "OCP - VM - ibm-cp-infra-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.132",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14181",
+   "host": "OCP - VM - ibm-cp-infra-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.133",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14182",
+   "host": "OCP - VM - ibm-cp-infra-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Infra)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.134",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14183",
+   "host": "OCP - VM - ibm-cp-master-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.129",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14184",
+   "host": "OCP - VM - ibm-cp-master-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.130",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14185",
+   "host": "OCP - VM - ibm-cp-master-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Master)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.131",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14186",
+   "host": "OCP - VM - ibm-cp-storage-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.131.2.2",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14187",
+   "host": "OCP - VM - ibm-cp-storage-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.128.6.2",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14188",
+   "host": "OCP - VM - ibm-cp-storage-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Storage)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.130.2.2",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14189",
+   "host": "OCP - VM - ibm-cp-worker-01 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.128.4.2",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14190",
+   "host": "OCP - VM - ibm-cp-worker-02 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.129.4.2",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14191",
+   "host": "OCP - VM - ibm-cp-worker-03 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.130.4.2",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14194",
+   "host": "OCP - VM - ibm-cp-worker-06 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.130.6.2",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14195",
+   "host": "OCP - VM - ibm-cp-worker-07 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.147",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14196",
+   "host": "OCP - VM - ibm-cp-worker-08 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.148",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14197",
+   "host": "OCP - VM - ibm-cp-worker-09 (Linux · Produção · Plataforma de Contentores | DTI - IBM CP Worker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.226.149",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "OCP",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14200",
+   "host": "PHPIPAM - VM - PHPIPAM (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão IPs)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.77",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "PHPIPAM",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14201",
+   "host": "Portnox - VM - VS8000518 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.56",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "PORTNOX",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14202",
+   "host": "Portnox - VM - VS8000924 (Win · Produção · Serviços de Infraestrutura | DSI - Aplicação de segurança)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.42",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "PORTNOX",
+   "departamento": "DSI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14203",
+   "host": "Portnox - VM - VS8000925 (Win · Produção · Serviços de Infraestrutura | DSI - Aplicação de segurança)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.41",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "PORTNOX",
+   "departamento": "DSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14204",
+   "host": "PowerFlex - VM - JumpServer (Win · Produção · Segurança | DTI - Jump Server)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.74",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "POWERFLEX",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14205",
+   "host": "PowerFlex - VM - pfmp-installer (Linux · Produção · Virtualização | DTI - Installer)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.75",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "POWERFLEX",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14210",
+   "host": "Psi - VM - LTTI44_CLONE (Win · Produção · Camada Aplicacional | DTI - Processamento de Salário para contas ...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.72",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "PSI",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14211",
+   "host": "SAS - VM - VS8000897 (Win · Produção · Bases de Dados | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.97",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SAS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14212",
+   "host": "SAS - VM - VS8000898 (Win · Produção · Bases de Dados | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.204.98",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SAS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14213",
+   "host": "SAS - VM - VS8000994 (Win · Produção · Bases de Dados | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.114",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "SAS",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14214",
+   "host": "Sdd - VM - VS8000222 (Win · Produção · Camada Aplicacional | DTI - Sistema de debito direito)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.4.0.131",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SDD",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14215",
+   "host": "Secureshere gateway cluster - VM - VS8000478 (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.160",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SECURESPHERE GATEWAY CLUSTER",
+   "departamento": "DSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14216",
+   "host": "Securesphere - VM - VS8000481 (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.161",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SECURESPHERE",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14242",
+   "host": "Servidor ftp - VM - VS9000711 (Win · Produção · Serviços de Infraestrutura | DTI - SFTP)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "fe80::3064:5a6b:62fa:7070",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SERVIDOR FTP",
+   "departamento": "DTI",
+   "ping": null,
+   "tcp10050": null
+  },
+  {
+   "hostid": "14243",
+   "host": "Sftpcall manager - VM - VS8000ubuntu (Linux · Produção · Serviços de Infraestrutura | DTI - Backup)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.250",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SFTPCall Manager",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14246",
+   "host": "PowerFlex - VM - sv9000666-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.161",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SVM",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14247",
+   "host": "PowerFlex - VM - sv9000667-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.162",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SVM",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14248",
+   "host": "PowerFlex - VM - sv9000668-svm.bpc.intranet (Linux · Produção · Virtualização | DTI - Storage VM)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.163",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SVM",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14251",
+   "host": "SWIFT - VM - VS8000314 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.239.14",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "14252",
+   "host": "SWIFT - VM - VS8000371 (Win · Produção · Camada Aplicacional | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.54",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "14253",
+   "host": "SWIFT - VM - VS9000239 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.239.13",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14254",
+   "host": "SWIFT - VM - VS9000242 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.236",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14258",
+   "host": "Talentia - VM - VS8000343 (Win · Produção · Camada Aplicacional | DCH - Recrutamento)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.29",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TALENTIA",
+   "departamento": "DCH"
+  },
+  {
+   "hostid": "14259",
+   "host": "Tenable - VM - VS8000995 (Linux · Produção · Segurança | DTI - Nessus)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.110",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "TENABLE",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14260",
+   "host": "Tenable - VM - VS8000996 (Linux · Produção · Segurança | DTI - Nessus)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.111",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "TENABLE",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14261",
+   "host": "Tenable - VM - VS8000997 (Linux · Produção · Segurança | DTI - Nessus)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.112",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "TENABLE",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14262",
+   "host": "Tenable - VM - VS8000998 (Linux · Produção · Segurança | DTI - Nessus Core)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.113",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "TENABLE",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14263",
+   "host": "ToBe - VM - VS8000919 (Win · Produção · Bases de Dados | DTI)",
+   "so": "Windows",
+   "templates": [
+    "BPC MSSQL by ODBC",
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.119",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "TOBE",
+   "departamento": "DTI"
+  },
+  {
+   "hostid": "14264",
+   "host": "Unitel money - VM - VS8000306 (Linux · Produção · Camada Aplicacional | DTI - SFTP)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.86",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "UNITEL MONEY",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14267",
+   "host": "VMware - VM - sv9000206-Passive (Linux · Produção · Virtualização | DTI - vCenter Appliance)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.130",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "VMware vCenter Server Appliance",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14268",
+   "host": "VMware - VM - sv9000206-Witness (Linux · Produção · Virtualização | DTI - vCenter Appliance)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.232.131",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "VMware vCenter Server Appliance",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14269",
+   "host": "VMware - VM - vs9001207 (Linux · Produção · Virtualização | DTI - vCenter Appliance)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.101.20",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "VMware vCenter Server Appliance",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14270",
+   "host": "Veeam - VM - VeeamSA (Linux · Produção · Serviços de Infraestrutura | DTI - Backup Appliance)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.56",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Veeam Software Appliance",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14271",
+   "host": "WAF - VM - VS8000257 (Linux · Produção · Serviços de Infraestrutura | DTI - Firewall)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.126.23",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "WAF",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14272",
+   "host": "WSUS - VM - VS8000228 (Win · Produção · Serviços de Infraestrutura | DSI)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.137",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "WSUS",
+   "departamento": "DSI"
+  },
+  {
+   "hostid": "14274",
+   "host": "XoruX - VM - lpar2rrd (Linux · Produção · Serviços de Infraestrutura | DTI - Monitor IBM)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.101.15",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "XORUX",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14275",
+   "host": "Zabbix - VM - VS8000932 (Linux · Produção · Serviços de Infraestrutura | DTI - Networker)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.140",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "Zabbix",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": true
+  },
+  {
+   "hostid": "14277",
+   "host": "Coletas_auditoria_rede - VM - VS8000993 (Linux · Produção · Camada Aplicacional | DTI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.233.226",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "coletas_auditoria_rede",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14279",
+   "host": "Excel report - VM - VS8000806_Excel Report (Win · Produção · Camada Aplicacional | DCO - Relatórios contabi...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.16",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EXCEL REPORT",
+   "departamento": "DCO"
+  },
+  {
+   "hostid": "14280",
+   "host": "Excel report - VM - VS8000808_Excel Report (Win · Produção · Camada Aplicacional | PMSI - Relatórios contab...)",
+   "so": "Windows",
+   "templates": [
+    "BPC Ping",
+    "BPC Top Processos",
+    "VMware Guest",
+    "Windows by Zabbix agent active"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.203.55",
+   "saude_agente": "ok(<=1h)",
+   "gaps": [],
+   "servico": "EXCEL REPORT",
+   "departamento": "PMSI"
+  },
+  {
+   "hostid": "14281",
+   "host": "Insightvm console - VM - INSIGHTVM CONSOLE (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.51",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-template-agente-Linux",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "INSIGHTVM CONSOLE",
+   "departamento": "DSI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14285",
+   "host": "VMware - VM - VS8000114_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.241",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "vProxy",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14286",
+   "host": "VMware - VM - VS8000116_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.238.242",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "vProxy",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14290",
+   "host": "VMware - VM - VS8000145_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "so": "Linux",
+   "templates": [
+    "BPC Ping",
+    "Linux by Zabbix agent active",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.236.230",
+   "saude_agente": "sem-dado",
+   "gaps": [
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "vProxy",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14734",
+   "host": "JUMP SERVER - VM - VD5000IA007",
+   "so": null,
+   "templates": [
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "VD5000IA007.bpc.intranet",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-tag-so",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14736",
+   "host": "JUMP SERVER - VM - VD5000NP010",
+   "so": null,
+   "templates": [
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "VD5000NP010.bpc.intranet",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-tag-so",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "JUMP SERVER",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14741",
+   "host": "SWIFT - VM - VS9000313",
+   "so": null,
+   "templates": [
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "VS9000313.bpc.intranet",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-tag-so",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14743",
+   "host": "CONSOLA IBM HMC - VM - vHMC9",
+   "so": null,
+   "templates": [
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "vHMC9.bpc.intranet",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-tag-so",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "CONSOLA IBM HMC",
+   "departamento": "DTI",
+   "ping": false,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14748",
+   "host": "SWIFT - VM - VS9000320",
+   "so": null,
+   "templates": [
+    "BPC Ping",
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "10.10.237.70",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-tag-so",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "SWIFT",
+   "departamento": "DTI",
+   "ping": true,
+   "tcp10050": false
+  },
+  {
+   "hostid": "14750",
+   "host": "NGINX - VM - VS8000744",
+   "so": null,
+   "templates": [
+    "VMware Guest"
+   ],
+   "interface_tipo": "1",
+   "interface_endereco": "VS8000744.bpc.intranet",
+   "saude_agente": "sem-item-agent.ping",
+   "gaps": [
+    "sem-tag-so",
+    "agente-declarado-mas-sem-dados"
+   ],
+   "servico": "NGINX",
+   "departamento": "PMSI",
+   "ping": false,
+   "tcp10050": false
+  }
+ ]
+}

@@ -1,0 +1,2257 @@
+{
+ "executado_em": "20260717-080200",
+ "dry_run": true,
+ "acoes": [
+  {
+   "seccao": 7,
+   "hostid": "10084",
+   "host": "PLAT - Mgmt - Zabbix server",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "10562",
+   "host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "tags_adicionadas": {
+    "servico": "TALENTIA",
+    "departamento": "DCH",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "10599",
+   "host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "10600",
+   "host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "tags_adicionadas": {
+    "servico": "KMS",
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11623",
+   "host": "Ebankit - VM - VS8000728 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11624",
+   "host": "Ebankit - VM - VS8000725 (Win · Produção · Camada Aplicacional | Front End)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11625",
+   "host": "Ebankit - VM - VS8000726 (Win · Produção · Camada Aplicacional | Back Office)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11626",
+   "host": "Ebankit - VM - VS8000727 (Win · Produção · Camada Aplicacional | Back Office)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11627",
+   "host": "Ebankit - VM - VS8000724 (Win · Produção · Camada Aplicacional | Front End)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11628",
+   "host": "Ebankit - VM - VS8000729 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11629",
+   "host": "Ebankit - VM - VS8000737 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11630",
+   "host": "Ebankit - VM - VS8000730 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11631",
+   "host": "Ebankit - VM - VS8000738 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11645",
+   "host": "Ebankit audit system - VM - VS9000494 (Win · Produção · Camada Aplicacional | DTI)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11715",
+   "host": "APP - Compute - VS8000735 (Whatsaap BPC | Load Balance_Camada_Backoffice (Ebanking))",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11717",
+   "host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11726",
+   "host": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11733",
+   "host": "APP - Compute - VS8000789 (SACC)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11876",
+   "host": "SO - Compute - VS8000810 (Betbox)",
+   "tags_adicionadas": {
+    "servico": "NETBOX",
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11877",
+   "host": "sv9000204 (Vcenter PRD)",
+   "tags_adicionadas": {
+    "servico": "VMWARE VCENTER",
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11912",
+   "host": "tacacsubuntu",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11914",
+   "host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "Cluster Swift"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11915",
+   "host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11916",
+   "host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11917",
+   "host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11918",
+   "host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11919",
+   "host": "GUEST-OS - VS8000122 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-MGMT"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11920",
+   "host": "GUEST-OS - VS8000100 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11921",
+   "host": "GUEST-OS - VS8000120 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11922",
+   "host": "GUEST-OS - VS8000121 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11923",
+   "host": "APP - Compute - VS8000138 (Swift - Token Server DR)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "Cluster-Swift"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11927",
+   "host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "tags_adicionadas": {
+    "servico": "SGC",
+    "departamento": "DTM",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11935",
+   "host": "Ebankit - VM - VS8000720 (Win · QA · Camada Aplicacional | DSE)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11936",
+   "host": "Ebankit - VM - VS8000721 (Win · QA · Camada Aplicacional | DSE - SERVIÇOS)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11937",
+   "host": "Ebankit - VM - VS8000722 (Win · QA · Bases de Dados | DSE)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11938",
+   "host": "Ebankit - VM - VS8000742 (Win · Produção · Interface e Web | DSE - Load balance do Front End)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11956",
+   "host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "tags_adicionadas": {
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11968",
+   "host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "tags_adicionadas": {
+    "servico": "FircosoftMQ",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11971",
+   "host": "APP - Compute - VS8000855 (Sigcap Load Balancer)",
+   "tags_adicionadas": {
+    "servico": "Sigcap",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11973",
+   "host": "APP - Compute - VS8000294 (BFTeller)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11974",
+   "host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "tags_adicionadas": {
+    "servico": "MASTER NODE",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11975",
+   "host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "tags_adicionadas": {
+    "servico": "NGINX",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11976",
+   "host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "tags_adicionadas": {
+    "servico": "CEPH",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11977",
+   "host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11978",
+   "host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11979",
+   "host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11980",
+   "host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11982",
+   "host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "tags_adicionadas": {
+    "servico": "MASTER NODE",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "14107",
+   "host": "Ebankit - VM - VS8000731 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 8,
+   "grupo": "BPC/DOMINIO/03 Servidores Virtuais",
+   "hosts_adicionados": 57,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/DOMINIO/05 Seguranca",
+   "criado": false,
+   "hosts_adicionados": 2,
+   "ja_estavam": 3
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/DOMINIO/07 APIs e Servicos de Negocio",
+   "criado": false,
+   "hosts_adicionados": 51,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/DOMINIO/10 Servicos de Suporte",
+   "criado": false,
+   "hosts_adicionados": 25,
+   "ja_estavam": 65
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/ACM",
+   "criado": true,
+   "hosts_adicionados": 17,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/APLICACOES INTERNAS",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/CREDITQUEST",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/DIGIWAVE",
+   "criado": true,
+   "hosts_adicionados": 16,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/EBANKIT",
+   "criado": true,
+   "hosts_adicionados": 16,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/ELASTIC SEARCH",
+   "criado": true,
+   "hosts_adicionados": 11,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/ESSENCE",
+   "criado": true,
+   "hosts_adicionados": 9,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/EXCEL REPORT",
+   "criado": true,
+   "hosts_adicionados": 5,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/FINANTECH",
+   "criado": true,
+   "hosts_adicionados": 8,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/FIRCOSOFT",
+   "criado": true,
+   "hosts_adicionados": 6,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/OPTICS",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/PRIMAVERA",
+   "criado": true,
+   "hosts_adicionados": 5,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SACC",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SDVM",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SGC",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SIGCAP",
+   "criado": true,
+   "hosts_adicionados": 16,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SIRIS",
+   "criado": true,
+   "hosts_adicionados": 8,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SWIFT",
+   "criado": true,
+   "hosts_adicionados": 17,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/TALENTIA",
+   "criado": true,
+   "hosts_adicionados": 6,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/TOBE",
+   "criado": true,
+   "hosts_adicionados": 11,
+   "ja_estavam": 0
+  }
+ ],
+ "erros": [],
+ "verificacao": {
+  "falhas": [
+   {
+    "hostid": "11976",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11976",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11976",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11975",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11975",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11975",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "10600",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "10600",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "10600",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11978",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11978",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11978",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11979",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11979",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11979",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11974",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11974",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11974",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11877",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11877",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11877",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "10562",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "10562",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "10562",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11977",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11977",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11977",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11982",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11982",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11982",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11980",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11980",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11980",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11971",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11971",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11876",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11876",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11876",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11927",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11927",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11927",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11968",
+    "check": "tag servico em falta"
+   },
+   {
+    "hostid": "11968",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11968",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11914",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11914",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11726",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11726",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "10599",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "10599",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11912",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11912",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11915",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11915",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11935",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11935",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11937",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11937",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11917",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11917",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11916",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11916",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11918",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11918",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11956",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11956",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11936",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11936",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11715",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11715",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11629",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11629",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11733",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11733",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "10084",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "10084",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11631",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11631",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11973",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11973",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11717",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11717",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11938",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11938",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11645",
+    "check": "tag departamento em falta"
+   },
+   {
+    "hostid": "11645",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11923",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11919",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11626",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11920",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "14107",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11922",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11623",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11624",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11628",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11630",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11627",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11921",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11625",
+    "check": "tag vcenter_cluster em falta"
+   },
+   {
+    "hostid": "11914",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11996",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10627",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10619",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11912",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14290",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14161",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11915",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14078",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14164",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14236",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14163",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10547",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11737",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14179",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11917",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11877",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11916",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11918",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11956",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10548",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10537",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14218",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14270",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14242",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14162",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10630",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11900",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11919",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14243",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14129",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14204",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11972",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10587",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10605",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14158",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14160",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11920",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11922",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14275",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10539",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14149",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14286",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10084",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14285",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14143",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10540",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14136",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14141",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14159",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "10536",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14137",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14217",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14142",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11682",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "11921",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14282",
+    "check": "grupo 03 em falta"
+   },
+   {
+    "hostid": "14216",
+    "check": "grupo BPC/DOMINIO/05 Seguranca em falta"
+   },
+   {
+    "hostid": "14271",
+    "check": "grupo BPC/DOMINIO/05 Seguranca em falta"
+   },
+   {
+    "hostid": "14188",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14191",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14182",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14186",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14194",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14192",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14189",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14193",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14181",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14183",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14185",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14196",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14180",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14184",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14190",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14195",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14187",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14197",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14232",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14237",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14198",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14231",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14199",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14230",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14238",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14229",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14239",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11978",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11979",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11977",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11980",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11657",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11707",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "10645",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "10644",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "10610",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14147",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14148",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14156",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11983",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "11981",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14155",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14153",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14145",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14152",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14154",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14146",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14149",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14150",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14144",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14151",
+    "check": "grupo BPC/DOMINIO/07 APIs e Servicos de Negocio em falta"
+   },
+   {
+    "hostid": "14268",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11900",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14267",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14269",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11975",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14233",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14176",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14261",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14259",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14260",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14262",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11932",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11930",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11933",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11931",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "10606",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "10597",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14134",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "10616",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "10525",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14245",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14077",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "10596",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11876",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "14274",
+    "check": "grupo BPC/DOMINIO/10 Servicos de Suporte em falta"
+   },
+   {
+    "hostid": "11838",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11724",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11732",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11695",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11839",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11694",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11685",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11693",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11723",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11697",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11692",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11722",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11721",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11856",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11836",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11837",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "11855",
+    "check": "grupo BPC/SERVICO/ACM em falta"
+   },
+   {
+    "hostid": "10557",
+    "check": "grupo BPC/SERVICO/APLICACOES INTERNAS em falta"
+   },
+   {
+    "hostid": "10559",
+    "check": "grupo BPC/SERVICO/APLICACOES INTERNAS em falta"
+   },
+   {
+    "hostid": "10555",
+    "check": "grupo BPC/SERVICO/APLICACOES INTERNAS em falta"
+   },
+   {
+    "hostid": "10556",
+    "check": "grupo BPC/SERVICO/APLICACOES INTERNAS em falta"
+   },
+   {
+    "hostid": "10626",
+    "check": "grupo BPC/SERVICO/CREDITQUEST em falta"
+   },
+   {
+    "hostid": "11962",
+    "check": "grupo BPC/SERVICO/CREDITQUEST em falta"
+   },
+   {
+    "hostid": "11969",
+    "check": "grupo BPC/SERVICO/CREDITQUEST em falta"
+   },
+   {
+    "hostid": "11961",
+    "check": "grupo BPC/SERVICO/CREDITQUEST em falta"
+   },
+   {
+    "hostid": "14094",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "14095",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "14097",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "14098",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11659",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "14093",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11672",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11671",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11658",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "14096",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "14102",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "14103",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11966",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11965",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11970",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11967",
+    "check": "grupo BPC/SERVICO/DIGIWAVE em falta"
+   },
+   {
+    "hostid": "11935",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11937",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11936",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11715",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11626",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "14107",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11629",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11623",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11624",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11628",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11631",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11630",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11627",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11717",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11625",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11938",
+    "check": "grupo BPC/SERVICO/EBANKIT em falta"
+   },
+   {
+    "hostid": "11984",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14112",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14126",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14127",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14125",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14123",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14124",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14110",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14109",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14111",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14122",
+    "check": "grupo BPC/SERVICO/ELASTIC SEARCH em falta"
+   },
+   {
+    "hostid": "14115",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "14113",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "14114",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "14118",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "14116",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "11719",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "14117",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "14278",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "11720",
+    "check": "grupo BPC/SERVICO/ESSENCE em falta"
+   },
+   {
+    "hostid": "11952",
+    "check": "grupo BPC/SERVICO/EXCEL REPORT em falta"
+   },
+   {
+    "hostid": "11954",
+    "check": "grupo BPC/SERVICO/EXCEL REPORT em falta"
+   },
+   {
+    "hostid": "10617",
+    "check": "grupo BPC/SERVICO/EXCEL REPORT em falta"
+   },
+   {
+    "hostid": "14280",
+    "check": "grupo BPC/SERVICO/EXCEL REPORT em falta"
+   },
+   {
+    "hostid": "14279",
+    "check": "grupo BPC/SERVICO/EXCEL REPORT em falta"
+   },
+   {
+    "hostid": "11729",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11730",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11728",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11941",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11943",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11942",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11731",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11944",
+    "check": "grupo BPC/SERVICO/FINANTECH em falta"
+   },
+   {
+    "hostid": "11664",
+    "check": "grupo BPC/SERVICO/FIRCOSOFT em falta"
+   },
+   {
+    "hostid": "11668",
+    "check": "grupo BPC/SERVICO/FIRCOSOFT em falta"
+   },
+   {
+    "hostid": "11669",
+    "check": "grupo BPC/SERVICO/FIRCOSOFT em falta"
+   },
+   {
+    "hostid": "11667",
+    "check": "grupo BPC/SERVICO/FIRCOSOFT em falta"
+   },
+   {
+    "hostid": "11665",
+    "check": "grupo BPC/SERVICO/FIRCOSOFT em falta"
+   },
+   {
+    "hostid": "11666",
+    "check": "grupo BPC/SERVICO/FIRCOSOFT em falta"
+   },
+   {
+    "hostid": "11674",
+    "check": "grupo BPC/SERVICO/OPTICS em falta"
+   },
+   {
+    "hostid": "11673",
+    "check": "grupo BPC/SERVICO/OPTICS em falta"
+   },
+   {
+    "hostid": "11663",
+    "check": "grupo BPC/SERVICO/OPTICS em falta"
+   },
+   {
+    "hostid": "11662",
+    "check": "grupo BPC/SERVICO/OPTICS em falta"
+   },
+   {
+    "hostid": "14206",
+    "check": "grupo BPC/SERVICO/PRIMAVERA em falta"
+   },
+   {
+    "hostid": "14208",
+    "check": "grupo BPC/SERVICO/PRIMAVERA em falta"
+   },
+   {
+    "hostid": "14207",
+    "check": "grupo BPC/SERVICO/PRIMAVERA em falta"
+   },
+   {
+    "hostid": "14209",
+    "check": "grupo BPC/SERVICO/PRIMAVERA em falta"
+   },
+   {
+    "hostid": "11949",
+    "check": "grupo BPC/SERVICO/PRIMAVERA em falta"
+   },
+   {
+    "hostid": "11680",
+    "check": "grupo BPC/SERVICO/SACC em falta"
+   },
+   {
+    "hostid": "11733",
+    "check": "grupo BPC/SERVICO/SACC em falta"
+   },
+   {
+    "hostid": "11687",
+    "check": "grupo BPC/SERVICO/SACC em falta"
+   },
+   {
+    "hostid": "11871",
+    "check": "grupo BPC/SERVICO/SACC em falta"
+   },
+   {
+    "hostid": "11704",
+    "check": "grupo BPC/SERVICO/SDVM em falta"
+   },
+   {
+    "hostid": "11701",
+    "check": "grupo BPC/SERVICO/SDVM em falta"
+   },
+   {
+    "hostid": "11703",
+    "check": "grupo BPC/SERVICO/SDVM em falta"
+   },
+   {
+    "hostid": "11702",
+    "check": "grupo BPC/SERVICO/SDVM em falta"
+   },
+   {
+    "hostid": "10579",
+    "check": "grupo BPC/SERVICO/SGC em falta"
+   },
+   {
+    "hostid": "10578",
+    "check": "grupo BPC/SERVICO/SGC em falta"
+   },
+   {
+    "hostid": "11927",
+    "check": "grupo BPC/SERVICO/SGC em falta"
+   },
+   {
+    "hostid": "11691",
+    "check": "grupo BPC/SERVICO/SGC em falta"
+   },
+   {
+    "hostid": "11945",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11946",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11725",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11940",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11939",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "10561",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11971",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "10545",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11865",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11860",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11861",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11854",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11859",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11864",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11862",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "11863",
+    "check": "grupo BPC/SERVICO/SIGCAP em falta"
+   },
+   {
+    "hostid": "10593",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "10591",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "11850",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "10592",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "11851",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "10594",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "11852",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "11853",
+    "check": "grupo BPC/SERVICO/SIRIS em falta"
+   },
+   {
+    "hostid": "11925",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11994",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11995",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "14250",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "10570",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "14253",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11735",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "14254",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11737",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11957",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "14249",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11649",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11711",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11736",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11738",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "14251",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "14252",
+    "check": "grupo BPC/SERVICO/SWIFT em falta"
+   },
+   {
+    "hostid": "11686",
+    "check": "grupo BPC/SERVICO/TALENTIA em falta"
+   },
+   {
+    "hostid": "10562",
+    "check": "grupo BPC/SERVICO/TALENTIA em falta"
+   },
+   {
+    "hostid": "10581",
+    "check": "grupo BPC/SERVICO/TALENTIA em falta"
+   },
+   {
+    "hostid": "10564",
+    "check": "grupo BPC/SERVICO/TALENTIA em falta"
+   },
+   {
+    "hostid": "10565",
+    "check": "grupo BPC/SERVICO/TALENTIA em falta"
+   },
+   {
+    "hostid": "14258",
+    "check": "grupo BPC/SERVICO/TALENTIA em falta"
+   },
+   {
+    "hostid": "10572",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "10574",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "11869",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "11866",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "10577",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "10589",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "10575",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "11868",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "10576",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "10573",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   },
+   {
+    "hostid": "11867",
+    "check": "grupo BPC/SERVICO/TOBE em falta"
+   }
+  ],
+  "ok": false
+ }
+}

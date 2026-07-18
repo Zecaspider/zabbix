@@ -1,0 +1,2540 @@
+{
+ "criado_em": "20260717-143512",
+ "tags_pre_s6": [
+  {
+   "hostid": "10555",
+   "host": "VS8000304",
+   "name": "Aplicacoes internas - VM - VS8000304 (Win · Produção · Camada Aplicacional | DTI - RDA INFOX SIP RUPE AGEC ...)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "WPA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000653.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000653",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "APLICAÇÕES INTERNAS",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SAFT",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SIR",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10557",
+   "host": "VS8000305",
+   "name": "Aplicacoes internas - VM - VS8000305 (Win · Produção · Camada Aplicacional | DTI)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "WPA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000655.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000655",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "APLICAÇÕES INTERNAS",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "Abertura de Contas",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "CONTIF",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "PSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "Agendamento de Salas",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SGC",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SGF",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SIB",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SPCC",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "LIVE",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10562",
+   "host": "VS8000409",
+   "name": "APP - Compute - VS8000409 (Talentia - BD)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "base de dados",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "TALENTIA",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DCH",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10573",
+   "host": "VS8000427",
+   "name": "ToBe - VM - VS8000427 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - STC)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "TOBE",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "WPG",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000653.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000653",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "sistema de compensacao de cheques",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11686",
+   "host": "VS8000319",
+   "name": "Sftp pmsi - VM - VS8000319 (Win · QA · Camada Aplicacional | DTI)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SFTP PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "QA",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "WQA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000649.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "Cisco UCS B200-M4",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000649",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_MAIN",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11717",
+   "host": "VS8000740",
+   "name": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "tags": [
+    {
+     "tag": "servico",
+     "value": "canais digitais",
+     "automatic": "0"
+    },
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DSE",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11726",
+   "host": "VS8000754",
+   "name": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "tags": [
+    {
+     "tag": "servico",
+     "value": "ebankit",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "QA",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11915",
+   "host": "VS8000105",
+   "name": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "tipo",
+     "value": "backup",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "EMC Networker vProxy",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11916",
+   "host": "VS8000109",
+   "name": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "tipo",
+     "value": "backup",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "EMC Networker vProxy",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11917",
+   "host": "VS8000110",
+   "name": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "tipo",
+     "value": "backup",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "EMC Networker vProxy",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11918",
+   "host": "VS8000111",
+   "name": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "tipo",
+     "value": "backup",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "EMC Networker vProxy",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11954",
+   "host": "VS8000809",
+   "name": "Integrador/Apachekafka - VM - VS8000809 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "INTEGRADOR",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "LPA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000654.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000654",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11956",
+   "host": "VS8000ASSECO",
+   "name": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "tipo",
+     "value": "acesso",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "Jump Server",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11974",
+   "host": "VS8000702",
+   "name": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "MASTER NODE",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11975",
+   "host": "VS8000703",
+   "name": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "NGINX",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11976",
+   "host": "VS8000704",
+   "name": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "CEPH",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11977",
+   "host": "VS8000708",
+   "name": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "COMPUTE NODES",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11978",
+   "host": "VS8000709",
+   "name": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "COMPUTE NODES",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11979",
+   "host": "VS8000710",
+   "name": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "tags": [
+    {
+     "tag": "so",
+     "value": "linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "COMPUTE NODES",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "14077",
+   "host": "VS8000811",
+   "name": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "INTEGRADOR",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "PMSI",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "LPB",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000654.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000654",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "integração",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "14088",
+   "host": "VS8000927",
+   "name": "Dhcp server - VM - VS8000927 (Linux · Produção · Camada Aplicacional | Web Application Stork Server)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "Web Application Stork Server",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "LPA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000653.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000653",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "Stork Server (DHCP)",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "14089",
+   "host": "VS8000928",
+   "name": "Dhcp server - VM - VS8000928 (Linux · Produção · Bases de Dados | Data Base Postgresql, Mysql)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "Data Base Postgresql, Mysql",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "LPB",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000653.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000653",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "integração",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "Stork DB (DHCP)",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "14090",
+   "host": "VS8000929",
+   "name": "Dhcp server - VM - VS8000929 (Linux · Produção · Camada Aplicacional | Agent Stork)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Linux",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "Agent Stork",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "LPA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000651.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000651",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "Stork Agent (DHCP)",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "14167",
+   "host": "VS8000813",
+   "name": "Microcredito - VM - VS8000813 (Win · Produção · Camada Aplicacional | DTI)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "WPA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000651.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CLS-BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "PowerFlex R650-C",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000651",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_BPC01",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "SIC",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "14210",
+   "host": "LTTI44_CLONE",
+   "name": "Psi - VM - LTTI44_CLONE (Win · Produção · Camada Aplicacional | DTI - Processamento de Salário para contas ...)",
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DTI",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "WPA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000646.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "Cisco UCS B200-M4",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000646",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_MAIN",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "Posto de Trabalho",
+     "automatic": "0"
+    }
+   ]
+  }
+ ],
+ "hosts_pre_s3": [
+  {
+   "hostid": "10549",
+   "host": "VS8000332",
+   "name": "SO - Compute - VS8000332 (BPC Net - Backoffice1)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "42",
+     "hostid": "10549",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.11.37",
+     "dns": "VS8000332.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10550",
+   "host": "VS8000333",
+   "name": "SO - Compute - VS8000333 (BPC Net - Backoffice2)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "43",
+     "hostid": "10550",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.11.38",
+     "dns": "VS8000333.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10554",
+   "host": "VS8000444",
+   "name": "SO - Compute - VS8000444 (BPC Net -BD)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/06 Bases de Dados"
+    },
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "47",
+     "hostid": "10554",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.11.68",
+     "dns": "VS8000444.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "base de dados",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10569",
+   "host": "SV9000307",
+   "name": "SO - Compute - SV9000307 (SMS Banking)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "62",
+     "hostid": "10569",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "172.16.254.123",
+     "dns": "172.16.254.128",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "1775310345",
+     "disable_until": "1775310360",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "servico",
+     "value": "canais digitais",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10584",
+   "host": "VS9000718",
+   "name": "SO - Compute - VS9000718 (ARGUS Front End V9)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "77",
+     "hostid": "10584",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.236.82",
+     "dns": "10.10.236.125",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "1775310349",
+     "disable_until": "1775310364",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "servico",
+     "value": "argus",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10585",
+   "host": "VS9000207",
+   "name": "PLAT - Mgmt - VS9000207 (SCSM_MgmtSrv02)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "78",
+     "hostid": "10585",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.231",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10586",
+   "host": "VS9000201",
+   "name": "PLAT - Mgmt - VS9000201 (SCSM_MgmtSrv01)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "79",
+     "hostid": "10586",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.230",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10598",
+   "host": "VS9000400",
+   "name": "PLAT - Mgmt - VS9000400 (SCSM_DB - Operations Database)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "91",
+     "hostid": "10598",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.232",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10601",
+   "host": "VS9000304",
+   "name": "PLAT - Infra - VS9000304 (MIM Services (Admin) )",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "94",
+     "hostid": "10601",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.203",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10602",
+   "host": "VS9000303",
+   "name": "PLAT - Infra - VS9000303 (MIM Services (Utilizadores))",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "95",
+     "hostid": "10602",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.200",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10603",
+   "host": "VS9000302",
+   "name": "PLAT - Infra - VS9000302 (MIM Portal - Sharepoint)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "96",
+     "hostid": "10603",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.197",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10604",
+   "host": "VS9000301",
+   "name": "PLAT - Infra - VS9000301 (MIM Sync and DB)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "97",
+     "hostid": "10604",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.195",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10614",
+   "host": "VS8000415",
+   "name": "PLAT - Mgmt - VS8000415 (SCCM BASE DE DADOS)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "107",
+     "hostid": "10614",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.236.94",
+     "dns": "10.10.236.125",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10623",
+   "host": "VS8000210",
+   "name": "PLAT - Mgmt - VS8000210 (Orquestrator Server para o SCSM)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "116",
+     "hostid": "10623",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.236.241",
+     "dns": "VS8000210.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10625",
+   "host": "VS9000461",
+   "name": "SO - Compute - VS9000461 (TMG Report)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "118",
+     "hostid": "10625",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.208",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10631",
+   "host": "VS9000478",
+   "name": "SO - Compute - VS9000478 (RELAY PRD Front-End)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "124",
+     "hostid": "10631",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.136",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "1775310345",
+     "disable_until": "1775310360",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10632",
+   "host": "VS9000477",
+   "name": "SO - Compute - VS9000477 (OEM)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "125",
+     "hostid": "10632",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.236.150",
+     "dns": "10.10.236.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10633",
+   "host": "VS9000468",
+   "name": "SO - Compute - VS9000468 (Transformação da Função de Risco - PRD)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "126",
+     "hostid": "10633",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.159",
+     "dns": "10.10.238.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "1775310349",
+     "disable_until": "1775310364",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10634",
+   "host": "VS9000426",
+   "name": "SO - Compute - VS9000426 (Hermes)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "127",
+     "hostid": "10634",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.236.144",
+     "dns": "10.10.236.129",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "1775310349",
+     "disable_until": "1775310364",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "10635",
+   "host": "VS9000396",
+   "name": "SO - Compute - VS9000396 (Orion Solarwinds NPM 11.5.x)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "128",
+     "hostid": "10635",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.126.39",
+     "dns": "10.10.126.254",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11648",
+   "host": "VS9000319",
+   "name": "Talentia - VM - VS9000319 (Win · QA · Camada Aplicacional | DCH)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "1135",
+     "hostid": "11648",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.236.55",
+     "dns": "VS9000319.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "activo",
+     "value": "Servidores Virtuais",
+     "automatic": "0"
+    },
+    {
+     "tag": "camada",
+     "value": "Camada Aplicacional",
+     "automatic": "0"
+    },
+    {
+     "tag": "servico",
+     "value": "TALENTIA",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "QA",
+     "automatic": "0"
+    },
+    {
+     "tag": "tecnologia",
+     "value": "Windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "departamento",
+     "value": "DCH",
+     "automatic": "0"
+    },
+    {
+     "tag": "cod_ambiente",
+     "value": "WQA",
+     "automatic": "0"
+    },
+    {
+     "tag": "cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    },
+    {
+     "tag": "host_fisico",
+     "value": "sv9000645.bpc.intranet",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter_cluster",
+     "value": "CS9000002",
+     "automatic": "0"
+    },
+    {
+     "tag": "hw_plataforma",
+     "value": "Cisco UCS B200-M4",
+     "automatic": "0"
+    },
+    {
+     "tag": "esxi_host",
+     "value": "sv9000645",
+     "automatic": "0"
+    },
+    {
+     "tag": "vcenter",
+     "value": "VCenter_MAIN",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11656",
+   "host": "VS9000346",
+   "name": "PLAT - Compute - VS9000346 (IBM IB9 - PRD)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "1143",
+     "hostid": "11656",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.236.12",
+     "dns": "VS9000346.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11696",
+   "host": "VS8000519",
+   "name": "SO - Compute - VS8000519 (Support Server)",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "1183",
+     "hostid": "11696",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.237.50",
+     "dns": "VS8000519.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  },
+  {
+   "hostid": "11712",
+   "host": "VS9000249",
+   "name": "SO - Compute - VS9000249",
+   "status": "0",
+   "hostgroups": [
+    {
+     "name": "BPC/DOMINIO/03 Servidores Virtuais"
+    }
+   ],
+   "interfaces": [
+    {
+     "interfaceid": "1199",
+     "hostid": "11712",
+     "main": "1",
+     "type": "1",
+     "useip": "1",
+     "ip": "10.10.238.237",
+     "dns": "VS9000249.bpc.intranet",
+     "port": "10050",
+     "available": "0",
+     "error": "",
+     "errors_from": "0",
+     "disable_until": "0",
+     "details": []
+    }
+   ],
+   "tags": [
+    {
+     "tag": "so",
+     "value": "windows",
+     "automatic": "0"
+    },
+    {
+     "tag": "ambiente",
+     "value": "Produção",
+     "automatic": "0"
+    },
+    {
+     "tag": "localizacao",
+     "value": "DC Paratus",
+     "automatic": "0"
+    }
+   ]
+  }
+ ]
+}

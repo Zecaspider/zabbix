@@ -1,0 +1,470 @@
+{
+ "ts": "20260718-115912",
+ "G07": "663",
+ "G10": "666",
+ "G09_pre": null,
+ "membros_07_antes": [
+  {
+   "hostid": "12002",
+   "host": "app-bna-sinoc"
+  },
+  {
+   "hostid": "12003",
+   "host": "app-bna-pif"
+  },
+  {
+   "hostid": "12004",
+   "host": "app-bna-preaviso"
+  },
+  {
+   "hostid": "12005",
+   "host": "app-bna-sgmc"
+  },
+  {
+   "hostid": "12006",
+   "host": "app-bna-sigma"
+  },
+  {
+   "hostid": "12007",
+   "host": "app-bna-sptr"
+  },
+  {
+   "hostid": "12008",
+   "host": "app-bna-ssif"
+  },
+  {
+   "hostid": "12009",
+   "host": "app-minfin"
+  },
+  {
+   "hostid": "12010",
+   "host": "app-inss"
+  },
+  {
+   "hostid": "12011",
+   "host": "app-inss-bpc"
+  },
+  {
+   "hostid": "12012",
+   "host": "app-swift-swp"
+  },
+  {
+   "hostid": "12013",
+   "host": "app-intix"
+  },
+  {
+   "hostid": "12014",
+   "host": "app-internet-bank"
+  },
+  {
+   "hostid": "12016",
+   "host": "app-sicv"
+  },
+  {
+   "hostid": "12017",
+   "host": "app-banktrade"
+  },
+  {
+   "hostid": "12018",
+   "host": "app-sms-banking"
+  },
+  {
+   "hostid": "12019",
+   "host": "app-sacc"
+  },
+  {
+   "hostid": "12020",
+   "host": "app-sir"
+  },
+  {
+   "hostid": "12021",
+   "host": "app-abc"
+  },
+  {
+   "hostid": "12022",
+   "host": "app-sgf"
+  },
+  {
+   "hostid": "12023",
+   "host": "app-contif"
+  },
+  {
+   "hostid": "12024",
+   "host": "app-psi"
+  },
+  {
+   "hostid": "12025",
+   "host": "app-sib"
+  },
+  {
+   "hostid": "12026",
+   "host": "app-sgc"
+  },
+  {
+   "hostid": "12027",
+   "host": "app-sic"
+  },
+  {
+   "hostid": "12028",
+   "host": "app-spcc"
+  },
+  {
+   "hostid": "12029",
+   "host": "app-saft"
+  },
+  {
+   "hostid": "12030",
+   "host": "app-sala-reunioes"
+  },
+  {
+   "hostid": "12031",
+   "host": "app-cezanne"
+  },
+  {
+   "hostid": "12032",
+   "host": "app-forgest"
+  },
+  {
+   "hostid": "12033",
+   "host": "app-sop"
+  },
+  {
+   "hostid": "12034",
+   "host": "app-live"
+  },
+  {
+   "hostid": "12035",
+   "host": "app-euronet"
+  },
+  {
+   "hostid": "12036",
+   "host": "app-sap"
+  },
+  {
+   "hostid": "12037",
+   "host": "app-emp"
+  },
+  {
+   "hostid": "12038",
+   "host": "app-mundial-seguro"
+  },
+  {
+   "hostid": "12039",
+   "host": "app-pumangol"
+  },
+  {
+   "hostid": "12040",
+   "host": "app-bpcao"
+  },
+  {
+   "hostid": "14717",
+   "host": "app-uysig"
+  },
+  {
+   "hostid": "14718",
+   "host": "app-uysig-bna"
+  },
+  {
+   "hostid": "14188",
+   "host": "ibm-cp-storage-03"
+  },
+  {
+   "hostid": "14191",
+   "host": "ibm-cp-worker-03"
+  },
+  {
+   "hostid": "14182",
+   "host": "ibm-cp-infra-03"
+  },
+  {
+   "hostid": "14186",
+   "host": "ibm-cp-storage-01"
+  },
+  {
+   "hostid": "14194",
+   "host": "ibm-cp-worker-06"
+  },
+  {
+   "hostid": "14192",
+   "host": "ibm-cp-worker-04"
+  },
+  {
+   "hostid": "14189",
+   "host": "ibm-cp-worker-01"
+  },
+  {
+   "hostid": "14193",
+   "host": "ibm-cp-worker-05"
+  },
+  {
+   "hostid": "14181",
+   "host": "ibm-cp-infra-02"
+  },
+  {
+   "hostid": "14183",
+   "host": "ibm-cp-master-01"
+  },
+  {
+   "hostid": "14185",
+   "host": "ibm-cp-master-03"
+  },
+  {
+   "hostid": "14196",
+   "host": "ibm-cp-worker-08"
+  },
+  {
+   "hostid": "14180",
+   "host": "ibm-cp-infra-01"
+  },
+  {
+   "hostid": "14184",
+   "host": "ibm-cp-master-02"
+  },
+  {
+   "hostid": "14190",
+   "host": "ibm-cp-worker-02"
+  },
+  {
+   "hostid": "14195",
+   "host": "ibm-cp-worker-07"
+  },
+  {
+   "hostid": "14187",
+   "host": "ibm-cp-storage-02"
+  },
+  {
+   "hostid": "14197",
+   "host": "ibm-cp-worker-09"
+  },
+  {
+   "hostid": "14232",
+   "host": "VS8000984"
+  },
+  {
+   "hostid": "14237",
+   "host": "okd_ha_proxy"
+  },
+  {
+   "hostid": "14198",
+   "host": "VS8000980"
+  },
+  {
+   "hostid": "14231",
+   "host": "VS8000983"
+  },
+  {
+   "hostid": "14199",
+   "host": "VS8000981"
+  },
+  {
+   "hostid": "14230",
+   "host": "VS8000982"
+  },
+  {
+   "hostid": "14238",
+   "host": "rhcoreos_bootstrap"
+  },
+  {
+   "hostid": "14229",
+   "host": "VS8000979"
+  },
+  {
+   "hostid": "14239",
+   "host": "rhocp-helper"
+  },
+  {
+   "hostid": "11978",
+   "host": "VS8000709"
+  },
+  {
+   "hostid": "11979",
+   "host": "VS8000710"
+  },
+  {
+   "hostid": "11977",
+   "host": "VS8000708"
+  },
+  {
+   "hostid": "11980",
+   "host": "VS8000711"
+  },
+  {
+   "hostid": "11657",
+   "host": "VS9000470"
+  },
+  {
+   "hostid": "11707",
+   "host": "VS9000472"
+  },
+  {
+   "hostid": "10645",
+   "host": "VS9000343"
+  },
+  {
+   "hostid": "10644",
+   "host": "VS9000404"
+  },
+  {
+   "hostid": "10610",
+   "host": "VS8000456"
+  },
+  {
+   "hostid": "14147",
+   "host": "VS8000814"
+  },
+  {
+   "hostid": "14148",
+   "host": "VS8000815"
+  },
+  {
+   "hostid": "14156",
+   "host": "VS8000978"
+  },
+  {
+   "hostid": "11983",
+   "host": "VS8000745"
+  },
+  {
+   "hostid": "11981",
+   "host": "VS8000712"
+  },
+  {
+   "hostid": "14155",
+   "host": "VS8000870"
+  },
+  {
+   "hostid": "14153",
+   "host": "VS8000868"
+  },
+  {
+   "hostid": "14145",
+   "host": "VS8000805"
+  },
+  {
+   "hostid": "14152",
+   "host": "VS8000866"
+  },
+  {
+   "hostid": "14154",
+   "host": "VS8000869"
+  },
+  {
+   "hostid": "14146",
+   "host": "VS8000812"
+  },
+  {
+   "hostid": "14149",
+   "host": "VS8000816"
+  },
+  {
+   "hostid": "14150",
+   "host": "VS8000817"
+  },
+  {
+   "hostid": "14144",
+   "host": "VS8000804"
+  },
+  {
+   "hostid": "14151",
+   "host": "VS8000818"
+  },
+  {
+   "hostid": "14737",
+   "host": "VS8000707"
+  },
+  {
+   "hostid": "14740",
+   "host": "VS8000705"
+  }
+ ],
+ "to09": [
+  "VS9000470",
+  "VS9000472",
+  "VS9000343",
+  "VS9000404",
+  "VS8000456",
+  "VS8000814",
+  "VS8000815",
+  "VS8000978",
+  "VS8000745",
+  "VS8000712",
+  "VS8000870",
+  "VS8000868",
+  "VS8000805",
+  "VS8000866",
+  "VS8000869",
+  "VS8000812",
+  "VS8000816",
+  "VS8000804",
+  "VS8000818"
+ ],
+ "gitlab": [
+  "VS8000817"
+ ],
+ "elk_para_10": [
+  "VS8000135",
+  "VS8000136",
+  "VS8000137",
+  "VS8000772",
+  "VS8000773",
+  "VS8000774",
+  "VS8000775",
+  "VS8000776",
+  "VS8000777"
+ ],
+ "remove_do_07": [
+  "ibm-cp-storage-03",
+  "ibm-cp-worker-03",
+  "ibm-cp-infra-03",
+  "ibm-cp-storage-01",
+  "ibm-cp-worker-06",
+  "ibm-cp-worker-04",
+  "ibm-cp-worker-01",
+  "ibm-cp-worker-05",
+  "ibm-cp-infra-02",
+  "ibm-cp-master-01",
+  "ibm-cp-master-03",
+  "ibm-cp-worker-08",
+  "ibm-cp-infra-01",
+  "ibm-cp-master-02",
+  "ibm-cp-worker-02",
+  "ibm-cp-worker-07",
+  "ibm-cp-storage-02",
+  "ibm-cp-worker-09",
+  "VS8000984",
+  "okd_ha_proxy",
+  "VS8000980",
+  "VS8000983",
+  "VS8000981",
+  "VS8000982",
+  "rhcoreos_bootstrap",
+  "VS8000979",
+  "rhocp-helper",
+  "VS8000709",
+  "VS8000710",
+  "VS8000708",
+  "VS8000711",
+  "VS9000470",
+  "VS9000472",
+  "VS9000343",
+  "VS9000404",
+  "VS8000456",
+  "VS8000814",
+  "VS8000815",
+  "VS8000978",
+  "VS8000745",
+  "VS8000712",
+  "VS8000870",
+  "VS8000868",
+  "VS8000805",
+  "VS8000866",
+  "VS8000869",
+  "VS8000812",
+  "VS8000816",
+  "VS8000817",
+  "VS8000804",
+  "VS8000818",
+  "VS8000707",
+  "VS8000705"
+ ]
+}

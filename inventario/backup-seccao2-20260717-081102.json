@@ -1,0 +1,85 @@
+{
+ "criado_em": "20260717-081102",
+ "macros": [
+  {
+   "hostmacroid": "12730",
+   "hostid": "10591",
+   "macro": "{$MSSQL.DSN}",
+   "value": "MSSQL_10591",
+   "description": "DSN ODBC para SIRIS - VM - VS8000227 (Win · QA · Bases de Dados | DRG) — gerido por script",
+   "type": "0",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "14699",
+   "hostid": "10591",
+   "macro": "{$VMWARE.PASSWORD}",
+   "value": "DTinf0_@admvct",
+   "description": "",
+   "type": "0",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "14697",
+   "hostid": "10591",
+   "macro": "{$VMWARE.URL}",
+   "value": "https://10.10.101.9/sdk",
+   "description": "",
+   "type": "0",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "14698",
+   "hostid": "10591",
+   "macro": "{$VMWARE.USERNAME}",
+   "value": "administrator@vsphere.local",
+   "description": "",
+   "type": "0",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "16492",
+   "hostid": "10591",
+   "macro": "{$VMWARE.VM.UUID}",
+   "value": "564df603-6914-9955-9bfc-443e40d85572",
+   "description": "",
+   "type": "0",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "9846",
+   "hostid": "11877",
+   "macro": "{$VMWARE.PASSWORD}",
+   "description": "",
+   "type": "1",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "9844",
+   "hostid": "11877",
+   "macro": "{$VMWARE.URL}",
+   "value": "https://10.10.101.9/sdk",
+   "description": "",
+   "type": "0",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "9845",
+   "hostid": "11877",
+   "macro": "{$VMWARE.USERNAME}",
+   "value": "administrator@vsphere.local",
+   "description": "",
+   "type": "0",
+   "automatic": "0"
+  },
+  {
+   "hostmacroid": "17144",
+   "hostid": "14724",
+   "macro": "{$VMWARE.VM.UUID}",
+   "value": "420dbe61-570f-46b2-a40a-f9b4946e23ab",
+   "description": "",
+   "type": "0",
+   "automatic": "0"
+  }
+ ]
+}

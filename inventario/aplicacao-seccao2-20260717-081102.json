@@ -1,0 +1,293 @@
+{
+ "executado_em": "20260717-081102",
+ "dry_run": true,
+ "criadas": [
+  {
+   "hostid": "11914",
+   "host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "vm": "VS8000101_vProxy-EMC Networker",
+   "uuid": "5023d74c-4d4c-0348-b263-0c62b15e1134"
+  },
+  {
+   "hostid": "10599",
+   "host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "vm": "VS9000358",
+   "uuid": "5016a394-0f34-23d7-abd6-beb0129d4bd0"
+  },
+  {
+   "hostid": "11912",
+   "host": "tacacsubuntu",
+   "vm": "TACACS UBUNTU",
+   "uuid": "500dd79a-d751-badc-3316-17ecb9402ee5"
+  },
+  {
+   "hostid": "11976",
+   "host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "vm": "VS8000704",
+   "uuid": "502319ca-160d-28e4-10a8-c0fb387b594d"
+  },
+  {
+   "hostid": "11975",
+   "host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "vm": "VS8000703",
+   "uuid": "5023cc39-c669-c690-5dfd-7a3e73dc5694"
+  },
+  {
+   "hostid": "10600",
+   "host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "vm": "VS9000352",
+   "uuid": "50163b11-d417-be7d-e9f2-e58ed12f192e"
+  },
+  {
+   "hostid": "11915",
+   "host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "uuid": "50232397-4344-0075-28ac-9238035acbd3"
+  },
+  {
+   "hostid": "11978",
+   "host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "vm": "VS8000709",
+   "uuid": "5023ff17-48d7-9449-205d-688cdb6a7dd9"
+  },
+  {
+   "hostid": "11979",
+   "host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "vm": "VS8000710",
+   "uuid": "50233cdd-a9f2-fc51-4dc3-2a61eb463e17"
+  },
+  {
+   "hostid": "11974",
+   "host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "vm": "VS8000702",
+   "uuid": "502314b4-d29c-cdbd-1e8d-b9841416669a"
+  },
+  {
+   "hostid": "11917",
+   "host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "uuid": "5023ab9f-e5a6-245e-dea8-3281a256d45d"
+  },
+  {
+   "hostid": "11877",
+   "host": "sv9000204 (Vcenter PRD)",
+   "vm": "SV9000204",
+   "uuid": "52ad69e7-0737-fea4-eaa8-f2edbb1d9a42"
+  },
+  {
+   "hostid": "11916",
+   "host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "uuid": "50238ff1-a45b-8298-f402-8a8aa748da88"
+  },
+  {
+   "hostid": "11918",
+   "host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "uuid": "5023b85b-6a62-d2bd-8dd6-bda615fe64a3"
+  },
+  {
+   "hostid": "11956",
+   "host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "vm": "VS8000ASSECO",
+   "uuid": "50230ecc-3077-a376-bdeb-a85a5c5dc3bd"
+  },
+  {
+   "hostid": "10562",
+   "host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "vm": "VS8000409",
+   "uuid": "500dfa57-e4d7-85c8-90ad-363aad166a80"
+  },
+  {
+   "hostid": "11977",
+   "host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "vm": "VS8000708",
+   "uuid": "50234953-7b78-a937-4c9b-98988c8b8bff"
+  },
+  {
+   "hostid": "11923",
+   "host": "APP - Compute - VS8000138 (Swift - Token Server DR)",
+   "vm": "VS8000138",
+   "uuid": "50232927-cba0-c0c2-0d47-7b4835cf3a65"
+  }
+ ],
+ "corrigidas": [
+  {
+   "hostid": "10591",
+   "host": "SIRIS - VM - VS8000227 (Win · QA · Bases de Dados | DRG)",
+   "uuid_errado": "564df603-6914-9955-9bfc-443e40d85572",
+   "uuid_correto": "50236221-7249-bbab-1dbe-7e517dc438ba",
+   "vm": "VS8000227"
+  },
+  {
+   "hostid": "14724",
+   "host": "PRTG - VM - VS8000223 (Win – Teste – Camada Aplicacional | DTI - Monitoramento da rede teste)",
+   "uuid_errado": "420dbe61-570f-46b2-a40a-f9b4946e23ab",
+   "uuid_correto": "500d9b8a-6905-942f-e123-359c9c931bb7",
+   "vm": "VS8000223"
+  }
+ ],
+ "adiadas": [
+  {
+   "hostid": "11919",
+   "host": "GUEST-OS - VS8000122 (vProxy PowerFlex)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11982",
+   "host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11715",
+   "host": "APP - Compute - VS8000735 (Whatsaap BPC | Load Balance_Camada_Backoffice (Ebanking))",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11980",
+   "host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11971",
+   "host": "APP - Compute - VS8000855 (Sigcap Load Balancer)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11920",
+   "host": "GUEST-OS - VS8000100 (vProxy PowerFlex)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11922",
+   "host": "GUEST-OS - VS8000121 (vProxy PowerFlex)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11733",
+   "host": "APP - Compute - VS8000789 (SACC)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11876",
+   "host": "SO - Compute - VS8000810 (Betbox)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "10084",
+   "host": "PLAT - Mgmt - Zabbix server",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11973",
+   "host": "APP - Compute - VS8000294 (BFTeller)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11927",
+   "host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11717",
+   "host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11921",
+   "host": "GUEST-OS - VS8000120 (vProxy PowerFlex)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  },
+  {
+   "hostid": "11968",
+   "host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "motivo": "so BIOS UUID (snapshot) — aguardar Z.8"
+  }
+ ],
+ "erros": [],
+ "verificacao": {
+  "falhas": [
+   {
+    "hostid": "11914",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "10599",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11912",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11976",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11975",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "10600",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11915",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11978",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11979",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11974",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11917",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11877",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11916",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11918",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11956",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "10562",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11977",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "11923",
+    "check": "macro criada nao confere"
+   },
+   {
+    "hostid": "10591",
+    "check": "macro corrigida nao confere"
+   },
+   {
+    "hostid": "14724",
+    "check": "macro corrigida nao confere"
+   }
+  ],
+  "ok": false
+ }
+}

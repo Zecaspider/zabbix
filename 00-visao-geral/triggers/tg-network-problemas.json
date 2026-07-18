@@ -1,0 +1,41 @@
+{
+  "type": "alexanderzobnin-zabbix-triggers-panel",
+  "title": "Problemas Activos — NETWORK (Rede: agências, edifícios, DC)",
+  "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+  "transparent": true,
+  "targets": [
+    {
+      "datasource": { "type": "alexanderzobnin-zabbix-datasource", "uid": "ffo8sp8zllog0e" },
+      "queryType": "5",
+      "group": { "filter": "/HG_.*|Zabbix servers/" },
+      "host": { "filter": "" },
+      "application": { "filter": "" },
+      "proxy": { "filter": "" },
+      "trigger": { "filter": "" },
+      "tags": { "filter": "" },
+      "options": {
+        "minSeverity": 2,
+        "sortProblems": "default",
+        "acknowledged": 2,
+        "hostsInMaintenance": false
+      },
+      "refId": "A"
+    }
+  ],
+  "options": {
+    "ageField": true,
+    "ackField": true,
+    "descriptionField": true,
+    "hostField": true,
+    "hostTechNameField": false,
+    "severityField": true,
+    "statusField": true,
+    "showTags": false,
+    "hostGroups": true,
+    "highlightNewerThan": "2h",
+    "fontSize": "100%",
+    "limit": 100,
+    "sortProblems": "priority",
+    "problemTimeline": true
+  }
+}

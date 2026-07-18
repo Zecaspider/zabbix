@@ -1,0 +1,5532 @@
+{
+ "gerado_em": "2026-07-17T07:56:30",
+ "totais_por_seccao": {
+  "0_nao_mexer": 3,
+  "10_politicas": 3,
+  "1_ip_interface": 5,
+  "2_uuid_macro": 33,
+  "3_hosts_sem_vm": 24,
+  "4_onboarding": 29,
+  "5_templates_so": 13,
+  "6_tags_conflito": 30,
+  "7_tags_ausentes": 99,
+  "8_grupos_reintegrar_03": 57,
+  "9_grupos_servico": 23
+ },
+ "0_nao_mexer": [
+  {
+   "hostid": "11736",
+   "zabbix_host": "SWIFT - VM - VS8000126 (Win · Produção · Camada Aplicacional | DTI - SWP)",
+   "acao": "NENHUMA — manter ativo",
+   "evidencia": "live 2026-07-17: VS8000126 POWERED_ON em CS9000002 ip=10.10.13.5; as copias '_Migrada_Nao_Ligar' do Cluster Swift foram apagadas do vCenter desde maio",
+   "nota": "REVOGA a proposta da 1a rodada de desativar estes 3 hosts"
+  },
+  {
+   "hostid": "11737",
+   "zabbix_host": "SWIFT - VM - VS8000127 (Win · Produção · Segurança | DTI - SWIFT Jump Server)",
+   "acao": "NENHUMA — manter ativo",
+   "evidencia": "live 2026-07-17: VS8000127 POWERED_ON em CS9000002 ip=10.10.13.60; as copias '_Migrada_Nao_Ligar' do Cluster Swift foram apagadas do vCenter desde maio",
+   "nota": "REVOGA a proposta da 1a rodada de desativar estes 3 hosts"
+  },
+  {
+   "hostid": "11738",
+   "zabbix_host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)",
+   "acao": "NENHUMA — manter ativo",
+   "evidencia": "live 2026-07-17: VS8000128 POWERED_ON em CS9000002 ip=192.168.8.2; as copias '_Migrada_Nao_Ligar' do Cluster Swift foram apagadas do vCenter desde maio",
+   "nota": "REVOGA a proposta da 1a rodada de desativar estes 3 hosts"
+  }
+ ],
+ "10_politicas": [
+  {
+   "tema": "tag esxi_host",
+   "achado": "98 hosts com valor obsoleto (DRS/vMotion)",
+   "opcoes": [
+    "remover a tag",
+    "automatizar via VMware discovery",
+    "manter e aceitar drift"
+   ]
+  },
+  {
+   "tema": "vocabulario ambiente",
+   "achado": "Zabbix usa QA/Producao; anotacoes usam P/Q",
+   "opcoes": [
+    "padronizar QA/PRD",
+    "padronizar Qualidade/Producao"
+   ]
+  },
+  {
+   "tema": "12+2 divergencias Qualidade vs Producao",
+   "achado": "inclui vProxy LQI — anotacao do vCenter parece errada nesses",
+   "opcoes": [
+    "corrigir tag Zabbix",
+    "corrigir anotacao no vCenter (fora do Zabbix)"
+   ]
+  }
+ ],
+ "1_ip_interface": [
+  {
+   "hostid": "11957",
+   "zabbix_host": "SWIFT - VM - VS9000316 (Win · Produção · Camada Aplicacional | DTI)",
+   "ip_atual_zabbix": [
+    "10.10.238.54"
+   ],
+   "ip_proposto": "10.10.238.162",
+   "fonte_ip": "vCenter live 2026-07-17",
+   "confianca": "alta",
+   "api_method": "hostinterface.update",
+   "params": {
+    "interfaceid": "1438",
+    "ip": "10.10.238.162"
+   },
+   "risco": "se o agente Zabbix so responde no IP antigo, itens por agente param — validar ping/agente no IP novo antes",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11738",
+   "zabbix_host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)",
+   "ip_atual_zabbix": [
+    "10.10.13.8"
+   ],
+   "ip_proposto": "192.168.8.2",
+   "fonte_ip": "vCenter live 2026-07-17",
+   "confianca": "baixa — IP live em rede isolada; possivel NIC secundaria (verificar antes)",
+   "api_method": "hostinterface.update",
+   "params": {
+    "interfaceid": "1225",
+    "ip": "192.168.8.2"
+   },
+   "risco": "se o agente Zabbix so responde no IP antigo, itens por agente param — validar ping/agente no IP novo antes",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11875",
+   "zabbix_host": "Exchange - VM - VS8000393 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "ip_atual_zabbix": [
+    "10.10.236.61"
+   ],
+   "ip_proposto": "10.10.236.97",
+   "fonte_ip": "snapshot 2026-05-04",
+   "confianca": "media (confirmar quando PowerFlex live)",
+   "api_method": "hostinterface.update",
+   "params": {
+    "interfaceid": "1356",
+    "ip": "10.10.236.97"
+   },
+   "risco": "se o agente Zabbix so responde no IP antigo, itens por agente param — validar ping/agente no IP novo antes",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11718",
+   "zabbix_host": "Canal de denuncias - VM - VS8000741 (Win · Produção · Camada Aplicacional | DTI - PWC)",
+   "ip_atual_zabbix": [
+    "192.168.1.29"
+   ],
+   "ip_proposto": "10.10.203.29",
+   "fonte_ip": "snapshot 2026-05-04",
+   "confianca": "media (confirmar quando PowerFlex live)",
+   "api_method": "hostinterface.update",
+   "params": {
+    "interfaceid": "1205",
+    "ip": "10.10.203.29"
+   },
+   "risco": "se o agente Zabbix so responde no IP antigo, itens por agente param — validar ping/agente no IP novo antes",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11874",
+   "zabbix_host": "Exchange - VM - VS8000392 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "ip_atual_zabbix": [
+    "10.10.236.38"
+   ],
+   "ip_proposto": "10.10.236.96",
+   "fonte_ip": "snapshot 2026-05-04",
+   "confianca": "media (confirmar quando PowerFlex live)",
+   "api_method": "hostinterface.update",
+   "params": {
+    "interfaceid": "1355",
+    "ip": "10.10.236.96"
+   },
+   "risco": "se o agente Zabbix so responde no IP antigo, itens por agente param — validar ping/agente no IP novo antes",
+   "requer_aprovacao": true
+  }
+ ],
+ "2_uuid_macro": [
+  {
+   "hostid": "11914",
+   "zabbix_host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "vm": "VS8000101_vProxy-EMC Networker",
+   "uuid_proposto": "5023d74c-4d4c-0348-b263-0c62b15e1134",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11914",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "5023d74c-4d4c-0348-b263-0c62b15e1134"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10599",
+   "zabbix_host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "vm": "VS9000358",
+   "uuid_proposto": "5016a394-0f34-23d7-abd6-beb0129d4bd0",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "10599",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "5016a394-0f34-23d7-abd6-beb0129d4bd0"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11912",
+   "zabbix_host": "tacacsubuntu",
+   "vm": "TACACS UBUNTU",
+   "uuid_proposto": "500dd79a-d751-badc-3316-17ecb9402ee5",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11912",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "500dd79a-d751-badc-3316-17ecb9402ee5"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11976",
+   "zabbix_host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "vm": "VS8000704",
+   "uuid_proposto": "502319ca-160d-28e4-10a8-c0fb387b594d",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11976",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "502319ca-160d-28e4-10a8-c0fb387b594d"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11975",
+   "zabbix_host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "vm": "VS8000703",
+   "uuid_proposto": "5023cc39-c669-c690-5dfd-7a3e73dc5694",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11975",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "5023cc39-c669-c690-5dfd-7a3e73dc5694"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10600",
+   "zabbix_host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "vm": "VS9000352",
+   "uuid_proposto": "50163b11-d417-be7d-e9f2-e58ed12f192e",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "10600",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "50163b11-d417-be7d-e9f2-e58ed12f192e"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11915",
+   "zabbix_host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "uuid_proposto": "50232397-4344-0075-28ac-9238035acbd3",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11915",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "50232397-4344-0075-28ac-9238035acbd3"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11978",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "vm": "VS8000709",
+   "uuid_proposto": "5023ff17-48d7-9449-205d-688cdb6a7dd9",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11978",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "5023ff17-48d7-9449-205d-688cdb6a7dd9"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11979",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "vm": "VS8000710",
+   "uuid_proposto": "50233cdd-a9f2-fc51-4dc3-2a61eb463e17",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11979",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "50233cdd-a9f2-fc51-4dc3-2a61eb463e17"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11974",
+   "zabbix_host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "vm": "VS8000702",
+   "uuid_proposto": "502314b4-d29c-cdbd-1e8d-b9841416669a",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11974",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "502314b4-d29c-cdbd-1e8d-b9841416669a"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11917",
+   "zabbix_host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "uuid_proposto": "5023ab9f-e5a6-245e-dea8-3281a256d45d",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11917",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "5023ab9f-e5a6-245e-dea8-3281a256d45d"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11877",
+   "zabbix_host": "sv9000204 (Vcenter PRD)",
+   "vm": "SV9000204",
+   "uuid_proposto": "52ad69e7-0737-fea4-eaa8-f2edbb1d9a42",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11877",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "52ad69e7-0737-fea4-eaa8-f2edbb1d9a42"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "uuid_proposto": "50238ff1-a45b-8298-f402-8a8aa748da88",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11916",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "50238ff1-a45b-8298-f402-8a8aa748da88"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11918",
+   "zabbix_host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "uuid_proposto": "5023b85b-6a62-d2bd-8dd6-bda615fe64a3",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11918",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "5023b85b-6a62-d2bd-8dd6-bda615fe64a3"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11956",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "vm": "VS8000ASSECO",
+   "uuid_proposto": "50230ecc-3077-a376-bdeb-a85a5c5dc3bd",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11956",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "50230ecc-3077-a376-bdeb-a85a5c5dc3bd"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10562",
+   "zabbix_host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "vm": "VS8000409",
+   "uuid_proposto": "500dfa57-e4d7-85c8-90ad-363aad166a80",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "10562",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "500dfa57-e4d7-85c8-90ad-363aad166a80"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11977",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "vm": "VS8000708",
+   "uuid_proposto": "50234953-7b78-a937-4c9b-98988c8b8bff",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11977",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "50234953-7b78-a937-4c9b-98988c8b8bff"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11923",
+   "zabbix_host": "APP - Compute - VS8000138 (Swift - Token Server DR)",
+   "vm": "VS8000138",
+   "uuid_proposto": "50232927-cba0-c0c2-0d47-7b4835cf3a65",
+   "tipo_uuid": "instance_uuid (live)",
+   "confianca": "alta",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11923",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "50232927-cba0-c0c2-0d47-7b4835cf3a65"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11919",
+   "zabbix_host": "GUEST-OS - VS8000122 (vProxy PowerFlex)",
+   "vm": "VS8000122_vProxy-EMC Networker",
+   "uuid_proposto": "421dd1f9-53d4-cfc2-f332-608214d50229",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11919",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "421dd1f9-53d4-cfc2-f332-608214d50229"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11982",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "vm": "VS8000713",
+   "uuid_proposto": "422327e9-123e-cb79-7628-120ec2115813",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11982",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "422327e9-123e-cb79-7628-120ec2115813"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11715",
+   "zabbix_host": "APP - Compute - VS8000735 (Whatsaap BPC | Load Balance_Camada_Backoffice (Ebanking))",
+   "vm": "VS8000735",
+   "uuid_proposto": "4223c3b2-cc7e-3b7b-6a1a-37bec77ed6b2",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11715",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "4223c3b2-cc7e-3b7b-6a1a-37bec77ed6b2"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11980",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "vm": "VS8000711",
+   "uuid_proposto": "4223bade-6c2b-6b36-a122-ea9507ebfad3",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11980",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "4223bade-6c2b-6b36-a122-ea9507ebfad3"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11971",
+   "zabbix_host": "APP - Compute - VS8000855 (Sigcap Load Balancer)",
+   "vm": "vs8000855",
+   "uuid_proposto": "421db539-2e21-bba9-be83-67f9b2731dce",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11971",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "421db539-2e21-bba9-be83-67f9b2731dce"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11920",
+   "zabbix_host": "GUEST-OS - VS8000100 (vProxy PowerFlex)",
+   "vm": "VS8000100_vProxy-EMC Networker",
+   "uuid_proposto": "421d514e-1016-1dd0-9989-550360428ca1",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11920",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "421d514e-1016-1dd0-9989-550360428ca1"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11922",
+   "zabbix_host": "GUEST-OS - VS8000121 (vProxy PowerFlex)",
+   "vm": "VS8000121_vProxy-EMC Networker",
+   "uuid_proposto": "421d4458-f3c2-7c3c-2f97-1ff7e143ad1f",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11922",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "421d4458-f3c2-7c3c-2f97-1ff7e143ad1f"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11733",
+   "zabbix_host": "APP - Compute - VS8000789 (SACC)",
+   "vm": "VS8000789",
+   "uuid_proposto": "4223a931-ffa3-1b5e-3f4b-97610a29d96b",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11733",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "4223a931-ffa3-1b5e-3f4b-97610a29d96b"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11876",
+   "zabbix_host": "SO - Compute - VS8000810 (Betbox)",
+   "vm": "VS8000810_netbox",
+   "uuid_proposto": "421d25ae-3951-a19d-2c26-7be090ddc37c",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11876",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "421d25ae-3951-a19d-2c26-7be090ddc37c"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10084",
+   "zabbix_host": "PLAT - Mgmt - Zabbix server",
+   "vm": "VS8000115",
+   "uuid_proposto": "42239ec7-a779-b749-0db3-5b96067e1c2a",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "10084",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "42239ec7-a779-b749-0db3-5b96067e1c2a"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11973",
+   "zabbix_host": "APP - Compute - VS8000294 (BFTeller)",
+   "vm": "VS8000294",
+   "uuid_proposto": "564d4251-7938-4cce-0966-86987daf2e46",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11973",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "564d4251-7938-4cce-0966-86987daf2e46"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11927",
+   "zabbix_host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "vm": "vs8000474",
+   "uuid_proposto": "420d3d90-e8d6-aab5-8ca1-037c22754b34",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11927",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "420d3d90-e8d6-aab5-8ca1-037c22754b34"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11717",
+   "zabbix_host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "vm": "vs8000740",
+   "uuid_proposto": "42230f53-965a-4756-2bfc-c5375a084fa8",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11717",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "42230f53-965a-4756-2bfc-c5375a084fa8"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11921",
+   "zabbix_host": "GUEST-OS - VS8000120 (vProxy PowerFlex)",
+   "vm": "VS8000120_vProxy-EMC Networker",
+   "uuid_proposto": "421d3623-d6ce-1fe7-765e-ff28a2716e92",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11921",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "421d3623-d6ce-1fe7-765e-ff28a2716e92"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11968",
+   "zabbix_host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "vm": "VS8000829",
+   "uuid_proposto": "421d89bf-d90d-3f34-f7af-3ff5419867c6",
+   "tipo_uuid": "BIOS UUID (snapshot)",
+   "confianca": "adiar — BIOS UUID pode nao ser o que o template VMware espera; aguardar Z.8",
+   "api_method": "usermacro.create",
+   "params": {
+    "hostid": "11968",
+    "macro": "{$VMWARE.VM.UUID}",
+    "value": "421d89bf-d90d-3f34-f7af-3ff5419867c6"
+   },
+   "risco": "baixo (macro nova; nada a substituir)",
+   "requer_aprovacao": true
+  }
+ ],
+ "3_hosts_sem_vm": [
+  {
+   "hostid": "10549",
+   "zabbix_host": "SO - Compute - VS8000332 (BPC Net - Backoffice1)",
+   "ips": [
+    "10.10.11.37"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10549",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10550",
+   "zabbix_host": "SO - Compute - VS8000333 (BPC Net - Backoffice2)",
+   "ips": [
+    "10.10.11.38"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10550",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10554",
+   "zabbix_host": "SO - Compute - VS8000444 (BPC Net -BD)",
+   "ips": [
+    "10.10.11.68"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10554",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10569",
+   "zabbix_host": "SO - Compute - SV9000307 (SMS Banking)",
+   "ips": [
+    "172.16.254.123"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10569",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10584",
+   "zabbix_host": "SO - Compute - VS9000718 (ARGUS Front End V9)",
+   "ips": [
+    "10.10.236.82"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10584",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10585",
+   "zabbix_host": "PLAT - Mgmt - VS9000207 (SCSM_MgmtSrv02)",
+   "ips": [
+    "10.10.238.231"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10585",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10586",
+   "zabbix_host": "PLAT - Mgmt - VS9000201 (SCSM_MgmtSrv01)",
+   "ips": [
+    "10.10.238.230"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10586",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10598",
+   "zabbix_host": "PLAT - Mgmt - VS9000400 (SCSM_DB - Operations Database)",
+   "ips": [
+    "10.10.238.232"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10598",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10601",
+   "zabbix_host": "PLAT - Infra - VS9000304 (MIM Services (Admin) )",
+   "ips": [
+    "10.10.238.203"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10601",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10602",
+   "zabbix_host": "PLAT - Infra - VS9000303 (MIM Services (Utilizadores))",
+   "ips": [
+    "10.10.238.200"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10602",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10603",
+   "zabbix_host": "PLAT - Infra - VS9000302 (MIM Portal - Sharepoint)",
+   "ips": [
+    "10.10.238.197"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10603",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10604",
+   "zabbix_host": "PLAT - Infra - VS9000301 (MIM Sync and DB)",
+   "ips": [
+    "10.10.238.195"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10604",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10614",
+   "zabbix_host": "PLAT - Mgmt - VS8000415 (SCCM BASE DE DADOS)",
+   "ips": [
+    "10.10.236.94"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10614",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10623",
+   "zabbix_host": "PLAT - Mgmt - VS8000210 (Orquestrator Server para o SCSM)",
+   "ips": [
+    "10.10.236.241"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10623",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10625",
+   "zabbix_host": "SO - Compute - VS9000461 (TMG Report)",
+   "ips": [
+    "10.10.238.208"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10625",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10631",
+   "zabbix_host": "SO - Compute - VS9000478 (RELAY PRD Front-End)",
+   "ips": [
+    "10.10.238.136"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10631",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10632",
+   "zabbix_host": "SO - Compute - VS9000477 (OEM)",
+   "ips": [
+    "10.10.236.150"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10632",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10633",
+   "zabbix_host": "SO - Compute - VS9000468 (Transformação da Função de Risco - PRD)",
+   "ips": [
+    "10.10.238.159"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10633",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10634",
+   "zabbix_host": "SO - Compute - VS9000426 (Hermes)",
+   "ips": [
+    "10.10.236.144"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10634",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10635",
+   "zabbix_host": "SO - Compute - VS9000396 (Orion Solarwinds NPM 11.5.x)",
+   "ips": [
+    "10.10.126.39"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "10635",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11648",
+   "zabbix_host": "Talentia - VM - VS9000319 (Win · QA · Camada Aplicacional | DCH)",
+   "ips": [
+    "10.10.236.55"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "11648",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11656",
+   "zabbix_host": "PLAT - Compute - VS9000346 (IBM IB9 - PRD)",
+   "ips": [
+    "10.10.236.12"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "11656",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11696",
+   "zabbix_host": "SO - Compute - VS8000519 (Support Server)",
+   "ips": [
+    "10.10.237.50"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "11696",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11712",
+   "zabbix_host": "SO - Compute - VS9000249",
+   "ips": [
+    "10.10.238.237"
+   ],
+   "status_atual": "ativo",
+   "evidencia": "sem par no snapshot 2026-05-04 NEM no vCenter PRD live 2026-07-17; sem macro UUID",
+   "acao_proposta": "investigar → desativar (NUNCA apagar)",
+   "api_method": "host.update",
+   "params": {
+    "hostid": "11712",
+    "status": 1
+   },
+   "risco": "se a VM existir no PowerFlex (unica fonte nao verificavel live), desativar seria erro — validar dono/ping antes; Z.8 resolve",
+   "requer_aprovacao": true
+  }
+ ],
+ "4_onboarding": [
+  {
+   "vm": "LNX",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023b208-393d-8380-94aa-2ab4778274fc",
+   "anotacao": null,
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000798",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023681d-2178-039f-c1a9-bf9084e2698f",
+   "anotacao": "INTEGRACAO.WQB.DTI.Integração com o essense",
+   "servico": "INTEGRACAO",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "C9800-CL-04 (Cisco Catalyst 9800)",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023b827-5790-ef3d-a928-7273c7ccda03",
+   "anotacao": "C9800-CL-04",
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VD5000JUMP_DSE",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023370a-7aec-6c72-807b-4b05b03c72bb",
+   "anotacao": "Jump | DSE para o portal da EMIS",
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VD5000KPMG2",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "50238c35-5063-55b3-ac76-fc19a0c8d783",
+   "anotacao": null,
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000701",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023378b-f486-c9e3-4b57-8ba18daf6faa",
+   "anotacao": "NEXUS.LQA.PMSI.SIZING MSA PMSI",
+   "servico": "NEXUS",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000716",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "50230d9e-2dd4-ae58-03d8-d580181bb1aa",
+   "anotacao": "SMS Gateway.LQA.PMSI.INNOVATION MAKERS",
+   "servico": "SMS Gateway",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000892",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023198f-9a12-adba-51b4-54e7badfaf33",
+   "anotacao": "SAP ROUTER.WQA.DTI",
+   "servico": "SAP ROUTER",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "vHMC9-DR",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023e262-ddeb-cd7b-e724-7d4f056a3675",
+   "anotacao": "Consola de Gestão do Power 9 DR",
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VD5000IA007",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "500d54c6-6e17-6df9-fe9f-ee3e554308a9",
+   "anotacao": "JUMP SERVER.WPS.DTI",
+   "servico": "JUMP SERVER",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000797",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "50233af0-b320-d7f8-4065-87fe306886b2",
+   "anotacao": "DOCKER.WQA.DTI.BACKBONE - Melhorias e correções da aplicação WHATSSAP BPC",
+   "servico": "DOCKER",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VD5000NP010",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "500d2b2f-ef4b-df40-dcab-72b97725c5c4",
+   "anotacao": "JUMP SERVER.WPS.DTI",
+   "servico": "JUMP SERVER",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000707",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "502341b3-abda-1c6b-81c9-a4dae879b665",
+   "anotacao": "COMPUTE NODES.LQA.PMSI",
+   "servico": "COMPUTE NODES",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "C9800-CL-03 (Cisco Catalyst 9800)",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023647b-a6b5-a45b-2ca6-23395ce62de6",
+   "anotacao": "C9800-CL-03",
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VD5000SAFIRA_JUMP",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023255b-bf35-01fc-c34d-af96fc099b59",
+   "anotacao": "Jump | Safira",
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000705",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023bab0-2f2f-c470-dbe6-e155ec05c292",
+   "anotacao": "COMPUTE NODES.LQA.PMSI",
+   "servico": "COMPUTE NODES",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000511",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_OFF",
+   "ip": null,
+   "uuid": "502306fe-8ab6-46f6-6c5b-fa94237cb1ce",
+   "anotacao": "ESSENCE.LQA.PMSI.Migration Tool",
+   "servico": "ESSENCE",
+   "acao_proposta": "VM desligada — decidir se cria desativado ou ignora",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS9000313",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5016dd25-b3c1-978c-5956-be559fae1dcf",
+   "anotacao": "SWIFT.WPA.DTI.Histórico",
+   "servico": "SWIFT",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000LNX",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "50238dd3-0531-4a96-df9c-2896e1233eb7",
+   "anotacao": "linuxubuntu2204",
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "vHMC9",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "521be622-287f-90de-20c2-05c153e8eb9c",
+   "anotacao": "CONSOLA IBM HMC.LPI.DTI.Consola de acesso ao Power 9",
+   "servico": "CONSOLA IBM HMC",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000493",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": "10.10.237.25",
+   "uuid": "50231a48-8ef4-93ff-5baa-178af91e8797",
+   "anotacao": "CREDITQUEST.WQA.PMSI",
+   "servico": "CREDITQUEST",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true
+  },
+  {
+   "vm": "VS8000799",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "50236127-5a31-b844-3bc1-1f1db7ac93d5",
+   "anotacao": "STI.LQA.PMSI.INNOVATION MAKERS",
+   "servico": "STI",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VD5000KPMG1",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023820b-5b10-55d7-9839-85ef71cdcdf3",
+   "anotacao": null,
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS9001206",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": "10.10.101.30",
+   "uuid": "501861ad-dd21-562b-62bc-d6ff56ff6937",
+   "anotacao": "VMware vCenter Server Appliance",
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true
+  },
+  {
+   "vm": "VD5000JD006",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_OFF",
+   "ip": null,
+   "uuid": "500da6aa-78ad-09c1-4ee1-73dab8dab559",
+   "anotacao": "JUMP SERVER.WPS.DTI",
+   "servico": "JUMP SERVER",
+   "acao_proposta": "VM desligada — decidir se cria desativado ou ignora",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS9000320",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "500db8a8-1839-1081-c649-1cd3905cc8df",
+   "anotacao": "SWIFT.WPA.DTI.Histórico",
+   "servico": "SWIFT",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000882",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "50233fd1-f102-a445-8911-e7a232af6adb",
+   "anotacao": "PrivilegedAnalytics.LQA.DSI",
+   "servico": "PrivilegedAnalytics",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000744",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "5023ef09-ff80-7eed-2428-a3fe54779699",
+   "anotacao": "NGINX.LPL.PMSI.Load Balance HW SIZING MSA PMSI PRD",
+   "servico": "NGINX",
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  },
+  {
+   "vm": "VS8000903",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "ip": null,
+   "uuid": "50233c03-927a-8b34-aa61-a49d0014a4d4",
+   "anotacao": null,
+   "servico": null,
+   "acao_proposta": "criar host (grupos 03 + dominio funcional; templates VMware Guest + BPC Ping; macro UUID)",
+   "requer_aprovacao": true,
+   "pendencia": "sem IP conhecido (tools off) — levantar IP antes de criar"
+  }
+ ],
+ "5_templates_so": [
+  {
+   "hostid": "14133",
+   "zabbix_host": "Git lab - VM - VS8000700 (Win · QA · Camada Aplicacional | PMSI)",
+   "vm": "VS8000700",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Windows"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14104",
+   "zabbix_host": "E-learning - VM - VS8000884 (Win · QA · Camada Aplicacional | PMSI)",
+   "vm": "VS8000884",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Windows"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14135",
+   "zabbix_host": "Gitlab - VM - VS8000890 (Win · QA · Camada Aplicacional | DTI)",
+   "vm": "VS8000890",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Windows"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11988",
+   "zabbix_host": "GLPI - VM - VS8000788 (Linux · Produção · Camada Aplicacional | DTI)",
+   "vm": "VS8000788",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14128",
+   "zabbix_host": "Fusion essence - VM - VS8000760 (Win · QA · Camada Aplicacional | PMSI - Middleware Server)",
+   "vm": "VS8000760",
+   "so_vcenter": {
+    "so": "Red Hat Enterprise Linux 8 (64-bit)",
+    "so_hint": "Windows"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14077",
+   "zabbix_host": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000811",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14116",
+   "zabbix_host": "Essence - VM - VS8000514 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "vm": "VS8000514",
+   "so_vcenter": {
+    "so": "Red Hat Enterprise Linux 8 (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC MSSQL by ODBC",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11989",
+   "zabbix_host": "GLPI - VM - VS8000896 (Linux · QA · Camada Aplicacional | DTI)",
+   "vm": "VS8000896",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14134",
+   "zabbix_host": "Graylog - VM - Graylog (Win · Produção · Camada Aplicacional | DSI - Aplicação de Logs da Rede)",
+   "vm": "Graylog",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Windows"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14117",
+   "zabbix_host": "Essence - VM - VS8000515 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "vm": "VS8000515",
+   "so_vcenter": {
+    "so": "Red Hat Enterprise Linux 8 (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC MSSQL by ODBC",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14154",
+   "zabbix_host": "Integrador/Apachenifi - VM - VS8000869 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000869",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11970",
+   "zabbix_host": "Digiwave - VM - VS8000832 (Linux · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "vm": "VS8000832",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14146",
+   "zabbix_host": "Integrador/Apachenifi - VM - VS8000812 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000812",
+   "so_vcenter": {
+    "so": "Ubuntu Linux (64-bit)",
+    "so_hint": "Linux"
+   },
+   "templates_atuais": [
+    "VMware Guest",
+    "Windows by Zabbix agent active",
+    "BPC Ping"
+   ],
+   "acao_proposta": "trocar 'Windows by Zabbix agent active' por 'Linux by Zabbix agent active'",
+   "risco": "historico de itens do template errado fica orfao; agente pode nem estar instalado — validar que o agente responde",
+   "requer_aprovacao": true
+  }
+ ],
+ "6_tags_conflito": [
+  {
+   "hostid": "11976",
+   "zabbix_host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "vm": "VS8000704",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11975",
+   "zabbix_host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "vm": "VS8000703",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQL",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11915",
+   "zabbix_host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11978",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "vm": "VS8000709",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11979",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "vm": "VS8000710",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11974",
+   "zabbix_host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "vm": "VS8000702",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14077",
+   "zabbix_host": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000811",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11917",
+   "zabbix_host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11918",
+   "zabbix_host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11956",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "vm": "VS8000ASSECO",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=WQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10562",
+   "zabbix_host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "vm": "VS8000409",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=WQB",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11954",
+   "zabbix_host": "Integrador/Apachekafka - VM - VS8000809 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "vm": "VS8000809",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=WQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11977",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "vm": "VS8000708",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQA",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11726",
+   "zabbix_host": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "vm": "VS8000754",
+   "tag": "servico",
+   "valor_excel": "CPI",
+   "valor_zabbix": "ebankit",
+   "nota": "anotacao='CPI.WQI.DTI.ebankit servidor IIS'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14077",
+   "zabbix_host": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000811",
+   "tag": "servico",
+   "valor_excel": "ANSIBLE",
+   "valor_zabbix": "INTEGRADOR",
+   "nota": "anotacao='ANSIBLE.LQA.DTI'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11686",
+   "zabbix_host": "Sftp pmsi - VM - VS8000319 (Win · QA · Camada Aplicacional | DTI)",
+   "vm": "VS9000319",
+   "tag": "servico",
+   "valor_excel": "TALENTIA",
+   "valor_zabbix": "SFTP PMSI",
+   "nota": "anotacao='TALENTIA.WQA.DCH'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "tag": "servico",
+   "valor_excel": "vProxyr",
+   "valor_zabbix": "EMC Networker vProxy",
+   "nota": "anotacao='vProxyr.LQI.DTI.This is Backup and Recovery vProxy Appliance'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14210",
+   "zabbix_host": "Psi - VM - LTTI44_CLONE (Win · Produção · Camada Aplicacional | DTI - Processamento de Salário para contas ...)",
+   "vm": "LTTI44_CLONE",
+   "tag": "servico",
+   "valor_excel": "PSI",
+   "valor_zabbix": "Posto de Trabalho",
+   "nota": "anotacao='PSI.WPA.DTI.Processamento de Salário para contas domiciliadas no BPC'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11954",
+   "zabbix_host": "Integrador/Apachekafka - VM - VS8000809 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "vm": "VS8000809",
+   "tag": "servico",
+   "valor_excel": "EXCEL REPORT",
+   "valor_zabbix": "INTEGRADOR",
+   "nota": "anotacao='EXCEL REPORT.WQA.PMSI.Relatórios contabilísticos'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10557",
+   "zabbix_host": "Aplicacoes internas - VM - VS8000305 (Win · Produção · Camada Aplicacional | DTI)",
+   "vm": "VS8000305",
+   "tag": "servico",
+   "valor_excel": "APLICACOES INTERNAS",
+   "valor_zabbix": "LIVE",
+   "nota": "anotacao='APLICACOES INTERNAS.WPA.DTI'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14167",
+   "zabbix_host": "Microcredito - VM - VS8000813 (Win · Produção · Camada Aplicacional | DTI)",
+   "vm": "VS8000813",
+   "tag": "servico",
+   "valor_excel": "MICROCREDITO",
+   "valor_zabbix": "SIC",
+   "nota": "anotacao='MICROCREDITO.WPA.DTI'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14090",
+   "zabbix_host": "Dhcp server - VM - VS8000929 (Linux · Produção · Camada Aplicacional | Agent Stork)",
+   "vm": "VS8000929",
+   "tag": "servico",
+   "valor_excel": "DHCP Server",
+   "valor_zabbix": "Stork Agent (DHCP)",
+   "nota": "anotacao='DHCP Server.LPA.Agent Stork'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14089",
+   "zabbix_host": "Dhcp server - VM - VS8000928 (Linux · Produção · Bases de Dados | Data Base Postgresql, Mysql)",
+   "vm": "VS8000928",
+   "tag": "servico",
+   "valor_excel": "DHCP Server",
+   "valor_zabbix": "Stork DB (DHCP)",
+   "nota": "anotacao='DHCP Server.LPB.Data Base Postgresql, Mysql'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14088",
+   "zabbix_host": "Dhcp server - VM - VS8000927 (Linux · Produção · Camada Aplicacional | Web Application Stork Server)",
+   "vm": "VS8000927",
+   "tag": "servico",
+   "valor_excel": "DHCP Server",
+   "valor_zabbix": "Stork Server (DHCP)",
+   "nota": "anotacao='DHCP Server.LPA.Web Application Stork Server'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10555",
+   "zabbix_host": "Aplicacoes internas - VM - VS8000304 (Win · Produção · Camada Aplicacional | DTI - RDA INFOX SIP RUPE AGEC ...)",
+   "vm": "VS8000304",
+   "tag": "servico",
+   "valor_excel": "APLICACOES INTERNAS",
+   "valor_zabbix": "SIR",
+   "nota": "anotacao='APLICACOES INTERNAS.WPA.DTI.RDA INFOX SIP RUPE AGEC SIR...'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10573",
+   "zabbix_host": "ToBe - VM - VS8000427 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - STC)",
+   "vm": "VS8000427",
+   "tag": "servico",
+   "valor_excel": "TOBE",
+   "valor_zabbix": "sistema de compensacao de cheques",
+   "nota": "anotacao='TOBE.WPG.DTI.Serv Aplic TOBE - STC'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11717",
+   "zabbix_host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "vm": "vs8000740",
+   "tag": "servico",
+   "valor_excel": "EBANKIT",
+   "valor_zabbix": "canais digitais",
+   "nota": "anotacao='EBANKIT.WPL.DSE.Load balance do Middleware'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14077",
+   "zabbix_host": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000811",
+   "tag": "departamento",
+   "valor_excel": "DTI",
+   "valor_zabbix": "PMSI",
+   "nota": null,
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11686",
+   "zabbix_host": "Sftp pmsi - VM - VS8000319 (Win · QA · Camada Aplicacional | DTI)",
+   "vm": "VS9000319",
+   "tag": "departamento",
+   "valor_excel": "DCH",
+   "valor_zabbix": "DTI",
+   "nota": null,
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true
+  }
+ ],
+ "7_tags_ausentes": [
+  {
+   "hostid": "11976",
+   "zabbix_host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "vm": "VS8000704",
+   "tag": "servico",
+   "valor_proposto": "CEPH",
+   "evidencia": "anotacao='CEPH.LQA.PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11975",
+   "zabbix_host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "vm": "VS8000703",
+   "tag": "servico",
+   "valor_proposto": "NGINX",
+   "evidencia": "anotacao='NGINX.LQL.PMSI.LOAD BALANCER NGINX - HW SIZING MSA - PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10600",
+   "zabbix_host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "vm": "VS9000352",
+   "tag": "servico",
+   "valor_proposto": "KMS",
+   "evidencia": "anotacao='KMS.WPI.DTI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11978",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "vm": "VS8000709",
+   "tag": "servico",
+   "valor_proposto": "COMPUTE NODES",
+   "evidencia": "anotacao='COMPUTE NODES.LQA.PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11979",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "vm": "VS8000710",
+   "tag": "servico",
+   "valor_proposto": "COMPUTE NODES",
+   "evidencia": "anotacao='COMPUTE NODES.LQA.PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11974",
+   "zabbix_host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "vm": "VS8000702",
+   "tag": "servico",
+   "valor_proposto": "MASTER NODE",
+   "evidencia": "anotacao='MASTER NODE.LQA.PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11877",
+   "zabbix_host": "sv9000204 (Vcenter PRD)",
+   "vm": "SV9000204",
+   "tag": "servico",
+   "valor_proposto": "VMWARE VCENTER",
+   "evidencia": "anotacao='VMWARE VCENTER.WPI.DTI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10562",
+   "zabbix_host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "vm": "VS8000409",
+   "tag": "servico",
+   "valor_proposto": "TALENTIA",
+   "evidencia": "anotacao='TALENTIA.WQB.DCH.DB QA'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11977",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "vm": "VS8000708",
+   "tag": "servico",
+   "valor_proposto": "COMPUTE NODES",
+   "evidencia": "anotacao='COMPUTE NODES.LQA.PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11982",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "vm": "VS8000713",
+   "tag": "servico",
+   "valor_proposto": "MASTER NODE",
+   "evidencia": "anotacao='MASTER NODE.LPA.PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11980",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "vm": "VS8000711",
+   "tag": "servico",
+   "valor_proposto": "COMPUTE NODES",
+   "evidencia": "anotacao='COMPUTE NODES.LPA.PMSI'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11971",
+   "zabbix_host": "APP - Compute - VS8000855 (Sigcap Load Balancer)",
+   "vm": "vs8000855",
+   "tag": "servico",
+   "valor_proposto": "Sigcap",
+   "evidencia": "anotacao='Sigcap.LPL.Load balancer'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11876",
+   "zabbix_host": "SO - Compute - VS8000810 (Betbox)",
+   "vm": "VS8000810_netbox",
+   "tag": "servico",
+   "valor_proposto": "NETBOX",
+   "evidencia": "anotacao='NETBOX.LPA.DTI.CMDB'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11927",
+   "zabbix_host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "vm": "vs8000474",
+   "tag": "servico",
+   "valor_proposto": "SGC",
+   "evidencia": "anotacao='SGC.WOB.DTM.Sistema de Gestão de Carteiras NOVO SERVIDOR'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11968",
+   "zabbix_host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "vm": "VS8000829",
+   "tag": "servico",
+   "valor_proposto": "FircosoftMQ",
+   "evidencia": "anotacao='FircosoftMQ.WPA.PMSI.FINASTRA'",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11914",
+   "zabbix_host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "vm": "VS8000101_vProxy-EMC Networker",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11726",
+   "zabbix_host": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "vm": "VS8000754",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10599",
+   "zabbix_host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "vm": "VS9000358",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11912",
+   "zabbix_host": "tacacsubuntu",
+   "vm": "TACACS UBUNTU",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11976",
+   "zabbix_host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "vm": "VS8000704",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11975",
+   "zabbix_host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "vm": "VS8000703",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10600",
+   "zabbix_host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "vm": "VS9000352",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11915",
+   "zabbix_host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11978",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "vm": "VS8000709",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11979",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "vm": "VS8000710",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11974",
+   "zabbix_host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "vm": "VS8000702",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11935",
+   "zabbix_host": "Ebankit - VM - VS8000720 (Win · QA · Camada Aplicacional | DSE)",
+   "vm": "VS8000720",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11937",
+   "zabbix_host": "Ebankit - VM - VS8000722 (Win · QA · Bases de Dados | DSE)",
+   "vm": "VS8000722",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11917",
+   "zabbix_host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11877",
+   "zabbix_host": "sv9000204 (Vcenter PRD)",
+   "vm": "SV9000204",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11918",
+   "zabbix_host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11956",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "vm": "VS8000ASSECO",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10562",
+   "zabbix_host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "vm": "VS8000409",
+   "tag": "departamento",
+   "valor_proposto": "DCH",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11977",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "vm": "VS8000708",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11936",
+   "zabbix_host": "Ebankit - VM - VS8000721 (Win · QA · Camada Aplicacional | DSE - SERVIÇOS)",
+   "vm": "VS8000721",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11982",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "vm": "VS8000713",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11715",
+   "zabbix_host": "APP - Compute - VS8000735 (Whatsaap BPC | Load Balance_Camada_Backoffice (Ebanking))",
+   "vm": "VS8000735",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11980",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "vm": "VS8000711",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11629",
+   "zabbix_host": "Ebankit - VM - VS8000737 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "vm": "VS8000737",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11733",
+   "zabbix_host": "APP - Compute - VS8000789 (SACC)",
+   "vm": "VS8000789",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11876",
+   "zabbix_host": "SO - Compute - VS8000810 (Betbox)",
+   "vm": "VS8000810_netbox",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10084",
+   "zabbix_host": "PLAT - Mgmt - Zabbix server",
+   "vm": "VS8000115",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11631",
+   "zabbix_host": "Ebankit - VM - VS8000738 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "vm": "VS8000738",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11973",
+   "zabbix_host": "APP - Compute - VS8000294 (BFTeller)",
+   "vm": "VS8000294",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11927",
+   "zabbix_host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "vm": "vs8000474",
+   "tag": "departamento",
+   "valor_proposto": "DTM",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11717",
+   "zabbix_host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "vm": "vs8000740",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11968",
+   "zabbix_host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "vm": "VS8000829",
+   "tag": "departamento",
+   "valor_proposto": "PMSI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11938",
+   "zabbix_host": "Ebankit - VM - VS8000742 (Win · Produção · Interface e Web | DSE - Load balance do Front End)",
+   "vm": "VS8000742",
+   "tag": "departamento",
+   "valor_proposto": "DSE",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11645",
+   "zabbix_host": "Ebankit audit system - VM - VS9000494 (Win · Produção · Camada Aplicacional | DTI)",
+   "vm": "Migrada_Nao_Ligar_VS9000494",
+   "tag": "departamento",
+   "valor_proposto": "DTI",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11914",
+   "zabbix_host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "vm": "VS8000101_vProxy-EMC Networker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "Cluster Swift",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11726",
+   "zabbix_host": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "vm": "VS8000754",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10599",
+   "zabbix_host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "vm": "VS9000358",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11912",
+   "zabbix_host": "tacacsubuntu",
+   "vm": "TACACS UBUNTU",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11976",
+   "zabbix_host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "vm": "VS8000704",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11975",
+   "zabbix_host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "vm": "VS8000703",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10600",
+   "zabbix_host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "vm": "VS9000352",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11915",
+   "zabbix_host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11978",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "vm": "VS8000709",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11979",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "vm": "VS8000710",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11974",
+   "zabbix_host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "vm": "VS8000702",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11935",
+   "zabbix_host": "Ebankit - VM - VS8000720 (Win · QA · Camada Aplicacional | DSE)",
+   "vm": "VS8000720",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11937",
+   "zabbix_host": "Ebankit - VM - VS8000722 (Win · QA · Bases de Dados | DSE)",
+   "vm": "VS8000722",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11917",
+   "zabbix_host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11877",
+   "zabbix_host": "sv9000204 (Vcenter PRD)",
+   "vm": "SV9000204",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11918",
+   "zabbix_host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11956",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "vm": "VS8000ASSECO",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10562",
+   "zabbix_host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "vm": "VS8000409",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11977",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "vm": "VS8000708",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11936",
+   "zabbix_host": "Ebankit - VM - VS8000721 (Win · QA · Camada Aplicacional | DSE - SERVIÇOS)",
+   "vm": "VS8000721",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11923",
+   "zabbix_host": "APP - Compute - VS8000138 (Swift - Token Server DR)",
+   "vm": "VS8000138",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "Cluster-Swift",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11919",
+   "zabbix_host": "GUEST-OS - VS8000122 (vProxy PowerFlex)",
+   "vm": "VS8000122_vProxy-EMC Networker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-MGMT",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11982",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "vm": "VS8000713",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11715",
+   "zabbix_host": "APP - Compute - VS8000735 (Whatsaap BPC | Load Balance_Camada_Backoffice (Ebanking))",
+   "vm": "VS8000735",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11626",
+   "zabbix_host": "Ebankit - VM - VS8000727 (Win · Produção · Camada Aplicacional | Back Office)",
+   "vm": "VS8000727",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11980",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "vm": "VS8000711",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11971",
+   "zabbix_host": "APP - Compute - VS8000855 (Sigcap Load Balancer)",
+   "vm": "vs8000855",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11920",
+   "zabbix_host": "GUEST-OS - VS8000100 (vProxy PowerFlex)",
+   "vm": "VS8000100_vProxy-EMC Networker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14107",
+   "zabbix_host": "Ebankit - VM - VS8000731 (Win · Produção · Camada Aplicacional | Middleware)",
+   "vm": "VS8000731",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11922",
+   "zabbix_host": "GUEST-OS - VS8000121 (vProxy PowerFlex)",
+   "vm": "VS8000121_vProxy-EMC Networker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11629",
+   "zabbix_host": "Ebankit - VM - VS8000737 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "vm": "VS8000737",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11733",
+   "zabbix_host": "APP - Compute - VS8000789 (SACC)",
+   "vm": "VS8000789",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11623",
+   "zabbix_host": "Ebankit - VM - VS8000728 (Win · Produção · Camada Aplicacional | Middleware)",
+   "vm": "VS8000728",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11624",
+   "zabbix_host": "Ebankit - VM - VS8000725 (Win · Produção · Camada Aplicacional | Front End)",
+   "vm": "VS8000725",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11876",
+   "zabbix_host": "SO - Compute - VS8000810 (Betbox)",
+   "vm": "VS8000810_netbox",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10084",
+   "zabbix_host": "PLAT - Mgmt - Zabbix server",
+   "vm": "VS8000115",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11628",
+   "zabbix_host": "Ebankit - VM - VS8000729 (Win · Produção · Camada Aplicacional | Middleware)",
+   "vm": "VS8000729",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11631",
+   "zabbix_host": "Ebankit - VM - VS8000738 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "vm": "VS8000738",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11630",
+   "zabbix_host": "Ebankit - VM - VS8000730 (Win · Produção · Camada Aplicacional | Middleware)",
+   "vm": "VS8000730",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11973",
+   "zabbix_host": "APP - Compute - VS8000294 (BFTeller)",
+   "vm": "VS8000294",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11927",
+   "zabbix_host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "vm": "vs8000474",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11627",
+   "zabbix_host": "Ebankit - VM - VS8000724 (Win · Produção · Camada Aplicacional | Front End)",
+   "vm": "VS8000724",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11717",
+   "zabbix_host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "vm": "vs8000740",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11921",
+   "zabbix_host": "GUEST-OS - VS8000120 (vProxy PowerFlex)",
+   "vm": "VS8000120_vProxy-EMC Networker",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11625",
+   "zabbix_host": "Ebankit - VM - VS8000726 (Win · Produção · Camada Aplicacional | Back Office)",
+   "vm": "VS8000726",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11968",
+   "zabbix_host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "vm": "VS8000829",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11938",
+   "zabbix_host": "Ebankit - VM - VS8000742 (Win · Produção · Interface e Web | DSE - Load balance do Front End)",
+   "vm": "VS8000742",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CLS-BPC01",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11645",
+   "zabbix_host": "Ebankit audit system - VM - VS9000494 (Win · Produção · Camada Aplicacional | DTI)",
+   "vm": "Migrada_Nao_Ligar_VS9000494",
+   "tag": "vcenter_cluster",
+   "valor_proposto": "CS9000002",
+   "evidencia": "campo do inventario consolidado",
+   "api_method": "host.update(tags: adicionar preservando existentes)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  }
+ ],
+ "8_grupos_reintegrar_03": [
+  {
+   "hostid": "11914",
+   "zabbix_host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "vm": "VS8000101_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11996",
+   "zabbix_host": "SWIFT - VM - VS8000142 (Win · Produção · Camada Aplicacional | DTI - Jump Server)",
+   "vm": "VS8000142",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10627",
+   "zabbix_host": "Emc networker - VM - VS8000108 (Win · Produção · Serviços de Infraestrutura | DTI - NOVO)",
+   "vm": "VS8000108",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10619",
+   "zabbix_host": "Sophos - VM - VS8000219 (Win · Produção · Serviços de Infraestrutura | DTI - MTA II)",
+   "vm": "VS8000219",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11912",
+   "zabbix_host": "tacacsubuntu",
+   "vm": "TACACS UBUNTU",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14290",
+   "zabbix_host": "VMware - VM - VS8000145_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "vm": "VS8000145_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14161",
+   "zabbix_host": "Jump server - VM - VD5000PD001 (Win · Produção · Segurança | DTI)",
+   "vm": "VD5000PD001",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11915",
+   "zabbix_host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14078",
+   "zabbix_host": "Backup exe - VM - VS9000381 (Win · Operações · Camada Aplicacional | DTI)",
+   "vm": "VS9000381",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14164",
+   "zabbix_host": "Jump Server - VM - VD5000JUMP04 (Win · Produção · Segurança | DTI)",
+   "vm": "VD5000JUMP04",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14236",
+   "zabbix_host": "Sem-Classificação - VM - VeeamRepo (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "vm": "VeeamRepo",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14163",
+   "zabbix_host": "Jump server - VM - VS8000528 (Win · Produção · Segurança | DTI)",
+   "vm": "VS8000528",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10547",
+   "zabbix_host": "Jump server - VM - VS9000507 (Win · Produção · Segurança | DTI)",
+   "vm": "VS9000507",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11737",
+   "zabbix_host": "SWIFT - VM - VS8000127 (Win · Produção · Segurança | DTI - SWIFT Jump Server)",
+   "vm": "VS8000127",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14179",
+   "zabbix_host": "Observer - VM - Observer_PRD (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "vm": "Observer_PRD",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11917",
+   "zabbix_host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11877",
+   "zabbix_host": "sv9000204 (Vcenter PRD)",
+   "vm": "SV9000204",
+   "grupos_atuais": [
+    "BPC/DOMINIO/01 Virtualizacao"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11918",
+   "zabbix_host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11956",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "vm": "VS8000ASSECO",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10548",
+   "zabbix_host": "Jump server - VM - VS9000506 (Win · Produção · Segurança | DTI)",
+   "vm": "VS9000506",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10537",
+   "zabbix_host": "Jump server - VM - VS9000509 (Win · Produção · Segurança | DTI - Máquina de salto para assistencia remota a...)",
+   "vm": "VS9000509",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14218",
+   "zabbix_host": "Sem-Classificação - VM - VEEAM-VXBLOCK (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "vm": "VEEAM-VXBLOCK",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14270",
+   "zabbix_host": "Veeam - VM - VeeamSA (Linux · Produção · Serviços de Infraestrutura | DTI - Backup Appliance)",
+   "vm": "VeeamSA",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14242",
+   "zabbix_host": "Servidor ftp - VM - VS9000711 (Win · Produção · Serviços de Infraestrutura | DTI - SFTP)",
+   "vm": "VS9000711",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14162",
+   "zabbix_host": "Jump server - VM - VD5000UCALL005 (Win · Produção · Segurança | DTI - António Diamantino)",
+   "vm": "VD5000UCALL005",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10630",
+   "zabbix_host": "Jump server - VM - VS9000508 (Win · Produção · Segurança | DTI)",
+   "vm": "VS9000508",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11900",
+   "zabbix_host": "sv9000206 (vCenter PowerFlex)",
+   "vm": "sv9000206",
+   "grupos_atuais": [
+    "BPC/DOMINIO/01 Virtualizacao"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11919",
+   "zabbix_host": "GUEST-OS - VS8000122 (vProxy PowerFlex)",
+   "vm": "VS8000122_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14243",
+   "zabbix_host": "Sftpcall manager - VM - VS8000ubuntu (Linux · Produção · Serviços de Infraestrutura | DTI - Backup)",
+   "vm": "VS8000ubuntu",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14129",
+   "zabbix_host": "Fileserver_sharepoint_migration - VM - VS8000913 (Win · Produção · Camada Aplicacional | DSI)",
+   "vm": "VS8000913",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14204",
+   "zabbix_host": "PowerFlex - VM - JumpServer (Win · Produção · Segurança | DTI - Jump Server)",
+   "vm": "JumpServer",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11972",
+   "zabbix_host": "File server - VM - VS9000106 (Win · Produção · Interface e Web | DTI - Novo)",
+   "vm": "VS9000106",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10587",
+   "zabbix_host": "Sophos - VM - VS8000218 (Win · Produção · Serviços de Infraestrutura | DTI - MTA)",
+   "vm": "VS8000218",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10605",
+   "zabbix_host": "Servidortftp - VM - VS9000282 (Win · Produção · Serviços de Infraestrutura | DTI - TRANSFERÊNCIAFICHEIROS)",
+   "vm": "VS9000282",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14158",
+   "zabbix_host": "Jump server - VM - VD5000AJ012 (Win · Produção · Segurança | DTI)",
+   "vm": "VD5000AJ012",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14160",
+   "zabbix_host": "Jump server - VM - VD5000JM003 (Win · Produção · Segurança | DTI)",
+   "vm": "VD5000JM003",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11920",
+   "zabbix_host": "GUEST-OS - VS8000100 (vProxy PowerFlex)",
+   "vm": "VS8000100_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11922",
+   "zabbix_host": "GUEST-OS - VS8000121 (vProxy PowerFlex)",
+   "vm": "VS8000121_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14275",
+   "zabbix_host": "Zabbix - VM - VS8000932 (Linux · Produção · Serviços de Infraestrutura | DTI - Networker)",
+   "vm": "VS8000932",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10539",
+   "zabbix_host": "Prtgnetwork - VM - VS9000403 (Win · Produção · Serviços de Infraestrutura | DTI - Monitor)",
+   "vm": "VS9000403",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14149",
+   "zabbix_host": "Integrador/Bastionnode - VM - VS8000816 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "vm": "VS8000816",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14286",
+   "zabbix_host": "VMware - VM - VS8000116_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "vm": "VS8000116_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10084",
+   "zabbix_host": "PLAT - Mgmt - Zabbix server",
+   "vm": "VS8000115",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14285",
+   "zabbix_host": "VMware - VM - VS8000114_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "vm": "VS8000114_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14143",
+   "zabbix_host": "Imperva - VM - VS8000487 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "vm": "VS8000487",
+   "grupos_atuais": [
+    "BPC/DOMINIO/05 Seguranca"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10540",
+   "zabbix_host": "Ftp - VM - VS8000363 (Win · Produção · Serviços de Infraestrutura | DTI - Servidor FTP)",
+   "vm": "VS8000363",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14136",
+   "zabbix_host": "Graylog - VM - graylog-vm01 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "vm": "graylog-vm01",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14141",
+   "zabbix_host": "Imperva - VM - VS8000485 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "vm": "VS8000485",
+   "grupos_atuais": [
+    "BPC/DOMINIO/05 Seguranca"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14159",
+   "zabbix_host": "Jump server - VM - VD5000AVG0014 (Win · Produção · Segurança | DTI)",
+   "vm": "VD5000AVG0014",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "10536",
+   "zabbix_host": "File server - VM - VS9000105 (Win · Produção · Interface e Web)",
+   "vm": "VS9000105",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14137",
+   "zabbix_host": "Graylog - VM - graylog-vm02 (Linux · Produção · Serviços de Infraestrutura | DTI - Logs Centralizado (Equip...)",
+   "vm": "graylog-vm02",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14217",
+   "zabbix_host": "Sem-Classificação - VM - VEEAM-POWERFLEX (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "vm": "VEEAM-POWERFLEX",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14142",
+   "zabbix_host": "Imperva - VM - VS8000486 (Linux · Produção · Serviços de Infraestrutura | DSI - Web application firewall)",
+   "vm": "VS8000486",
+   "grupos_atuais": [
+    "BPC/DOMINIO/05 Seguranca"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11682",
+   "zabbix_host": "System center - VM - VS8000221 (Win · Produção · Serviços de Infraestrutura | DTI - SCCM)",
+   "vm": "VS8000221",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "11921",
+   "zabbix_host": "GUEST-OS - VS8000120 (vProxy PowerFlex)",
+   "vm": "VS8000120_vProxy-EMC Networker",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  },
+  {
+   "hostid": "14282",
+   "zabbix_host": "Sem-Classificação - VM - Teste Kea DHCP (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "vm": "Teste Kea DHCP",
+   "grupos_atuais": [
+    "BPC/DOMINIO/10 Servicos de Suporte"
+   ],
+   "acao_proposta": "ADICIONAR 'BPC/DOMINIO/03 Servidores Virtuais' (sem remover os atuais)",
+   "risco": "baixo",
+   "requer_aprovacao": true
+  }
+ ],
+ "9_grupos_servico": [
+  {
+   "grupo": "BPC/DOMINIO/05 Seguranca",
+   "novo": false,
+   "n_hosts": 5,
+   "hosts": [
+    {
+     "hostid": "14143",
+     "vm": "VS8000487",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14141",
+     "vm": "VS8000485",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14142",
+     "vm": "VS8000486",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14216",
+     "vm": "VS8000481",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14271",
+     "vm": "VS8000257",
+     "confianca": "media"
+    }
+   ],
+   "acao_proposta": "adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/DOMINIO/07 APIs e Servicos de Negocio",
+   "novo": false,
+   "n_hosts": 51,
+   "hosts": [
+    {
+     "hostid": "14188",
+     "vm": "ibm-cp-storage-03",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14191",
+     "vm": "ibm-cp-worker-03",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14182",
+     "vm": "ibm-cp-infra-03",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14186",
+     "vm": "ibm-cp-storage-01",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14194",
+     "vm": "ibm-cp-worker-06",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14192",
+     "vm": "ibm-cp-worker-04",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14189",
+     "vm": "ibm-cp-worker-01",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14193",
+     "vm": "ibm-cp-worker-05",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14181",
+     "vm": "ibm-cp-infra-02",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14183",
+     "vm": "ibm-cp-master-01",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14185",
+     "vm": "ibm-cp-master-03",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14196",
+     "vm": "ibm-cp-worker-08",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14180",
+     "vm": "ibm-cp-infra-01",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14184",
+     "vm": "ibm-cp-master-02",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14190",
+     "vm": "ibm-cp-worker-02",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14195",
+     "vm": "ibm-cp-worker-07",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14187",
+     "vm": "ibm-cp-storage-02",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14197",
+     "vm": "ibm-cp-worker-09",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14232",
+     "vm": "VS8000984",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14237",
+     "vm": "okd_ha_proxy",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14198",
+     "vm": "VS8000980",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14231",
+     "vm": "VS8000983",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14199",
+     "vm": "VS8000981",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14230",
+     "vm": "VS8000982",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14238",
+     "vm": "rhcoreos_bootstrap",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14229",
+     "vm": "VS8000979",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14239",
+     "vm": "rhocp-helper",
+     "confianca": "media"
+    },
+    {
+     "hostid": "11978",
+     "vm": "VS8000709",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11979",
+     "vm": "VS8000710",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11977",
+     "vm": "VS8000708",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11980",
+     "vm": "VS8000711",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11657",
+     "vm": "VS9000470",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11707",
+     "vm": "VS9000472",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10645",
+     "vm": "VS9000343",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10644",
+     "vm": "VS9000404",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10610",
+     "vm": "VS8000456",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14147",
+     "vm": "VS8000814",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14148",
+     "vm": "VS8000815",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14156",
+     "vm": "VS8000978",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11983",
+     "vm": "VS8000745",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11981",
+     "vm": "VS8000712",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14155",
+     "vm": "VS8000870",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14153",
+     "vm": "VS8000868",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14145",
+     "vm": "VS8000805",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14152",
+     "vm": "VS8000866",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14154",
+     "vm": "VS8000869",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14146",
+     "vm": "VS8000812",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14149",
+     "vm": "VS8000816",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14150",
+     "vm": "VS8000817",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14144",
+     "vm": "VS8000804",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14151",
+     "vm": "VS8000818",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/DOMINIO/10 Servicos de Suporte",
+   "novo": false,
+   "n_hosts": 90,
+   "hosts": [
+    {
+     "hostid": "11996",
+     "vm": "VS8000142",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14161",
+     "vm": "VD5000PD001",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14164",
+     "vm": "VD5000JUMP04",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14163",
+     "vm": "VS8000528",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10547",
+     "vm": "VS9000507",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10548",
+     "vm": "VS9000506",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10537",
+     "vm": "VS9000509",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14162",
+     "vm": "VD5000UCALL005",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10630",
+     "vm": "VS9000508",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14204",
+     "vm": "JumpServer",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14158",
+     "vm": "VD5000AJ012",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14160",
+     "vm": "VD5000JM003",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14159",
+     "vm": "VD5000AVG0014",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11914",
+     "vm": "VS8000101_vProxy-EMC Networker",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14290",
+     "vm": "VS8000145_vProxy-EMC Networker",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "11915",
+     "vm": "VS8000105_vProxy-EMC Networker",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11917",
+     "vm": "VS8000110_vProxy-EMC Networker",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11916",
+     "vm": "VS8000109_vProxy-EMC NetWorker",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11918",
+     "vm": "VS8000111_vProxy-EMC NetWorker",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11919",
+     "vm": "VS8000122_vProxy-EMC Networker",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "11920",
+     "vm": "VS8000100_vProxy-EMC Networker",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "11922",
+     "vm": "VS8000121_vProxy-EMC Networker",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14286",
+     "vm": "VS8000116_vProxy-EMC Networker",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14285",
+     "vm": "VS8000114_vProxy-EMC Networker",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "11921",
+     "vm": "VS8000120_vProxy-EMC Networker",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14282",
+     "vm": "Teste Kea DHCP",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14139",
+     "vm": "SRV-JUMP01",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14140",
+     "vm": "SRV-JUMP02",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14092",
+     "vm": "VS8000931",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14090",
+     "vm": "VS8000929",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14091",
+     "vm": "VS8000930",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14089",
+     "vm": "VS8000928",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14088",
+     "vm": "VS8000927",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14121",
+     "vm": "VS8000394",
+     "confianca": "media"
+    },
+    {
+     "hostid": "11873",
+     "vm": "VS8000391",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14120",
+     "vm": "VS8000220",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11872",
+     "vm": "VS8000390",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11875",
+     "vm": "VS8000393",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11874",
+     "vm": "VS8000392",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14268",
+     "vm": "sv9000206-Witness",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "11900",
+     "vm": "sv9000206",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14267",
+     "vm": "sv9000206-Passive",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14269",
+     "vm": "vs9001207",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "11975",
+     "vm": "VS8000703",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14233",
+     "vm": "VS8000989_NGINX-ProxyManager",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14176",
+     "vm": "VS8000734",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14236",
+     "vm": "VeeamRepo",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14218",
+     "vm": "VEEAM-VXBLOCK",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14270",
+     "vm": "VeeamSA",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14217",
+     "vm": "VEEAM-POWERFLEX",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14100",
+     "vm": "VS6000001",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10532",
+     "vm": "VS9000003",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10529",
+     "vm": "VS9000007",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11913",
+     "vm": "VS8000004",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14261",
+     "vm": "VS8000997",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14259",
+     "vm": "VS8000995",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14260",
+     "vm": "VS8000996",
+     "confianca": "media"
+    },
+    {
+     "hostid": "14262",
+     "vm": "VS8000998",
+     "confianca": "media"
+    },
+    {
+     "hostid": "11932",
+     "vm": "VS8000887",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11930",
+     "vm": "VS8000885",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11933",
+     "vm": "VS8000889",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11931",
+     "vm": "VS8000886",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10606",
+     "vm": "VS9000214",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10597",
+     "vm": "VS9000406",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11682",
+     "vm": "VS8000221",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14134",
+     "vm": "Graylog",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14136",
+     "vm": "graylog-vm01",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14137",
+     "vm": "graylog-vm02",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11986",
+     "vm": "NS3",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14099",
+     "vm": "NS4",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10619",
+     "vm": "VS8000219",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10587",
+     "vm": "VS8000218",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10616",
+     "vm": "VS8000360",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10525",
+     "vm": "VS8000107",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11972",
+     "vm": "VS9000106",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10536",
+     "vm": "VS9000105",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14275",
+     "vm": "VS8000932",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "10084",
+     "vm": "VS8000115",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14272",
+     "vm": "VS8000228",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14273",
+     "vm": "VS8000229",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10538",
+     "vm": "VS8000403",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11912",
+     "vm": "TACACS UBUNTU",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14245",
+     "vm": "VS8000519_Revovery",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14179",
+     "vm": "Observer_PRD",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14077",
+     "vm": "VS8000811",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10596",
+     "vm": "VS9000423",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14724",
+     "vm": "VS8000223",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11876",
+     "vm": "VS8000810_netbox",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10540",
+     "vm": "VS8000363",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14274",
+     "vm": "lpar2rrd",
+     "confianca": "baixa"
+    }
+   ],
+   "acao_proposta": "adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/ACM",
+   "novo": true,
+   "n_hosts": 17,
+   "hosts": [
+    {
+     "hostid": "11838",
+     "vm": "VS8000770",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11724",
+     "vm": "VS8000750",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11732",
+     "vm": "VS8000761",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11695",
+     "vm": "VS8000517",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11839",
+     "vm": "VS8000780",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11694",
+     "vm": "VS8000516",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11685",
+     "vm": "VS8000345",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11693",
+     "vm": "VS8000483",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11723",
+     "vm": "VS8000749",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11697",
+     "vm": "VS8000520",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11692",
+     "vm": "VS8000482",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11722",
+     "vm": "VS8000748",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11721",
+     "vm": "VS8000747",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11856",
+     "vm": "VS8000801",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11836",
+     "vm": "VS8000768",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11837",
+     "vm": "VS8000769",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11855",
+     "vm": "VS8000800",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/APLICACOES INTERNAS",
+   "novo": true,
+   "n_hosts": 4,
+   "hosts": [
+    {
+     "hostid": "10557",
+     "vm": "VS8000305",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10559",
+     "vm": "VS8000430",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10555",
+     "vm": "VS8000304",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10556",
+     "vm": "VS8000414",
+     "confianca": "media"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/CREDITQUEST",
+   "novo": true,
+   "n_hosts": 4,
+   "hosts": [
+    {
+     "hostid": "10626",
+     "vm": "VS8000112",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11962",
+     "vm": "VS8000823",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11969",
+     "vm": "VS8000831",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11961",
+     "vm": "VS8000822",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/DIGIWAVE",
+   "novo": true,
+   "n_hosts": 16,
+   "hosts": [
+    {
+     "hostid": "14094",
+     "vm": "VS8000503",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14095",
+     "vm": "VS8000504",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14097",
+     "vm": "VS8000506",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14098",
+     "vm": "VS8000507",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11659",
+     "vm": "VS8000508",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14093",
+     "vm": "VS8000502",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11672",
+     "vm": "VS8000490",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11671",
+     "vm": "VS8000491",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11658",
+     "vm": "VS8000509",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14096",
+     "vm": "VS8000505",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14102",
+     "vm": "VS8000835",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14103",
+     "vm": "VS8000836",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11966",
+     "vm": "VS8000827",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11965",
+     "vm": "VS8000826",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11970",
+     "vm": "VS8000832",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11967",
+     "vm": "VS8000828",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/EBANKIT",
+   "novo": true,
+   "n_hosts": 16,
+   "hosts": [
+    {
+     "hostid": "11935",
+     "vm": "VS8000720",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11937",
+     "vm": "VS8000722",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11936",
+     "vm": "VS8000721",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11715",
+     "vm": "VS8000735",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11626",
+     "vm": "VS8000727",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14107",
+     "vm": "VS8000731",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11629",
+     "vm": "VS8000737",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11623",
+     "vm": "VS8000728",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11624",
+     "vm": "VS8000725",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11628",
+     "vm": "VS8000729",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11631",
+     "vm": "VS8000738",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11630",
+     "vm": "VS8000730",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11627",
+     "vm": "VS8000724",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11717",
+     "vm": "vs8000740",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11625",
+     "vm": "VS8000726",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11938",
+     "vm": "VS8000742",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/ELASTIC SEARCH",
+   "novo": true,
+   "n_hosts": 11,
+   "hosts": [
+    {
+     "hostid": "11984",
+     "vm": "VS8000779",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14112",
+     "vm": "VS8000785",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14126",
+     "vm": "VS8000776",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14127",
+     "vm": "VS8000777",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14125",
+     "vm": "VS8000775",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14123",
+     "vm": "VS8000773",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14124",
+     "vm": "VS8000774",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14110",
+     "vm": "VS8000136",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14109",
+     "vm": "VS8000135",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14111",
+     "vm": "VS8000137",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14122",
+     "vm": "VS8000772",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/ESSENCE",
+   "novo": true,
+   "n_hosts": 9,
+   "hosts": [
+    {
+     "hostid": "14115",
+     "vm": "VS8000513",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14113",
+     "vm": "VS8000510",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14114",
+     "vm": "VS8000512",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14118",
+     "vm": "VS8000526",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14116",
+     "vm": "VS8000514",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11719",
+     "vm": "VS8000743",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14117",
+     "vm": "VS8000515",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14278",
+     "vm": "VS8000510 Clone",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11720",
+     "vm": "VS8000746",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/EXCEL REPORT",
+   "novo": true,
+   "n_hosts": 5,
+   "hosts": [
+    {
+     "hostid": "11952",
+     "vm": "VS8000807",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11954",
+     "vm": "VS8000809",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10617",
+     "vm": "VS8000330",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14280",
+     "vm": "VS8000808_Excel Report",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14279",
+     "vm": "VS8000806_Excel Report",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/FINANTECH",
+   "novo": true,
+   "n_hosts": 8,
+   "hosts": [
+    {
+     "hostid": "11729",
+     "vm": "VS8000757",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11730",
+     "vm": "VS8000758",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11728",
+     "vm": "VS8000756",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11941",
+     "vm": "VS8000764",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11943",
+     "vm": "VS8000766",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11942",
+     "vm": "VS8000765",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11731",
+     "vm": "VS8000759",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11944",
+     "vm": "VS8000767",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/FIRCOSOFT",
+   "novo": true,
+   "n_hosts": 6,
+   "hosts": [
+    {
+     "hostid": "11664",
+     "vm": "VS8000499",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11668",
+     "vm": "VS8000495",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11669",
+     "vm": "VS8000494",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11667",
+     "vm": "VS8000496",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11665",
+     "vm": "VS8000498",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11666",
+     "vm": "VS8000497",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/OPTICS",
+   "novo": true,
+   "n_hosts": 4,
+   "hosts": [
+    {
+     "hostid": "11674",
+     "vm": "VS8000488",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11673",
+     "vm": "VS8000489",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11663",
+     "vm": "VS8000500",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11662",
+     "vm": "VS8000501",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/PRIMAVERA",
+   "novo": true,
+   "n_hosts": 5,
+   "hosts": [
+    {
+     "hostid": "14206",
+     "vm": "VS6000100",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14208",
+     "vm": "VS6000101",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14207",
+     "vm": "VS6000100_CLONE_PDD_CLIENTE_DTI",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14209",
+     "vm": "VS6000101_CLONE_PDD_CLIENTE_DTI",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11949",
+     "vm": "VS8000791",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/SACC",
+   "novo": true,
+   "n_hosts": 4,
+   "hosts": [
+    {
+     "hostid": "11680",
+     "vm": "VS8000134",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11733",
+     "vm": "VS8000789",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11687",
+     "vm": "VS8000347",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11871",
+     "vm": "VS8000867",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/SDVM",
+   "novo": true,
+   "n_hosts": 4,
+   "hosts": [
+    {
+     "hostid": "11704",
+     "vm": "VS8000534",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11701",
+     "vm": "VS8000530",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11703",
+     "vm": "VS8000533",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11702",
+     "vm": "VS8000531",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/SGC",
+   "novo": true,
+   "n_hosts": 4,
+   "hosts": [
+    {
+     "hostid": "10579",
+     "vm": "VS8000475",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10578",
+     "vm": "VS9000309",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11927",
+     "vm": "vs8000474",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11691",
+     "vm": "VS8000476",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/SIGCAP",
+   "novo": true,
+   "n_hosts": 16,
+   "hosts": [
+    {
+     "hostid": "11945",
+     "vm": "VS8000781",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11946",
+     "vm": "VS8000783",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11725",
+     "vm": "VS8000752",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11940",
+     "vm": "VS8000753",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11939",
+     "vm": "VS8000751",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10561",
+     "vm": "VS8000312",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11971",
+     "vm": "vs8000855",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10545",
+     "vm": "VS8000412",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11865",
+     "vm": "VS8000848",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11860",
+     "vm": "VS8000843",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11861",
+     "vm": "VS8000844",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11854",
+     "vm": "VS8000841",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11859",
+     "vm": "VS8000842",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11864",
+     "vm": "VS8000847",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11862",
+     "vm": "VS8000845",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11863",
+     "vm": "VS8000846",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/SIRIS",
+   "novo": true,
+   "n_hosts": 8,
+   "hosts": [
+    {
+     "hostid": "10593",
+     "vm": "VS8000225",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10591",
+     "vm": "VS8000227",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11850",
+     "vm": "VS8000837",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10592",
+     "vm": "VS8000226",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11851",
+     "vm": "VS8000838",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10594",
+     "vm": "VS8000224",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11852",
+     "vm": "VS8000839",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11853",
+     "vm": "VS8000840",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/SWIFT",
+   "novo": true,
+   "n_hosts": 17,
+   "hosts": [
+    {
+     "hostid": "11925",
+     "vm": "VS8000324",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11994",
+     "vm": "VS8000141",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "11995",
+     "vm": "VS8000140",
+     "confianca": "baixa"
+    },
+    {
+     "hostid": "14250",
+     "vm": "VS8000124",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10570",
+     "vm": "VS9000312",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14253",
+     "vm": "VS9000239",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11735",
+     "vm": "VS8000125",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14254",
+     "vm": "VS9000242",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11737",
+     "vm": "VS8000127",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11957",
+     "vm": "VS9000316",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14249",
+     "vm": "VS8000123",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11649",
+     "vm": "VS8000317",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11711",
+     "vm": "VS9000314",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11736",
+     "vm": "VS8000126",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11738",
+     "vm": "VS8000128",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14251",
+     "vm": "VS8000314",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14252",
+     "vm": "VS8000371",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/TALENTIA",
+   "novo": true,
+   "n_hosts": 6,
+   "hosts": [
+    {
+     "hostid": "11686",
+     "vm": "VS9000319",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10562",
+     "vm": "VS8000409",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10581",
+     "vm": "VS9000318",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10564",
+     "vm": "VS8000434",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10565",
+     "vm": "VS8000342",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "14258",
+     "vm": "VS8000343",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  },
+  {
+   "grupo": "BPC/SERVICO/TOBE",
+   "novo": true,
+   "n_hosts": 11,
+   "hosts": [
+    {
+     "hostid": "10572",
+     "vm": "VS8000912",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10574",
+     "vm": "VS8000923",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11869",
+     "vm": "VS8000852",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11866",
+     "vm": "VS8000849",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10577",
+     "vm": "VS9000424",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10589",
+     "vm": "VS8000113",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10575",
+     "vm": "VS8000454",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11868",
+     "vm": "VS8000851",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10576",
+     "vm": "VS8000413",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "10573",
+     "vm": "VS8000427",
+     "confianca": "alta"
+    },
+    {
+     "hostid": "11867",
+     "vm": "VS8000850",
+     "confianca": "alta"
+    }
+   ],
+   "acao_proposta": "criar hostgroup + adicionar hosts (aditivo)",
+   "requer_aprovacao": true
+  }
+ ]
+}

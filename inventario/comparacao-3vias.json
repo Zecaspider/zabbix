@@ -1,0 +1,2350 @@
+{
+ "resumo": {
+  "fonte_live": "2026-07-17T07:42:32",
+  "clusters_prd": [
+   "CS9000001",
+   "CS9000002",
+   "Cluster Swift"
+  ],
+  "vms_live": 223,
+  "vms_excel_nestes_clusters": 222,
+  "categorias": {
+   "A_nas_3_fontes": 183,
+   "A_nas_3_fontes_com_difs": 9,
+   "B_gap_excel_herdado_zabbix": 2,
+   "C_gap_excel_nao_herdado": 2,
+   "D_sem_cobertura_zabbix_confirmado_2_fontes": 27,
+   "E_no_excel_mas_ja_nao_no_vcenter": 3
+  }
+ },
+ "A_nas_3_fontes": [
+  {
+   "vm": "VS8000324",
+   "cluster": "Cluster Swift",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.13.7",
+   "bios_uuid": "42239be3-98d3-48d3-7c69-fbbdd28317aa",
+   "zabbix_host": "SWIFT - VM - VS8000324 (Win · Produção · Camada Aplicacional | DTI - FPM - Fusion Payment Manager - Hist´or...)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000101_vProxy-EMC Networker",
+   "cluster": "Cluster Swift",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.223",
+   "bios_uuid": "4223ab08-b2bf-35e4-857a-e4104aeefa42",
+   "zabbix_host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000142",
+   "cluster": "Cluster Swift",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.13.100",
+   "bios_uuid": "42238d1f-e14b-a99a-36ee-f8f8e4e0de6d",
+   "zabbix_host": "SWIFT - VM - VS8000142 (Win · Produção · Camada Aplicacional | DTI - Jump Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000141",
+   "cluster": "Cluster Swift",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.13.11",
+   "bios_uuid": "4223c7f6-22b8-8ab3-2e22-650143669d0f",
+   "zabbix_host": "SWIFT - VM - VS8000141 (Win · Produção · Camada Aplicacional | DTI - SWP)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000140",
+   "cluster": "Cluster Swift",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.13.10",
+   "bios_uuid": "42233f1a-fa00-48a6-c45f-f2f0ae749fba",
+   "zabbix_host": "SWIFT - VM - VS8000140 (Win · Produção · Camada Aplicacional | DTI - SAA)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000108",
+   "cluster": "CS9000001",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.60",
+   "bios_uuid": "420da660-a8f6-9853-6d87-d11e0b04952a",
+   "zabbix_host": "Emc networker - VM - VS8000108 (Win · Produção · Serviços de Infraestrutura | DTI - NOVO)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000522",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.119",
+   "bios_uuid": "42236af5-4f79-c629-325c-80c4f0f4ec13",
+   "zabbix_host": "Dynatrace - VM - VS8000522 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000440",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.105",
+   "bios_uuid": "4223ed67-bd7e-52c5-e1b0-9d5ea0a138e9",
+   "zabbix_host": "Papercut - VM - VS8000440 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000478",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.160",
+   "bios_uuid": "564d5e75-9d28-1e3f-aa7d-4e1ab3ecee90",
+   "zabbix_host": "Secureshere gateway cluster - VM - VS8000478 (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000700",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.11",
+   "bios_uuid": "4223cfb1-5d6f-7a7e-3a51-d97e8720b688",
+   "zabbix_host": "Git lab - VM - VS8000700 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000513",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.45",
+   "bios_uuid": "42236fec-cfea-432f-7bd6-47fd8e2d55dc",
+   "zabbix_host": "Essence - VM - VS8000513 (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000219",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.12",
+   "bios_uuid": "564d8233-24d0-eeaf-7bc6-a58ed7eda658",
+   "zabbix_host": "Sophos - VM - VS8000219 (Win · Produção · Serviços de Infraestrutura | DTI - MTA II)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000124",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.239.6",
+   "bios_uuid": "4223a841-cf82-5250-974f-2440d4b80b22",
+   "zabbix_host": "SWIFT - VM - VS8000124 (Win · QA · Camada Aplicacional | DTI - SWP Teste)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000779",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.177",
+   "bios_uuid": "42230970-026f-9d3b-e4af-e65fbb71953e",
+   "zabbix_host": "Elastic search - VM - VS8000779 (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000770",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.47",
+   "bios_uuid": "42232ae2-cf32-cd69-0dac-012f817b53d5",
+   "zabbix_host": "ACM - VM - VS8000770 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000312",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.203",
+   "bios_uuid": "564ddba8-cc72-9f03-6ada-2e10269dd730",
+   "zabbix_host": "SWIFT - VM - VS9000312 (Win · Produção · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000781",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.48",
+   "bios_uuid": "42230ba9-45d3-eb1f-5d10-dd9aa9ccfe9d",
+   "zabbix_host": "Sigcap - VM - VS8000781 (Win · QA · Camada Aplicacional | DTI - WEB CAPTURE)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000884",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.84",
+   "bios_uuid": "422366d2-0542-9098-80a1-d048068ae573",
+   "zabbix_host": "E-learning - VM - VS8000884 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "Cacti",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "fe80::250:56ff:fea3:35c7",
+   "bios_uuid": "4223efd4-d970-75b8-25bf-ce096d6d05d0",
+   "zabbix_host": "Cacti - VM - Cacti (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000783",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.50",
+   "bios_uuid": "422379ac-f7aa-8c03-61d5-23ff6f8d3f0b",
+   "zabbix_host": "Sigcap - VM - VS8000783 (Win · QA · Camada Aplicacional | DTI - WEB RETRIEVE)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000754",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.41",
+   "bios_uuid": "4223ab4a-afd4-f431-05b2-1c068775ccdf",
+   "zabbix_host": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000786",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.4",
+   "bios_uuid": "4223b208-108d-a794-0872-99fa3f6e3498",
+   "zabbix_host": "Fusion essence - VM - VS8000786 (Win · QA · Camada Aplicacional | PMSI - Data Extracts)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000796",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.66",
+   "bios_uuid": "42239439-986d-cd07-461c-40a01886a902",
+   "zabbix_host": "Integracao - VM - VS8000796 (Win · QA · Bases de Dados | PMSI - Integração com o essense)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000358",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "564d9aa8-eeef-d968-27ae-147c1f4c8c0a",
+   "zabbix_host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000813_teste",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.165",
+   "bios_uuid": "42231632-0487-1c5f-7641-2f5302ed46cb",
+   "zabbix_host": "Microcredito - VM - VS8000813_teste (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "TACACS UBUNTU",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.199",
+   "bios_uuid": "564da36e-0566-05ff-f84a-4dbceb9e87b4",
+   "zabbix_host": "tacacsubuntu",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000112",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.102",
+   "bios_uuid": "564deafe-eb71-7e6f-a779-33e511b2e4f1",
+   "zabbix_host": "Creditquest - VM - VS8000112 (Win · QA · Camada Aplicacional | PMSI - Hardware Provisioning)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000499",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.31",
+   "bios_uuid": "4223662a-f32a-65af-9c86-a6b0845b5c15",
+   "zabbix_host": "Fircosoft - VM - VS8000499 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000503",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.35",
+   "bios_uuid": "42236b81-b57f-6066-7420-bdeac5c4f836",
+   "zabbix_host": "Digiwave - VM - VS8000503 (Linux · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000504",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.36",
+   "bios_uuid": "42233a3a-ac3e-437b-3534-9f2dd1d060b1",
+   "zabbix_host": "Digiwave - VM - VS8000504 (Linux · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000506",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.38",
+   "bios_uuid": "4223217c-1d9c-93c9-5b9a-86243dadfddf",
+   "zabbix_host": "Digiwave - VM - VS8000506 (Linux · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000507",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.39",
+   "bios_uuid": "4223943c-4440-deea-df70-07323832ee67",
+   "zabbix_host": "Digiwave - VM - VS8000507 (Linux · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000890",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.90",
+   "bios_uuid": "4223a043-c645-e32a-0896-0add2effc6b8",
+   "zabbix_host": "Gitlab - VM - VS8000890 (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000894",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.239.7",
+   "bios_uuid": "422367cb-5ffe-9868-20a2-1bca261a8e5c",
+   "zabbix_host": "Swift saa - VM - VS8000894 (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000145_vProxy-EMC Networker",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.230",
+   "bios_uuid": "4223ae96-157b-e1f6-6494-63b4f05d395a",
+   "zabbix_host": "VMware - VM - VS8000145_vProxy-EMC Networker (Linux · Produção · Virtualização | DTI - vProxy Backup)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000519_Revovery",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.50",
+   "bios_uuid": "42233e94-c888-7a29-907d-9edddc4fb214",
+   "zabbix_host": "Support server - VM - VS8000519_Revovery (Win · QA · Bases de Dados | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000902",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.71",
+   "bios_uuid": "4223138c-dbc8-c7c4-0df9-54cce5ba145a",
+   "zabbix_host": "Sem-Classificação - VM - VS8000902 (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000864",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.174",
+   "bios_uuid": "42232c25-ffc3-4df5-aaf6-ddbf8bc28fe6",
+   "zabbix_host": "BPM - VM - VS8000864 (Linux · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000523",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.120",
+   "bios_uuid": "42232121-b451-5c6e-6a9a-8f947c54d3fd",
+   "zabbix_host": "Dynatrace - VM - VS8000523 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000788",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.78",
+   "bios_uuid": "42232cd8-acad-cf90-c415-82cea824abf8",
+   "zabbix_host": "GLPI - VM - VS8000788 (Linux · Produção · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000704",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223cf34-9e4e-2392-4045-0f30b0683c84",
+   "zabbix_host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000703",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42235dbe-65db-796e-5e40-da06c8f0290d",
+   "zabbix_host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000534",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.195",
+   "bios_uuid": "422366a2-c8be-8559-a337-3b578a4439b4",
+   "zabbix_host": "Sdvm - VM - VS8000534 (Win · QA · Camada Aplicacional | SAFIRA - Ambiente UAT)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000750",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.38",
+   "bios_uuid": "4223bd70-cf20-711b-492e-9c9a87ece2f5",
+   "zabbix_host": "ACM - VM - VS8000750 (Win · QA · Bases de Dados | PMSI - Relational DB Server ACM 1)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000752",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.40",
+   "bios_uuid": "4223cd08-fd2f-ad39-3719-a4db03e8840b",
+   "zabbix_host": "Sigcap - VM - VS8000752 (Win · QA · Camada Aplicacional | DTI - WEB RETRIEVE)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000760",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.42",
+   "bios_uuid": "4223a08a-343a-4a11-e5fc-3975c316d973",
+   "zabbix_host": "Fusion essence - VM - VS8000760 (Win · QA · Camada Aplicacional | PMSI - Middleware Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000706",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.228",
+   "bios_uuid": "564d9e0b-66d5-ab18-2e68-5fcb4afc3d6f",
+   "zabbix_host": "Conversor vms - VM - VS9000706 (Win · Produção · Serviços de Infraestrutura | DTI - PC para Converter Servi...)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000328",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.221",
+   "bios_uuid": "422d9930-df0a-f0b4-d3a3-2b46ca4639f2",
+   "zabbix_host": "Bank trade - VM - VS9000328 (Win · Produção · Camada Aplicacional | DOP - Projecto Bank Trade)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VD5000PD001",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.25",
+   "bios_uuid": "420d31ae-7494-1b23-eae0-179354e46140",
+   "zabbix_host": "Jump server - VM - VD5000PD001 (Win · Produção · Segurança | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS1800002",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.190",
+   "bios_uuid": "4204c80c-41ca-330a-b017-9ce635c532ba",
+   "zabbix_host": "Eba - VM - VS1800002 (Win · Operações · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS6000100",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.227.136",
+   "bios_uuid": "4223d67d-ae92-4a5a-274a-ea681549d003",
+   "zabbix_host": "Primavera - VM - VS6000100 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS6000101",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.227.137",
+   "bios_uuid": "4223b26d-82b0-cee0-ed65-5ff204ace724",
+   "zabbix_host": "Primavera - VM - VS6000101 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000352",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "564d2d7f-2c06-e263-e77a-b971d87f8e0b",
+   "zabbix_host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS9000449",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.188",
+   "bios_uuid": "564d479e-58e3-bfa6-a1fb-de5a06dc6ffe",
+   "zabbix_host": "Observe it - VM - VS9000449 (Win · QA · Serviços de Infraestrutura | DSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.185",
+   "bios_uuid": "42237c6e-c605-084f-482b-2ddf2e25cab8",
+   "zabbix_host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS9000214",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.211",
+   "bios_uuid": "422d8e2f-3087-0ab4-5379-41c03acd505c",
+   "zabbix_host": "System center - VM - VS9000214 (Win · Produção · Serviços de Infraestrutura | DTI - SCOM)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000239",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.239.13",
+   "bios_uuid": "564dcda2-b1b0-d44a-4af5-4587a7e36835",
+   "zabbix_host": "SWIFT - VM - VS9000239 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000761",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.38",
+   "bios_uuid": "42239916-7a0a-ba33-885d-617f836038ac",
+   "zabbix_host": "ACM - VM - VS8000761 (Win · QA · Bases de Dados | DTI - ACM 1)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000381",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.222",
+   "bios_uuid": "564d0eba-71fd-75f5-5bc2-d55d241e7f3c",
+   "zabbix_host": "Backup exe - VM - VS9000381 (Win · Operações · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000517",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.49",
+   "bios_uuid": "4223f02e-0577-1a04-924c-427222d19e69",
+   "zabbix_host": "ACM - VM - VS8000517 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000360",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.22",
+   "bios_uuid": "420d2793-1864-f371-6bae-480b484a7973",
+   "zabbix_host": "RMS - VM - VS8000360 (Win · Produção · Serviços de Infraestrutura | DTI - Rights Management Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000508",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.40",
+   "bios_uuid": "42232fb4-423b-8fb0-b7ec-4ba6f7870d06",
+   "zabbix_host": "Digiwave - VM - VS8000508 (Win · QA · Bases de Dados | PMSI - BD01)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000495",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.27",
+   "bios_uuid": "42232348-0ac6-8319-2e0e-7d567c887634",
+   "zabbix_host": "Fircosoft - VM - VS8000495 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000502",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.34",
+   "bios_uuid": "42232d47-28c8-6851-01d6-0da0677e2b99",
+   "zabbix_host": "Digiwave - VM - VS8000502 (Linux · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VD5000JUMP04",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.235.3",
+   "bios_uuid": "4223fde8-82f8-2478-1e92-54597c48bdf5",
+   "zabbix_host": "Jump Server - VM - VD5000JUMP04 (Win · Produção · Segurança | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "SRV-JUMP01",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.235.4",
+   "bios_uuid": "42230a5a-7d32-b935-c4ed-e041c986477f",
+   "zabbix_host": "IAM - VM - SRV-JUMP01 (Win · Produção · Serviços de Infraestrutura | DTI - ADDS DNS DHCP)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000125",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.13.4",
+   "bios_uuid": "42239a54-5209-e560-2e59-b4bd23ba966c",
+   "zabbix_host": "SWIFT - VM - VS8000125 (Win · Produção · Camada Aplicacional | DTI - SAA)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000863",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.171",
+   "bios_uuid": "4223aeab-114b-6654-5763-408ec930c1dd",
+   "zabbix_host": "BPM - VM - VS8000863 (Linux · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000862",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.172",
+   "bios_uuid": "4223e556-24d4-8c9f-103e-f51280142473",
+   "zabbix_host": "BPM - VM - VS8000862 (Linux · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000984",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.129.2.2",
+   "bios_uuid": "4223b65d-45d2-5af6-d99f-efb6866db415",
+   "zabbix_host": "OKD Worker3 - VM - VS8000984 (worker3.okd-dev.bpc.intranet)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VeeamRepo",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.58",
+   "bios_uuid": "4223cfc8-de55-92a8-f14f-4346167808e6",
+   "zabbix_host": "Sem-Classificação - VM - VeeamRepo (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000900",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.69",
+   "bios_uuid": "42232049-6928-39ea-57ce-d1d56cdd6c23",
+   "zabbix_host": "Sem-Classificação - VM - VS8000900 (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000709",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42238c79-70fa-79e6-c907-edee7492a7ca",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000710",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223403d-3916-96ec-525d-4413d19d8a5a",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000510",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.42",
+   "bios_uuid": "4223f3b8-fcff-cd4e-d401-3f45cbe9bc6e",
+   "zabbix_host": "Essence - VM - VS8000510 (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000512",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.44",
+   "bios_uuid": "4223fcbd-f068-b2c2-13d4-d8b9ab21422f",
+   "zabbix_host": "Essence - VM - VS8000512 (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000702",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223a5c0-021f-4ed1-9ecb-95a36d2f7de5",
+   "zabbix_host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000739",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.33",
+   "bios_uuid": "4223bc87-1c96-51de-7714-c15811ca9235",
+   "zabbix_host": "Hexastep - VM - VS8000739 (Win · Produção · Camada Aplicacional | DTI - PROJECTO SIGC)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "ISE-TST",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.140",
+   "bios_uuid": "42239b4e-bffe-ca02-082a-a40137fc0b09",
+   "zabbix_host": "Ise tst - VM - ISE-TST (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000780",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.48",
+   "bios_uuid": "4223e45c-9e35-fac2-5a88-8937539b3160",
+   "zabbix_host": "ACM - VM - VS8000780 (Win · QA · Bases de Dados | DTI - Servidor BD)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000753",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.31",
+   "bios_uuid": "42234985-63a2-f3ab-3de5-503d3d09fbdb",
+   "zabbix_host": "Sigcap - VM - VS8000753 (Win · QA · Bases de Dados | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "INSIGHTVM CONSOLE",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.51",
+   "bios_uuid": "564dc654-3381-a854-368f-a173fa7065fd",
+   "zabbix_host": "Insightvm console - VM - INSIGHTVM CONSOLE (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000394",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "192.168.1.71",
+   "bios_uuid": "422359fa-b495-63a4-82e3-a027d8085dd1",
+   "zabbix_host": "Exchange - VM - VS8000394 (Win · Produção · Camada Aplicacional | DTI - Edge Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000488",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.20",
+   "bios_uuid": "4223fbeb-a4d0-da0d-4fe7-bef61c6794a2",
+   "zabbix_host": "Optics - VM - VS8000488 (Win · QA · Bases de Dados | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000490",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.22",
+   "bios_uuid": "42235d15-dfdf-1de9-42db-9baef12be8f8",
+   "zabbix_host": "Digiwave - VM - VS8000490 (Win · QA · Bases de Dados | PMSI - BD02)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000494",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.26",
+   "bios_uuid": "4223900d-b0a6-b244-ca37-97874e8de3dd",
+   "zabbix_host": "Fircosoft - VM - VS8000494 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "SRV-JUMP02",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.235.7",
+   "bios_uuid": "422315cc-a11d-e0f8-7aff-5a455c164fe7",
+   "zabbix_host": "IAM - VM - SRV-JUMP02 (Win · Produção · Serviços de Infraestrutura | DTI - ADDS DNS DHCP)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "okd_ha_proxy",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.63",
+   "bios_uuid": "42239aea-bfe5-a427-fc74-cf4e9b2d82a2",
+   "zabbix_host": "Sem-Classificação - VM - okd_ha_proxy (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000225",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.142",
+   "bios_uuid": "564d53ad-ada9-e51f-336d-1746ee29d24a",
+   "zabbix_host": "SIRIS - VM - VS8000225 (Win · QA · Camada Aplicacional | DRG)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000528",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.5",
+   "bios_uuid": "4223248b-f376-2a22-a7af-e52380729205",
+   "zabbix_host": "Jump server - VM - VS8000528 (Win · Produção · Segurança | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000720",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.20",
+   "bios_uuid": "42234765-89c5-a55f-24fc-89939bfae7d1",
+   "zabbix_host": "Ebankit - VM - VS8000720 (Win · QA · Camada Aplicacional | DSE)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000529",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.156",
+   "bios_uuid": "42232e9b-baf3-12f2-79d9-17bd3bae1365",
+   "zabbix_host": "Dsvm - VM - VS8000529 (Win · QA · Camada Aplicacional | SAFIRA)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000757",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.44",
+   "bios_uuid": "42230568-cfbe-e708-3924-abd8ccdc5abf",
+   "zabbix_host": "Finantech - VM - VS8000757 (Win · QA · Camada Aplicacional | SAFIRA - Front Office)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000758",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.36",
+   "bios_uuid": "42233c0b-524e-daf8-e1b7-e3e658b7795f",
+   "zabbix_host": "Finantech - VM - VS8000758 (Win · QA · Camada Aplicacional | SAFIRA - Back Office)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000751",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.39",
+   "bios_uuid": "4223072b-bfc9-d218-8c54-7484525ca128",
+   "zabbix_host": "Sigcap - VM - VS8000751 (Win · QA · Camada Aplicacional | DTI - WEB CAPTURE)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000745",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.27",
+   "bios_uuid": "42230b46-1927-412d-6737-6a21bbfc2fb3",
+   "zabbix_host": "Integrador - VM - VS8000745 (Linux · QA · Serviços de Infraestrutura | PMSI - Servidor Apache NIFI ENFINT)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000507",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "172.16.8.132",
+   "bios_uuid": "420d3918-a0f1-cd5c-f39c-c2aa880003a4",
+   "zabbix_host": "Jump server - VM - VS9000507 (Win · Produção · Segurança | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000242",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.236",
+   "bios_uuid": "564da9ae-e8ce-9bf4-4d75-dfdfc7d8615e",
+   "zabbix_host": "SWIFT - VM - VS9000242 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000496",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.28",
+   "bios_uuid": "42237573-213d-2ce6-f550-d9828f7b9897",
+   "zabbix_host": "Fircosoft - VM - VS8000496 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000516",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.48",
+   "bios_uuid": "4223f800-8a8b-5637-a480-71597e06584b",
+   "zabbix_host": "ACM - VM - VS8000516 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000895",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.239.8",
+   "bios_uuid": "4223d821-6be5-1c6c-166e-fb898d45fb72",
+   "zabbix_host": "Swift swp - VM - VS8000895 (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000931",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.233.139",
+   "bios_uuid": "42239ddc-14cb-f68a-7651-e7eed54ec061",
+   "zabbix_host": "Dhcp server - VM - VS8000931 (Linux · Produção · Serviços de Infraestrutura | Kea DHCP NodeLPI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000127",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.13.60",
+   "bios_uuid": "4223ee05-e3cb-bb35-8974-c6c1ee23afda",
+   "zabbix_host": "SWIFT - VM - VS8000127 (Win · Produção · Segurança | DTI - SWIFT Jump Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000227",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.144",
+   "bios_uuid": "564df603-6914-9955-9bfc-443e40d85572",
+   "zabbix_host": "SIRIS - VM - VS8000227 (Win · QA · Bases de Dados | DRG)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000345",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.55",
+   "bios_uuid": "4223c852-64db-961e-bedd-0e62658b24e3",
+   "zabbix_host": "ACM - VM - VS8000345 (Win · QA · Camada Aplicacional | DSE - Aplicação da Assecco (MIA))",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000483",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.10",
+   "bios_uuid": "42237935-4543-ff89-253a-693896439170",
+   "zabbix_host": "ACM - VM - VS8000483 (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000722",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.21",
+   "bios_uuid": "422325e5-3eb9-7fa4-20b1-899bf19f5117",
+   "zabbix_host": "Ebankit - VM - VS8000722 (Win · QA · Bases de Dados | DSE)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "Observer_PRD",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.101.40",
+   "bios_uuid": "4223a777-b5bb-c0c2-18e1-a2a6b159f79e",
+   "zabbix_host": "Observer - VM - Observer_PRD (Linux · Produção · Serviços de Infraestrutura | DSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000749",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.37",
+   "bios_uuid": "422349c4-246a-5a01-dc22-e2fdb5238eb0",
+   "zabbix_host": "ACM - VM - VS8000749 (Win · QA · Camada Aplicacional | DTI - SUPPORT SERVER)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000123",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.239.5",
+   "bios_uuid": "4223f577-c385-c1e1-37da-96d41e32355d",
+   "zabbix_host": "SWIFT - VM - VS8000123 (Win · QA · Camada Aplicacional | DTI - SAA Teste\nVM recuperada (Janeiro 2024))",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000811",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.233.133",
+   "bios_uuid": "4223446c-100a-c772-585b-44a9c7045a41",
+   "zabbix_host": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000319",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.55",
+   "bios_uuid": "564d9b60-589f-d7bf-d829-fa4be2edbd61",
+   "zabbix_host": "Sftp pmsi - VM - VS8000319 (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000912",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.196",
+   "bios_uuid": "420d01f5-fed2-a19c-5772-4ababf4911d3",
+   "zabbix_host": "ToBe - VM - VS8000912 (Win · QA · Camada Aplicacional | DTI - Serv Dev da TOBE - STC, SCC)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000926",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.76",
+   "bios_uuid": "4223147f-ca23-c88c-71b9-3b2c258c5c14",
+   "zabbix_host": "Sem-Classificação - VM - VS8000926 (A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000489",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.21",
+   "bios_uuid": "4223f6f8-0f03-7fbe-840f-f40ba7940dd5",
+   "zabbix_host": "Optics - VM - VS8000489 (Win · QA · Bases de Dados | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000498",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.30",
+   "bios_uuid": "42232ecf-b590-8204-bcc8-70b8e36bd951",
+   "zabbix_host": "Fircosoft - VM - VS8000498 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000514",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.33",
+   "bios_uuid": "4223ceeb-0b37-a2a7-11d0-f39b02845f3c",
+   "zabbix_host": "Essence - VM - VS8000514 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000520",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.51",
+   "bios_uuid": "42231ae4-8713-712d-7c5b-f4ba1799c4f0",
+   "zabbix_host": "ACM - VM - VS8000520 (Win · QA · Bases de Dados | DTI - DB Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000896",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.96",
+   "bios_uuid": "4223c80e-07b3-828b-c833-ea9ad40ef944",
+   "zabbix_host": "GLPI - VM - VS8000896 (Linux · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000980",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.113",
+   "bios_uuid": "42234d0c-f716-a657-0ace-ed0fabe61167",
+   "zabbix_host": "OKD - VM - VS8000980 (Linux · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000983",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.128.2.2",
+   "bios_uuid": "4223a56b-52da-140d-7d95-46a83fe1ffca",
+   "zabbix_host": "OKD Worker2 - VM - VS8000983 (worker2.okd-dev.bpc.intranet)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS6000100_CLONE_PDD_CLIENTE_DTI",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.118",
+   "bios_uuid": "4223f69f-e164-3362-2071-32b74ac51542",
+   "zabbix_host": "Primavera - VM - VS6000100_CLONE_PDD_CLIENTE_DTI (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000771",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.173",
+   "bios_uuid": "42237a16-abd8-6068-a118-08ad8a1d0cc9",
+   "zabbix_host": "Sem-Classificação - VM - VS8000771 (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000901",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.70",
+   "bios_uuid": "42236dda-6855-1878-7dff-a5ab26e9d176",
+   "zabbix_host": "Sem-Classificação - VM - VS8000901 (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.110",
+   "bios_uuid": "42231bd6-84d7-b3c2-c053-654ece6fa81a",
+   "zabbix_host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "SV9000204",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.101.9",
+   "bios_uuid": "564d7371-512a-a3ff-9853-9b0370d45e5f",
+   "zabbix_host": "sv9000204 (Vcenter PRD)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000118",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.149",
+   "bios_uuid": "4223d479-bc8f-8c12-201b-c39906f10bdf",
+   "zabbix_host": "Projecto diretiva - VM - VS8000118 (Win · QA · Camada Aplicacional | DTI - 02)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.109",
+   "bios_uuid": "564d8d7a-ddc8-9472-b588-edfd79369ffb",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.111",
+   "bios_uuid": "564de21d-074e-3493-9d8e-0c5d25e497dc",
+   "zabbix_host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000481",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.161",
+   "bios_uuid": "564d2a02-2a70-46ec-1ed1-0b7ea323883d",
+   "zabbix_host": "Securesphere - VM - VS8000481 (Linux · Produção · Serviços de Infraestrutura | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000119",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.16",
+   "bios_uuid": "4223fd2a-a27b-8f27-bf06-e5bdfef52391",
+   "zabbix_host": "Projecto diretiva - VM - VS8000119 (Win · QA · Bases de Dados | DTI - 02)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000482",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.10",
+   "bios_uuid": "4223fcc4-5e8c-06b7-67f2-8d54a2a6b17d",
+   "zabbix_host": "ACM - VM - VS8000482 (Win · QA · Camada Aplicacional | DTI - Server ACM - MFT \\ PRT Qualidade, Certificação)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000530",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.157",
+   "bios_uuid": "42232e63-27d6-1692-442b-2ac8c0e59274",
+   "zabbix_host": "Sdvm - VM - VS8000530 (Win · QA · Camada Aplicacional | SAFIRA)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000533",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.194",
+   "bios_uuid": "42238b0d-8bf8-d920-0b2c-f6c2af5daf4d",
+   "zabbix_host": "Sdvm - VM - VS8000533 (Win · QA · Camada Aplicacional | SAFIRA - Ambiente DEV)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000748",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.36",
+   "bios_uuid": "4223443e-6388-97bd-5e00-19fd7abd618a",
+   "zabbix_host": "ACM - VM - VS8000748 (Win · QA · Camada Aplicacional | DTI - Portal)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000755",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.35",
+   "bios_uuid": "4223098b-0aaf-fa10-055f-9e7d15966377",
+   "zabbix_host": "Cpi - VM - VS8000755 (Win · QA · Bases de Dados | PMSI - Projeto.PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000923",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.33",
+   "bios_uuid": "420d55d2-e5b4-0486-2fd5-cb4a0ea2f3f9",
+   "zabbix_host": "ToBe - VM - VS8000923 (Win · QA · Camada Aplicacional | DTI - Serv Dev da TOBE - App)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000743",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.34",
+   "bios_uuid": "4223c6bd-63e0-835d-76ec-8713b4f7e70e",
+   "zabbix_host": "Essence - VM - VS8000743 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000ASSECO",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42237e1f-5fb5-ddc0-945b-1265bce03d2a",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS9000506",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "172.16.8.131",
+   "bios_uuid": "420dc7b3-5f82-af16-ad94-40bc7e7bd10e",
+   "zabbix_host": "Jump server - VM - VS9000506 (Win · Produção · Segurança | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "LTTI44_CLONE",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.72",
+   "bios_uuid": "42164a9b-5854-b1a3-7fc6-cf500f1b0058",
+   "zabbix_host": "Psi - VM - LTTI44_CLONE (Win · Produção · Camada Aplicacional | DTI - Processamento de Salário para contas ...)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000981",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.114",
+   "bios_uuid": "4223d7e4-1e55-e5a4-ccb6-1d7bfe4a3b84",
+   "zabbix_host": "OKD - VM - VS8000981 (Linux · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000982",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.131.0.2",
+   "bios_uuid": "4223c3c6-8cf1-a17f-0f7c-3ee1dbfe3d62",
+   "zabbix_host": "OKD Worker1 - VM - VS8000982 (worker1.okd-dev.bpc.intranet)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000525",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.90",
+   "bios_uuid": "422345cf-9f75-7bf7-c024-22591dce7adb",
+   "zabbix_host": "Darktrace - VM - VS8000525 (Linux · Produção · Serviços de Infraestrutura | DTI - sensor novo)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000531",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.158",
+   "bios_uuid": "422339c4-267c-8182-7c8f-af02c89a1c29",
+   "zabbix_host": "Sdvm - VM - VS8000531 (Win · QA · Camada Aplicacional | SAFIRA)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000409",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "564d31a0-314f-7dd2-872a-eafd58f9c055",
+   "zabbix_host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS9000470",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.50",
+   "bios_uuid": "42231b9c-e636-e751-e163-2377b0c02cf1",
+   "zabbix_host": "EAI - VM - VS9000470 (Win · QA · Bases de Dados | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000472",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.160",
+   "bios_uuid": "42230ded-cc14-b4e5-b403-73f1559b76f3",
+   "zabbix_host": "EAI - VM - VS9000472 (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000807",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.32",
+   "bios_uuid": "422394b8-ee9a-1d38-9808-b799733aa6b9",
+   "zabbix_host": "Excel report - VM - VS8000807 (Win · QA · Camada Aplicacional | DCO - Relatórios contabilísticos)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000785",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.88",
+   "bios_uuid": "42239acf-d501-d2d4-1ec0-ed19b5077e48",
+   "zabbix_host": "Elastic search - VM - VS8000785 (Linux · Produção · Serviços de Infraestrutura | DTI - Gestão de Logs Swift)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000809",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.55",
+   "bios_uuid": "42230408-407b-3521-521c-ff736e4cdeb4",
+   "zabbix_host": "Integrador/Apachekafka - VM - VS8000809 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000509",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.122",
+   "bios_uuid": "564d4e1d-474a-faa7-63bd-46a423b4b202",
+   "zabbix_host": "Jump server - VM - VS9000509 (Win · Produção · Segurança | DTI - Máquina de salto para assistencia remota a...)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "Graylog",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "fe80::250:56ff:fe8d:53db",
+   "bios_uuid": "564d6c19-bc06-a130-399f-eaf6408c4bb0",
+   "zabbix_host": "Graylog - VM - Graylog (Win · Produção · Camada Aplicacional | DSI - Aplicação de Logs da Rede)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000795",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.62",
+   "bios_uuid": "4223607c-5fb2-9457-b61f-a4a9549f83f0",
+   "zabbix_host": "Mdw server - VM - VS8000795 (Linux · QA · Serviços de Infraestrutura | PMSI - Integração com o Essense)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000314",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.239.11",
+   "bios_uuid": "564d7622-eab1-3c02-56e5-62eacaa2f867",
+   "zabbix_host": "SWIFT - VM - VS9000314 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VEEAM-VXBLOCK",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.57",
+   "bios_uuid": "422342b3-a4fd-c58d-d762-3b05e8166b61",
+   "zabbix_host": "Sem-Classificação - VM - VEEAM-VXBLOCK (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000423",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.130",
+   "bios_uuid": "564dce90-2a99-94b6-c721-f4c2b105becf",
+   "zabbix_host": "Scsm - VM - VS9000423 (Win · Operações · Bases de Dados | DTI - DB Data Warehouse Database)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000500",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.32",
+   "bios_uuid": "4223ec2e-fda1-050c-c3d5-099ee7a0dfc2",
+   "zabbix_host": "Optics - VM - VS8000500 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000509",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.41",
+   "bios_uuid": "42231538-622d-6e51-ee09-541ad8889974",
+   "zabbix_host": "Digiwave - VM - VS8000509 (Win · QA · Bases de Dados | PMSI - BD1)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000497",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.29",
+   "bios_uuid": "42230f7a-9e96-ee74-2e81-af1cc0b4937f",
+   "zabbix_host": "Fircosoft - VM - VS8000497 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000515",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.47",
+   "bios_uuid": "4223f9c0-a52d-2d33-9af2-264b4e4d7519",
+   "zabbix_host": "Essence - VM - VS8000515 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS6000101_CLONE_PDD_CLIENTE_DTI",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.119",
+   "bios_uuid": "4223ea57-9e47-dee8-88b2-1ae595c1da2d",
+   "zabbix_host": "Primavera - VM - VS6000101_CLONE_PDD_CLIENTE_DTI (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000126",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.13.5",
+   "bios_uuid": "422386c0-5cc1-0037-8220-0157e4719081",
+   "zabbix_host": "SWIFT - VM - VS8000126 (Win · Produção · Camada Aplicacional | DTI - SWP)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "rhcoreos_bootstrap",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.64",
+   "bios_uuid": "422351f1-c555-a71d-6b10-7d08d5fbdb2a",
+   "zabbix_host": "Sem-Classificação - VM - rhcoreos_bootstrap (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VeeamSA",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.126.56",
+   "bios_uuid": "4223b505-9844-c8ef-84ee-13a59c686b2f",
+   "zabbix_host": "Veeam - VM - VeeamSA (Linux · Produção · Serviços de Infraestrutura | DTI - Backup Appliance)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000708",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42234008-b86a-509f-66fa-dabc438621ff",
+   "zabbix_host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome"
+  },
+  {
+   "vm": "VS8000117",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.99",
+   "bios_uuid": "42233448-082f-958b-9e13-f7af0d600d46",
+   "zabbix_host": "Projecto diretiva - VM - VS8000117 (Win · QA · Camada Aplicacional | DTI - 02)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000721",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.21",
+   "bios_uuid": "4223ad33-d561-e5eb-5208-fc086d571a02",
+   "zabbix_host": "Ebankit - VM - VS8000721 (Win · QA · Camada Aplicacional | DSE - SERVIÇOS)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000747",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.35",
+   "bios_uuid": "42231387-83dd-e474-3320-a652f039bd3d",
+   "zabbix_host": "ACM - VM - VS8000747 (Win · QA · Camada Aplicacional | DTI - SERVER 2)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000756",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.43",
+   "bios_uuid": "4223b4c5-4bac-ead8-015c-6d101427a2ef",
+   "zabbix_host": "Finantech - VM - VS8000756 (Win · QA · Camada Aplicacional | SAFIRA - FINANTECH)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000314",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.239.14",
+   "bios_uuid": "564df504-5be1-6cca-2ad0-c940407fe4f8",
+   "zabbix_host": "SWIFT - VM - VS8000314 (Win · Produção · Camada Aplicacional | DTI - Histórico)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000711",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "fe80::3064:5a6b:62fa:7070",
+   "bios_uuid": "420ddddc-52cd-a66e-6090-4ed57eb8a939",
+   "zabbix_host": "Servidor ftp - VM - VS9000711 (Win · Produção · Serviços de Infraestrutura | DTI - SFTP)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VD5000UCALL005",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.134",
+   "bios_uuid": "420d8ad3-72ad-6eea-3fbb-a11dcf55af22",
+   "zabbix_host": "Jump server - VM - VD5000UCALL005 (Win · Produção · Segurança | DTI - António Diamantino)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000371",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.54",
+   "bios_uuid": "4223d386-5ef2-8f50-9727-29008f62bd25",
+   "zabbix_host": "SWIFT - VM - VS8000371 (Win · Produção · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000764",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.203.40",
+   "bios_uuid": "42234894-971c-e1cf-1c34-bac816448bd5",
+   "zabbix_host": "Finantech - VM - VS8000764 (Win · QA · Bases de Dados | SAFIRA - FINANTECH)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000435",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.23",
+   "bios_uuid": "420d985a-a150-60f3-1202-7fad67055f53",
+   "zabbix_host": "Servidor sql - VM - VS8000435 (Win · Produção · Bases de Dados | DTI - Para varias bases de dados pequenas ...)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000406",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.152",
+   "bios_uuid": "564d20c3-d587-6f77-31a9-f9e44e314d92",
+   "zabbix_host": "System center - VM - VS9000406 (Win · Produção · Serviços de Infraestrutura | DTI - SCOM)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS9000508",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "172.16.8.133",
+   "bios_uuid": "420d8bb8-ebef-01dd-56db-3fe3c52e4a1e",
+   "zabbix_host": "Jump server - VM - VS9000508 (Win · Produção · Segurança | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000501",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.33",
+   "bios_uuid": "4223e4a2-0ece-8b35-1a65-124799b2fa4a",
+   "zabbix_host": "Optics - VM - VS8000501 (Win · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000505",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.37",
+   "bios_uuid": "4223d076-a0bc-57c8-0b30-bbe49ad5d70d",
+   "zabbix_host": "Digiwave - VM - VS8000505 (Linux · QA · Camada Aplicacional | PMSI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000223",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.236.35",
+   "bios_uuid": "420dbe61-570f-46b2-a40a-f9b4946e23ab",
+   "zabbix_host": "PRTG - VM - VS8000223 (Win – Teste – Camada Aplicacional | DTI - Monitoramento da rede teste)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000979",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.204.112",
+   "bios_uuid": "4223cdfc-6fcb-489b-c681-9b27bd40aeca",
+   "zabbix_host": "OKD Master1 - VM - VS8000979 (master1.okd-dev.bpc.intranet)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "VS8000510 Clone",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.43",
+   "bios_uuid": "4223671d-140b-d710-1634-99c9fac9d75e",
+   "zabbix_host": "Essence - VM - VS8000510 Clone (Linux · QA · Camada Aplicacional | PMSI - Migration Tool)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid"
+  }
+ ],
+ "A_nas_3_fontes_com_difs": [
+  {
+   "vm": "Teste Kea DHCP",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_OFF",
+   "guest_ip": null,
+   "bios_uuid": "4223a9cd-2a2e-5090-5bb2-bac2c411c52b",
+   "zabbix_host": "Sem-Classificação - VM - Teste Kea DHCP (A-CLASSIFICAR · A-CLASSIFICAR)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "power": "vCenter OFF hoje, host Zabbix ativo"
+   }
+  },
+  {
+   "vm": "VS6000001",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.227.135",
+   "bios_uuid": "422353db-8451-5eb5-33f3-91c3e0fb7dce",
+   "zabbix_host": "Domain controller - VM - VS6000001 (Win · QA · Serviços de Infraestrutura | DTI - Ambiente de qualidade teste)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "ip_excel_vs_live": {
+     "excel(maio)": "fe80::643c:ac02:db0d:d42d",
+     "live(hoje)": "10.10.227.135"
+    }
+   }
+  },
+  {
+   "vm": "VS8000526",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "fe80::c145:333f:759f:a89d",
+   "bios_uuid": "4223a0f7-40c7-b58b-973d-3cbfcd51e112",
+   "zabbix_host": "Essence - VM - VS8000526 (Win · QA · Camada Aplicacional | PMSI - MIG Tool Client or Equation Client)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "ip_zabbix_vs_live": {
+     "zabbix": [
+      "10.10.237.56"
+     ],
+     "live(hoje)": "fe80::c145:333f:759f:a89d"
+    }
+   }
+  },
+  {
+   "vm": "VS6000005",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.229.1",
+   "bios_uuid": "4223b334-375f-a373-f1a7-4c742dd42751",
+   "zabbix_host": "Cluster bd - VM - VS6000005 (Win · QA · Bases de Dados | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "ip_excel_vs_live": {
+     "excel(maio)": "fe80::899d:38fa:4331:8c5",
+     "live(hoje)": "10.10.229.1"
+    }
+   }
+  },
+  {
+   "vm": "VS9000316",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.162",
+   "bios_uuid": "420da396-df06-ee1b-2abe-ec6cc3d7f7e0",
+   "zabbix_host": "SWIFT - VM - VS9000316 (Win · Produção · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "ip_zabbix_vs_live": {
+     "zabbix": [
+      "10.10.238.54"
+     ],
+     "live(hoje)": "10.10.238.162"
+    }
+   }
+  },
+  {
+   "vm": "VS8000317",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.198",
+   "bios_uuid": "564dcad6-3849-1734-9d06-2a3567ba3f3b",
+   "zabbix_host": "SWIFT - VM - VS8000317 (Win · QA · Camada Aplicacional | DTI - FPM - Fusion Payment Manager)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "ip_excel_vs_live": {
+     "excel(maio)": "fe80::daa9:f473:433b:cd2d",
+     "live(hoje)": "10.10.238.198"
+    }
+   }
+  },
+  {
+   "vm": "VS8000491",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "fe80::69a4:1346:1186:cb5c",
+   "bios_uuid": "422389ae-baf3-d641-13f8-5da76292cf0c",
+   "zabbix_host": "Digiwave - VM - VS8000491 (Win · QA · Bases de Dados | PMSI - BD02)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "ip_zabbix_vs_live": {
+     "zabbix": [
+      "10.10.237.23"
+     ],
+     "live(hoje)": "fe80::69a4:1346:1186:cb5c"
+    }
+   }
+  },
+  {
+   "vm": "VS8000128",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "192.168.8.2",
+   "bios_uuid": "42232a60-ad66-330f-7756-b31bcb04c5c4",
+   "zabbix_host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "uuid",
+   "difs": {
+    "ip_zabbix_vs_live": {
+     "zabbix": [
+      "10.10.13.8"
+     ],
+     "live(hoje)": "192.168.8.2"
+    }
+   }
+  },
+  {
+   "vm": "VS8000319",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.238.57",
+   "bios_uuid": "422307e8-f693-a7bc-c2ad-d3d5fb7d4d0e",
+   "zabbix_host": "Sftp pmsi - VM - VS8000319 (Win · QA · Camada Aplicacional | DTI)",
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": "nome",
+   "difs": {
+    "ip_zabbix_vs_live": {
+     "zabbix": [
+      "10.10.236.55"
+     ],
+     "live(hoje)": "10.10.238.57"
+    }
+   }
+  }
+ ],
+ "B_gap_excel_herdado_zabbix": [
+  {
+   "vm": "VS8000744",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "422305a6-9886-f947-e980-de323ec019de",
+   "zabbix_host": null,
+   "criterio_excel": null,
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000903",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42235f98-bee2-9366-3b89-40bd9011cd5d",
+   "zabbix_host": null,
+   "criterio_excel": null,
+   "criterio_zabbix": null
+  }
+ ],
+ "C_gap_excel_nao_herdado": [
+  {
+   "vm": "Migrada_Nao_Ligar_VS9000494",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_OFF",
+   "guest_ip": null,
+   "bios_uuid": "564d3f04-c2fc-5dd9-0ab2-f7ef5dc3562a",
+   "zabbix_host": "Ebankit audit system - VM - VS9000494 (Win · Produção · Camada Aplicacional | DTI)",
+   "criterio_excel": null,
+   "criterio_zabbix": "uuid"
+  },
+  {
+   "vm": "SV9000401",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "172.16.8.162",
+   "bios_uuid": "564db015-520f-a025-06b9-f8fa90d3e4c9",
+   "zabbix_host": "Eba - VM - SV9000401 (Win · Produção · Bases de Dados | DTI - Aplicacão de Caixa das Agencias)",
+   "criterio_excel": null,
+   "criterio_zabbix": "uuid"
+  }
+ ],
+ "D_sem_cobertura_zabbix_confirmado_2_fontes": [
+  {
+   "vm": "LNX",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42238903-8831-42c4-34cc-a91834f1944d",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000798",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223d3a2-72d1-41dd-352c-e07384e78b65",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "C9800-CL-04 (Cisco Catalyst 9800)",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223718d-28b6-5ea0-a4aa-9b837b7a44bc",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VD5000JUMP_DSE",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223b94c-ebfb-bb5e-2628-71b8f07d1d2f",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VD5000KPMG2",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223e166-a3d3-b715-088b-d9915d4de8c7",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000701",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42231ec7-6c01-a8c9-e40b-04fab746a2dc",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000716",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42231902-a449-eeaa-6315-ede1991388d3",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000892",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42237c9d-5743-b1e0-ba07-6876ba092090",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "vHMC9-DR",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42237337-a431-febb-eda7-a2a02e393768",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VD5000IA007",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "420d126b-d8f7-6404-2b16-f118e7da9152",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000797",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223b999-d98b-374b-1dd0-909ff60a0593",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VD5000NP010",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "564dbf9e-2db3-6842-77f4-8ee8db966b9b",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000707",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42231713-1baa-2e18-fb48-7ad61155a517",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "C9800-CL-03 (Cisco Catalyst 9800)",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42231932-5201-40f0-ee36-49d7e52bf641",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VD5000SAFIRA_JUMP",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42237b39-874b-ed4b-ec74-f3e1b96709a5",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000705",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223d3a6-cc84-d5d3-a542-8cc6c36f7d82",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000511",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_OFF",
+   "guest_ip": null,
+   "bios_uuid": "42234563-5658-4d96-ea89-cea85095bb85",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS9000313",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "564d9a05-20aa-6320-cf24-6d532a8485d4",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000LNX",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223024c-cdc4-a57c-d88b-3cd3641d1052",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "vHMC9",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "564d7149-ebac-7318-049f-2f329361353e",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000493",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.237.25",
+   "bios_uuid": "42234aee-81fe-adb8-8cf8-b11087f0039e",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000799",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223a21b-9770-2120-411e-7d1ce64634cf",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VD5000KPMG1",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "4223c25f-33f4-e59c-215a-04fdc2cc2e0e",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS9001206",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": "10.10.101.30",
+   "bios_uuid": "564d196e-9399-ba20-076b-cafd2dd2f38d",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VD5000JD006",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_OFF",
+   "guest_ip": null,
+   "bios_uuid": "420da5d5-8850-ce79-3443-25a186824962",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS9000320",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "420dd90e-e592-3f07-2fe3-b50863634a5f",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  },
+  {
+   "vm": "VS8000882",
+   "cluster": "CS9000002",
+   "power_state": "POWERED_ON",
+   "guest_ip": null,
+   "bios_uuid": "42238b44-0a18-02de-825d-9a7006e7b697",
+   "zabbix_host": null,
+   "criterio_excel": "bios_uuid",
+   "criterio_zabbix": null
+  }
+ ],
+ "E_no_excel_mas_ja_nao_no_vcenter": [
+  {
+   "vm": "VS8000126_Migrada_Nao_Ligar",
+   "cluster": "Cluster Swift",
+   "power_state_maio": "POWERED_OFF",
+   "anotacao": "SWIFT.WPA.DTI.SWP - Hist´orico",
+   "zabbix_host": "SWIFT - VM - VS8000126 (Win · Produção · Camada Aplicacional | DTI - SWP)",
+   "zabbix_status": "ativo",
+   "nota": "VM removida/renomeada/movida de cluster desde 2026-05-04"
+  },
+  {
+   "vm": "VS8000127_Migrada_Nao_Ligar",
+   "cluster": "Cluster Swift",
+   "power_state_maio": "POWERED_OFF",
+   "anotacao": "SWIFT.WPS.DTI.SWIFT Jump Server - Hist´orico",
+   "zabbix_host": "SWIFT - VM - VS8000127 (Win · Produção · Segurança | DTI - SWIFT Jump Server)",
+   "zabbix_status": "ativo",
+   "nota": "VM removida/renomeada/movida de cluster desde 2026-05-04"
+  },
+  {
+   "vm": "VS8000128_Migrada_Nao_Ligar",
+   "cluster": "Cluster Swift",
+   "power_state_maio": "POWERED_OFF",
+   "anotacao": "SWIFT.WPA.DTI.Token Server - Hist´orico",
+   "zabbix_host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)",
+   "zabbix_status": "ativo",
+   "nota": "VM removida/renomeada/movida de cluster desde 2026-05-04"
+  }
+ ]
+}

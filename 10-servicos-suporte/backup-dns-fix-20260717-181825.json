@@ -1,0 +1,49 @@
+{
+ "criado_em": "20260717-181825",
+ "items_partidos": [
+  {
+   "itemid": "543125",
+   "hostid": "11986",
+   "name": "DNS - resposta a consultas ({$DNS.ZONE})",
+   "key_": "net.dns[{$DNS.IP},{$DNS.ZONE},{$DNS.TYPE},{$DNS.TIMEOUT},{$DNS.RETRIES}]",
+   "type": "3",
+   "status": "0"
+  },
+  {
+   "itemid": "543126",
+   "hostid": "14099",
+   "name": "DNS - resposta a consultas ({$DNS.ZONE})",
+   "key_": "net.dns[{$DNS.IP},{$DNS.ZONE},{$DNS.TYPE},{$DNS.TIMEOUT},{$DNS.RETRIES}]",
+   "type": "3",
+   "status": "0"
+  },
+  {
+   "itemid": "543127",
+   "hostid": "10532",
+   "name": "DNS - resposta a consultas ({$DNS.ZONE})",
+   "key_": "net.dns[{$DNS.IP},{$DNS.ZONE},{$DNS.TYPE},{$DNS.TIMEOUT},{$DNS.RETRIES}]",
+   "type": "3",
+   "status": "0"
+  },
+  {
+   "itemid": "543128",
+   "hostid": "10529",
+   "name": "DNS - resposta a consultas ({$DNS.ZONE})",
+   "key_": "net.dns[{$DNS.IP},{$DNS.ZONE},{$DNS.TYPE},{$DNS.TIMEOUT},{$DNS.RETRIES}]",
+   "type": "3",
+   "status": "0"
+  }
+ ],
+ "triggers_antigas": [
+  {
+   "triggerid": "172224",
+   "description": "AMBOS os DNS Externos (NS3+NS4) indisponiveis - risco de email/servicos parceiros",
+   "status": "0"
+  },
+  {
+   "triggerid": "172225",
+   "description": "AMBOS os DNS Internos AD (VS9000003+VS9000007) indisponiveis - risco de autenticacao/resolucao interna",
+   "status": "0"
+  }
+ ]
+}

@@ -1,0 +1,320 @@
+{
+ "executado_em": "20260718-064919",
+ "apply": false,
+ "fases": {
+  "C1_pre": [
+   {
+    "triggerid": "171845",
+    "description": "[L1] {$APP.NAME} indisponivel ({$FAILS.BEFORE.ALERT}+ falhas consecutivas)",
+    "expression": "{260982}={$FAILS.BEFORE.ALERT} and {260983}=0",
+    "priority": "5",
+    "status": "0"
+   },
+   {
+    "triggerid": "171987",
+    "description": "[L1] {$APP.NAME} responde mas com codigo HTTP inesperado (config/app, servidor vivo)",
+    "expression": "{261064}={$FAILS.BEFORE.ALERT} and {261065}=1",
+    "priority": "4",
+    "status": "0"
+   }
+  ],
+  "C3_pre": [
+   {
+    "itemid": "534467",
+    "hostid": "14186",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534908",
+    "hostid": "14186",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535349",
+    "hostid": "14186",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534468",
+    "hostid": "14187",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534909",
+    "hostid": "14187",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535350",
+    "hostid": "14187",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534469",
+    "hostid": "14188",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534910",
+    "hostid": "14188",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535351",
+    "hostid": "14188",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534470",
+    "hostid": "14189",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534911",
+    "hostid": "14189",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535352",
+    "hostid": "14189",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534471",
+    "hostid": "14190",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534912",
+    "hostid": "14190",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535353",
+    "hostid": "14190",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534472",
+    "hostid": "14191",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534913",
+    "hostid": "14191",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535354",
+    "hostid": "14191",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534473",
+    "hostid": "14192",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534914",
+    "hostid": "14192",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535355",
+    "hostid": "14192",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534474",
+    "hostid": "14193",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534915",
+    "hostid": "14193",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535356",
+    "hostid": "14193",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534475",
+    "hostid": "14194",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534916",
+    "hostid": "14194",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535357",
+    "hostid": "14194",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534511",
+    "hostid": "14230",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534952",
+    "hostid": "14230",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535393",
+    "hostid": "14230",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534512",
+    "hostid": "14231",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534953",
+    "hostid": "14231",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535394",
+    "hostid": "14231",
+    "key_": "icmppingsec",
+    "status": "0"
+   },
+   {
+    "itemid": "534513",
+    "hostid": "14232",
+    "key_": "icmpping",
+    "status": "0"
+   },
+   {
+    "itemid": "534954",
+    "hostid": "14232",
+    "key_": "icmppingloss",
+    "status": "0"
+   },
+   {
+    "itemid": "535395",
+    "hostid": "14232",
+    "key_": "icmppingsec",
+    "status": "0"
+   }
+  ],
+  "C4_pre": [
+   {
+    "hostid": "11877",
+    "host": "sv9000204",
+    "parentTemplates": [
+     {
+      "templateid": "10343",
+      "name": "Linux by Zabbix agent active"
+     },
+     {
+      "templateid": "12062",
+      "name": "VMware"
+     },
+     {
+      "templateid": "14074",
+      "name": "BPC Ping"
+     }
+    ]
+   },
+   {
+    "hostid": "11900",
+    "host": "sv9000206",
+    "parentTemplates": [
+     {
+      "templateid": "10174",
+      "name": "VMware Guest"
+     },
+     {
+      "templateid": "10343",
+      "name": "Linux by Zabbix agent active"
+     },
+     {
+      "templateid": "12062",
+      "name": "VMware"
+     },
+     {
+      "templateid": "14074",
+      "name": "BPC Ping"
+     }
+    ]
+   }
+  ],
+  "C5_pre": [
+   {
+    "eventid": "27965614",
+    "objectid": "37471",
+    "name": "High swap space usage (less than 50% free)",
+    "severity": "0"
+   },
+   {
+    "eventid": "31608107",
+    "objectid": "38035",
+    "name": "High swap space usage (less than 50% free)",
+    "severity": "0"
+   }
+  ],
+  "C6_pre": [
+   {
+    "triggerid": "30170",
+    "description": "Cisco IOS: CPU: Temperature is too low",
+    "status": "0",
+    "hosts": [
+     {
+      "hostid": "10728",
+      "host": "RTGRAF00"
+     }
+    ]
+   },
+   {
+    "triggerid": "63701",
+    "description": "Cisco IOS: CPU: Temperature is too low",
+    "status": "0",
+    "hosts": [
+     {
+      "hostid": "10939",
+      "host": "RT_ATM_HSP_DAVID_BERN"
+     }
+    ]
+   }
+  ]
+ }
+}

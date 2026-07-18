@@ -18,16 +18,36 @@ var CFG = {
 
   networkProxy: 'http://10.10.126.22:3000/api/datasources/uid/ffo8sp8zllog0e/resources/zabbix-api',
 
+  // domainPrefix resolve os groupids por NOME (BPC/DOMINIO/NN) — ver
+  // resolveInfraGroups(). groupids fica de fallback já corrigido para os
+  // grupos canónicos vivos (608→603, 602/605→668, 663/345/391→663).
   domains: [
-    { id: 'vmware',   label: 'Infraestrutura VMware',        groupids: ['608'],                 datasource: 'infra',   dashUid: 'a967e936-99a3-47c8-af98-052d7a80beb8' },
-    { id: 'vms',      label: 'Servidores Virtuais',          groupids: ['609'],                 datasource: 'infra',   dashUid: '0758c24e-d2b1-4a81-bb14-1788ac8bec68' },
-    { id: 'storage',  label: 'Armazenamento',                groupids: ['602', '605'],          datasource: 'infra',   dashUid: '993834a3-6bd3-4d25-88f5-0a59eab171fe' },
+    { id: 'vmware',   label: 'Infraestrutura VMware',        domainPrefix: '01', groupids: ['603'],                 datasource: 'infra',   dashUid: 'a967e936-99a3-47c8-af98-052d7a80beb8' },
+    { id: 'vms',      label: 'Servidores Virtuais',          domainPrefix: '03', groupids: ['609'],                 datasource: 'infra',   dashUid: '0758c24e-d2b1-4a81-bb14-1788ac8bec68' },
+    { id: 'storage',  label: 'Armazenamento',                domainPrefix: '02', groupids: ['668'],                 datasource: 'infra',   dashUid: '993834a3-6bd3-4d25-88f5-0a59eab171fe' },
     { id: 'rede',     label: 'Rede',                         groupids: ['26', '27', '28', '29'], datasource: 'network', dashUid: 'rede-n2-segmentos' },
-    { id: 'bd',       label: 'Bases de Dados',               groupids: ['355'],                 datasource: 'infra',   dashUid: 'bd-n2' },
-    { id: 'apis',     label: 'APIs e Serviços de Negócio',   groupids: ['663', '345', '391'],   datasource: 'infra',   dashUid: 'apis-n2' },
-    { id: 'seg',      label: 'Segurança',                    groupids: ['656'],                 datasource: 'infra',   dashUid: null },
+    { id: 'bd',       label: 'Bases de Dados',               domainPrefix: '06', groupids: ['355'],                 datasource: 'infra',   dashUid: 'bd-n2' },
+    { id: 'apis',     label: 'APIs e Serviços de Negócio',   domainPrefix: '07', groupids: ['663'],                 datasource: 'infra',   dashUid: 'apis-n2' },
+    { id: 'seg',      label: 'Segurança',                    domainPrefix: '05', groupids: ['656'],                 datasource: 'infra',   dashUid: null },
   ],
 };
+
+// Resolve os groupids Infra por NOME uma vez (imune a rename/renumeração de
+// grupos — foi um 608 morto que mostrava o VMware a verde com 88 críticos).
+function resolveInfraGroups(rpc) {
+  return rpc('hostgroup.get', { search: { name: 'BPC/DOMINIO' }, output: ['groupid', 'name'] })
+    .then(function(groups) {
+      var byPrefix = {};
+      groups.forEach(function(g) {
+        var m = /BPC\/DOMINIO\/(\d\d)\s/.exec(g.name + ' ');
+        if (m) (byPrefix[m[1]] = byPrefix[m[1]] || []).push(g.groupid);
+      });
+      CFG.domains.forEach(function(d) {
+        if (d.domainPrefix && byPrefix[d.domainPrefix]) d.groupids = byPrefix[d.domainPrefix];
+      });
+    })
+    .catch(function(err) { console.warn('[BPC] nt-resumo-triggers: resolveInfraGroups falhou', err); });
+}
 
 var SEV = {
   5: { label: 'Desastre', color: '#f85149' },
@@ -183,13 +203,16 @@ function start(rpc) {
     // stale-while-revalidate: repinta o último render em vez de piscar o skeleton
     if (ns.html) root.innerHTML = ns.html;
     else root.innerHTML = '<div class="bpc-skeleton" style="height:220px;"></div>';
-    loadAndRender(rpc, root, ns);
-    // timer único por rootId (antes acumulava 1 setInterval por re-render)
-    if (ns.timer) clearInterval(ns.timer);
-    ns.timer = setInterval(function() {
-      var el = document.getElementById(CFG.rootId);
-      if (el) loadAndRender(rpc, el, ns);
-    }, CFG.refreshMs);
+    // resolve groupids por nome ANTES da 1ª carga; refresca a seguir
+    resolveInfraGroups(rpc).then(function() {
+      loadAndRender(rpc, root, ns);
+      // timer único por rootId (antes acumulava 1 setInterval por re-render)
+      if (ns.timer) clearInterval(ns.timer);
+      ns.timer = setInterval(function() {
+        var el = document.getElementById(CFG.rootId);
+        if (el) loadAndRender(rpc, el, ns);
+      }, CFG.refreshMs);
+    });
   });
 }
 

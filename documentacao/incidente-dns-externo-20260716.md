@@ -78,6 +78,67 @@ isolado de um dos dois:
 - `AMBOS os DNS Externos (NS3+NS4) indisponiveis` (triggerid `172224`)
 - `AMBOS os DNS Internos AD (VS9000003+VS9000007) indisponiveis` (triggerid `172225`)
 
+## 4-bis. RESOLUÇÃO do bug + achado de alcance de rede (2026-07-17)
+
+**Causa do "Unsupported item key" encontrada e confirmada:** os 4 items
+`net.dns[...]` foram criados como **Simple check** (`type=3`), mas `net.dns`
+é item de **Zabbix agent** — o poller de Simple checks não conhece a chave.
+(`net.tcp.service` ao lado é `type=3` e coleta: *esse* é Simple check.)
+Isto explica o §4.5: no pseudo-host do template as macros ficam literais e o
+item nunca é avaliado, por isso não dá erro; nos hosts reais expande e o
+poller de Simple checks rejeita.
+
+**Correcção aplicada (smoke test aprovado):** host-prober `BPC DNS Prober`
+(hostid `14752`, grupo 10 Serviços de Suporte) com interface de agente a
+apontar ao agente saudável do Zabbix server (`10.10.126.22:10050`). Item
+`net.dns[10.5.0.128,bpc.ao,SOA,2,3]` (itemid `548664`, tipo Zabbix agent):
+**passou a `state=0`, coleta a cada minuto, sem erro** — arquitectura
+validada, bug resolvido. Script: `10-servicos-suporte/corrigir_dns_check.py`.
+
+**Achado do smoke test — problema de rede real, não do check:** o item
+retorna **0 (não resolve)** a partir do Zabbix server, mas `nslookup` desta
+estação ao mesmo NS3 (10.5.0.128) **resolve** bpc.ao (SOA `2022022821`). Logo
+o **Zabbix server não alcança NS3:53** (tem ICMP, não tem DNS) — segmentação
+de firewall entre a rede do server (10.10.126.x) e a dos NS externos
+(10.5.0.x). Confirma a pendência de firewall do 3º email. `nslookup` ao NS4
+(10.5.0.129) deu **timeout até da estação** — reproduz a intermitência do
+email original (NS4 tem problema genuíno).
+
+**Consequência para o modelo:**
+- DNS **internos** (DCs, 10.10.240.x, mesma zona do server) → prober-no-server
+  funciona.
+- DNS **externos** (NS3/NS4, 10.5.0.x) → prober-no-server dá falso-negativo;
+  precisa de prober num segmento com acesso a `10.5.0.x:53`, ou abertura de
+  firewall UDP/53 do server para os NS (decisão de rede/segurança, não Zabbix).
+
+**PROVA definitiva por SSH na VM do Zabbix (2026-07-17, `zabbix.bpc.intranet`
+10.10.126.22):**
+- `dig @10.5.0.128 bpc.ao SOA` (NS3) e `@10.5.0.129` (NS4): **connection timed
+  out, UDP e TCP**. `bash </dev/tcp/10.5.0.x/53`: **fechado/filtrado** nos dois.
+- `dig @10.10.240.135` e `@10.10.240.133` (DCs): resolvem, Query time 1-3ms;
+  porta 53/tcp **ABERTA**.
+- `zabbix_agent2 -t net.dns[10.5.0.128,bpc.ao,SOA,2,3]` → **`[s|0]`**;
+  `net.dns[10.10.240.135,bpc.intranet,SOA,2,3]` → **`[s|1]`**.
+- Resolver do próprio server: `nameserver 10.10.240.135` (DC VS9000003) + 8.8.8.8.
+
+**Conclusão fechada:** o mecanismo net.dns está 100% funcional; o `0` do NS3 é
+firewall/routing entre a rede do server (10.10.126.x) e a dos NS externos
+(10.5.0.x) — **não é problema do Zabbix**. É exactamente a validação de firewall
+do 3º email, agora provada objectivamente.
+
+**Decisão (2026-07-17):**
+- **DNS internos (DCs)** → prober-no-server validado (`[s|1]`); alargar já
+  (item VS9000007 + triggers dos 2 DCs, incl. correlação Disaster).
+- **DNS externos (NS3/NS4)** → o item NS3 já criado (`548664`) fica como
+  **canário sem trigger** (dá 0, não alarma; vira 1 sozinho quando houver
+  acesso). Escalar à equipa de rede/segurança: abrir 53 UDP+TCP de
+  10.10.126.22 → 10.5.0.128/129, OU colocar um prober num segmento que já
+  alcance os NS. As triggers externas só se criam depois de o canário passar a
+  1 (senão alarme falso permanente).
+- Nota operacional: o server resolve para si próprio via o DC VS9000003 — se
+  esse DC cair, o server perde DNS interno (fallback 8.8.8.8 pode não servir a
+  intranet). Reforça a criticidade de monitorizar os DCs.
+
 ## 4. HANDOFF — item sem dados, causa não resolvida (fim de sessão 2026-07-16)
 
 **Estado real no Zabbix, confirmado ao vivo:**

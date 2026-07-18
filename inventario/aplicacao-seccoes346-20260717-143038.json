@@ -1,0 +1,1197 @@
+{
+ "executado_em": "20260717-143038",
+ "dry_run": true,
+ "s6_aplicados": [
+  {
+   "hostid": "10562",
+   "host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000409"
+    }
+   }
+  },
+  {
+   "hostid": "11686",
+   "host": "Sftp pmsi - VM - VS8000319 (Win · QA · Camada Aplicacional | DTI)",
+   "mudancas": {
+    "servico": {
+     "novo": "TALENTIA",
+     "antigo": "SFTP PMSI",
+     "vm": "VS9000319"
+    },
+    "departamento": {
+     "novo": "DCH",
+     "antigo": "DTI",
+     "vm": "VS9000319"
+    }
+   }
+  },
+  {
+   "hostid": "11726",
+   "host": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "mudancas": {
+    "servico": {
+     "novo": "CPI",
+     "antigo": "ebankit",
+     "vm": "VS8000754"
+    }
+   }
+  },
+  {
+   "hostid": "11954",
+   "host": "Integrador/Apachekafka - VM - VS8000809 (Linux · Produção · Camada Aplicacional | PMSI)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000809"
+    },
+    "servico": {
+     "novo": "EXCEL REPORT",
+     "antigo": "INTEGRADOR",
+     "vm": "VS8000809"
+    }
+   }
+  },
+  {
+   "hostid": "11956",
+   "host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000ASSECO"
+    }
+   }
+  },
+  {
+   "hostid": "11974",
+   "host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000702"
+    }
+   }
+  },
+  {
+   "hostid": "11975",
+   "host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000703"
+    }
+   }
+  },
+  {
+   "hostid": "11976",
+   "host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000704"
+    }
+   }
+  },
+  {
+   "hostid": "11977",
+   "host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000708"
+    }
+   }
+  },
+  {
+   "hostid": "11978",
+   "host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000709"
+    }
+   }
+  },
+  {
+   "hostid": "11979",
+   "host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000710"
+    }
+   }
+  },
+  {
+   "hostid": "14077",
+   "host": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "mudancas": {
+    "ambiente": {
+     "novo": "QA",
+     "antigo": "Produção",
+     "vm": "VS8000811"
+    },
+    "servico": {
+     "novo": "ANSIBLE",
+     "antigo": "INTEGRADOR",
+     "vm": "VS8000811"
+    },
+    "departamento": {
+     "novo": "DTI",
+     "antigo": "PMSI",
+     "vm": "VS8000811"
+    }
+   }
+  },
+  {
+   "hostid": "14210",
+   "host": "Psi - VM - LTTI44_CLONE (Win · Produção · Camada Aplicacional | DTI - Processamento de Salário para contas ...)",
+   "mudancas": {
+    "servico": {
+     "novo": "PSI",
+     "antigo": "Posto de Trabalho",
+     "vm": "LTTI44_CLONE"
+    }
+   }
+  }
+ ],
+ "s6_excecao_powerflex": [
+  {
+   "hostid": "10557",
+   "zabbix_host": "Aplicacoes internas - VM - VS8000305 (Win · Produção · Camada Aplicacional | DTI)",
+   "vm": "VS8000305",
+   "tag": "servico",
+   "valor_excel": "APLICACOES INTERNAS",
+   "valor_zabbix": "LIVE",
+   "nota": "anotacao='APLICACOES INTERNAS.WPA.DTI'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  },
+  {
+   "hostid": "14167",
+   "zabbix_host": "Microcredito - VM - VS8000813 (Win · Produção · Camada Aplicacional | DTI)",
+   "vm": "VS8000813",
+   "tag": "servico",
+   "valor_excel": "MICROCREDITO",
+   "valor_zabbix": "SIC",
+   "nota": "anotacao='MICROCREDITO.WPA.DTI'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  },
+  {
+   "hostid": "14090",
+   "zabbix_host": "Dhcp server - VM - VS8000929 (Linux · Produção · Camada Aplicacional | Agent Stork)",
+   "vm": "VS8000929",
+   "tag": "servico",
+   "valor_excel": "DHCP Server",
+   "valor_zabbix": "Stork Agent (DHCP)",
+   "nota": "anotacao='DHCP Server.LPA.Agent Stork'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  },
+  {
+   "hostid": "14089",
+   "zabbix_host": "Dhcp server - VM - VS8000928 (Linux · Produção · Bases de Dados | Data Base Postgresql, Mysql)",
+   "vm": "VS8000928",
+   "tag": "servico",
+   "valor_excel": "DHCP Server",
+   "valor_zabbix": "Stork DB (DHCP)",
+   "nota": "anotacao='DHCP Server.LPB.Data Base Postgresql, Mysql'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  },
+  {
+   "hostid": "14088",
+   "zabbix_host": "Dhcp server - VM - VS8000927 (Linux · Produção · Camada Aplicacional | Web Application Stork Server)",
+   "vm": "VS8000927",
+   "tag": "servico",
+   "valor_excel": "DHCP Server",
+   "valor_zabbix": "Stork Server (DHCP)",
+   "nota": "anotacao='DHCP Server.LPA.Web Application Stork Server'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  },
+  {
+   "hostid": "10555",
+   "zabbix_host": "Aplicacoes internas - VM - VS8000304 (Win · Produção · Camada Aplicacional | DTI - RDA INFOX SIP RUPE AGEC ...)",
+   "vm": "VS8000304",
+   "tag": "servico",
+   "valor_excel": "APLICACOES INTERNAS",
+   "valor_zabbix": "SIR",
+   "nota": "anotacao='APLICACOES INTERNAS.WPA.DTI.RDA INFOX SIP RUPE AGEC SIR...'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  },
+  {
+   "hostid": "10573",
+   "zabbix_host": "ToBe - VM - VS8000427 (Win · Produção · Camada Aplicacional | DTI - Serv Aplic TOBE - STC)",
+   "vm": "VS8000427",
+   "tag": "servico",
+   "valor_excel": "TOBE",
+   "valor_zabbix": "sistema de compensacao de cheques",
+   "nota": "anotacao='TOBE.WPG.DTI.Serv Aplic TOBE - STC'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  },
+  {
+   "hostid": "11717",
+   "zabbix_host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "vm": "vs8000740",
+   "tag": "servico",
+   "valor_excel": "EBANKIT",
+   "valor_zabbix": "canais digitais",
+   "nota": "anotacao='EBANKIT.WPL.DSE.Load balance do Middleware'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "VM so no snapshot — sem vCenter live para confrontar (Z.8)"
+  }
+ ],
+ "s6_para_seccao10": [
+  {
+   "hostid": "11915",
+   "zabbix_host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "vm": "VS8000105_vProxy-EMC Networker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "anotacao suspeita (vProxyr/LQI em appliance de backup de producao)"
+  },
+  {
+   "hostid": "11917",
+   "zabbix_host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "vm": "VS8000110_vProxy-EMC Networker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "anotacao suspeita (vProxyr/LQI em appliance de backup de producao)"
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "anotacao suspeita (vProxyr/LQI em appliance de backup de producao)"
+  },
+  {
+   "hostid": "11918",
+   "zabbix_host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "vm": "VS8000111_vProxy-EMC NetWorker",
+   "tag": "ambiente",
+   "valor_excel": "Qualidade",
+   "valor_zabbix": "Produção",
+   "nota": "codigo anotacao=LQI",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "anotacao suspeita (vProxyr/LQI em appliance de backup de producao)"
+  },
+  {
+   "hostid": "11916",
+   "zabbix_host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "vm": "VS8000109_vProxy-EMC NetWorker",
+   "tag": "servico",
+   "valor_excel": "vProxyr",
+   "valor_zabbix": "EMC Networker vProxy",
+   "nota": "anotacao='vProxyr.LQI.DTI.This is Backup and Recovery vProxy Appliance'",
+   "acao_proposta": "DECISAO HUMANA: qual valor vence? (Excel e fonte de verdade, mas o valor Zabbix pode ser curadoria valida)",
+   "requer_aprovacao": true,
+   "motivo": "anotacao suspeita (vProxyr/LQI em appliance de backup de producao)"
+  }
+ ],
+ "s3_desativados": [
+  {
+   "hostid": "10549",
+   "host": "SO - Compute - VS8000332 (BPC Net - Backoffice1)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.11.37": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10550",
+   "host": "SO - Compute - VS8000333 (BPC Net - Backoffice2)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.11.38": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10554",
+   "host": "SO - Compute - VS8000444 (BPC Net -BD)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.11.68": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10569",
+   "host": "SO - Compute - SV9000307 (SMS Banking)",
+   "sinais": {
+    "ping": [
+     {
+      "172.16.254.123": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10584",
+   "host": "SO - Compute - VS9000718 (ARGUS Front End V9)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.236.82": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10585",
+   "host": "PLAT - Mgmt - VS9000207 (SCSM_MgmtSrv02)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.231": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10586",
+   "host": "PLAT - Mgmt - VS9000201 (SCSM_MgmtSrv01)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.230": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10601",
+   "host": "PLAT - Infra - VS9000304 (MIM Services (Admin) )",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.203": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10602",
+   "host": "PLAT - Infra - VS9000303 (MIM Services (Utilizadores))",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.200": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10603",
+   "host": "PLAT - Infra - VS9000302 (MIM Portal - Sharepoint)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.197": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10614",
+   "host": "PLAT - Mgmt - VS8000415 (SCCM BASE DE DADOS)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.236.94": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10623",
+   "host": "PLAT - Mgmt - VS8000210 (Orquestrator Server para o SCSM)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.236.241": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10625",
+   "host": "SO - Compute - VS9000461 (TMG Report)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.208": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10631",
+   "host": "SO - Compute - VS9000478 (RELAY PRD Front-End)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.136": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10632",
+   "host": "SO - Compute - VS9000477 (OEM)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.236.150": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10633",
+   "host": "SO - Compute - VS9000468 (Transformação da Função de Risco - PRD)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.159": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10634",
+   "host": "SO - Compute - VS9000426 (Hermes)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.236.144": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "10635",
+   "host": "SO - Compute - VS9000396 (Orion Solarwinds NPM 11.5.x)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.126.39": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  },
+  {
+   "hostid": "11712",
+   "host": "SO - Compute - VS9000249",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.237": false
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "sem ping, sem agente, sem dados recentes + sem VM em 2 fontes — desativado"
+  }
+ ],
+ "s3_retidos": [
+  {
+   "hostid": "10598",
+   "host": "PLAT - Mgmt - VS9000400 (SCSM_DB - Operations Database)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.232": false
+     }
+    ],
+    "dado_recente": "-1d atras",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "SINAL DE VIDA (ping/agente/dados recentes) — investigar antes de desativar"
+  },
+  {
+   "hostid": "10604",
+   "host": "PLAT - Infra - VS9000301 (MIM Sync and DB)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.238.195": false
+     }
+    ],
+    "dado_recente": "-1d atras",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "SINAL DE VIDA (ping/agente/dados recentes) — investigar antes de desativar"
+  },
+  {
+   "hostid": "11648",
+   "host": "Talentia - VM - VS9000319 (Win · QA · Camada Aplicacional | DCH)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.236.55": true
+     }
+    ],
+    "dado_recente": "-1d atras",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "SINAL DE VIDA (ping/agente/dados recentes) — investigar antes de desativar"
+  },
+  {
+   "hostid": "11656",
+   "host": "PLAT - Compute - VS9000346 (IBM IB9 - PRD)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.236.12": true
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "SINAL DE VIDA (ping/agente/dados recentes) — investigar antes de desativar"
+  },
+  {
+   "hostid": "11696",
+   "host": "SO - Compute - VS8000519 (Support Server)",
+   "sinais": {
+    "ping": [
+     {
+      "10.10.237.50": true
+     }
+    ],
+    "dado_recente": "nunca",
+    "iface_available": [
+     "0"
+    ]
+   },
+   "motivo": "SINAL DE VIDA (ping/agente/dados recentes) — investigar antes de desativar"
+  }
+ ],
+ "s4_criados": [
+  {
+   "hostid": "DRY",
+   "tech": "LNX",
+   "visname": "Sem-Classificação - VM - LNX",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5023b208-393d-8380-94aa-2ab4778274fc",
+   "classe": null
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000798",
+   "visname": "INTEGRACAO - VM - VS8000798",
+   "ip": "10.10.204.70",
+   "ip_origem": "DNS VS8000798.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "5023681d-2178-039f-c1a9-bf9084e2698f",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "C9800-CL-04",
+   "visname": "Sem-Classificação - VM - C9800-CL-04",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5023b827-5790-ef3d-a928-7273c7ccda03",
+   "classe": null
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VD5000JUMP_DSE",
+   "visname": "JUMP SERVER - VM - VD5000JUMP_DSE",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "666"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5023370a-7aec-6c72-807b-4b05b03c72bb",
+   "classe": "suporte"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VD5000KPMG2",
+   "visname": "Sem-Classificação - VM - VD5000KPMG2",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "50238c35-5063-55b3-ac76-fc19a0c8d783",
+   "classe": null
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000701",
+   "visname": "NEXUS - VM - VS8000701",
+   "ip": "10.10.204.12",
+   "ip_origem": "DNS VS8000701.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "5023378b-f486-c9e3-4b57-8ba18daf6faa",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000716",
+   "visname": "SMS Gateway - VM - VS8000716",
+   "ip": "10.10.204.23",
+   "ip_origem": "DNS VS8000716.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "50230d9e-2dd4-ae58-03d8-d580181bb1aa",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000892",
+   "visname": "SAP ROUTER - VM - VS8000892",
+   "ip": "10.10.204.92",
+   "ip_origem": "DNS VS8000892.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "5023198f-9a12-adba-51b4-54e7badfaf33",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "vHMC9-DR",
+   "visname": "Sem-Classificação - VM - vHMC9-DR",
+   "ip": "10.10.126.220",
+   "ip_origem": "DNS vHMC9-DR.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "5023e262-ddeb-cd7b-e724-7d4f056a3675",
+   "classe": null
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VD5000IA007",
+   "visname": "JUMP SERVER - VM - VD5000IA007",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "666"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "500d54c6-6e17-6df9-fe9f-ee3e554308a9",
+   "classe": "suporte"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000797",
+   "visname": "DOCKER - VM - VS8000797",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "50233af0-b320-d7f8-4065-87fe306886b2",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VD5000NP010",
+   "visname": "JUMP SERVER - VM - VD5000NP010",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "666"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "500d2b2f-ef4b-df40-dcab-72b97725c5c4",
+   "classe": "suporte"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000707",
+   "visname": "COMPUTE NODES - VM - VS8000707",
+   "ip": "10.10.204.15",
+   "ip_origem": "DNS VS8000707.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609",
+    "663"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "502341b3-abda-1c6b-81c9-a4dae879b665",
+   "classe": "plataforma"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "C9800-CL-03",
+   "visname": "Sem-Classificação - VM - C9800-CL-03",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5023647b-a6b5-a45b-2ca6-23395ce62de6",
+   "classe": null
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VD5000SAFIRA_JUMP",
+   "visname": "JUMP SERVER - VM - VD5000SAFIRA_JUMP",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "666"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5023255b-bf35-01fc-c34d-af96fc099b59",
+   "classe": "suporte"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000705",
+   "visname": "COMPUTE NODES - VM - VS8000705",
+   "ip": "10.10.204.14",
+   "ip_origem": "DNS VS8000705.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609",
+    "663"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "5023bab0-2f2f-c470-dbe6-e155ec05c292",
+   "classe": "plataforma"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS9000313",
+   "visname": "SWIFT - VM - VS9000313",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "686"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5016dd25-b3c1-978c-5956-be559fae1dcf",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000LNX",
+   "visname": "Sem-Classificação - VM - VS8000LNX",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "50238dd3-0531-4a96-df9c-2896e1233eb7",
+   "classe": null
+  },
+  {
+   "hostid": "DRY",
+   "tech": "vHMC9",
+   "visname": "CONSOLA IBM HMC - VM - vHMC9",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "521be622-287f-90de-20c2-05c153e8eb9c",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000493",
+   "visname": "CREDITQUEST - VM - VS8000493",
+   "ip": "10.10.237.25",
+   "ip_origem": "vCenter live",
+   "ip_responde": true,
+   "grupos": [
+    "609",
+    "671"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "50231a48-8ef4-93ff-5baa-178af91e8797",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000799",
+   "visname": "STI - VM - VS8000799",
+   "ip": "10.10.203.90",
+   "ip_origem": "DNS VS8000799.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "50236127-5a31-b844-3bc1-1f1db7ac93d5",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VD5000KPMG1",
+   "visname": "Sem-Classificação - VM - VD5000KPMG1",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5023820b-5b10-55d7-9839-85ef71cdcdf3",
+   "classe": null
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS9001206",
+   "visname": "vcenter - VM - VS9001206",
+   "ip": "10.10.101.30",
+   "ip_origem": "vCenter live",
+   "ip_responde": true,
+   "grupos": [
+    "609",
+    "666"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "501861ad-dd21-562b-62bc-d6ff56ff6937",
+   "classe": "suporte"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS9000320",
+   "visname": "SWIFT - VM - VS9000320",
+   "ip": "10.10.237.70",
+   "ip_origem": "DNS VS9000320.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609",
+    "686"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "500db8a8-1839-1081-c649-1cd3905cc8df",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000882",
+   "visname": "PrivilegedAnalytics - VM - VS8000882",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "50233fd1-f102-a445-8911-e7a232af6adb",
+   "classe": "negocio"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000744",
+   "visname": "NGINX - VM - VS8000744",
+   "ip": null,
+   "ip_origem": null,
+   "ip_responde": false,
+   "grupos": [
+    "609",
+    "666"
+   ],
+   "templates": [
+    "10174"
+   ],
+   "uuid": "5023ef09-ff80-7eed-2428-a3fe54779699",
+   "classe": "suporte"
+  },
+  {
+   "hostid": "DRY",
+   "tech": "VS8000903",
+   "visname": "Sem-Classificação - VM - VS8000903",
+   "ip": "10.10.236.63",
+   "ip_origem": "DNS VS8000903.bpc.intranet",
+   "ip_responde": true,
+   "grupos": [
+    "609",
+    "480"
+   ],
+   "templates": [
+    "10174",
+    "14074"
+   ],
+   "uuid": "50233c03-927a-8b34-aa61-a49d0014a4d4",
+   "classe": null
+  }
+ ],
+ "s4_pulados": [
+  {
+   "vm": "VS8000511",
+   "motivo": "power_state=POWERED_OFF — nao criar"
+  },
+  {
+   "vm": "VD5000JD006",
+   "motivo": "power_state=POWERED_OFF — nao criar"
+  }
+ ],
+ "erros": [],
+ "verificacao": {
+  "falhas": [],
+  "ok": true
+ }
+}

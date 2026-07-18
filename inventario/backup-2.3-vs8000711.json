@@ -1,0 +1,10 @@
+{
+ "criado_em": "2026-07-17T17:32:07.063857",
+ "interfaceid": 1461,
+ "antes": {
+  "useip": "1",
+  "ip": "10.10.203.76",
+  "dns": "VS8000711.bpc.intranet"
+ },
+ "motivo": "2.3 IP duplicado .203.76 pertence a VS8000816; 711 passa a DNS"
+}

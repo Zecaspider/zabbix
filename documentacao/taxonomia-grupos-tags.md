@@ -32,8 +32,9 @@ vivem como **tags**, onde sobreposição e ambiguidade não fazem mal.
 | `BPC/DOMINIO/03 Servidores Virtuais` | **todas** as VMs (SO convidado, workloads) | rename do `609` | Fase B |
 | `BPC/DOMINIO/05 Seguranca` | só appliances dedicados (Check Point, Imperva); VMs de segurança ficam em 03 com tag `servico` | rename do `656` | Fase B |
 | `BPC/DOMINIO/06 Bases de Dados` | hosts com motor de BD (dupla pertença com 03) | rename do `355` | Fase B |
-| `BPC/DOMINIO/07 APIs e Servicos de Negocio` | hosts sintéticos `app-*` | rename do `663` | Fase B |
+| `BPC/DOMINIO/07 Servicos de Negocio` | serviços de negócio: sintéticos `app-*` + sistemas internos por tag `servico` (método via tag `fonte`, ver §8.1) | rename do `663` (era "APIs e Servicos de Negocio") | Fase B / §8 |
 | `BPC/DOMINIO/08 Datacenter Fisico` | IBM Power, HMC, Cisco UCS FIs, Dell R650 PowerFlex, service processors; futuro: chassis/racks/PDUs | **novo** — recebe os ~30 físicos do `603` | Fase B |
+| `BPC/DOMINIO/09 Integracao e APIs` | EAI + Integrador ESB (Kafka, NiFi, Elastic-do-Integrador, CEPH, nodes); dupla pertença com `03` por tag `servico` | **novo** (§8.2) — reclama o slot `09` (Agências é segmento de Rede) | §8 |
 | `BPC/DOMINIO/10 Servicos de Suporte` | VMs DNS/DHCP/AD/NTP/WSUS/Email/IAM (dupla pertença com 03) | **novo** — povoado pelas tags que o `suporte-n2` usa | Fase B |
 
 **Nomenclatura**: prefixo `BPC/DOMINIO/`, número = pasta Grafana, **ASCII
@@ -237,3 +238,98 @@ dashboard seria, hoje, impossível de migrar de qualquer forma.
   simultaneamente compute e storage; a associação ao storage faz-se por tag).
 - **Racks/PDUs/chassis** → entram em `08` quando ganharem monitorização;
   não criar dashboards para inventário vazio.
+
+## 8. Fronteira Negócio / Integração / Suporte — decisões (2026-07-18)
+
+> Gatilho: o utilizador reparou que o grupo `07 APIs e Servicos de Negocio`
+> misturava coisas arquitecturalmente diferentes (40 sintéticos `app-*` + 53
+> VMs reais em dupla pertença com o `03`, incluindo EAI, Integrador ESB e nós
+> OpenShift/OKD). Investigação em `varredura-grupos-mortos-20260718.md` e nesta
+> sessão. As três perguntas de fronteira foram fechadas assim:
+
+### 8.1 "Serviço de negócio" ≠ "host sintético" (o método não define o domínio)
+
+O sintético `app-*` é um **método de monitoria** (check de URL de fora), não o
+domínio. **Existem serviços de negócio que não são web e só se monitoram de
+dentro** — já provados na reconciliação dos 50 sistemas: **EBA – Caixa
+Agências** (serviços Windows `BranchAutomation`) e **MATCH CASH** (app
+desktop/on-demand), ambos marcados "não é app web".
+
+**Decisão:** o domínio `07` passa a chamar-se **`Servicos de Negocio`** (cai o
+"APIs" — as APIs vão para o `09`, ver 8.2). É definido pelo *que* o sistema é
+(um sistema bancário do relatório diário), **não** por ter URL. O **método de
+monitoria é uma camada de fonte de dados**, expressa por **tag `fonte`**
+(`sintetico` | `agente` | `bd`) — mesmo padrão do tier ODBC/Perfmon/Serviço/
+Sem-sinal do domínio `06 Bases de Dados`. O grupo `07` contém os sintéticos
+`app-*`; os sistemas monitorados de dentro (EBA, MATCH CASH) ficam em `03` e o
+N2 de Negócio puxa-os por **tag `servico`** (dupla via, não dupla pertença de
+grupo DOMINIO).
+
+### 8.2 Domínio novo `09 Integracao e APIs` (a resposta a "onde estão as APIs")
+
+O verdadeiro barramento de integração/API do banco estava disfarçado de VMs no
+`07`. É uma **terceira categoria** — não é serviço de negócio (não serve
+clientes directamente) nem suporte de IT (não é DNS/AD/backup).
+
+**Decisão:** criar **`BPC/DOMINIO/09 Integracao e APIs`** (reclama o slot `09`,
+hoje vazio — "Agências" é segmento de Rede, não domínio). **Conteúdo:** EAI +
+Integrador ESB (Kafka, NiFi, o Elasticsearch **do Integrador**, master/compute/
+bastion nodes). Povoado por **dupla pertença com `03`** via tag `servico`
+(`INTEGRADOR`, `EAI`), como o `06` e o `10` já fazem. **Fonte de dados actual =
+só nível de VM** (ping/SO); a monitoria real de plataforma (profundidade de
+fila Kafka, saúde de fluxos NiFi/ESB, latência de endpoints) é o **gap
+documentado** — o tier "sem sinal de plataforma" aparece até existir, igual ao
+modelo do `06`.
+
+### 8.3 OpenShift/OKD ≠ Integração — ficam em `03` + tag (regra mantida)
+
+Um cluster de contentores é uma preocupação diferente de um barramento de
+integração. **Decisão:** os 21 nós OCP + 6 OKD **saem do `07`** (remover dupla
+pertença) e ficam em **`03` com `camada=Plataforma de Contentores` +
+`servico=OKD/OCP`** — exactamente a regra já aprovada em §7. **Não** entram no
+`09`. São candidatos a domínio próprio (`Plataforma de Contentores`) só quando
+houver monitorização da plataforma (não só das VMs) + N2 — mesmo critério de
+maturidade do §7. Resolve de raiz os 12 falsos-positivos ICMP dos nós OCP/OKD
+(IP de rede de pods) do `despiste-calibracao-triggers-20260718.md`.
+
+### 8.4 GitLab sai, CEPH fica (dentro da stack Integrador)
+
+- **GitLab** (`VS8000817`) → **`10 Servicos de Suporte`** por tag: é ferramenta
+  de CI/CD (DevOps), preocupação distinta do runtime de integração. `tipo=devops`.
+- **CEPH** (`VS8000805/866`) → **fica no `09`**: é o armazenamento
+  software-defined **da própria plataforma** Integrador, operacionalmente
+  acoplado; não é um array empresarial (esses são o `02`). `tipo=storage-plataforma`.
+
+### 8.5 Correcção de inconsistência: ELK de logs → Suporte
+
+Há **dois Elasticsearch** distintos, separados pelo propósito (não pelo nome):
+- **ELK/Graylog de logs** (`VS8000135/136/137/772-777` "Logs Swift"/Kibana/
+  Logstash/FleetServer + `Graylog`×3) = observabilidade → **`10 Suporte`**.
+  Hoje **inconsistente**: o `Graylog` já está em `10`, mas o Elastic de logs
+  **só em `03`** → **decisão:** juntá-lo ao `10` por tag, alinhado com o Graylog.
+- **Integrador/Elasticsearch** (`VS8000814/815/978` "PMSI") = parte do ESB →
+  vai para o `09` (8.2). Mesmo software, domínios diferentes — a regra é o
+  **propósito**, não o motor tecnológico.
+
+### 8.6 Resumo executável — APROVADO 2026-07-18
+
+Script: `aplicar_dominio09_20260718.py` (dry-run validado; corre com `--apply`).
+A escrita no Zabbix a partir da sessão Claude é bloqueada pelo classificador —
+o utilizador corre o `--apply` no terminal. Passos (idempotente, backup em
+`documentacao/backup-dominio09-<ts>.json`):
+1. Renomear grupo `07` (groupid `663`) → `BPC/DOMINIO/07 Servicos de Negocio`
+   (o ID preserva-se; refs por nome exigem o resolvedor dinâmico já aplicado
+   ao N1/notificações/dashboards por-domínio).
+2. Criar `BPC/DOMINIO/09 Integracao e APIs`; adicionar **19 hosts** (5 EAI +
+   14 Integrador, inclui CEPH; **exclui GitLab**).
+3. **GitLab** (`VS8000817`) + **9 ELK-de-logs** → `10 Servicos de Suporte`.
+4. Remover do `07` as **53 VMs reais** (ficam em `03` pela regra de ouro): 19
+   passam a estar em 03+09, GitLab em 03+10, e **33 só em 03** (18 OCP + 9 OKD
+   + 6 compute nodes).
+5. **Tag `fonte`** (`sintetico`/`agente`/`bd`) — **DEFERIDA**: redundante
+   enquanto o `07` é só sintéticos; aplica-se quando os sistemas internos
+   (EBA, MATCH CASH) entrarem na vista de Negócio por tag `servico`.
+6. Resultado: `07` = 40 sintéticos de negócio; `09` = plataforma de
+   integração/APIs; `03` continua com todas as VMs (regra de ouro); `10` ganha
+   DevOps (GitLab) + observabilidade de logs (ELK). Contagens confirmadas no
+   dry-run: 53 = 19 (→09) + 1 (GitLab→10) + 33 (só 03).

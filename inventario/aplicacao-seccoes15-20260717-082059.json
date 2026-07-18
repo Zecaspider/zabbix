@@ -1,0 +1,195 @@
+{
+ "executado_em": "20260717-082059",
+ "dry_run": true,
+ "s1_aplicados": [
+  {
+   "hostid": "11957",
+   "host": "SWIFT - VM - VS9000316 (Win · Produção · Camada Aplicacional | DTI)",
+   "ip_antigo": "10.10.238.54",
+   "ip_novo": "10.10.238.162",
+   "validacao": {
+    "ping_novo": true,
+    "tcp10050_novo": true,
+    "ping_antigo": true,
+    "tcp10050_antigo": true,
+    "iface_available": "0",
+    "iface_error": ""
+   },
+   "motivo": "validado: IP novo responde"
+  },
+  {
+   "hostid": "11875",
+   "host": "Exchange - VM - VS8000393 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "ip_antigo": "10.10.236.61",
+   "ip_novo": "10.10.236.97",
+   "validacao": {
+    "ping_novo": true,
+    "tcp10050_novo": true,
+    "ping_antigo": true,
+    "tcp10050_antigo": true,
+    "iface_available": "0",
+    "iface_error": ""
+   },
+   "motivo": "validado: IP novo responde"
+  },
+  {
+   "hostid": "11718",
+   "host": "Canal de denuncias - VM - VS8000741 (Win · Produção · Camada Aplicacional | DTI - PWC)",
+   "ip_antigo": "192.168.1.29",
+   "ip_novo": "10.10.203.29",
+   "validacao": {
+    "ping_novo": true,
+    "tcp10050_novo": true,
+    "ping_antigo": false,
+    "tcp10050_antigo": false,
+    "iface_available": "0",
+    "iface_error": ""
+   },
+   "motivo": "validado: IP novo responde"
+  },
+  {
+   "hostid": "11874",
+   "host": "Exchange - VM - VS8000392 (Win · Produção · Serviços de Infraestrutura | DTI)",
+   "ip_antigo": "10.10.236.38",
+   "ip_novo": "10.10.236.96",
+   "validacao": {
+    "ping_novo": true,
+    "tcp10050_novo": true,
+    "ping_antigo": true,
+    "tcp10050_antigo": true,
+    "iface_available": "0",
+    "iface_error": ""
+   },
+   "motivo": "validado: IP novo responde"
+  }
+ ],
+ "s1_retidos": [
+  {
+   "hostid": "11738",
+   "host": "SWIFT - VM - VS8000128 (Win · Produção · Camada Aplicacional | DTI - Token Server)",
+   "ip_antigo": "10.10.13.8",
+   "ip_novo": "192.168.8.2",
+   "validacao": {
+    "ping_novo": false,
+    "tcp10050_novo": false,
+    "ping_antigo": true,
+    "tcp10050_antigo": true,
+    "iface_available": "0",
+    "iface_error": ""
+   },
+   "motivo": "IP novo nao responde (ping/10050) a partir desta maquina — validar manualmente"
+  }
+ ],
+ "s5_aplicados": [
+  {
+   "hostid": "14133",
+   "host": "Git lab - VM - VS8000700 (Win · QA · Camada Aplicacional | PMSI)",
+   "vm": "VS8000700",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14104",
+   "host": "E-learning - VM - VS8000884 (Win · QA · Camada Aplicacional | PMSI)",
+   "vm": "VS8000884",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14135",
+   "host": "Gitlab - VM - VS8000890 (Win · QA · Camada Aplicacional | DTI)",
+   "vm": "VS8000890",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "11988",
+   "host": "GLPI - VM - VS8000788 (Linux · Produção · Camada Aplicacional | DTI)",
+   "vm": "VS8000788",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14128",
+   "host": "Fusion essence - VM - VS8000760 (Win · QA · Camada Aplicacional | PMSI - Middleware Server)",
+   "vm": "VS8000760",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14077",
+   "host": "Integrador/Apachenifi - VM - VS8000811 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000811",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14116",
+   "host": "Essence - VM - VS8000514 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "vm": "VS8000514",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "11989",
+   "host": "GLPI - VM - VS8000896 (Linux · QA · Camada Aplicacional | DTI)",
+   "vm": "VS8000896",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14134",
+   "host": "Graylog - VM - Graylog (Win · Produção · Camada Aplicacional | DSI - Aplicação de Logs da Rede)",
+   "vm": "Graylog",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14117",
+   "host": "Essence - VM - VS8000515 (Linux · QA · Bases de Dados | PMSI - Migration Tool)",
+   "vm": "VS8000515",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14154",
+   "host": "Integrador/Apachenifi - VM - VS8000869 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000869",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "11970",
+   "host": "Digiwave - VM - VS8000832 (Linux · Produção · Camada Aplicacional | PMSI - FINASTRA)",
+   "vm": "VS8000832",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  },
+  {
+   "hostid": "14146",
+   "host": "Integrador/Apachenifi - VM - VS8000812 (Linux · Produção · Bases de Dados | PMSI)",
+   "vm": "VS8000812",
+   "de": "Windows by Zabbix agent active",
+   "para": "Linux by Zabbix agent active",
+   "motivo": "validado: 0 itens do template errado com historico — unlink+clear seguro"
+  }
+ ],
+ "s5_retidos": [],
+ "erros": [],
+ "verificacao": {
+  "falhas": [],
+  "ok": true
+ }
+}

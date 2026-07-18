@@ -1,0 +1,38 @@
+{
+  "dashboardUid": "visao-triggers-dominio",
+  "dashboardTitle": "N1 · Visão Geral · Triggers por Domínio — Vista segregada",
+  "folderUid": "bfpm0sdaos074d",
+  "datasource": "3_KgG43nz",
+  "notes": "Pedido do utilizador 2026-07-18: vista de triggers SEGREGADA por domínio (não agregada como visao-triggers). 1 secção/tabela BT por domínio real das 2 instâncias (8 Infra BPC/DOMINIO + Rede segregada em 3 segmentos: Agências, Edifícios, Datacenter). Cada secção: cabeçalho com estado + chips de contadores por severidade + tabela BT dos problemas activos (Sev/Host/Problema/Idade/Ack). Groupids resolvidos DINAMICAMENTE por nome (imune a renames — sequela do bug do grupo 608 morto). Datasource Infra 3_KgG43nz + Network via proxy directo. Complementa (não substitui) o visao-triggers, que fica como vista agregada + históricos.",
+  "anchor": {
+    "datasource": {
+      "type": "alexanderzobnin-zabbix-datasource",
+      "uid": "3_KgG43nz"
+    },
+    "group": {
+      "filter": "_SISTEMA/ANCORA-RENDER"
+    },
+    "host": {
+      "filter": "Storage - IBM FS9500"
+    },
+    "item": {
+      "filter": "ICMP ping"
+    }
+  },
+  "panels": [
+    {
+      "file": "utils.js",
+      "id": 100,
+      "role": "utils",
+      "title": "Header + Shared",
+      "content": "<div id=\"bpc-header-root\"></div>"
+    },
+    {
+      "file": "td-dominios.js",
+      "id": 101,
+      "role": "content",
+      "title": "",
+      "content": "<div id=\"bpc-td-dominios\"></div>"
+    }
+  ]
+}

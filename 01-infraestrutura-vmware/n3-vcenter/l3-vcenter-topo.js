@@ -48,8 +48,13 @@ function start_vcdt(rpc) {
   // Se já for numérico, usa directamente; caso contrário resolve via host.get.
   function vcdt_resolveId(nameOrId) {
     if (/^\d+$/.test(nameOrId)) return Promise.resolve(nameOrId)
+    // Sem filtro de grupo: o grupo 664 (vCenters) foi apagado na migração de
+    // taxonomia (F1-F3, 2026-07-14) e a resolução por nome partia-se sempre
+    // que o N2 passava o vCenter por nome (padrão desde a Fase 1.24). O nome
+    // visível do vCenter é único, logo o search por nome basta e é imune a
+    // futuras mudanças de grupo.
     return zpost('host.get', {
-      groupids: ['664'], search: { name: nameOrId }, output: ['hostid'], limit: 1
+      search: { name: nameOrId }, output: ['hostid'], limit: 1
     }).then(function(r) { return r.length ? r[0].hostid : nameOrId })
   }
 

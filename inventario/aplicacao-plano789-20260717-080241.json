@@ -1,0 +1,620 @@
+{
+ "executado_em": "20260717-080241",
+ "dry_run": false,
+ "acoes": [
+  {
+   "seccao": 7,
+   "hostid": "10084",
+   "host": "PLAT - Mgmt - Zabbix server",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "10562",
+   "host": "APP - Compute - VS8000409 (Talentia - BD)",
+   "tags_adicionadas": {
+    "servico": "TALENTIA",
+    "departamento": "DCH",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "10599",
+   "host": "APP - Compute - VS9000358 (eBanking Audit System Prod)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "10600",
+   "host": "SO - Compute - VS9000352 (KMS/VAMT Server)",
+   "tags_adicionadas": {
+    "servico": "KMS",
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11623",
+   "host": "Ebankit - VM - VS8000728 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11624",
+   "host": "Ebankit - VM - VS8000725 (Win · Produção · Camada Aplicacional | Front End)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11625",
+   "host": "Ebankit - VM - VS8000726 (Win · Produção · Camada Aplicacional | Back Office)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11626",
+   "host": "Ebankit - VM - VS8000727 (Win · Produção · Camada Aplicacional | Back Office)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11627",
+   "host": "Ebankit - VM - VS8000724 (Win · Produção · Camada Aplicacional | Front End)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11628",
+   "host": "Ebankit - VM - VS8000729 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11629",
+   "host": "Ebankit - VM - VS8000737 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11630",
+   "host": "Ebankit - VM - VS8000730 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11631",
+   "host": "Ebankit - VM - VS8000738 (Win · Produção · Bases de Dados | DSE - BD Ebankit (cluster))",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11645",
+   "host": "Ebankit audit system - VM - VS9000494 (Win · Produção · Camada Aplicacional | DTI)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11715",
+   "host": "APP - Compute - VS8000735 (Whatsaap BPC | Load Balance_Camada_Backoffice (Ebanking))",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11717",
+   "host": "APP - Network - VS8000740 (Whatsaap BPC | Load balance_Camada_Appcenter)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11726",
+   "host": "Cpi - VM - VS8000754 (Win · QA · Serviços de Infraestrutura | DTI - ebankit servidor IIS)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11733",
+   "host": "APP - Compute - VS8000789 (SACC)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11876",
+   "host": "SO - Compute - VS8000810 (Betbox)",
+   "tags_adicionadas": {
+    "servico": "NETBOX",
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11877",
+   "host": "sv9000204 (Vcenter PRD)",
+   "tags_adicionadas": {
+    "servico": "VMWARE VCENTER",
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11912",
+   "host": "tacacsubuntu",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11914",
+   "host": "GUEST-OS - VS8000101 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "Cluster Swift"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11915",
+   "host": "GUEST-OS - VS8000105 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11916",
+   "host": "GUEST-OS - VS8000109 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11917",
+   "host": "GUEST-OS - VS8000110 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11918",
+   "host": "GUEST-OS - VS8000111 (vProxy VxBlock)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11919",
+   "host": "GUEST-OS - VS8000122 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-MGMT"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11920",
+   "host": "GUEST-OS - VS8000100 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11921",
+   "host": "GUEST-OS - VS8000120 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11922",
+   "host": "GUEST-OS - VS8000121 (vProxy PowerFlex)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11923",
+   "host": "APP - Compute - VS8000138 (Swift - Token Server DR)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "Cluster-Swift"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11927",
+   "host": "SO - Compute - VS8000474 (Sistema de Gestão de Carteira)",
+   "tags_adicionadas": {
+    "servico": "SGC",
+    "departamento": "DTM",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11935",
+   "host": "Ebankit - VM - VS8000720 (Win · QA · Camada Aplicacional | DSE)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11936",
+   "host": "Ebankit - VM - VS8000721 (Win · QA · Camada Aplicacional | DSE - SERVIÇOS)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11937",
+   "host": "Ebankit - VM - VS8000722 (Win · QA · Bases de Dados | DSE)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11938",
+   "host": "Ebankit - VM - VS8000742 (Win · Produção · Interface e Web | DSE - Load balance do Front End)",
+   "tags_adicionadas": {
+    "departamento": "DSE",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11956",
+   "host": "GUEST-OS - PMSI - VS8000ASSECO (ACM Jump Server PMSI)",
+   "tags_adicionadas": {
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11968",
+   "host": "APP - Compute - VS8000829 (Fircosoft MQ PMSI Finastra)",
+   "tags_adicionadas": {
+    "servico": "FircosoftMQ",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11971",
+   "host": "APP - Compute - VS8000855 (Sigcap Load Balancer)",
+   "tags_adicionadas": {
+    "servico": "Sigcap",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11973",
+   "host": "APP - Compute - VS8000294 (BFTeller)",
+   "tags_adicionadas": {
+    "departamento": "DTI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11974",
+   "host": "GUESTO-OS - PMSI - VS8000702 (PMSI - Master Node)",
+   "tags_adicionadas": {
+    "servico": "MASTER NODE",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11975",
+   "host": "PLAT - Web - VS8000703 (PMSI - Load Balancer Nginx)",
+   "tags_adicionadas": {
+    "servico": "NGINX",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11976",
+   "host": "GUEST-OS - PMSI -  VS8000704 (PMSI - CEPH)",
+   "tags_adicionadas": {
+    "servico": "CEPH",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11977",
+   "host": "GUEST-OS - PMSI - VS8000708 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11978",
+   "host": "GUEST-OS - PMSI - VS8000709 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11979",
+   "host": "GUEST-OS - PMSI - VS8000710 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CS9000002"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11980",
+   "host": "GUEST-OS - PMSI - VS8000711 (PMSI - Compute Node)",
+   "tags_adicionadas": {
+    "servico": "COMPUTE NODES",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "11982",
+   "host": "GUEST-OS - PMSI - VS8000713 (PMSI - Master Node)",
+   "tags_adicionadas": {
+    "servico": "MASTER NODE",
+    "departamento": "PMSI",
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 7,
+   "hostid": "14107",
+   "host": "Ebankit - VM - VS8000731 (Win · Produção · Camada Aplicacional | Middleware)",
+   "tags_adicionadas": {
+    "vcenter_cluster": "CLS-BPC01"
+   }
+  },
+  {
+   "seccao": 8,
+   "grupo": "BPC/DOMINIO/03 Servidores Virtuais",
+   "hosts_adicionados": 57,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/DOMINIO/05 Seguranca",
+   "criado": false,
+   "hosts_adicionados": 2,
+   "ja_estavam": 3
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/DOMINIO/07 APIs e Servicos de Negocio",
+   "criado": false,
+   "hosts_adicionados": 51,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/DOMINIO/10 Servicos de Suporte",
+   "criado": false,
+   "hosts_adicionados": 25,
+   "ja_estavam": 65
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/ACM",
+   "criado": true,
+   "hosts_adicionados": 17,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/APLICACOES INTERNAS",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/CREDITQUEST",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/DIGIWAVE",
+   "criado": true,
+   "hosts_adicionados": 16,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/EBANKIT",
+   "criado": true,
+   "hosts_adicionados": 16,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/ELASTIC SEARCH",
+   "criado": true,
+   "hosts_adicionados": 11,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/ESSENCE",
+   "criado": true,
+   "hosts_adicionados": 9,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/EXCEL REPORT",
+   "criado": true,
+   "hosts_adicionados": 5,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/FINANTECH",
+   "criado": true,
+   "hosts_adicionados": 8,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/FIRCOSOFT",
+   "criado": true,
+   "hosts_adicionados": 6,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/OPTICS",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/PRIMAVERA",
+   "criado": true,
+   "hosts_adicionados": 5,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SACC",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SDVM",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SGC",
+   "criado": true,
+   "hosts_adicionados": 4,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SIGCAP",
+   "criado": true,
+   "hosts_adicionados": 16,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SIRIS",
+   "criado": true,
+   "hosts_adicionados": 8,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/SWIFT",
+   "criado": true,
+   "hosts_adicionados": 17,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/TALENTIA",
+   "criado": true,
+   "hosts_adicionados": 6,
+   "ja_estavam": 0
+  },
+  {
+   "seccao": 9,
+   "grupo": "BPC/SERVICO/TOBE",
+   "criado": true,
+   "hosts_adicionados": 11,
+   "ja_estavam": 0
+  }
+ ],
+ "erros": [],
+ "verificacao": {
+  "falhas": [],
+  "ok": true
+ }
+}

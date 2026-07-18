@@ -1,0 +1,30 @@
+{
+ "executado_em": "20260718-065516",
+ "apply": false,
+ "fases": {
+  "F2a_pre_items": [
+   {
+    "itemid": "548713",
+    "key_": "net.tcp.service[https,www.google.com,443]",
+    "status": "0",
+    "lastvalue": "0"
+   }
+  ],
+  "F2b_pre": [
+   {
+    "triggerid": "124568",
+    "manual_close": "0"
+   }
+  ],
+  "F2c_pre": [
+   {
+    "eventid": "23398",
+    "name": "Cisco IOS: CPU: Temperature is too low: <5"
+   },
+   {
+    "eventid": "36183627",
+    "name": "Cisco IOS: CPU: Temperature is too low: <5"
+   }
+  ]
+ }
+}
