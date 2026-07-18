@@ -1,0 +1,2020 @@
+{
+ "dashboardid": "169",
+ "name": "Infraestrutura — Visão Geral",
+ "userid": "22",
+ "private": "1",
+ "display_period": "60",
+ "auto_start": "1",
+ "uuid": "",
+ "pages": [
+  {
+   "dashboard_pageid": "1492",
+   "name": "Resumo",
+   "display_period": "0",
+   "widgets": [
+    {
+     "widgetid": "4009",
+     "type": "hostavail",
+     "name": "Disponibilidade — toda a infraestrutura (~497 hosts)",
+     "x": "0",
+     "y": "0",
+     "width": "36",
+     "height": "4",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "2",
+       "name": "groupids.1",
+       "value": "603"
+      },
+      {
+       "type": "2",
+       "name": "groupids.2",
+       "value": "602"
+      },
+      {
+       "type": "2",
+       "name": "groupids.5",
+       "value": "656"
+      },
+      {
+       "type": "2",
+       "name": "groupids.6",
+       "value": "657"
+      },
+      {
+       "type": "0",
+       "name": "layout",
+       "value": "1"
+      }
+     ]
+    },
+    {
+     "widgetid": "4010",
+     "type": "problemsbysv",
+     "name": "Problemas por severidade — global",
+     "x": "36",
+     "y": "0",
+     "width": "36",
+     "height": "4",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "2",
+       "name": "groupids.1",
+       "value": "603"
+      },
+      {
+       "type": "2",
+       "name": "groupids.2",
+       "value": "602"
+      },
+      {
+       "type": "2",
+       "name": "groupids.5",
+       "value": "656"
+      },
+      {
+       "type": "2",
+       "name": "groupids.6",
+       "value": "657"
+      }
+     ]
+    },
+    {
+     "widgetid": "4011",
+     "type": "problems",
+     "name": "Problemas activos — High / Disaster",
+     "x": "0",
+     "y": "4",
+     "width": "72",
+     "height": "14",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "2",
+       "name": "groupids.1",
+       "value": "603"
+      },
+      {
+       "type": "2",
+       "name": "groupids.2",
+       "value": "602"
+      },
+      {
+       "type": "2",
+       "name": "groupids.5",
+       "value": "656"
+      },
+      {
+       "type": "2",
+       "name": "groupids.6",
+       "value": "657"
+      },
+      {
+       "type": "0",
+       "name": "severities.0",
+       "value": "4"
+      },
+      {
+       "type": "0",
+       "name": "severities.1",
+       "value": "5"
+      },
+      {
+       "type": "0",
+       "name": "show_tags",
+       "value": "1"
+      },
+      {
+       "type": "0",
+       "name": "show_opdata",
+       "value": "1"
+      },
+      {
+       "type": "0",
+       "name": "sort_triggers",
+       "value": "4"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dashboard_pageid": "1493",
+   "name": "Por Domínio",
+   "display_period": "0",
+   "widgets": [
+    {
+     "widgetid": "4012",
+     "type": "problemsbysv",
+     "name": "Servidores Virtuais (428)",
+     "x": "0",
+     "y": "0",
+     "width": "24",
+     "height": "6",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      }
+     ]
+    },
+    {
+     "widgetid": "4013",
+     "type": "problemsbysv",
+     "name": "Servidores Físicos (27)",
+     "x": "24",
+     "y": "0",
+     "width": "24",
+     "height": "6",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "603"
+      }
+     ]
+    },
+    {
+     "widgetid": "4014",
+     "type": "problemsbysv",
+     "name": "Storage (10)",
+     "x": "48",
+     "y": "0",
+     "width": "24",
+     "height": "6",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "602"
+      }
+     ]
+    },
+    {
+     "widgetid": "4015",
+     "type": "problemsbysv",
+     "name": "Hypervisores + vCenter (17)",
+     "x": "0",
+     "y": "6",
+     "width": "24",
+     "height": "6",
+     "view_mode": "0",
+     "fields": []
+    },
+    {
+     "widgetid": "4016",
+     "type": "problemsbysv",
+     "name": "Dispositivos de Segurança (8)",
+     "x": "24",
+     "y": "6",
+     "width": "24",
+     "height": "6",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "656"
+      }
+     ]
+    },
+    {
+     "widgetid": "4017",
+     "type": "problemsbysv",
+     "name": "Networking + Outros + Tape (7)",
+     "x": "48",
+     "y": "6",
+     "width": "24",
+     "height": "6",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "657"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dashboard_pageid": "1494",
+   "name": "VMs · Por Camada",
+   "display_period": "0",
+   "widgets": [
+    {
+     "widgetid": "4018",
+     "type": "tophosts",
+     "name": "Camada Aplicacional (120)",
+     "x": "0",
+     "y": "0",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "camada"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "Camada Aplicacional"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    },
+    {
+     "widgetid": "4019",
+     "type": "tophosts",
+     "name": "Serviços de Infraestrutura (62)",
+     "x": "24",
+     "y": "0",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "camada"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "Serviços de Infraestrutura"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    },
+    {
+     "widgetid": "4020",
+     "type": "tophosts",
+     "name": "Base de Dados (42)",
+     "x": "48",
+     "y": "0",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "camada"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "base de dados"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    },
+    {
+     "widgetid": "4021",
+     "type": "tophosts",
+     "name": "Plataforma de Contentores (18)",
+     "x": "0",
+     "y": "8",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "camada"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "Plataforma de Contentores"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    },
+    {
+     "widgetid": "4022",
+     "type": "tophosts",
+     "name": "Segurança (17)",
+     "x": "24",
+     "y": "8",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "camada"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "Segurança"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    },
+    {
+     "widgetid": "4023",
+     "type": "tophosts",
+     "name": "Interface e Web (4)",
+     "x": "48",
+     "y": "8",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "camada"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "Interface e Web"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dashboard_pageid": "1495",
+   "name": "VMs · Por Cluster",
+   "display_period": "0",
+   "widgets": [
+    {
+     "widgetid": "4024",
+     "type": "tophosts",
+     "name": "CLS-BPC01 (207)",
+     "x": "0",
+     "y": "0",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "cluster"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "CLS-BPC01"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    },
+    {
+     "widgetid": "4025",
+     "type": "tophosts",
+     "name": "CS9000002 (49)",
+     "x": "24",
+     "y": "0",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "cluster"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "CS9000002"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    },
+    {
+     "widgetid": "4026",
+     "type": "tophosts",
+     "name": "Cluster Swift (4)",
+     "x": "48",
+     "y": "0",
+     "width": "24",
+     "height": "8",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.tag",
+       "value": "cluster"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.1.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.1.value",
+       "value": "Cluster Swift"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "15"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "MEM %"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Memory utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dashboard_pageid": "1496",
+   "name": "Servidores Físicos · Frota ESXi",
+   "display_period": "0",
+   "widgets": [
+    {
+     "widgetid": "4027",
+     "type": "tophosts",
+     "name": "Frota ESXi (20 hosts)",
+     "x": "0",
+     "y": "0",
+     "width": "72",
+     "height": "16",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "3",
+       "name": "hostids.0",
+       "value": "14051"
+      },
+      {
+       "type": "3",
+       "name": "hostids.1",
+       "value": "14052"
+      },
+      {
+       "type": "3",
+       "name": "hostids.2",
+       "value": "14053"
+      },
+      {
+       "type": "3",
+       "name": "hostids.3",
+       "value": "14054"
+      },
+      {
+       "type": "3",
+       "name": "hostids.4",
+       "value": "14055"
+      },
+      {
+       "type": "3",
+       "name": "hostids.5",
+       "value": "14056"
+      },
+      {
+       "type": "3",
+       "name": "hostids.6",
+       "value": "14057"
+      },
+      {
+       "type": "3",
+       "name": "hostids.7",
+       "value": "14058"
+      },
+      {
+       "type": "3",
+       "name": "hostids.8",
+       "value": "14059"
+      },
+      {
+       "type": "3",
+       "name": "hostids.9",
+       "value": "14060"
+      },
+      {
+       "type": "3",
+       "name": "hostids.10",
+       "value": "14061"
+      },
+      {
+       "type": "3",
+       "name": "hostids.11",
+       "value": "14062"
+      },
+      {
+       "type": "3",
+       "name": "hostids.12",
+       "value": "14063"
+      },
+      {
+       "type": "3",
+       "name": "hostids.13",
+       "value": "14064"
+      },
+      {
+       "type": "3",
+       "name": "hostids.14",
+       "value": "14065"
+      },
+      {
+       "type": "3",
+       "name": "hostids.15",
+       "value": "14066"
+      },
+      {
+       "type": "3",
+       "name": "hostids.16",
+       "value": "14067"
+      },
+      {
+       "type": "3",
+       "name": "hostids.17",
+       "value": "14068"
+      },
+      {
+       "type": "3",
+       "name": "hostids.18",
+       "value": "14069"
+      },
+      {
+       "type": "3",
+       "name": "hostids.19",
+       "value": "14070"
+      },
+      {
+       "type": "0",
+       "name": "show_lines",
+       "value": "20"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.name",
+       "value": "CPU %"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.item",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "columns.0.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.0.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.name",
+       "value": "Memória usada"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.item",
+       "value": "Used memory"
+      },
+      {
+       "type": "0",
+       "name": "columns.1.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.1.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.name",
+       "value": "VMs hospedadas"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.item",
+       "value": "Number of guest VMs"
+      },
+      {
+       "type": "0",
+       "name": "columns.2.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.2.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.3.name",
+       "value": "Energia (W)"
+      },
+      {
+       "type": "0",
+       "name": "columns.3.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.3.item",
+       "value": "Power usage"
+      },
+      {
+       "type": "0",
+       "name": "columns.3.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.3.base_color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "1",
+       "name": "columns.4.name",
+       "value": "ICMP 24h %"
+      },
+      {
+       "type": "0",
+       "name": "columns.4.data",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.4.item",
+       "value": "ICMP Availability 24h"
+      },
+      {
+       "type": "0",
+       "name": "columns.4.display",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "columns.4.base_color",
+       "value": "3D85C6"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dashboard_pageid": "1497",
+   "name": "Honeycomb",
+   "display_period": "0",
+   "widgets": [
+    {
+     "widgetid": "4028",
+     "type": "honeycomb",
+     "name": "VMs de Produção por CPU %",
+     "x": "0",
+     "y": "0",
+     "width": "72",
+     "height": "12",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "2",
+       "name": "groupids.0",
+       "value": "609"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.tag",
+       "value": "ambiente"
+      },
+      {
+       "type": "0",
+       "name": "host_tags.0.operator",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "host_tags.0.value",
+       "value": "Produção"
+      },
+      {
+       "type": "1",
+       "name": "items.0",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "primary_label_type",
+       "value": "0"
+      },
+      {
+       "type": "1",
+       "name": "primary_label",
+       "value": "{HOST.NAME}"
+      },
+      {
+       "type": "0",
+       "name": "primary_label_size_type",
+       "value": "0"
+      },
+      {
+       "type": "0",
+       "name": "primary_label_size",
+       "value": "18"
+      },
+      {
+       "type": "0",
+       "name": "secondary_label_type",
+       "value": "1"
+      },
+      {
+       "type": "0",
+       "name": "secondary_label_decimal_places",
+       "value": "0"
+      },
+      {
+       "type": "1",
+       "name": "bg_color",
+       "value": "1F8A57"
+      },
+      {
+       "type": "1",
+       "name": "thresholds.0.color",
+       "value": "F2B84B"
+      },
+      {
+       "type": "0",
+       "name": "thresholds.0.threshold",
+       "value": "70"
+      },
+      {
+       "type": "1",
+       "name": "thresholds.1.color",
+       "value": "F5837B"
+      },
+      {
+       "type": "0",
+       "name": "thresholds.1.threshold",
+       "value": "85"
+      }
+     ]
+    },
+    {
+     "widgetid": "4029",
+     "type": "honeycomb",
+     "name": "ESXi por CPU %",
+     "x": "0",
+     "y": "12",
+     "width": "72",
+     "height": "12",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "3",
+       "name": "hostids.0",
+       "value": "14051"
+      },
+      {
+       "type": "3",
+       "name": "hostids.1",
+       "value": "14052"
+      },
+      {
+       "type": "3",
+       "name": "hostids.2",
+       "value": "14053"
+      },
+      {
+       "type": "3",
+       "name": "hostids.3",
+       "value": "14054"
+      },
+      {
+       "type": "3",
+       "name": "hostids.4",
+       "value": "14055"
+      },
+      {
+       "type": "3",
+       "name": "hostids.5",
+       "value": "14056"
+      },
+      {
+       "type": "3",
+       "name": "hostids.6",
+       "value": "14057"
+      },
+      {
+       "type": "3",
+       "name": "hostids.7",
+       "value": "14058"
+      },
+      {
+       "type": "3",
+       "name": "hostids.8",
+       "value": "14059"
+      },
+      {
+       "type": "3",
+       "name": "hostids.9",
+       "value": "14060"
+      },
+      {
+       "type": "3",
+       "name": "hostids.10",
+       "value": "14061"
+      },
+      {
+       "type": "3",
+       "name": "hostids.11",
+       "value": "14062"
+      },
+      {
+       "type": "3",
+       "name": "hostids.12",
+       "value": "14063"
+      },
+      {
+       "type": "3",
+       "name": "hostids.13",
+       "value": "14064"
+      },
+      {
+       "type": "3",
+       "name": "hostids.14",
+       "value": "14065"
+      },
+      {
+       "type": "3",
+       "name": "hostids.15",
+       "value": "14066"
+      },
+      {
+       "type": "3",
+       "name": "hostids.16",
+       "value": "14067"
+      },
+      {
+       "type": "3",
+       "name": "hostids.17",
+       "value": "14068"
+      },
+      {
+       "type": "3",
+       "name": "hostids.18",
+       "value": "14069"
+      },
+      {
+       "type": "3",
+       "name": "hostids.19",
+       "value": "14070"
+      },
+      {
+       "type": "1",
+       "name": "items.0",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "0",
+       "name": "primary_label_type",
+       "value": "0"
+      },
+      {
+       "type": "1",
+       "name": "primary_label",
+       "value": "{HOST.NAME}"
+      },
+      {
+       "type": "0",
+       "name": "primary_label_size_type",
+       "value": "0"
+      },
+      {
+       "type": "0",
+       "name": "primary_label_size",
+       "value": "18"
+      },
+      {
+       "type": "0",
+       "name": "secondary_label_type",
+       "value": "1"
+      },
+      {
+       "type": "0",
+       "name": "secondary_label_decimal_places",
+       "value": "0"
+      },
+      {
+       "type": "1",
+       "name": "bg_color",
+       "value": "1F8A57"
+      },
+      {
+       "type": "1",
+       "name": "thresholds.0.color",
+       "value": "F2B84B"
+      },
+      {
+       "type": "0",
+       "name": "thresholds.0.threshold",
+       "value": "60"
+      },
+      {
+       "type": "1",
+       "name": "thresholds.1.color",
+       "value": "F5837B"
+      },
+      {
+       "type": "0",
+       "name": "thresholds.1.threshold",
+       "value": "80"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "dashboard_pageid": "1498",
+   "name": "Teste Gráfico",
+   "display_period": "0",
+   "widgets": [
+    {
+     "widgetid": "4030",
+     "type": "svggraph",
+     "name": "TESTE — CPU média da frota ESXi (24h)",
+     "x": "0",
+     "y": "0",
+     "width": "72",
+     "height": "12",
+     "view_mode": "0",
+     "fields": [
+      {
+       "type": "1",
+       "name": "reference",
+       "value": "GRPH1"
+      },
+      {
+       "type": "0",
+       "name": "ds.0.dataset_type",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "ds.0.hosts.0",
+       "value": "VIRT - ESXi*"
+      },
+      {
+       "type": "1",
+       "name": "ds.0.items.0",
+       "value": "CPU utilization"
+      },
+      {
+       "type": "1",
+       "name": "ds.0.color",
+       "value": "3D85C6"
+      },
+      {
+       "type": "0",
+       "name": "ds.0.aggregate_function",
+       "value": "3"
+      },
+      {
+       "type": "0",
+       "name": "ds.0.aggregate_grouping",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "ds.0.aggregate_interval",
+       "value": "1h"
+      },
+      {
+       "type": "1",
+       "name": "ds.0.data_set_label",
+       "value": "CPU média ESXi (20 hosts)"
+      },
+      {
+       "type": "0",
+       "name": "lefty",
+       "value": "1"
+      },
+      {
+       "type": "1",
+       "name": "time_period.from",
+       "value": "now-24h"
+      },
+      {
+       "type": "1",
+       "name": "time_period.to",
+       "value": "now"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "users": [],
+ "userGroups": []
+}
