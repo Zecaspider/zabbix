@@ -62,6 +62,166 @@
    },
    "fieldConfig": {
     "defaults": {
+     "color": {
+      "fixedColor": "#364fc7",
+      "mode": "fixed"
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "UP"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "fixedColor": "#2f9e44",
+         "mode": "fixed"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "Agente OK"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "fixedColor": "#1971c2",
+         "mode": "fixed"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "Agente morto"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "fixedColor": "#e8590c",
+         "mode": "fixed"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "gridPos": {
+    "h": 5,
+    "w": 15,
+    "x": 0,
+    "y": 3
+   },
+   "id": 101,
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "justifyMode": "center",
+    "orientation": "horizontal",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    },
+    "textMode": "value_and_name"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "format": "table",
+     "rawQuery": true,
+     "rawSql": "SELECT COUNT(*) AS `VMs`,\n  SUM((SELECT hu.value FROM history_uint hu JOIN items ii ON ii.itemid=hu.itemid WHERE ii.hostid=h.hostid AND ii.key_='icmpping' ORDER BY hu.clock DESC LIMIT 1)=1) AS `UP`,\n  SUM((SELECT hh.value FROM history hh JOIN items ii ON ii.itemid=hh.itemid WHERE ii.hostid=h.hostid AND ii.key_='system.cpu.util' ORDER BY hh.clock DESC LIMIT 1) IS NOT NULL) AS `Agente OK`,\n  SUM((SELECT hh.value FROM history hh JOIN items ii ON ii.itemid=hh.itemid WHERE ii.hostid=h.hostid AND ii.key_='system.cpu.util' ORDER BY hh.clock DESC LIMIT 1) IS NULL) AS `Agente morto`\nFROM hosts h JOIN hosts_groups hg ON hg.hostid=h.hostid WHERE hg.groupid=689 AND h.status=0",
+     "refId": "A"
+    }
+   ],
+   "title": "",
+   "transparent": true,
+   "type": "stat"
+  },
+  {
+   "datasource": {
+    "type": "mysql",
+    "uid": "afor1g5862fb4c"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "hideFrom": {
+       "legend": false,
+       "tooltip": false,
+       "viz": false
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 5,
+    "w": 9,
+    "x": 15,
+    "y": 3
+   },
+   "id": 102,
+   "options": {
+    "displayLabels": [
+     "percent"
+    ],
+    "legend": {
+     "displayMode": "list",
+     "placement": "right",
+     "values": [
+      "value"
+     ]
+    },
+    "pieType": "donut",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/^VMs$/",
+     "values": true
+    },
+    "tooltip": {
+     "mode": "single"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "format": "table",
+     "rawQuery": true,
+     "rawSql": "SELECT SUBSTRING_INDEX(SUBSTRING_INDEX(h.name,' - VM',1),'/',-1) AS Componente, COUNT(*) AS VMs\nFROM hosts h JOIN hosts_groups hg ON hg.hostid=h.hostid WHERE hg.groupid=689 AND h.status=0 GROUP BY Componente ORDER BY VMs DESC",
+     "refId": "A"
+    }
+   ],
+   "title": "VMs por componente",
+   "transparent": true,
+   "type": "piechart"
+  },
+  {
+   "datasource": {
+    "type": "mysql",
+    "uid": "afor1g5862fb4c"
+   },
+   "fieldConfig": {
+    "defaults": {
      "custom": {
       "align": "auto",
       "cellOptions": {
@@ -187,10 +347,10 @@
     ]
    },
    "gridPos": {
-    "h": 20,
-    "w": 16,
+    "h": 18,
+    "w": 15,
     "x": 0,
-    "y": 3
+    "y": 8
    },
    "id": 200,
    "options": {
@@ -224,10 +384,10 @@
     "uid": "3_KgG43nz"
    },
    "gridPos": {
-    "h": 20,
-    "w": 8,
-    "x": 16,
-    "y": 3
+    "h": 18,
+    "w": 9,
+    "x": 15,
+    "y": 8
    },
    "id": 201,
    "options": {
@@ -296,5 +456,5 @@
  "timezone": "browser",
  "title": "N2 · Integração e APIs",
  "uid": "integracao-n2",
- "version": 3
+ "version": 4
 }

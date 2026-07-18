@@ -62,6 +62,181 @@
    },
    "fieldConfig": {
     "defaults": {
+     "color": {
+      "fixedColor": "#364fc7",
+      "mode": "fixed"
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "UP"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "fixedColor": "#2f9e44",
+         "mode": "fixed"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "DOWN"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "fixedColor": "#e03131",
+         "mode": "fixed"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "SNMP"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "fixedColor": "#1971c2",
+         "mode": "fixed"
+        }
+       }
+      ]
+     },
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "so ICMP"
+      },
+      "properties": [
+       {
+        "id": "color",
+        "value": {
+         "fixedColor": "#e8a33d",
+         "mode": "fixed"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "gridPos": {
+    "h": 5,
+    "w": 15,
+    "x": 0,
+    "y": 3
+   },
+   "id": 101,
+   "options": {
+    "colorMode": "background_solid",
+    "graphMode": "none",
+    "justifyMode": "center",
+    "orientation": "horizontal",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "",
+     "values": false
+    },
+    "textMode": "value_and_name"
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "format": "table",
+     "rawQuery": true,
+     "rawSql": "SELECT COUNT(*) AS `Total`,\n  SUM((SELECT hu.value FROM history_uint hu JOIN items ii ON ii.itemid=hu.itemid WHERE ii.hostid=h.hostid AND ii.key_='icmpping' ORDER BY hu.clock DESC LIMIT 1)=1) AS `UP`,\n  SUM((SELECT hu.value FROM history_uint hu JOIN items ii ON ii.itemid=hu.itemid WHERE ii.hostid=h.hostid AND ii.key_='icmpping' ORDER BY hu.clock DESC LIMIT 1)=0) AS `DOWN`,\n  SUM((SELECT COUNT(*) FROM items i2 WHERE i2.hostid=h.hostid AND i2.status=0)>100) AS `SNMP`,\n  SUM((SELECT COUNT(*) FROM items i3 WHERE i3.hostid=h.hostid AND i3.status=0)<=100) AS `so ICMP`\nFROM hosts h JOIN hosts_groups hg ON hg.hostid=h.hostid WHERE hg.groupid=665 AND h.status=0",
+     "refId": "A"
+    }
+   ],
+   "title": "",
+   "transparent": true,
+   "type": "stat"
+  },
+  {
+   "datasource": {
+    "type": "mysql",
+    "uid": "afor1g5862fb4c"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "custom": {
+      "hideFrom": {
+       "legend": false,
+       "tooltip": false,
+       "viz": false
+      }
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 5,
+    "w": 9,
+    "x": 15,
+    "y": 3
+   },
+   "id": 102,
+   "options": {
+    "displayLabels": [
+     "percent"
+    ],
+    "legend": {
+     "displayMode": "list",
+     "placement": "right",
+     "values": [
+      "value"
+     ]
+    },
+    "pieType": "donut",
+    "reduceOptions": {
+     "calcs": [
+      "lastNotNull"
+     ],
+     "fields": "/^Hosts$/",
+     "values": true
+    },
+    "tooltip": {
+     "mode": "single"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "mysql",
+      "uid": "afor1g5862fb4c"
+     },
+     "format": "table",
+     "rawQuery": true,
+     "rawSql": "SELECT CASE WHEN h.name LIKE '%IBM Power%' OR h.name LIKE '%Service Processor%' OR h.name LIKE '%HMC%' THEN 'IBM Power/HMC'\n  WHEN h.name LIKE '%UCS%' THEN 'Cisco UCS' WHEN h.name LIKE '%PowerFlex%' OR h.name LIKE '%Dell%' THEN 'PowerFlex/Dell' ELSE 'Outros' END AS Tipo,\n  COUNT(*) AS Hosts FROM hosts h JOIN hosts_groups hg ON hg.hostid=h.hostid WHERE hg.groupid=665 AND h.status=0 GROUP BY Tipo",
+     "refId": "A"
+    }
+   ],
+   "title": "Frota por tipo",
+   "transparent": true,
+   "type": "piechart"
+  },
+  {
+   "datasource": {
+    "type": "mysql",
+    "uid": "afor1g5862fb4c"
+   },
+   "fieldConfig": {
+    "defaults": {
      "custom": {
       "align": "auto",
       "cellOptions": {
@@ -177,10 +352,10 @@
     ]
    },
    "gridPos": {
-    "h": 20,
-    "w": 16,
+    "h": 18,
+    "w": 15,
     "x": 0,
-    "y": 3
+    "y": 8
    },
    "id": 200,
    "options": {
@@ -214,10 +389,10 @@
     "uid": "3_KgG43nz"
    },
    "gridPos": {
-    "h": 20,
-    "w": 8,
-    "x": 16,
-    "y": 3
+    "h": 18,
+    "w": 9,
+    "x": 15,
+    "y": 8
    },
    "id": 201,
    "options": {
@@ -286,5 +461,5 @@
  "timezone": "browser",
  "title": "N2 · Datacenter Físico",
  "uid": "datacenter-n2",
- "version": 2
+ "version": 3
 }

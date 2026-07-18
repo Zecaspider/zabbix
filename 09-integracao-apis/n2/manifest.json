@@ -12,6 +12,8 @@
   },
   "panels": [
     { "file": "header-lite.js", "id": 100, "role": "utils", "rootId": "bt-hdr-int09", "title": "Header BPC NOC (lite)" },
+    { "nativo": "stat", "id": 101, "title": "KPIs — VMs / UP / Agente OK / Agente morto" },
+    { "nativo": "piechart", "id": 102, "title": "VMs por componente (donut)" },
     { "nativo": "table", "id": 200, "title": "Saúde das VMs de Integração (CPU / Mem / disponibilidade)" },
     { "nativo": "alexanderzobnin-zabbix-triggers-panel", "id": 201, "title": "Problemas activos — Integração e APIs" }
   ]

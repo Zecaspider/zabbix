@@ -12,6 +12,8 @@
   },
   "panels": [
     { "file": "header-lite.js", "id": 100, "role": "utils", "rootId": "bt-hdr-dc08", "title": "Header BPC NOC (lite)" },
+    { "nativo": "stat", "id": 101, "title": "KPIs — Total / UP / DOWN / SNMP / só-ICMP" },
+    { "nativo": "piechart", "id": 102, "title": "Frota por tipo (donut)" },
     { "nativo": "table", "id": 200, "title": "Frota física — tier de monitoria e disponibilidade" },
     { "nativo": "alexanderzobnin-zabbix-triggers-panel", "id": 201, "title": "Problemas activos — Datacenter Físico" }
   ]
